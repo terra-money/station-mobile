@@ -36,9 +36,7 @@ const Card = ({ title, badge, action, content, children, ...rest }: Props) => {
   )
 
   return onPress ? (
-    <TouchableOpacity onPress={onPress}>
-      {render()}
-    </TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>{render()}</TouchableOpacity>
   ) : (
     render()
   )

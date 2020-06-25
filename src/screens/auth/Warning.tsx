@@ -18,7 +18,7 @@ const Warning = ({ tooltip, i18nKey, attrs }: Props) => (
 
     <Text>
       <Trans i18nKey={i18nKey}>
-        <strong />
+        <Text />
       </Trans>
     </Text>
   </>

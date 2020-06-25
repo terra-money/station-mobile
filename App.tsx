@@ -4,10 +4,13 @@ import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { useConfigState, ConfigProvider } from '@terra-money/use-native-station'
 import { useAuthState, AuthProvider } from '@terra-money/use-native-station'
-import { AppStack } from './src/types/navigation'
+import { RootStack } from './src/types/navigation'
 import { AppProvider } from './src/hooks'
-import Menu from './src/screens/Menu'
-import Auth from './src/screens/auth/Auth'
+import Tabs from './src/screens/Tabs'
+import AuthMenu from './src/screens/auth/AuthMenu'
+import Select from './src/screens/auth/Select'
+import New from './src/screens/auth/New'
+import Add from './src/screens/auth/Add'
 
 /* config */
 const chain = {
@@ -44,10 +47,13 @@ const App = () => {
         <AuthProvider value={auth}>
           <SafeAreaProvider>
             <NavigationContainer>
-              <AppStack.Navigator>
-                <AppStack.Screen name="Menu" component={Menu} />
-                <AppStack.Screen name="Auth" component={Auth} />
-              </AppStack.Navigator>
+              <RootStack.Navigator>
+                <RootStack.Screen name="Tabs" component={Tabs} />
+                <RootStack.Screen name="AuthMenu" component={AuthMenu} />
+                <RootStack.Screen name="Select" component={Select} />
+                <RootStack.Screen name="New" component={New} />
+                <RootStack.Screen name="Add" component={Add} />
+              </RootStack.Navigator>
             </NavigationContainer>
           </SafeAreaProvider>
 

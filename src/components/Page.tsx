@@ -13,7 +13,7 @@ const Page: FC<Props> = ({ loading, error, title, children }) => {
   return (
     <SafeAreaView>
       <Text style={styles.title}>{title}</Text>
-      <TouchableOpacity onPress={() => navigate('Auth')}>
+      <TouchableOpacity onPress={() => navigate('AuthMenu')}>
         <Text>Settings</Text>
       </TouchableOpacity>
 

@@ -5,7 +5,7 @@ import routes, { INITIAL } from '../../routes'
 /* routes */
 const Tab = createBottomTabNavigator()
 
-const Menu = () => (
+const Tabs = () => (
   <Tab.Navigator initialRouteName={INITIAL}>
     {routes.map((route) => (
       <Tab.Screen {...route} key={route.name} />
@@ -13,4 +13,4 @@ const Menu = () => (
   </Tab.Navigator>
 )
 
-export default Menu
+export default Tabs

@@ -1,28 +1,24 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import { ChartKey } from '@terra-money/use-native-station'
 
-export type AppStackParams = {
-  Menu: undefined
-  Auth: undefined
-}
-
-export const AppStack = createStackNavigator<AppStackParams>()
-
-export type MenuStackParams = {
-  Dashboard: undefined
-  Market: undefined
-}
-
-export const MenuStack = createStackNavigator<MenuStackParams>()
-
-export type AuthStackParams = {
+/* Root */
+export type RootStackParams = {
+  Tabs: undefined
   AuthMenu: undefined
   Select: undefined
   New: undefined
   Add: undefined
 }
 
-export const AuthStack = createStackNavigator<AuthStackParams>()
+export const RootStack = createStackNavigator<RootStackParams>()
+
+/* Tabs */
+export type TabsStackParams = {
+  Dashboard: undefined
+  Market: undefined
+}
+
+export const TabsStack = createStackNavigator<TabsStackParams>()
 
 /* Dashboard */
 export type DashboardRouteParams = {
