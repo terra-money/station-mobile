@@ -2,6 +2,7 @@ import { NativeModules } from 'react-native'
 import CryptoJS from 'crypto-js'
 import { mergeRight as merge, omit } from 'ramda'
 import { Wallet } from '@terra-money/use-native-station'
+import { Settings } from '../types/settings'
 
 const { Preferences, Keystore } = NativeModules
 const { encrypt, decrypt } = CryptoJS.AES
@@ -59,13 +60,11 @@ export const importKey = async ({ name, password, wallet }: Params) => {
   Keystore.write(name, JSON.stringify(key))
 }
 
-/*
-export const findName = (address: string): string | undefined => {
-  const keys = loadKeys()
-  const key = keys.find(key => key.address === address)
-  return key ? key.name : undefined
+export const clearKeys = async (): Promise<void> => {
+  const names = await Preferences.getString('names')
+  await names.split(SEP).forEach((name: string) => Keystore.remove(name))
 }
-*/
+
 export const testPassword = (
   { name, password }: { name: string; password: string },
   keys: Key[]
@@ -81,37 +80,32 @@ export const testPassword = (
     return false
   }
 }
-/*
+
 // Settings
 const SETTINGS = 'settings'
 
-const getSettings = (): Settings => {
-  const settings = localStorage?.getItem(SETTINGS)
+const getSettings = async (): Promise<Settings> => {
+  const settings = await Preferences.getString(SETTINGS)
   return settings ? JSON.parse(settings) : {}
 }
 
-const setSettings = (next: Partial<Settings>): void => {
-  const settings = getSettings()
-  localStorage?.setItem(SETTINGS, JSON.stringify(merge(settings, next)))
+const setSettings = async (next: Partial<Settings>): Promise<void> => {
+  const settings = await getSettings()
+  Preferences.setString(SETTINGS, JSON.stringify(merge(settings, next)))
 }
 
-const deleteSettings = (keys: (keyof Settings)[]): void => {
-  const settings = getSettings()
-  localStorage?.setItem(SETTINGS, JSON.stringify(omit(keys, settings)))
+const deleteSettings = async (keys: (keyof Settings)[]): Promise<void> => {
+  const settings = await getSettings()
+  Preferences.setString(SETTINGS, JSON.stringify(omit(keys, settings)))
 }
-
-export const localSettings = {
-  get: getSettings,
-  set: setSettings,
-  delete: deleteSettings
-}
-*/
 
 export const clearSettings = (): void => {
   Preferences.clear()
 }
 
-export const clearKeys = async (): Promise<void> => {
-  const names = await Preferences.getString('names')
-  await names.split(SEP).forEach((name: string) => Keystore.remove(name))
+export const settings = {
+  get: getSettings,
+  set: setSettings,
+  delete: deleteSettings,
+  clear: clearSettings,
 }

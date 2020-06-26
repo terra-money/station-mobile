@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useAuth } from '@terra-money/use-native-station'
-import { clearSettings, clearKeys } from '../../utils/storage'
+import { settings, clearKeys } from '../../utils/storage'
 import { WithKeys } from '../../hooks'
 
 interface MenuItem {
@@ -21,7 +21,7 @@ const AuthMenu = ({ canSelect }: { canSelect: boolean }) => {
     !user && { text: 'New wallet', onPress: () => navigate('New') },
     !user && { text: 'Add existing wallet', onPress: () => navigate('Add') },
     user && { text: 'Sign out', onPress: () => signOut() },
-    { text: '(DEV) Clear settings', onPress: () => clearSettings() },
+    { text: '(DEV) Clear settings', onPress: () => settings.clear() },
     { text: '(DEV) Clear keys', onPress: () => clearKeys() },
   ]
 

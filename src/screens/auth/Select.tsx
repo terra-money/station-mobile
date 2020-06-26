@@ -3,14 +3,14 @@ import { useSignIn } from '@terra-money/use-native-station'
 import { testPassword } from '../../utils/storage'
 import { WithKeys } from '../../hooks'
 import Form from '../../components/Form'
-import useNavigateOnAuth from './useNavigateOnAuth'
+import useOnAuth from './useOnAuth'
 
 interface Props {
   keys: Key[]
 }
 
 const Select = ({ keys }: Props) => {
-  useNavigateOnAuth()
+  useOnAuth()
 
   const { form } = useSignIn({
     list: keys,

@@ -1,11 +1,15 @@
-import React, { useState, ReactNode } from 'react'
+import React, { ReactNode, useState, useEffect } from 'react'
 import { StyleSheet, Modal, View, TouchableOpacity } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { NavigationContainer } from '@react-navigation/native'
+
 import { useConfigState, ConfigProvider } from '@terra-money/use-native-station'
 import { useAuthState, AuthProvider } from '@terra-money/use-native-station'
-import { RootStack } from './src/types/navigation'
+
+import { RootStack, Settings } from './src/types'
+import { settings } from './src/utils/storage'
 import { AppProvider } from './src/hooks'
+
 import Tabs from './src/screens/Tabs'
 import AuthMenu from './src/screens/auth/AuthMenu'
 import Select from './src/screens/auth/Select'
@@ -21,11 +25,7 @@ const chain = {
   secure: true,
 }
 
-const App = () => {
-  /* initial settings */
-  const lang = 'en'
-  const user = undefined
-
+const App = ({ settings: { lang, user } }: { settings: Settings }) => {
   /* drawer */
   const drawer = useDrawerState()
 
@@ -67,7 +67,20 @@ const App = () => {
   )
 }
 
-export default App
+export default () => {
+  const [local, setLocal] = useState<Settings>()
+
+  useEffect(() => {
+    const init = async () => {
+      const local = await settings.get()
+      setLocal(local)
+    }
+
+    init()
+  }, [])
+
+  return local ? <App settings={local} /> : null
+}
 
 /* hooks */
 const useDrawerState = (): Drawer => {

@@ -6,7 +6,7 @@ import { WithKeys } from '../../hooks'
 import { importKey } from '../../utils/storage'
 import ErrorComponent from '../../components/ErrorComponent'
 import Form from '../../components/Form'
-import useNavigateOnAuth from './useNavigateOnAuth'
+import useOnAuth from './useOnAuth'
 import Warning from './Warning'
 import Seeds from './Seeds'
 import SelectAccount from './SelectAccount'
@@ -22,7 +22,7 @@ interface Keys {
 }
 
 const Add = ({ generated, names, keys }: Props & Keys) => {
-  useNavigateOnAuth()
+  useOnAuth()
 
   const { form, mnemonics: seeds, warning, next, reset, error } = useSignUp({
     generated,
