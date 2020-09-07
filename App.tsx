@@ -1,7 +1,7 @@
 import React, { ReactNode, useState, useEffect } from 'react'
-import { StyleSheet, Modal, View, TouchableOpacity } from 'react-native'
+import { Modal, View, TouchableOpacity } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
 
 import { useConfigState, ConfigProvider } from '@terra-money/use-native-station'
 import { useAuthState, AuthProvider } from '@terra-money/use-native-station'
@@ -15,6 +15,21 @@ import AuthMenu from './src/screens/auth/AuthMenu'
 import Select from './src/screens/auth/Select'
 import New from './src/screens/auth/New'
 import Add from './src/screens/auth/Add'
+
+import EStyleSheet from 'react-native-extended-stylesheet';
+
+EStyleSheet.build({
+  $primaryColor: "#2043B5",
+  $dividerColor: "#EDF1F7"
+});
+
+const TerraTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#F9FAFF'
+  },
+};
 
 /* config */
 const chain = {
@@ -46,9 +61,9 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
       <ConfigProvider value={config}>
         <AuthProvider value={auth}>
           <SafeAreaProvider>
-            <NavigationContainer>
+            <NavigationContainer theme={TerraTheme}>
               <RootStack.Navigator>
-                <RootStack.Screen name="Tabs" component={Tabs} />
+                <RootStack.Screen name="Tabs" component={Tabs} options={{headerShown: false}} />
                 <RootStack.Screen name="AuthMenu" component={AuthMenu} />
                 <RootStack.Screen name="Select" component={Select} />
                 <RootStack.Screen name="New" component={New} />
@@ -101,7 +116,7 @@ const useDrawerState = (): Drawer => {
 }
 
 /* styles */
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   top: {
     flex: 1,
   },

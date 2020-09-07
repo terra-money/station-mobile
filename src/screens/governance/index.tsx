@@ -8,7 +8,7 @@ const Stack = createStackNavigator<GovernanceRouteParams>()
 
 export default () => (
   <Stack.Navigator initialRouteName="Governance">
-    <Stack.Screen name="Governance" component={Governance} />
+    <Stack.Screen name="Governance" component={Governance} options={{headerShown: false}} />
     <Stack.Screen name="Proposal" component={Proposal} />
   </Stack.Navigator>
 )

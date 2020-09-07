@@ -24,6 +24,10 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		95D4D9BE74EA92DCC4979548 /* libPods-TerraStation-TerraStationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B47E5AA6033657EAEF6B93E /* libPods-TerraStation-TerraStationTests.a */; };
 		AACA9AC9E90705FE5F16D834 /* libPods-TerraStation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 564522CEAEE6751E68B8E5D4 /* libPods-TerraStation.a */; };
+		DEB8CDA273BB4E8A9AAAD13A /* terra400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63AE82C11D0840C49E59187E /* terra400.ttf */; };
+		ACD6492E462D4011A1FCAB6A /* terra500.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C732856B3E424D1E8B9DB242 /* terra500.ttf */; };
+		7A219D790A4F4E069C850F57 /* terra600.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B9FC9C9F2D2A462892A0EF74 /* terra600.ttf */; };
+		310ED3F2060D4585A53A665B /* terra700.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5177B1490C834FDD83E1EAC0 /* terra700.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +94,10 @@
 		EAC6B39E3DFF4B0AAE3C7BD3 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		63AE82C11D0840C49E59187E /* terra400.ttf */ = {isa = PBXFileReference; name = "terra400.ttf"; path = "../assets/fonts/terra400.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C732856B3E424D1E8B9DB242 /* terra500.ttf */ = {isa = PBXFileReference; name = "terra500.ttf"; path = "../assets/fonts/terra500.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B9FC9C9F2D2A462892A0EF74 /* terra600.ttf */ = {isa = PBXFileReference; name = "terra600.ttf"; path = "../assets/fonts/terra600.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5177B1490C834FDD83E1EAC0 /* terra700.ttf */ = {isa = PBXFileReference; name = "terra700.ttf"; path = "../assets/fonts/terra700.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,6 +227,10 @@
 				E676CBB1AD8C4E8E91D8E6F5 /* Octicons.ttf */,
 				14260CC4105349BE996108C2 /* SimpleLineIcons.ttf */,
 				B703635AD2334322B948237C /* Zocial.ttf */,
+				63AE82C11D0840C49E59187E /* terra400.ttf */,
+				C732856B3E424D1E8B9DB242 /* terra500.ttf */,
+				B9FC9C9F2D2A462892A0EF74 /* terra600.ttf */,
+				5177B1490C834FDD83E1EAC0 /* terra700.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -364,6 +376,10 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				DEB8CDA273BB4E8A9AAAD13A /* terra400.ttf in Resources */,
+				ACD6492E462D4011A1FCAB6A /* terra500.ttf in Resources */,
+				7A219D790A4F4E069C850F57 /* terra600.ttf in Resources */,
+				310ED3F2060D4585A53A665B /* terra700.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

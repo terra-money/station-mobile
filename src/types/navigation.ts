@@ -31,7 +31,7 @@ export type StakingRouteParams = {
   Validator: { address: string }
 }
 
-/* Staking */
+/* Governance */
 export type GovernanceRouteParams = {
   Governance: undefined
   Proposal: { id: string }

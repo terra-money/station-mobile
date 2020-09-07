@@ -71,6 +71,10 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>terra400.ttf</string>
+		<string>terra500.ttf</string>
+		<string>terra600.ttf</string>
+		<string>terra700.ttf</string>
 	</array>
 </dict>
 </plist>

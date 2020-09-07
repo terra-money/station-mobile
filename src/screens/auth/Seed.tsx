@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import { View, Text, TextInput } from 'react-native'
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 interface Props {
   label: string
@@ -41,7 +42,7 @@ const Seed: FC<Props> = (props) => {
 export default Seed
 
 /* styles */
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   field: {
     width: '25%',
   },

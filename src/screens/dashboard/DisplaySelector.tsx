@@ -14,13 +14,13 @@ const DisplaySelector = (props: Props) => {
       value={current}
       options={options}
       onChange={setCurrent}
-      style={{ color: 'white' }}
+      style={{ color: "white" }}
     />
   )
 
   return (
     <Card title={title} action={picker} dark>
-      <Number {...displays[current]} integer />
+      <Number {...displays[current]} integer dark />
     </Card>
   )
 }

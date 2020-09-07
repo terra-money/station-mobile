@@ -1,8 +1,10 @@
 import React from 'react'
-import { TouchableWithoutFeedback, Text } from 'react-native'
+import { TouchableWithoutFeedback, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useInfo, Trans } from '@terra-money/use-native-station'
-import Info from './Info'
+// import Info from './Info'
+import Card from './Card'
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const PleaseSignIn = ({ card }: { card?: boolean }) => {
   const { navigate } = useNavigation()
@@ -10,16 +12,49 @@ const PleaseSignIn = ({ card }: { card?: boolean }) => {
   const { title, i18nKey, button } = SIGN_IN_REQUIRED
 
   return (
-    <Info title={title} card={card}>
-      <Trans i18nKey={i18nKey}>
-        <Text />
-      </Trans>
-
+    <Card>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.content}>
+        <Trans i18nKey={i18nKey}>
+          <Text />
+        </Trans>
+      </Text>
       <TouchableWithoutFeedback onPress={() => navigate('AuthMenu')}>
-        <Text>{button}</Text>
+        <View style={styles.button}>
+          <Text style={styles.button_text}>{button}</Text>
+        </View>
       </TouchableWithoutFeedback>
-    </Info>
+    </Card>
   )
 }
+
+const styles = EStyleSheet.create({
+  title: {
+    color: "$primaryColor",
+    fontFamily: "TerraCompact-Bold",
+    fontSize: 18,
+    lineHeight: 27,
+    marginBottom: 5
+  },
+  content: {
+    color: "$primaryColor",
+    fontFamily: "TerraCompact-Regular",
+    fontSize: 14,
+    lineHeight: 21,
+  },
+  button: {
+    backgroundColor: "$primaryColor",
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 20,
+    marginTop: 40
+  },
+  button_text: {
+    color: "#fff",
+    fontFamily: "TerraCompact-Medium",
+    fontSize: 16,
+  }
+})
 
 export default PleaseSignIn
