@@ -308,7 +308,7 @@ PODS:
     - React
   - RNSVG (12.1.0):
     - React
-  - RNVectorIcons (6.7.0):
+  - RNVectorIcons (7.1.0):
     - React
   - toolbar-android (0.1.0-rc.2):
     - React
@@ -509,12 +509,12 @@ SPEC CHECKSUMS:
   RNReanimated: 4e102df74a9674fa943e05f97f3362b6e44d0b48
   RNScreens: 812b79d384e2bea7eebc4ec981469160d4948fd5
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
-  RNVectorIcons: 368d6d8b8301224e5ffb6254191f4f8876c2be0d
+  RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   toolbar-android: 85f3ef4d691469f2d304e7dee4bca013aa1ba1ff
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 9f2414a603589a99111427c976093b018653ac60
+PODFILE CHECKSUM: 8febe1ebe634022ed9d4ebc22427533e87c0e40d
 
 COCOAPODS: 1.9.3

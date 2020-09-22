@@ -6,22 +6,22 @@ import Staking from './src/screens/staking'
 import Market from './src/screens/market/Market'
 import Governance from './src/screens/governance'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons'
+// import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons'
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-export const INITIAL = 'Dashboard'
+export const INITIAL = 'Staking' //'Dashboard'
 
 export default [
   {
     name: 'Dashboard',
     component: Dashboard,
     options: {
-      tabBarLabel: ({ color }) => (
+      tabBarLabel: ({ color }: any) => (
         <Text style={styles.tabbar_text}>
           <Text style={{ color: color }}>DASHBOARD</Text>
         </Text>
       ),
-      tabBarIcon: ({ color }) => (
+      tabBarIcon: ({ color }: any) => (
         <Icon name="dashboard" color={color} size={26} style={{ marginTop: 5 }} />
       ),
     }
@@ -30,12 +30,12 @@ export default [
     name: 'Bank',
     component: Bank,
     options: {
-      tabBarLabel: ({ color }) => (
+      tabBarLabel: ({ color }: any) => (
         <Text style={styles.tabbar_text}>
           <Text style={{ color: color }}>BANK</Text>
         </Text>
       ),
-      tabBarIcon: ({ color }) => (
+      tabBarIcon: ({ color }: any) => (
         <Icon name="account-balance" color={color} size={28} style={{ marginTop: 5 }} />
       ),
     }
@@ -44,12 +44,12 @@ export default [
     name: 'Staking',
     component: Staking,
     options: {
-      tabBarLabel: ({ color }) => (
+      tabBarLabel: ({ color }: any) => (
         <Text style={styles.tabbar_text}>
           <Text style={{ color: color }}>STAKING</Text>
         </Text>
       ),
-      tabBarIcon: ({ color }) => (
+      tabBarIcon: ({ color }: any) => (
         <Icon name="layers" color={color} size={28} style={{ marginTop: 5 }} />
       ),
     }
@@ -58,12 +58,12 @@ export default [
     name: 'Market',
     component: Market,
     options: {
-      tabBarLabel: ({ color }) => (
+      tabBarLabel: ({ color }: any) => (
         <Text style={styles.tabbar_text}>
           <Text style={{ color: color }}>MARKET</Text>
         </Text>
       ),
-      tabBarIcon: ({ color }) => (
+      tabBarIcon: ({ color }: any) => (
         <Icon name="timeline" color={color} size={28} style={{ marginTop: 5 }} />
       ),
     }
@@ -72,13 +72,13 @@ export default [
     name: 'Governance',
     component: Governance,
     options: {
-      tabBarLabel: ({ color }) => (
+      tabBarLabel: ({ color }: any) => (
         <Text style={styles.tabbar_text}>
           <Text style={{ color: color }}>GOVERNANCE</Text>
         </Text>
       ),
-      tabBarIcon: ({ color }) => (
-        <Icon2 name="vote" color={color} size={28} style={{ marginTop: 5 }} />
+      tabBarIcon: ({ color }: any) => (
+        <Icon name="how-to-vote" color={color} size={28} style={{ marginTop: 5 }} />
       ),
     }
   },
@@ -86,8 +86,9 @@ export default [
 
 const styles = EStyleSheet.create({
   tabbar_text: {
-    fontSize: 9,
-    fontFamily: "TerraCompact-Semibold",
+    fontSize: 8,
+    // fontFamily: "TerraCompact-Semibold",
+    fontFamily: "$fontGothamBold",
     marginBottom: 3
   }
 })
