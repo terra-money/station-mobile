@@ -23,16 +23,27 @@ const Picker = ({ value: current, onChange, options, style }: Props) => {
   }
 
   const picker = (
-    <>
-      {options?.map(({ value, children }) => (
-        <TouchableOpacity onPress={() => submit(value)} key={value}>
-          <Text>
-            {children}
-            {value === current && ' ✓'}
-          </Text>
-        </TouchableOpacity>
+    <View style={styles.pickerContainer}>
+      {options?.map(({ value, children }, index) => (
+        <View
+          key={value}>
+          <TouchableOpacity
+            style={styles.pickerItemContainer}
+            onPress={() => submit(value)}>
+            <Text style={styles.pickerItemText}>{children}</Text>
+            <View style={styles.pickerItemRadio}>
+              {value === current && <View style={styles.pickerItemRadioSelected} />}
+            </View>
+          </TouchableOpacity>
+
+          { // 마지막 index는 separator를 출력하지 않음
+            options?.length !== index + 1
+              ? <View style={styles.pickerSeparator} />
+              : null
+          }
+        </View>
       ))}
-    </>
+    </View>
   )
 
   const { children } = options?.find((o) => o.value === current) ?? {}
@@ -49,11 +60,9 @@ const Picker = ({ value: current, onChange, options, style }: Props) => {
 
 /* styles */
 const styles = EStyleSheet.create({
-  icon: {
-    marginLeft: 5,
-    marginRight: -5
-  },
-
+  /**
+   * BADGE
+   */
   badge: {
     backgroundColor: "rgba(255,255,255,0.1)",
     height: 28,
@@ -63,13 +72,57 @@ const styles = EStyleSheet.create({
     flexDirection: "row",
     alignItems: "center"
   },
-
-  badge_text: {
+  badgeIcon: {
+    marginLeft: 5,
+    marginRight: -5
+  },
+  badgeText: {
     fontSize: 12,
     lineHeight: 22,
     color: "rgba(255,255,255,1)",
-    fontFamily: "TerraCompact-Regular",
+    // fontFamily: "TerraCompact-Regular",
   },
+
+  /**
+   * PICKER
+   */
+  pickerContainer: {
+    borderRadius: 18,
+    flexDirection: 'column',
+    backgroundColor: '#fff'
+  },
+  pickerItemContainer: {
+    paddingHorizontal: 30,
+    paddingVertical: 18,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  pickerItemText: {
+    fontFamily: '$fontGothamMedium',
+    fontSize: 16,
+    lineHeight: 24,
+    color: '$primaryColor'
+  },
+  pickerItemRadio: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '$primaryColorOp20',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  pickerItemRadioSelected: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '$primaryColor',
+  },
+  pickerDivider: { 
+    width: '100%', 
+    height: 1, 
+    backgroundColor: '$dividerColor',
+  },
+
 })
 
 export default Picker

@@ -17,10 +17,30 @@ import New from './src/screens/auth/New'
 import Add from './src/screens/auth/Add'
 
 import EStyleSheet from 'react-native-extended-stylesheet';
+import { StatusBar } from 'react-native'
+import { Platform } from 'react-native'
 
 EStyleSheet.build({
-  $primaryColor: "#2043B5",
-  $dividerColor: "#EDF1F7"
+  $primaryColor: 'rgb(32,67,181)',//"#2043B5",
+  $primaryColorOp20: 'rgba(32,67,181,.2)',//"#2043B5",
+  
+  $dividerColor: "#EDF1F7",
+
+  /**
+   * iOS는 PostScriptName, Android는 FileName으로 Font를 구별
+   */
+  '@media ios': {
+    $fontGothamBold: "Gotham Bold",
+    $fontGothamBook: "Gotham Book",
+    $fontGothamMedium: "Gotham Medium",
+    $fontGothamLight: "Gotham Light",
+  },
+  '@media android': {
+    $fontGothamBold: "Gotham-Bold",
+    $fontGothamBook: "Gotham-Book",
+    $fontGothamMedium: "Gotham-Medium",
+    $fontGothamLight: "Gotham-Light",
+  },
 });
 
 const TerraTheme = {
@@ -61,8 +81,11 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
       <ConfigProvider value={config}>
         <AuthProvider value={auth}>
           <SafeAreaProvider>
+            <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent={false} />
             <NavigationContainer theme={TerraTheme}>
               <RootStack.Navigator>
+                {/* <RootStack.Screen name="Splash" component={} */}
+                {/* <RootStack.Screen name="OnBoarding" component={} /> */}
                 <RootStack.Screen name="Tabs" component={Tabs} options={{headerShown: false}} />
                 <RootStack.Screen name="AuthMenu" component={AuthMenu} />
                 <RootStack.Screen name="Select" component={Select} />
@@ -72,9 +95,11 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
             </NavigationContainer>
           </SafeAreaProvider>
 
-          <Modal visible={drawer.isOpen} animationType="slide" transparent>
-            <TouchableOpacity onPress={drawer.close} style={styles.top} />
-            <View style={styles.bottom}>{drawer.content}</View>
+          <Modal visible={drawer.isOpen} animationType='fade' transparent>
+            <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,.5)'}}>
+              <TouchableOpacity onPress={drawer.close} style={styles.top} />
+              <View style={styles.bottom}>{drawer.content}</View>
+            </View>
           </Modal>
         </AuthProvider>
       </ConfigProvider>
@@ -122,7 +147,9 @@ const styles = EStyleSheet.create({
   },
 
   bottom: {
-    height: 215,
-    backgroundColor: 'white',
+    // height: 215,
+    marginHorizontal: 20,
+    marginBottom: Platform.OS === 'ios' ? 54: 20,
+    // backgroundColor: 'rgba(0,0,0,.5)',
   },
 })
