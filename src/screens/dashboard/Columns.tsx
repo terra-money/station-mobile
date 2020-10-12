@@ -8,6 +8,7 @@ import { useDashboard } from '@terra-money/use-native-station'
 import Card from '../../components/Card'
 import DisplaySelector from './DisplaySelector'
 import EStyleSheet from 'react-native-extended-stylesheet';
+import Swiper from 'react-native-swiper'
 
 const Columns = () => {
   const { navigate } = useNavigation()
@@ -36,23 +37,44 @@ const Columns = () => {
     )
   }
 
+  const SwiperDotView = () => (
+    <View
+        style={{
+          backgroundColor: 'rgba(32, 67, 181, .2)',
+          width: 6,
+          height: 6,
+          borderRadius: 3,
+          margin: 5
+        }}
+    />
+  )
+  const SwiperActiveDotView = () => (
+    <View
+      style={{
+        backgroundColor: 'rgba(32, 67, 181, 1)',
+        width: 6,
+        height: 6,
+        borderRadius: 3,
+        margin: 5
+      }}
+    />
+  )
+
   const render = (ui: DashboardUI) => (
-    <>
-      <View style={styles.carousel}>
-        <View style={styles.carousel_item}>{renderPrice(ui.prices)}</View>
-        <View style={styles.carousel_item}>{renderTaxRate(ui.taxRate)}</View>
-        <View style={styles.carousel_item}><DisplaySelector {...ui.issuance} /></View>
-        <View style={styles.carousel_item}><DisplaySelector {...ui.communityPool} /></View>
-        <View style={styles.carousel_item}>{renderStakingRatio(ui.stakingRatio)}</View>
-      </View>
-      <View style={styles.carousel_paging}>
-        <View style={[styles.carousel_paging_indicator, styles.active]}/>
-        <View style={styles.carousel_paging_indicator}/>
-        <View style={styles.carousel_paging_indicator}/>
-        <View style={styles.carousel_paging_indicator}/>
-        <View style={styles.carousel_paging_indicator}/>
-      </View>
-    </>
+    <Swiper
+        style={[styles.carousel, {height: 168}]}
+        loop={true}
+        autoplay={true}
+        autoplayTimeout={10} // seconds
+        dot={SwiperDotView()}
+        activeDot={SwiperActiveDotView()}
+      >
+          <View style={styles.carousel_item}>{renderPrice(ui.prices)}</View>
+          <View style={styles.carousel_item}>{renderTaxRate(ui.taxRate)}</View>
+          <View style={styles.carousel_item}><DisplaySelector {...ui.issuance} /></View>
+          <View style={styles.carousel_item}><DisplaySelector {...ui.communityPool} /></View>
+          <View style={styles.carousel_item}>{renderStakingRatio(ui.stakingRatio)}</View>
+      </Swiper>
   )
 
   return ui ? render(ui) : null
