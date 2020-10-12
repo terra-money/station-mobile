@@ -19,6 +19,7 @@ import Add from './src/screens/auth/Add'
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { StatusBar } from 'react-native'
 import { Platform } from 'react-native'
+import SplashScreen from 'react-native-splash-screen'
 
 EStyleSheet.build({
   $primaryColor: 'rgb(32,67,181)',//"#2043B5",
@@ -75,6 +76,10 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
 
   /* render */
   const ready = !!(currentLang && currentChain)
+
+  useEffect(() => {
+    SplashScreen.hide()
+  }, [])
 
   return !ready ? null : (
     <AppProvider value={{ drawer }}>
