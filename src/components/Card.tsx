@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, ViewStyle } from 'react-native'
 import { API, AuthProvider } from '@terra-money/use-native-station'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EStyleSheet from 'react-native-extended-stylesheet';
@@ -7,6 +7,7 @@ import { AreaChart, Path } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 
 interface Props extends Partial<API<any>> {
+  style?: ViewStyle
   title?: string
   badge?: string
   action?: ReactNode
@@ -18,11 +19,11 @@ interface Props extends Partial<API<any>> {
   dark?: boolean
 }
 
-const Card = ({ title, badge, action, content, value, unit, children, ...rest }: Props) => {
+const Card = ({ style, title, badge, action, content, value, unit, children, ...rest }: Props) => {
   const { onPress, dark, error, loading } = rest
   const textStyle = [styles.text, dark && darkStyles.text]
   const data = [460, 466, 480, 490, 500, 510, 520]
-  const Line = ({ line }) => (
+  const Line = ({ line }: any) => (
     <Path
         key={ 'line ' }
         d={ line }
@@ -32,11 +33,17 @@ const Card = ({ title, badge, action, content, value, unit, children, ...rest }:
   )
 
   const render = () => (
-    <View style={[styles.card, dark ? darkStyles.card : lightStyles.card]}>
+    <View style={[styles.card, dark ? darkStyles.card : lightStyles.card, style]}>
       {title && (
         <View style={styles.header}>
           <Text style={[textStyle, styles.title]}>{title}</Text>
-          {action ?? (badge ? <View style={styles.badge}><Text style={[textStyle, styles.badge_text]}>{badge}</Text></View> : <Icon name="chevron-right" size={25} color="#fff" style={styles.icon} />)}
+          {action ?? 
+            (badge 
+            ? <View style={styles.badge}>
+                <Text style={[textStyle, styles.badge_text]}>{badge}</Text>
+              </View> 
+            : <Icon name="chevron-right" size={25} color="#fff" style={styles.icon} />)
+          }
         </View>
       )}
 
@@ -88,6 +95,7 @@ const styles = EStyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 10,
     padding: 20,
+    // paddingVertical: 20,
     flexDirection: "column"
   },
 
