@@ -1,13 +1,74 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Text, View, Image, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { StakingUI } from '@terra-money/use-native-station'
+import { Options, StakingUI, ValidatorUI } from '@terra-money/use-native-station'
 import Card from '../../components/Card'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import EntypoIcon from 'react-native-vector-icons/Entypo'
 import EStyleSheet from 'react-native-extended-stylesheet'
+import { Dictionary, reverse, sort } from 'ramda'
+import Picker from '../../components/Picker'
+
+const validatorFilter: Options = [
+  {value: "Delegation Return", children: "Delegation Return" },
+  {value: "Commission", children: "Commission"},
+  {value: "Voting Power", children: "Voting Power"},
+  {value: "Uptime", children: "Uptime"},
+]
 
 const ValidatorList = ({ contents }: StakingUI) => {
   const { navigate } = useNavigation()
+
+  const [currentFilter, setCurrentFilter] = useState(validatorFilter[0].value)
+  const [reverseContents, setReverseContents] = useState(false)
+  const [contactableValidators, setContactableValidators] = useState(undefined)
+
+  console.log("RENDER::")
+
+  /**
+   * email이 있는 validator 얻어오기
+   */
+  const getContactableValidators = async () => {
+    try {
+      const response = await fetch('https://terra.money/station/validators.json')
+      setContactableValidators(await response.json())
+    }
+    catch(e) {
+      console.error(e);
+    }
+  }
+
+  useEffect(() => {
+    getContactableValidators() // 이거 밖으로 빼서 Props로 받아오도록 함. 2번 렌더링 됨..
+  }, [])
+
+  /**
+   * Content 정렬,
+   * - 2차정렬 방법 정의 필요
+   */
+  const sortContents = (a: ValidatorUI, b: ValidatorUI): number => {
+    const [_a, _b] = currentFilter === "Delegation Return"
+      ? [a.delegationReturn.percent, b.delegationReturn.percent]
+      : currentFilter === "Commission"
+      ? [a.commission.percent, b.commission.percent]
+      : currentFilter === "Voting Power"
+      ? [a.votingPower.percent, b.votingPower.percent]
+      : currentFilter === "Uptime"
+      ? [a.uptime.percent, b.uptime.percent]
+      : ["", ""]
+    
+    const diff = reverseContents
+      ? parseFloat(_b) - parseFloat(_a) 
+      : parseFloat(_a) - parseFloat(_b)
+      
+    return diff
+  }
+
+  contents.sort(sortContents)  
+
+  useEffect(() => {
+    setReverseContents(true) // 필터가 바뀌면 정렬을 원래대로 돌려놓음
+  }, [currentFilter])
 
   return (
     <>
@@ -16,13 +77,26 @@ const ValidatorList = ({ contents }: StakingUI) => {
         flexDirection: 'row', 
         justifyContent: 'space-between',
         alignItems: 'center',
-        // backgroundColor: '#ccc',
-        margin: 20,
+        marginHorizontal: 20,
+        marginVertical: 20,
       }}>
-        <Text>Validators</Text>
-        <View style={{flexDirection: 'row', alignItems: 'center',}}>
-          <Text>Delegation Return</Text>
-          <Icon name="swap-vert" size={26} />
+        <Text style={[styles.textColor, styles.textValidators]}>Validators</Text>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Picker
+            value={currentFilter}
+            options={validatorFilter}
+            onChange={setCurrentFilter}
+            style={[styles.textColor, styles.textFilter]}
+          >
+            <Text>{currentFilter}</Text>
+          </Picker>
+          <TouchableOpacity onPress={() => { 
+            contents.reverse()
+            contents.sort(sortContents)
+            setReverseContents(!reverseContents)
+          }} >
+            <Icon style={{marginLeft:9}} name="swap-vert" size={18} color={'rgb(32, 67, 181)'} />
+          </TouchableOpacity>
         </View>
       </View>
       {contents.map((content, index) => (
@@ -36,10 +110,10 @@ const ValidatorList = ({ contents }: StakingUI) => {
             <View style={{backgroundColor: 'rgb(237, 241, 247)', height:1, width: '100%'}} />
           }
           <View style={{ 
-            flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 12, 
-            marginHorizontal: 20,
+            flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', 
+            marginVertical: 12, marginHorizontal: 20,
             }}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', alignItems:'center',}}>
               <View style={{width: 18, justifyContent: 'center', alignItems: 'center'}}>
               {
                 (index) === 0
@@ -52,15 +126,31 @@ const ValidatorList = ({ contents }: StakingUI) => {
               }
               </View>
               {
-                // <Image source={require('../../../assets/terra.png')} style={{width:24, height:24}} resizeMode={'cover'}/>
                 <Image source={content.profile 
                     ? {uri: content.profile}
                     : require('../../../assets/terra.png')
                   } style={styles.profileImage} />
               }
-              <Text>{content.moniker}</Text>
+              <Text style={[styles.textColor, styles.textMoniker]}>{content.moniker}</Text>
+              {
+                !!contactableValidators &&
+                !!contactableValidators[content?.operatorAddress?.address] &&
+                <EntypoIcon style={{marginLeft:6}} name="check" size={14} color={'rgb(118, 169, 244)'} />
+              }
             </View>
-            <Text>{content.delegationReturn.percent}</Text>
+            <Text style={[styles.textColor, styles.textPercent]}>
+              {
+                currentFilter === "Delegation Return"
+                ? content.delegationReturn.percent
+                : currentFilter === "Commission"
+                ? content.commission.percent
+                : currentFilter === "Voting Power"
+                ? content.votingPower.percent
+                : currentFilter === "Uptime"
+                ? content.uptime.percent
+                : ""
+              }
+            </Text>
           </View>
         </TouchableOpacity>
       ))}
@@ -73,7 +163,33 @@ const ValidatorList = ({ contents }: StakingUI) => {
 export default ValidatorList
 
 const styles = EStyleSheet.create({
+  textColor: {
+    color:"$primaryColor",
+  },
+  textValidators: {
+    fontSize:16, 
+    lineHeight:24,
+  },
+  textFilter: {
+    fontSize:10, 
+    lineHeight:15, 
+    letterSpacing:-0.1,
+  },
+  textMoniker: {
+    fontSize: 14,
+    lineHeight: 21,
+    letterSpacing: 0,
+  },
+  textPercent: {
+    fontSize: 14,
+    lineHeight: 21,
+    letterSpacing: 0,
+  },
+
   rank: {
+    fontSize: 12,
+    lineHeight: 18,
+    letterSpacing: 0,
     color: 'rgb(32, 67, 181)',
   },
   rank1st: {
@@ -87,7 +203,7 @@ const styles = EStyleSheet.create({
   },
 
   profileImage: {
-    backgroundColor: '#000',
+    // backgroundColor: '#000',
     borderRadius: 12, 
     width:24, 
     height: 24,

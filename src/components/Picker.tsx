@@ -49,11 +49,21 @@ const Picker = ({ value: current, onChange, options, style }: Props) => {
   const { children } = options?.find((o) => o.value === current) ?? {}
 
   return (
+    
     <TouchableOpacity onPress={() => drawer.open(picker)}>
-      <View style={styles.badge}>
-        <Text style={[style, styles.badge_text]}>{children}</Text>
-        <Icon name="arrow-drop-down" size={18} color="#fff" style={styles.icon} />
-      </View>
+      {
+        style === undefined 
+        ?
+        // DASHBOARD에서 사용
+        <View style={styles.badge}>
+          <Text style={[styles.badgeText]}>{children}</Text>
+          <Icon name="arrow-drop-down" size={18} color="#fff" style={styles.icon} />
+        </View>
+        :
+        // DASHBOARD 이외 Text만 출력되어야 할 곳에서 사용
+        <Text style={style}>{children}</Text>
+      }
+      
     </TouchableOpacity>
   )
 }
