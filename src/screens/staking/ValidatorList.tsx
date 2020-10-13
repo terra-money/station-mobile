@@ -23,8 +23,6 @@ const ValidatorList = ({ contents }: StakingUI) => {
   const [reverseContents, setReverseContents] = useState(false)
   const [contactableValidators, setContactableValidators] = useState(undefined)
 
-  console.log("RENDER::")
-
   /**
    * email이 있는 validator 얻어오기
    */
@@ -87,6 +85,7 @@ const ValidatorList = ({ contents }: StakingUI) => {
             options={validatorFilter}
             onChange={setCurrentFilter}
             style={[styles.textColor, styles.textFilter]}
+            showBox={false}
           >
             <Text>{currentFilter}</Text>
           </Picker>

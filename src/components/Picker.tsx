@@ -12,9 +12,10 @@ interface Props {
   onChange?: (value: string) => void
   options?: Options
   style?: StyleProp<TextStyle>
+  showBox: boolean
 }
 
-const Picker = ({ value: current, onChange, options, style }: Props) => {
+const Picker = ({ value: current, onChange, options, style, showBox }: Props) => {
   const { drawer } = useApp()
 
   const submit = (value: string) => {
@@ -52,12 +53,12 @@ const Picker = ({ value: current, onChange, options, style }: Props) => {
     
     <TouchableOpacity onPress={() => drawer.open(picker)}>
       {
-        style === undefined 
+        showBox === undefined
         ?
         // DASHBOARD에서 사용
         <View style={styles.badge}>
           <Text style={[styles.badgeText]}>{children}</Text>
-          <Icon name="arrow-drop-down" size={18} color="#fff" style={styles.icon} />
+          <Icon name="arrow-drop-down" size={18} color="#fff" style={styles.badgeIcon} />
         </View>
         :
         // DASHBOARD 이외 Text만 출력되어야 할 곳에서 사용
