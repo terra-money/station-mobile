@@ -21,6 +21,7 @@ import { StatusBar } from 'react-native'
 import { Platform } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
 import OnBoarding from './src/screens/OnBoarding'
+import { getSkipOnboarding } from './src/utils/InternalStorage'
 
 EStyleSheet.build({
   $primaryColor: 'rgb(32,67,181)',//"#2043B5",
@@ -72,6 +73,9 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
   const { current: currentChainOptions } = config.chain
   const { key: currentChain = '' } = currentChainOptions
 
+  /* onboarding */
+  const [skipOnboarding, setSkipOnboarding] = useState<boolean|null>(null)
+
   /* auth */
   const auth = useAuthState(user)
 
@@ -79,17 +83,20 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
   const ready = !!(currentLang && currentChain)
 
   useEffect(() => {
+    getSkipOnboarding(setSkipOnboarding)
     SplashScreen.hide()
   }, [])
 
-  return !ready ? null : (
+  return !ready || skipOnboarding === null ? null : (
     <AppProvider value={{ drawer }}>
       <ConfigProvider value={config}>
         <AuthProvider value={auth}>
           <SafeAreaProvider>
             <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent={false} />
             <NavigationContainer theme={TerraTheme}>
-              <RootStack.Navigator>
+              <RootStack.Navigator
+                initialRouteName={skipOnboarding ? "Tabs" : "OnBoarding"}
+                >
                 <RootStack.Screen name="OnBoarding" component={OnBoarding} 
                   options={{headerShown: false, animationEnabled: false}} 
                 />

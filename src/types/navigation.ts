@@ -3,6 +3,7 @@ import { ChartKey } from '@terra-money/use-native-station'
 
 /* Root */
 export type RootStackParams = {
+  OnBoarding: undefined
   Tabs: undefined
   AuthMenu: undefined
   Select: undefined

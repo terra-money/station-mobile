@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import React, { useRef, useState } from 'react';
 import { 
@@ -10,7 +11,6 @@ import {
  } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Swiper from 'react-native-swiper';
-
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 LogBox.ignoreLogs([
@@ -54,79 +54,88 @@ interface RenderSwiperProps {
     setLastPage: (b: boolean) => any
   }
   
-  const RenderSwiper = ({refSwipe, setLastPage}: RenderSwiperProps) => (
-    <Swiper
-      ref={refSwipe}
-      style={{
-        // backgroundColor: '#eee',
-      }}
-      onIndexChanged={(index) => setLastPage( (index+1) === PagerContents.length )}
-      loop={false}
-      dot={ <View style={styles.SwiperDot} /> }
-      activeDot={ <View style={styles.SwiperDotActive} /> }
-      paginationStyle={{
-        bottom: -15,
-      }}>
-        {PagerContents.map((v, i) => (
-            <View key={i} style={styles.SwiperContent}>
-              <Image source={v.image}  style={styles.SwiperContentImage} />
-              <View>
-                <Text style={styles.SwiperContentTitle}>{v.title}</Text>
-                <Text style={styles.SwiperContentDesc}>{v.description}</Text>
-              </View>
+const RenderSwiper = ({refSwipe, setLastPage}: RenderSwiperProps) => (
+<Swiper
+    ref={refSwipe}
+    style={{
+    // backgroundColor: '#eee',
+    }}
+    onIndexChanged={(index) => setLastPage( (index+1) === PagerContents.length )}
+    loop={false}
+    dot={ <View style={styles.SwiperDot} /> }
+    activeDot={ <View style={styles.SwiperDotActive} /> }
+    paginationStyle={{
+    bottom: -15,
+    }}>
+    {PagerContents.map((v, i) => (
+        <View key={i} style={styles.SwiperContent}>
+            <Image source={v.image}  style={styles.SwiperContentImage} />
+            <View>
+            <Text style={styles.SwiperContentTitle}>{v.title}</Text>
+            <Text style={styles.SwiperContentDesc}>{v.description}</Text>
             </View>
-          ))}
-    </Swiper>
-  )
-  
-  interface RenderButtonProps {
-    refSwipe: Swiper
-    isLastPage: boolean
-  }
-  
-  const RenderButton = ({refSwipe, navigation, isLastPage}) => (
-    <View style={styles.SwiperButtonContainer}>
-      {
-      !isLastPage
-      ?
-      <>
-        <TouchableOpacity style={styles.SwiperButtonSkip}
-          onPress={()=>navigation.navigate("Tabs")}>
-          <Text style={styles.SwiperButtonSkipText}>
-            Skip
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.SwiperButtonNext}
-          onPress={()=>refSwipe.current.scrollBy(1)}>
-          <Icon name="arrow-right" size={20} color="rgb(255,255,255)" />
-        </TouchableOpacity>
-      </>
-      :
-      <>
-        <TouchableOpacity style={styles.SwiperButtonStart}
-          onPress={()=>navigation.navigate("Tabs")}>
-          <Text style={{ fontSize:16, lineHeight:24, color:'rgb(255,255,255)'}}>Get Started</Text>
-        </TouchableOpacity>
-      </>
-      }
-    </View>
-  )
-  
-  const RenderLanguageButton = () => (
-    <View style={styles.SelectLanguageContainer}>
-      <TouchableOpacity
-        style={styles.SelectLanguageButton}>
-        <Text style={styles.SelectLanguageButtonText}>English</Text>
-        <Icon
-          name="caret-down"
-          size={10}
-          color="rgb(32,67,181)"
-          style={styles.SelectLanguageButtonCaret}
-        />
-      </TouchableOpacity>
-    </View>
-  )
-  
+        </View>
+        ))}
+</Swiper>
+)
+
+interface RenderButtonProps {
+refSwipe: Swiper
+isLastPage: boolean
+}
+
+const RenderButton = ({refSwipe, navigation, isLastPage}) => (
+<View style={styles.SwiperButtonContainer}>
+    {
+    !isLastPage
+    ?
+    <>
+    <TouchableOpacity style={styles.SwiperButtonSkip}
+        onPress={()=>enterTabs({navigation})}>
+        <Text style={styles.SwiperButtonSkipText}>
+        Skip
+        </Text>
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.SwiperButtonNext}
+        onPress={()=>refSwipe.current.scrollBy(1)}>
+        <Icon name="arrow-right" size={20} color="rgb(255,255,255)" />
+    </TouchableOpacity>
+    </>
+    :
+    <>
+    <TouchableOpacity style={styles.SwiperButtonStart}
+        onPress={()=>enterTabs({navigation})}>
+        <Text style={{ fontSize:16, lineHeight:24, color:'rgb(255,255,255)'}}>Get Started</Text>
+    </TouchableOpacity>
+    </>
+    }
+</View>
+)
+
+const RenderLanguageButton = () => (
+<View style={styles.SelectLanguageContainer}>
+    <TouchableOpacity
+    style={styles.SelectLanguageButton}>
+    <Text style={styles.SelectLanguageButtonText}>English</Text>
+    <Icon
+        name="caret-down"
+        size={10}
+        color="rgb(32,67,181)"
+        style={styles.SelectLanguageButtonCaret}
+    />
+    </TouchableOpacity>
+</View>
+)
+
+const enterTabs = ({navigation}) => {
+    setShowOnboarding()
+    navigation.navigate("Tabs")
+}
+
+const ONBOARDING_KEY = 'skip_onboarding' // 다 만들고 위로 빼도록..
+const setShowOnboarding = async () => {
+    await AsyncStorage.setItem(ONBOARDING_KEY, 'true')
+}
 
 const OnBoarding = () => {
     const [lastPage, setLastPage] = useState(false)
