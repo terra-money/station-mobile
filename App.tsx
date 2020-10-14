@@ -20,6 +20,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import { StatusBar } from 'react-native'
 import { Platform } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
+import OnBoarding from './src/screens/OnBoarding'
 
 EStyleSheet.build({
   $primaryColor: 'rgb(32,67,181)',//"#2043B5",
@@ -89,13 +90,24 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
             <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent={false} />
             <NavigationContainer theme={TerraTheme}>
               <RootStack.Navigator>
-                {/* <RootStack.Screen name="Splash" component={} */}
-                {/* <RootStack.Screen name="OnBoarding" component={} /> */}
-                <RootStack.Screen name="Tabs" component={Tabs} options={{headerShown: false}} />
-                <RootStack.Screen name="AuthMenu" component={AuthMenu} />
-                <RootStack.Screen name="Select" component={Select} />
-                <RootStack.Screen name="New" component={New} />
-                <RootStack.Screen name="Add" component={Add} />
+                <RootStack.Screen name="OnBoarding" component={OnBoarding} 
+                  options={{headerShown: false, animationEnabled: false}} 
+                />
+                <RootStack.Screen name="Tabs" component={Tabs} 
+                  options={{headerShown: false, animationEnabled: false}} 
+                />
+                <RootStack.Screen name="AuthMenu" component={AuthMenu} 
+                  options={{animationEnabled: false}} 
+                />
+                <RootStack.Screen name="Select" component={Select} 
+                  options={{animationEnabled: false}} 
+                />
+                <RootStack.Screen name="New" component={New} 
+                  options={{animationEnabled: false}} 
+                />
+                <RootStack.Screen name="Add" component={Add} 
+                  options={{animationEnabled: false}} 
+                />
               </RootStack.Navigator>
             </NavigationContainer>
           </SafeAreaProvider>
