@@ -103,6 +103,9 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
                 <RootStack.Screen name="Tabs" component={Tabs} 
                   options={{headerShown: false, animationEnabled: false}} 
                 />
+                <RootStack.Screen name="Setting" component={Setting} 
+                  options={{headerShown: false, animationEnabled: false}} 
+                />
                 <RootStack.Screen name="AuthMenu" component={AuthMenu} 
                   options={{animationEnabled: false}} 
                 />
@@ -173,7 +176,7 @@ const styles = EStyleSheet.create({
   bottom: {
     // height: 215,
     marginHorizontal: 20,
-    marginBottom: Platform.OS === 'ios' ? 54: 20,
+    marginBottom: Platform.OS === 'ios' && hasNotch() ? 54: 32,
     // backgroundColor: 'rgba(0,0,0,.5)',
   },
 })

@@ -56,7 +56,7 @@ const Page: FC<Props> = ({ loading, error, title, children }) => {
             </TouchableOpacity>
           }
           
-          <TouchableOpacity onPress={()=>{}} style={styles.user}>
+          <TouchableOpacity onPress={()=> navigate('Setting')} style={styles.user}>
             {
               /** 인증이 되지 않았으면 CONNECT와 SETTINGS버튼, 인증 되어 있으면 WALLET버튼 */
               // !auth
@@ -71,7 +71,10 @@ const Page: FC<Props> = ({ loading, error, title, children }) => {
       {error ? (
         <Text>{error.message}</Text>
       ) : loading ? (
-        <Text>Loading...</Text>
+        <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
+        {/* <Text>Loading</Text> */}
+          <ActivityIndicator animating={true} size="large" color="#aaa" />
+        </View>
       ) : (
         <ScrollView><View style={{marginBottom: 50}}>{children}</View></ScrollView>
       )}
