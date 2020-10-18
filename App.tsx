@@ -21,11 +21,14 @@ import { StatusBar } from 'react-native'
 import { Platform } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
 import OnBoarding from './src/screens/OnBoarding'
+import Setting from './src/screens/Setting'
 import { getSkipOnboarding } from './src/utils/InternalStorage'
+import { hasNotch } from 'react-native-device-info'
 
 EStyleSheet.build({
   $primaryColor: 'rgb(32,67,181)',//"#2043B5",
   $primaryColorOp20: 'rgba(32,67,181,.2)',//"#2043B5",
+  $primaryColorOp10: 'rgba(32,67,181,.1)',//"#2043B5",
   
   $dividerColor: "#EDF1F7",
 
@@ -55,15 +58,27 @@ const TerraTheme = {
 };
 
 /* config */
+// const chain = {
+//   key: 'columbus',
+//   name: 'columbus-3',
+//   hostname: 'fcd.terra.dev',
+//   port: 443,
+//   secure: true,
+// }
+
 const chain = {
-  key: 'columbus',
-  name: 'columbus-3',
-  hostname: 'fcd.terra.dev',
+  key: 'tequila',
+  name: 'tequila-0004',
+  hostname: 'tequila-fcd.terra.dev',
   port: 443,
   secure: true,
 }
 
 const App = ({ settings: { lang, user } }: { settings: Settings }) => {
+  // if(__DEV__) {
+  //   console.log("Hello __DEV__")
+  // }
+
   /* drawer */
   const drawer = useDrawerState()
 
@@ -92,8 +107,8 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
       <ConfigProvider value={config}>
         <AuthProvider value={auth}>
           <SafeAreaProvider>
-            <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent={false} />
             <NavigationContainer theme={TerraTheme}>
+              <StatusBar barStyle='light-content' backgroundColor='transparent' translucent={false} />
               <RootStack.Navigator
                 initialRouteName={skipOnboarding ? "Tabs" : "OnBoarding"}
                 >
@@ -104,7 +119,7 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
                   options={{headerShown: false, animationEnabled: false}} 
                 />
                 <RootStack.Screen name="Setting" component={Setting} 
-                  options={{headerShown: false, animationEnabled: false}} 
+                  options={{headerShown: false}} 
                 />
                 <RootStack.Screen name="AuthMenu" component={AuthMenu} 
                   options={{animationEnabled: false}} 
