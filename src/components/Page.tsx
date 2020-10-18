@@ -1,11 +1,12 @@
 import React, { FC } from 'react'
-import { ImageBackgroundComponent, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { ActivityIndicator, ImageBackgroundComponent, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { API } from '@terra-money/use-native-station'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EStyleSheet from 'react-native-extended-stylesheet';
 import symbolicateStackTrace from 'react-native/Libraries/Core/Devtools/symbolicateStackTrace'
+import { hasNotch } from 'react-native-device-info'
 
 interface Props extends Partial<API<any>> {
   title: string
@@ -18,6 +19,7 @@ interface Props extends Partial<API<any>> {
 const Page: FC<Props> = ({ loading, error, title, children }) => {
   // console.log("Page Load:", {loading, error, title, children})
   const { navigate } = useNavigation()
+  const insets = useSafeAreaInsets()
   
   /**
    * 이 값을 어디서 컨트롤 할 수 있을지 확인 필요함
@@ -25,7 +27,7 @@ const Page: FC<Props> = ({ loading, error, title, children }) => {
   const isAuth = false
 
   return (
-    <SafeAreaView>
+    <View style={{flex:1, marginTop: hasNotch() ? insets.top : 0}}>
       <View style={styles.header}>
         <Text style={styles.title}>{title}</Text>
 
@@ -76,9 +78,11 @@ const Page: FC<Props> = ({ loading, error, title, children }) => {
           <ActivityIndicator animating={true} size="large" color="#aaa" />
         </View>
       ) : (
-        <ScrollView><View style={{marginBottom: 50}}>{children}</View></ScrollView>
+        <ScrollView>
+          <View style={{flex:1, marginBottom: 20}}>{children}</View>
+        </ScrollView>
       )}
-    </SafeAreaView>
+    </View>
   )
 }
 
@@ -88,7 +92,8 @@ const styles = EStyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    // marginVertical: 22,
+    marginTop: 20,
+    marginBottom: 10,
     marginHorizontal: 20,
   },
   title: {
@@ -105,7 +110,7 @@ const styles = EStyleSheet.create({
   },
   connect: {
     // backgroundColor: '#ccc',
-    margin: 10,
+    // margin: 10,
     // paddingHorizontal: 20,
     // paddingTop: 20,
   },
