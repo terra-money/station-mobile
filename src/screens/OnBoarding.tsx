@@ -71,7 +71,7 @@ const RenderSwiper = ({refSwipe, setLastPage}: RenderSwiperProps) => (
     }}>
     {PagerContents.map((v, i) => (
         <View key={i} style={styles.SwiperContent}>
-            <Image source={v.image}  style={styles.SwiperContentImage} />
+            <Image source={v.image} style={styles.SwiperContentImage} />
             <View>
             <Text style={styles.SwiperContentTitle}>{v.title}</Text>
             <Text style={styles.SwiperContentDesc}>{v.description}</Text>
@@ -209,7 +209,7 @@ const styles = EStyleSheet.create({
     },
   
     SwiperButtonContainer: {
-      marginVertical: 60,
+      marginVertical: 30,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-around',
