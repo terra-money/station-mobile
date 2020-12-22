@@ -1,12 +1,11 @@
 import React, { FC } from 'react'
-import { ActivityIndicator, ImageBackgroundComponent, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
+import { hasNotch } from 'react-native-device-info'
 import { API } from '@terra-money/use-native-station'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EStyleSheet from 'react-native-extended-stylesheet';
-import symbolicateStackTrace from 'react-native/Libraries/Core/Devtools/symbolicateStackTrace'
-import { hasNotch } from 'react-native-device-info'
 
 interface Props extends Partial<API<any>> {
   title: string

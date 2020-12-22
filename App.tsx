@@ -20,10 +20,10 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import { StatusBar } from 'react-native'
 import { Platform } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
+import { hasNotch } from 'react-native-device-info'
 import OnBoarding from './src/screens/OnBoarding'
 import Setting from './src/screens/Setting'
 import { getSkipOnboarding } from './src/utils/InternalStorage'
-import { hasNotch } from 'react-native-device-info'
 
 EStyleSheet.build({
   $primaryColor: 'rgb(32,67,181)',//"#2043B5",
