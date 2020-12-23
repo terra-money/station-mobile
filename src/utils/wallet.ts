@@ -6,11 +6,13 @@ const useWallet = () => {
   const recover = async (mk: MnemonicKey, {name, password}:{name: string, password: string}) => {
     try {
       const key = encrypt(mk.privateKey.toString("hex"), password)
-      if (!key){ throw new Error('Encryption error occurred') }
+      if (!key) { 
+        throw new Error('Encryption error occurred') 
+      }
       const wallet = {name, address: mk.accAddress}
       await addWallet({wallet, key})
     } catch (e) {
-      Alert.alert(e)
+      Alert.alert(e.toString())
     }
   }
 

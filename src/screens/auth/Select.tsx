@@ -4,7 +4,7 @@ import { testPassword } from '../../utils/wallet'
 import { WithKeys } from '../../hooks'
 import Form from '../../components/Form'
 import useOnAuth from './useOnAuth'
-import { Button, Text, TextInput } from 'react-native'
+import { Alert, Button, Text, TextInput } from 'react-native'
 
 interface Props {
   wallets: LocalWallet[]
@@ -13,24 +13,26 @@ interface Props {
 const Select = ({ wallets }: Props) => {
   useOnAuth()
 
-  const {signIn}=useAuth()
-  const [name, setName]= useState('')
+  const {signIn} = useAuth()
+  const [name, setName] = useState('')
   const [password, setPassword] = useState('1234567890')
 
-  const submit=async () => {
+  const submit = async () => {
     try {
-      await testPassword({name, password})
+      if(await testPassword({name, password}))
+        throw new Error('Wrong Password!')
       const wallet = wallets.find(w => w.name === name)
       wallet && signIn(wallet)
-    } catch {
-      console.log('Wrong Password!')
+    } catch(e) {
+      console.log(e)
+      Alert.alert(e.toString())
     }
   }
 
   return <>
-    <Text>{'Select wallet:' + name}</Text>
+    <Text>{'Select wallet: ' + name}</Text>
     {wallets.map(({name}) => <Button title={name} onPress={()=> setName(name)} />)}
-    <Text>{'Password:'}</Text>
+    <Text>{'Password: '}</Text>
     <TextInput value={password} secureTextEntry={true} onChangeText={setPassword} />
     <Button title="Log in" onPress={submit}/>
   </>  

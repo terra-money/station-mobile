@@ -9,7 +9,6 @@ import { decrypt, getStoredWallet } from '../../utils/storage'
 
 const { Preferences, Keystore } = NativeModules
 
-
 const fn = async (password: string) => {
   try {
     const names = await (Preferences.getString('names'))
@@ -22,8 +21,6 @@ const fn = async (password: string) => {
     console.log(error);
   }
 }
-
-
 
 const SendComponent = ({ denom }: { denom: string }) => {
   const {user} =useAuth()
@@ -56,12 +53,10 @@ const SendComponent = ({ denom }: { denom: string }) => {
     </>
 }
 
-
 const Assets = ({ user }: { user: User }) => {
   const { ui } = useAssets(user)
 
   console.log(ui?.available?.list, user.address);
-
 
   return <>{ui?.available?.list?.map(({ denom, display }) =>
     <View key={denom}>
@@ -75,7 +70,6 @@ const Assets = ({ user }: { user: User }) => {
 
 const Bank = () => {
   const { Bank: title } = useMenu()
-
 
   return (
     <Page title={title}>
