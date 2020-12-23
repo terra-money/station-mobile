@@ -5,7 +5,7 @@ import { Wallet } from '@terra-money/use-native-station'
 import { Settings } from '../types/settings'
 
 const { Preferences, Keystore } = NativeModules
-const { encrypt, decrypt } = CryptoJS.AES
+export const { encrypt, decrypt } = CryptoJS.AES
 
 /* keys */
 const SEP = ','
@@ -34,13 +34,17 @@ export const getStoredWallet = async (
   if (!key) throw new Error('Key with that name does not exist')
 
   try {
-    return decrypt(key.wallet, password) as Wallet
+    const parsed = JSON.parse(key)
+    return decrypt(parsed.wallet, password) as Wallet
   } catch (err) {
     throw new Error('Incorrect password')
   }
 }
 
+
+
 type Params = { name: string; password: string; wallet: Wallet }
+
 export const importKey = async ({ name, password, wallet }: Params) => {
   const names = await loadNames()
 

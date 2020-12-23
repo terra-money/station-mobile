@@ -10,7 +10,7 @@ const Dashboard = () => {
 
   return (
     <Page title={title}>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" />
+      <StatusBar barStyle='dark-content' backgroundColor='transparent' />
       <Columns />
       <Charts />
     </Page>

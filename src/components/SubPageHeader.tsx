@@ -78,7 +78,7 @@ const HeaderBottom = ({ title }: HeaderBottomProps) => {
 const SubPageHeader = ({ title, headerTop }: HeaderProps) => {
   return (
     <>
-    <StatusBar barStyle="light-content" backgroundColor='rgba(32, 67, 181, 1)' />
+    <StatusBar barStyle="dark-content" backgroundColor='rgba(32, 67, 181, 1)' />
     <View style={styles.headerContainer}>
       <HeaderTop {...headerTop} />
       <HeaderBottom title={title} />

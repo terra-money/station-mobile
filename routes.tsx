@@ -9,7 +9,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 // import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons'
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-export const INITIAL = 'Staking' //'Dashboard'
+export const INITIAL = 'Dashboard'
+// export const INITIAL = 'Governance'
 
 export default [
   {

@@ -12,7 +12,7 @@ const Market = () => {
 
   return (
     <Page {...api} title={title}>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" />
+      <StatusBar barStyle='dark-content' backgroundColor='transparent' />
       {ui && <Price actives={ui.actives} />}
       {ui && <RateList denoms={ui.actives} />}
     </Page>

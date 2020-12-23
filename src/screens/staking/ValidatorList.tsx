@@ -1,13 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View, Image, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Options, StakingUI, ValidatorUI } from '@terra-money/use-native-station'
+import { gt, Options, StakingUI, ValidatorUI } from '@terra-money/use-native-station'
 import Card from '../../components/Card'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
 import EStyleSheet from 'react-native-extended-stylesheet'
-import { Dictionary, reverse, sort } from 'ramda'
 import Picker from '../../components/Picker'
+import { transformFileSync } from '@babel/core'
+
+// H. REQ i18n
+const validatorTitle = "Validators";
+
+const VALIDATOR_LIST = 'https://terra.money/station/validators.json';
 
 const validatorFilter: Options = [
   {value: "Delegation Return", children: "Delegation Return" },
@@ -16,19 +21,21 @@ const validatorFilter: Options = [
   {value: "Uptime", children: "Uptime"},
 ]
 
-const ValidatorList = ({ contents }: StakingUI) => {
+const ValidatorList = ({ sorter, contents }: StakingUI) => {
   const { navigate } = useNavigation()
 
   const [currentFilter, setCurrentFilter] = useState(validatorFilter[0].value)
   const [reverseContents, setReverseContents] = useState(false)
   const [contactableValidators, setContactableValidators] = useState(undefined)
 
+  // console.log('newValidators', newValidators)
+
   /**
    * email이 있는 validator 얻어오기
    */
   const getContactableValidators = async () => {
     try {
-      const response = await fetch('https://terra.money/station/validators.json')
+      const response = await fetch(VALIDATOR_LIST)
       setContactableValidators(await response.json())
     }
     catch(e) {
@@ -42,9 +49,11 @@ const ValidatorList = ({ contents }: StakingUI) => {
 
   /**
    * Content 정렬,
-   * - 2차정렬 방법 정의 필요
+   * - 2차정렬 방법 정의
+   * 
+   * 1차 정렬 이후 Staking return값으로 2차 정렬. 이후 Moniker로 3차 정렬
    */
-  const sortContents = (a: ValidatorUI, b: ValidatorUI): number => {
+  const sortContents = (a: ValidatorUI, b: ValidatorUI) => {
     const [_a, _b] = currentFilter === "Delegation Return"
       ? [a.delegationReturn.percent, b.delegationReturn.percent]
       : currentFilter === "Commission"
@@ -54,12 +63,22 @@ const ValidatorList = ({ contents }: StakingUI) => {
       : currentFilter === "Uptime"
       ? [a.uptime.percent, b.uptime.percent]
       : ["", ""]
-    
-    const diff = reverseContents
-      ? parseFloat(_b) - parseFloat(_a) 
-      : parseFloat(_a) - parseFloat(_b)
-      
-    return diff
+
+    const r1 = (reverseContents ? 1 : -1) * 
+      (parseFloat(_b) - parseFloat(_a))
+    if(r1 !== 0)
+      return r1
+
+    const r2 = (reverseContents ? 1 : -1) * 
+      (parseFloat(b.delegationReturn.percent) - parseFloat(a.delegationReturn.percent))
+    if(r2 !== 0)
+      return r2
+
+    return b.moniker < a.moniker
+      ? (reverseContents ? 1 : -1) * 1
+      : b.moniker > a.moniker
+      ? (reverseContents ? 1 : -1) * -1
+      : 0
   }
 
   contents.sort(sortContents)  
@@ -78,7 +97,7 @@ const ValidatorList = ({ contents }: StakingUI) => {
         marginHorizontal: 20,
         marginVertical: 20,
       }}>
-        <Text style={[styles.textColor, styles.textValidators]}>Validators</Text>
+        <Text style={[styles.textColor, styles.textValidators]}>{validatorTitle}</Text>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Picker
             value={currentFilter}

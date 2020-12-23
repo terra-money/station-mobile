@@ -31,9 +31,9 @@ const AuthMenu = ({ canSelect }: { canSelect: boolean }) => {
     </TouchableOpacity>
   )
 
-  return <>{menu.map((item) => item && renderMenuItem(item))}</>
+  return <><Text>{JSON.stringify(user)}</Text>{menu.map((item) => item && renderMenuItem(item))}</>
 }
 
 export default () => (
-  <WithKeys render={({ keys }) => <AuthMenu canSelect={!!keys.length} />} />
+  <WithKeys render={(wallets) => <AuthMenu canSelect={!!wallets?.length} />} />
 )

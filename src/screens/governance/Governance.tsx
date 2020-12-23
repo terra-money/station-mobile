@@ -20,7 +20,7 @@ const Governance = () => {
   console.log(JSON.stringify(ui))
 
   const renderItem = (item: ProposalItemUI) => (
-    <ProposalItem {...item} key={item.id} />
+    <ProposalItem {...item} key={item.id + item.status} />
   )
 
   // const RenderFooter = (params: GovernanceParamUI[]|undefined) => {
