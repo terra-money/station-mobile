@@ -1,7 +1,7 @@
 import React, { ReactNode, useState, useEffect } from 'react'
 import { Modal, View, TouchableOpacity } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
+import { NavigationContainer, DefaultTheme, LinkingOptions } from '@react-navigation/native'
 
 import { useConfigState, ConfigProvider } from '@terra-money/use-native-station'
 import { useAuthState, AuthProvider } from '@terra-money/use-native-station'
@@ -15,6 +15,7 @@ import AuthMenu from './src/screens/auth/AuthMenu'
 import Select from './src/screens/auth/Select'
 import New from './src/screens/auth/New'
 import Add from './src/screens/auth/Add'
+import Sign from './src/screens/sign/Sign'
 
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { StatusBar } from 'react-native'
@@ -102,13 +103,25 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
     SplashScreen.hide()
   }, [])
 
+  /* linking */
+  const linking: LinkingOptions = {
+    prefixes: ['terrastation://'],
+    config: {
+      screens: {
+        Sign: {
+          path: 'sign/:arg',
+        },
+      },
+    },
+  }
+
   return !ready || skipOnboarding === null ? null : (
     <AppProvider value={{ drawer }}>
       <ConfigProvider value={config}>
         <AuthProvider value={auth}>
           <SafeAreaProvider>
-            <NavigationContainer theme={TerraTheme}>
-              <StatusBar barStyle='light-content' backgroundColor='transparent' translucent={false} />
+            <NavigationContainer theme={TerraTheme} linking={linking}>
+              <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent={false} />
               <RootStack.Navigator
                 initialRouteName={skipOnboarding ? "Tabs" : "OnBoarding"}
                 >
@@ -132,6 +145,9 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
                 />
                 <RootStack.Screen name="Add" component={Add} 
                   options={{animationEnabled: false}} 
+                />
+                <RootStack.Screen name="Sign" component={Sign}
+                  options={{animationEnabled: false}}
                 />
               </RootStack.Navigator>
             </NavigationContainer>

@@ -10,6 +10,7 @@ export type RootStackParams = {
   Select: undefined
   New: undefined
   Add: undefined
+  Sign: undefined
 }
 
 export const RootStack = createStackNavigator<RootStackParams>()
