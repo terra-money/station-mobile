@@ -31,9 +31,11 @@ const Add = ({ generated, names, keys }: Props & Keys) => {
   const [mk330, setMk330] = useState<MnemonicKey>()
 
   const generateAddresses = () => {
-    const { mk118, mk330 } = useGenerateAddresses(seed)
-    setMk118(mk118)
-    setMk330(mk330)
+    if(seed) {
+      const { mk118, mk330 } = useGenerateAddresses(seed)
+      setMk118(mk118)
+      setMk330(mk330)
+    }
   }
 
   const submit = () => {
@@ -83,7 +85,7 @@ const Add = ({ generated, names, keys }: Props & Keys) => {
 }
 
 export default (props: Props) => (
-  <WithKeys render={(params) => <Add {...props} {...params} />} />
+  <WithKeys render={(wallets) => <Add {...props} {...wallets} />} />
 )
 
 const useGenerateAddresses = (mnemonic: string) => {
