@@ -31,7 +31,12 @@ const AuthMenu = ({ canSelect }: { canSelect: boolean }) => {
     </TouchableOpacity>
   )
 
-  return <><Text>{JSON.stringify(user)}</Text>{menu.map((item) => item && renderMenuItem(item))}</>
+  return (
+    <>
+      <Text>{JSON.stringify(user)}</Text>
+      {menu.map((item) => item && renderMenuItem(item))}
+    </>
+  )
 }
 
 export default () => (

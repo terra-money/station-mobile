@@ -41,8 +41,6 @@ export const getStoredWallet = async (
   }
 }
 
-
-
 type Params = { name: string; password: string; wallet: Wallet }
 
 export const importKey = async ({ name, password, wallet }: Params) => {

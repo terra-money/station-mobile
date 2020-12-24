@@ -1,7 +1,11 @@
 import React, { ReactNode, useState, useEffect } from 'react'
 import { Modal, View, TouchableOpacity } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { NavigationContainer, DefaultTheme, LinkingOptions } from '@react-navigation/native'
+import {
+  NavigationContainer,
+  DefaultTheme,
+  LinkingOptions,
+} from '@react-navigation/native'
 
 import { useConfigState, ConfigProvider } from '@terra-money/use-native-station'
 import { useAuthState, AuthProvider } from '@terra-money/use-native-station'
@@ -15,9 +19,8 @@ import AuthMenu from './src/screens/auth/AuthMenu'
 import Select from './src/screens/auth/Select'
 import New from './src/screens/auth/New'
 import Add from './src/screens/auth/Add'
-import Sign from './src/screens/sign/Sign'
 
-import EStyleSheet from 'react-native-extended-stylesheet';
+import EStyleSheet from 'react-native-extended-stylesheet'
 import { StatusBar } from 'react-native'
 import { Platform } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
@@ -25,38 +28,39 @@ import { hasNotch } from 'react-native-device-info'
 import OnBoarding from './src/screens/OnBoarding'
 import Setting from './src/screens/Setting'
 import { getSkipOnboarding } from './src/utils/InternalStorage'
+import GrantAuthorization from './src/screens/authorize/GrantAuthorization'
 
 EStyleSheet.build({
-  $primaryColor: 'rgb(32,67,181)',//"#2043B5",
-  $primaryColorOp20: 'rgba(32,67,181,.2)',//"#2043B5",
-  $primaryColorOp10: 'rgba(32,67,181,.1)',//"#2043B5",
-  
-  $dividerColor: "#EDF1F7",
+  $primaryColor: 'rgb(32,67,181)', //"#2043B5",
+  $primaryColorOp20: 'rgba(32,67,181,.2)', //"#2043B5",
+  $primaryColorOp10: 'rgba(32,67,181,.1)', //"#2043B5",
+
+  $dividerColor: '#EDF1F7',
 
   /**
    * iOS는 PostScriptName, Android는 FileName으로 Font를 구별
    */
   '@media ios': {
-    $fontGothamBold: "Gotham Bold",
-    $fontGothamBook: "Gotham Book",
-    $fontGothamMedium: "Gotham Medium",
-    $fontGothamLight: "Gotham Light",
+    $fontGothamBold: 'Gotham Bold',
+    $fontGothamBook: 'Gotham Book',
+    $fontGothamMedium: 'Gotham Medium',
+    $fontGothamLight: 'Gotham Light',
   },
   '@media android': {
-    $fontGothamBold: "Gotham-Bold",
-    $fontGothamBook: "Gotham-Book",
-    $fontGothamMedium: "Gotham-Medium",
-    $fontGothamLight: "Gotham-Light",
+    $fontGothamBold: 'Gotham-Bold',
+    $fontGothamBook: 'Gotham-Book',
+    $fontGothamMedium: 'Gotham-Medium',
+    $fontGothamLight: 'Gotham-Light',
   },
-});
+})
 
 const TerraTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: '#F9FAFF'
+    background: '#F9FAFF',
   },
-};
+}
 
 /* config */
 // const chain = {
@@ -90,7 +94,7 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
   const { key: currentChain = '' } = currentChainOptions
 
   /* onboarding */
-  const [skipOnboarding, setSkipOnboarding] = useState<boolean|null>(null)
+  const [skipOnboarding, setSkipOnboarding] = useState<boolean | null>(null)
 
   /* auth */
   const auth = useAuthState(user)
@@ -108,8 +112,8 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
     prefixes: ['terrastation://'],
     config: {
       screens: {
-        Sign: {
-          path: 'sign/:arg',
+        GrantAuthorization: {
+          path: 'auth/:arg',
         },
       },
     },
@@ -121,40 +125,60 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
         <AuthProvider value={auth}>
           <SafeAreaProvider>
             <NavigationContainer theme={TerraTheme} linking={linking}>
-              <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent={false} />
+              <StatusBar
+                barStyle='dark-content'
+                backgroundColor='transparent'
+                translucent={false}
+              />
               <RootStack.Navigator
-                initialRouteName={skipOnboarding ? "Tabs" : "OnBoarding"}
-                >
-                <RootStack.Screen name="OnBoarding" component={OnBoarding} 
-                  options={{headerShown: false, animationEnabled: false}} 
+                initialRouteName={skipOnboarding ? 'Tabs' : 'OnBoarding'}
+              >
+                <RootStack.Screen
+                  name='OnBoarding'
+                  component={OnBoarding}
+                  options={{ headerShown: false, animationEnabled: false }}
                 />
-                <RootStack.Screen name="Tabs" component={Tabs} 
-                  options={{headerShown: false, animationEnabled: false}} 
+                <RootStack.Screen
+                  name='Tabs'
+                  component={Tabs}
+                  options={{ headerShown: false, animationEnabled: false }}
                 />
-                <RootStack.Screen name="Setting" component={Setting} 
-                  options={{headerShown: false}} 
+                <RootStack.Screen
+                  name='Setting'
+                  component={Setting}
+                  options={{ headerShown: false }}
                 />
-                <RootStack.Screen name="AuthMenu" component={AuthMenu} 
-                  options={{animationEnabled: false}} 
+                <RootStack.Screen
+                  name='AuthMenu'
+                  component={AuthMenu}
+                  options={{ animationEnabled: false }}
                 />
-                <RootStack.Screen name="Select" component={Select} 
-                  options={{animationEnabled: false}} 
+                <RootStack.Screen
+                  name='Select'
+                  component={Select}
+                  options={{ animationEnabled: false }}
                 />
-                <RootStack.Screen name="New" component={New} 
-                  options={{animationEnabled: false}} 
+                <RootStack.Screen
+                  name='New'
+                  component={New}
+                  options={{ animationEnabled: false }}
                 />
-                <RootStack.Screen name="Add" component={Add} 
-                  options={{animationEnabled: false}} 
+                <RootStack.Screen
+                  name='Add'
+                  component={Add}
+                  options={{ animationEnabled: false }}
                 />
-                <RootStack.Screen name="Sign" component={Sign}
-                  options={{animationEnabled: false}}
+                <RootStack.Screen
+                  name='GrantAuthorization'
+                  component={GrantAuthorization}
+                  options={{ animationEnabled: false }}
                 />
               </RootStack.Navigator>
             </NavigationContainer>
           </SafeAreaProvider>
 
           <Modal visible={drawer.isOpen} animationType='fade' transparent>
-            <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,.5)'}}>
+            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,.5)' }}>
               <TouchableOpacity onPress={drawer.close} style={styles.top} />
               <View style={styles.bottom}>{drawer.content}</View>
             </View>
@@ -207,7 +231,7 @@ const styles = EStyleSheet.create({
   bottom: {
     // height: 215,
     marginHorizontal: 20,
-    marginBottom: Platform.OS === 'ios' && hasNotch() ? 54: 32,
+    marginBottom: Platform.OS === 'ios' && hasNotch() ? 54 : 32,
     // backgroundColor: 'rgba(0,0,0,.5)',
   },
 })

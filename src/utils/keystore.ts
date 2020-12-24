@@ -1,4 +1,4 @@
-import CryptoJS from "crypto-js"
+import CryptoJS from 'crypto-js'
 
 const keySize = 256
 const iterations = 100
@@ -23,7 +23,7 @@ export const encrypt = (message: string, password: string): string => {
 
     return transitmessage
   } catch (error) {
-    return ""
+    return ''
   }
 }
 
@@ -45,6 +45,7 @@ export const decrypt = (transitmessage: string, password: string): string => {
 
     return decrypted.toString(CryptoJS.enc.Utf8)
   } catch (error) {
-    return ""
+    console.log(error)
+    return ''
   }
 }

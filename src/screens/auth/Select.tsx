@@ -5,6 +5,7 @@ import { WithKeys } from '../../hooks'
 import Form from '../../components/Form'
 import useOnAuth from './useOnAuth'
 import { Alert, Button, Text, TextInput } from 'react-native'
+import EStyleSheet from 'react-native-extended-stylesheet'
 
 interface Props {
   wallets: LocalWallet[]
@@ -37,6 +38,8 @@ const Select = ({ wallets }: Props) => {
       ))}
       <Text>{'Password: '}</Text>
       <TextInput
+        style={styles.textInput}
+        underlineColorAndroid='#ccc'
         value={password}
         secureTextEntry={true}
         onChangeText={setPassword}
@@ -49,3 +52,10 @@ const Select = ({ wallets }: Props) => {
 export default () => (
   <WithKeys render={(wallets) => <Select wallets={wallets} />} />
 )
+
+const styles = EStyleSheet.create({
+  textInput: {
+    marginLeft: 16,
+    marginRight: 16,
+  },
+})

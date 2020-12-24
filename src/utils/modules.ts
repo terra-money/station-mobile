@@ -10,9 +10,10 @@ export default {
     return [wallet118.address, wallet330.address]
   },
 
-  generateWalletFromSeed: async ([phrase, bip]: [string, Bip]): Promise<
-    Wallet
-  > => {
+  generateWalletFromSeed: async ([phrase, bip]: [
+    string,
+    Bip
+  ]): Promise<Wallet> => {
     const wallet = await TerraWallet.getNewWalletFromSeed(phrase, bip)
 
     return {
