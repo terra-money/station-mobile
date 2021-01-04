@@ -10,7 +10,8 @@ export type RootStackParams = {
   Select: undefined
   New: undefined
   Add: undefined
-  GrantAuthorization: undefined
+  ConnectView: undefined
+  SendTxView: undefined
 }
 
 export const RootStack = createStackNavigator<RootStackParams>()

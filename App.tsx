@@ -28,7 +28,8 @@ import { hasNotch } from 'react-native-device-info'
 import OnBoarding from './src/screens/OnBoarding'
 import Setting from './src/screens/Setting'
 import { getSkipOnboarding } from './src/utils/InternalStorage'
-import GrantAuthorization from './src/screens/authorize/GrantAuthorization'
+import ConnectView from './src/screens/topup/ConnectView'
+import SendTxView from './src/screens/topup/SendTxView'
 
 EStyleSheet.build({
   $primaryColor: 'rgb(32,67,181)', //"#2043B5",
@@ -112,8 +113,11 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
     prefixes: ['terrastation://'],
     config: {
       screens: {
-        GrantAuthorization: {
-          path: 'auth/:arg',
+        ConnectView: {
+          path: 'connect/:arg',
+        },
+        SendTxView: {
+          path: 'sign/:arg',
         },
       },
     },
@@ -169,8 +173,13 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
                   options={{ animationEnabled: false }}
                 />
                 <RootStack.Screen
-                  name='GrantAuthorization'
-                  component={GrantAuthorization}
+                  name='ConnectView'
+                  component={ConnectView}
+                  options={{ animationEnabled: false }}
+                />
+                <RootStack.Screen
+                  name='SendTxView'
+                  component={SendTxView}
                   options={{ animationEnabled: false }}
                 />
               </RootStack.Navigator>

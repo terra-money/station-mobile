@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-import { Text, TextInput, Button } from 'react-native'
+import React, { RefObject, useRef, useState } from 'react'
+import { Text, TextInput, Button, Keyboard } from 'react-native'
 import { WithKeys } from '../../hooks'
 import { recover } from '../../utils/wallet'
 import useOnAuth from './useOnAuth'
 import { MnemonicKey } from '@terra-money/terra.js'
 import { Alert } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet'
+import { props } from 'ramda'
 
 interface Props {
   generated?: string[]
@@ -51,19 +52,28 @@ const Add = ({ generated, names, keys }: Props & Keys) => {
   //   mk118 && mk330 && setAddress(mk330.accAddress)
   // }, [mk330])
 
+  const textInputName = useRef<TextInput>(null)
+  const textInputPassword = useRef<TextInput>(null)
+  const textInputPasswordConfirm = useRef<TextInput>(null)
+  const textInputSeedPhrase = useRef<TextInput>(null)
+
   return (
     <>
       <Text>Name: </Text>
       <TextInput
+        ref={textInputName}
         style={styles.textInput}
         underlineColorAndroid='#ccc'
         value={name}
         onChangeText={(text) => {
           setName(text)
         }}
+        blurOnSubmit={false}
+        onSubmitEditing={() => textInputPassword.current?.focus()}
       />
       <Text>Password: </Text>
       <TextInput
+        ref={textInputPassword}
         style={styles.textInput}
         underlineColorAndroid='#ccc'
         value={password}
@@ -71,9 +81,12 @@ const Add = ({ generated, names, keys }: Props & Keys) => {
         onChangeText={(text) => {
           setPassword(text)
         }}
+        blurOnSubmit={false}
+        onSubmitEditing={() => textInputPasswordConfirm.current?.focus()}
       />
       <Text>Password confirm: </Text>
       <TextInput
+        ref={textInputPasswordConfirm}
         style={styles.textInput}
         underlineColorAndroid='#ccc'
         value={confirm}
@@ -81,9 +94,12 @@ const Add = ({ generated, names, keys }: Props & Keys) => {
         onChangeText={(text) => {
           setConfirm(text)
         }}
+        blurOnSubmit={false}
+        onSubmitEditing={() => textInputSeedPhrase.current?.focus()}
       />
       <Text>Seed phrase:</Text>
       <TextInput
+        ref={textInputSeedPhrase}
         style={styles.textInput}
         multiline={true}
         underlineColorAndroid='#ccc'
@@ -91,6 +107,8 @@ const Add = ({ generated, names, keys }: Props & Keys) => {
         onChangeText={(text) => {
           setSeed(text)
         }}
+        blurOnSubmit={true}
+        onSubmitEditing={Keyboard.dismiss}
       />
       <Text>Address: {address}</Text>
 
