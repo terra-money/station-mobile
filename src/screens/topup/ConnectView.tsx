@@ -59,23 +59,29 @@ const ConnectView = (props: Props) => {
       console.log('arg', arg)
       setEndpointAddress(arg.endpoint_address)
       setReturnScheme(arg.return_scheme)
+    } else {
+      // exception case!
     }
   }, [arg])
 
-  const sendConnect = async (url: string) => {
-    const data = new FormData()
-    data.append('', '')
-
-    const ret = await fetch(url, {
+  const putConnect = async (url: string, address?: string) => {
+    const init = {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        // 'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: data,
-    })
+      body: address ? `{address: "${address}"}` : `{"address":""}`,
+    }
+    console.log('init', init)
+    const response = await fetch(url, init)
+    console.log('response', response)
 
-    // 이후 처리?
+    if (response.status !== 200) {
+      throw new Error(JSON.stringify(response))
+    }
+
+    // const ret = await response.json()
+    // return ret
   }
 
   const returnApp = (scheme: string) => {
@@ -106,7 +112,7 @@ const ConnectView = (props: Props) => {
       Alert.alert(JSON.stringify(result))
     } catch (e) {
       console.log(e)
-      Alert.alert(e.toString())
+      Alert.alert('Error', e.toString())
     }
   }
 
@@ -123,6 +129,17 @@ const ConnectView = (props: Props) => {
     props.navigation.navigate('AuthMenu')
   }
 
+  const processConnect = async () => {
+    try {
+      const ret = await putConnect(endpointAddress, user?.address)
+      console.log('ret', ret)
+      returnApp(returnScheme)
+    } catch (e) {
+      Alert.alert('Error', e.toString())
+      console.log(e)
+    }
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <Text>{`user: ${JSON.stringify(user)}`}</Text>
@@ -136,7 +153,12 @@ const ConnectView = (props: Props) => {
         onChangeText={setPassword}
         onSubmitEditing={Keyboard.dismiss}
       />
-      <Button title='SEND CONNECT' onPress={(e) => sendConnect('')} />
+      <Button
+        title='CONNECT'
+        onPress={(e) => {
+          processConnect()
+        }}
+      />
       <View style={{ margin: 4 }} />
       <Button
         title='RETURN APP'

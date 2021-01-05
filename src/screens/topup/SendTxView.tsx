@@ -87,39 +87,52 @@ const SendTxView = (props: Props) => {
     //   "raw_log": "insufficient fee: insufficient fees; got: \\\"1ukrw\\\", required: \\\"35610001ukrw,30000uluna,86325180umnt,20360usdr,30000uusd\\\" = \\\"35610000ukrw,30000uluna,86325180umnt,20360usdr,30000uusd\\\"(gas) +\\\"1ukrw\\\"(stability)",
     //   "code": "13"
     // }
-    return await fetch(url, { method: 'GET' })
+    const response = await fetch(url, { method: 'GET' })
+    console.log(response)
+
+    if (response.status !== 200) {
+      throw new Error(JSON.stringify(response))
+    }
+
+    const unsignedTx = await response.json()
+    console.log(unsignedTx)
+
+    return unsignedTx
   }
 
   const putTxResult = async (url: string, txResult: any) => {
-    return await fetch(url, { method: 'PUT', body: JSON.stringify(txResult) })
+    const response = await fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify(txResult),
+    })
+
+    if (response.status !== 200) {
+      throw new Error(JSON.stringify(response))
+    }
+
+    return
   }
 
   const BroadcastSignedTx = async (data: any) => {
-    try {
-      const decyrptedKey = await getDecyrptedKey(user?.name!, password)
+    const decyrptedKey = await getDecyrptedKey(user?.name!, password)
 
-      const rk = new RawKey(Buffer.from(decyrptedKey, 'hex'))
-      const stdSignMsg = StdSignMsg.fromData(data.stdSignMsg)
-      const signedTx = await rk.signTx(stdSignMsg)
+    const rk = new RawKey(Buffer.from(decyrptedKey, 'hex'))
+    const stdSignMsg = StdSignMsg.fromData(data.stdSignMsg)
+    const signedTx = await rk.signTx(stdSignMsg)
 
-      // const wallet = lcdClient.wallet(rk)
-      // const msgs = [
-      //   new MsgGrantAuthorization(
-      //     wallet.key.accAddress,
-      //     grantee,
-      //     new SendAuthorization(spendLimit),
-      //     duration
-      //   ),
-      // ]
-      // const signedTx = await wallet.createAndSignTx({ msgs })
-      const result = await lcdClient.tx.broadcastSync(signedTx)
+    // const wallet = lcdClient.wallet(rk)
+    // const msgs = [
+    //   new MsgGrantAuthorization(
+    //     wallet.key.accAddress,
+    //     grantee,
+    //     new SendAuthorization(spendLimit),
+    //     duration
+    //   ),
+    // ]
+    // const signedTx = await wallet.createAndSignTx({ msgs })
+    const result = await lcdClient.tx.broadcastSync(signedTx)
 
-      console.log(JSON.stringify(result))
-      Alert.alert(JSON.stringify(result))
-    } catch (e) {
-      console.log(e)
-      Alert.alert(e.toString())
-    }
+    console.log(JSON.stringify(result))
   }
 
   const processSignedTx = async () => {
@@ -138,13 +151,14 @@ const SendTxView = (props: Props) => {
       }
       */
       const unsignedTx = await getUnsignedTx(endpointAddress)
-      console.log(unsignedTx)
-      // const broadcastResult = await BroadcastSignedTx(unsignedTx)
-      // const putResult = await putTxResult(endpointAddress, broadcastResult)
-
-      // returnApp(returnScheme)
+      console.log('unsignedTx', unsignedTx)
+      const broadcastResult = await BroadcastSignedTx(unsignedTx)
+      console.log('broadcastResult', broadcastResult)
+      const putResult = await putTxResult(endpointAddress, broadcastResult)
+      console.log('putResult', putResult)
+      returnApp(returnScheme)
     } catch (e) {
-      Alert.alert(e)
+      Alert.alert('Error', e.toString())
       console.log(e)
     }
   }
@@ -179,7 +193,7 @@ const SendTxView = (props: Props) => {
         onChangeText={setPassword}
         onSubmitEditing={Keyboard.dismiss}
       />
-      <Button
+      {/* <Button
         title='1. GET UNSIGNED TX'
         onPress={(e) => getUnsignedTx(endpointAddress)}
       />
@@ -193,7 +207,7 @@ const SendTxView = (props: Props) => {
         title='3. PUT TX RESULT'
         onPress={(e) => putTxResult(endpointAddress)}
       />
-      <View style={{ margin: 4 }} />
+      <View style={{ margin: 4 }} /> */}
       <Button
         title='SIGN'
         onPress={(e) => {
