@@ -1,6 +1,14 @@
 import { CommonActions } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { View, Text, Button, Linking, Alert, Keyboard } from 'react-native'
+import {
+  View,
+  Text,
+  Button,
+  Linking,
+  Alert,
+  Keyboard,
+  ActivityIndicator,
+} from 'react-native'
 import { Buffer } from 'buffer'
 import { useAuth } from '@terra-money/use-native-station'
 import { TextInput } from 'react-native-gesture-handler'
@@ -16,8 +24,6 @@ interface Props {
     }
   }
 }
-
-const RETURN_APP_SCHEME = 'mirrorapp://'
 
 const lcdClient = new LCDClient({
   chainID: 'tequila-0004',
@@ -41,6 +47,7 @@ const SendTxView = (props: Props) => {
   const [returnScheme, setReturnScheme] = useState('')
   const [endpointAddress, setEndpointAddress] = useState('')
 
+  const [loading, setLoading] = useState<boolean>(false)
   const [arg, setArg] = useState<SchemeArgs | undefined>(undefined)
   try {
     if (props.route.params.arg !== undefined) {
@@ -51,66 +58,48 @@ const SendTxView = (props: Props) => {
     }
   } catch (e) {
     Alert.alert(e.toString())
-    console.log(e)
   }
 
   useEffect(() => {
     if (arg !== undefined) {
-      console.log('arg', arg)
       setEndpointAddress(arg.endpoint_address)
       setReturnScheme(arg.return_scheme)
     }
   }, [arg])
 
   const getUnsignedTx = async (url: string) => {
-    // {
-    //   "stdSignMsg": {
-    //     "account_number": 1234,
-    //     "sequence": 1234,
-    //     "fee": {
-    //       "gas": "1234",
-    //       "amount": []
-    //     },
-    //     "msgs": [
-    //       {
-    //         "type": "bank/MsgSend",
-    //         "value": {
-    //           "from_address": "terra1from",
-    //           "to_address": "terra1to",
-    //           "amount": []
-    //         }
-    //       }
-    //     ]
-    //   },
-    //   "height": "0",
-    //   "txhash": "D52FEA1636C2836A850E5D16B02023A5B988935759AA8F0B5E9734AF74990BC1",
-    //   "raw_log": "insufficient fee: insufficient fees; got: \\\"1ukrw\\\", required: \\\"35610001ukrw,30000uluna,86325180umnt,20360usdr,30000uusd\\\" = \\\"35610000ukrw,30000uluna,86325180umnt,20360usdr,30000uusd\\\"(gas) +\\\"1ukrw\\\"(stability)",
-    //   "code": "13"
-    // }
     const response = await fetch(url, { method: 'GET' })
-    console.log(response)
 
     if (response.status !== 200) {
       throw new Error(JSON.stringify(response))
     }
 
-    const unsignedTx = await response.json()
-    console.log(unsignedTx)
-
-    return unsignedTx
+    return await response.json()
   }
 
   const putTxResult = async (url: string, txResult: any) => {
-    const response = await fetch(url, {
-      method: 'PUT',
-      body: JSON.stringify(txResult),
-    })
-
-    if (response.status !== 200) {
-      throw new Error(JSON.stringify(response))
+    for (const k in txResult) {
+      if (txResult.hasOwnProperty(k) && txResult[k] !== undefined) {
+        txResult[k] = String(txResult[k])
+      }
     }
 
-    return
+    const init = {
+      method: 'PUT',
+      headers: {
+        Origin: 'https://topup.terra.dev',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(txResult),
+    }
+
+    const response = await fetch(url, init)
+
+    if (response.status !== 200) {
+      throw new Error(response.toString())
+    }
+
+    return await response.text()
   }
 
   const BroadcastSignedTx = async (data: any) => {
@@ -120,46 +109,28 @@ const SendTxView = (props: Props) => {
     const stdSignMsg = StdSignMsg.fromData(data.stdSignMsg)
     const signedTx = await rk.signTx(stdSignMsg)
 
-    // const wallet = lcdClient.wallet(rk)
-    // const msgs = [
-    //   new MsgGrantAuthorization(
-    //     wallet.key.accAddress,
-    //     grantee,
-    //     new SendAuthorization(spendLimit),
-    //     duration
-    //   ),
-    // ]
-    // const signedTx = await wallet.createAndSignTx({ msgs })
     const result = await lcdClient.tx.broadcastSync(signedTx)
-
-    console.log(JSON.stringify(result))
+    return result
   }
 
   const processSignedTx = async () => {
-    // 1. get unsigned tx
-    // 2. broadcast signed tx
-    // 3. put tx result
-    // 4. return app
-    // loading 노출 여부?
-
     try {
-      /*
-      interface SignData {
-        stdSignMsg: StdSignMsg;
-        error?: string;
-        txhash?: string;
-      }
-      */
+      setLoading(true)
       const unsignedTx = await getUnsignedTx(endpointAddress)
-      console.log('unsignedTx', unsignedTx)
       const broadcastResult = await BroadcastSignedTx(unsignedTx)
-      console.log('broadcastResult', broadcastResult)
       const putResult = await putTxResult(endpointAddress, broadcastResult)
-      console.log('putResult', putResult)
-      returnApp(returnScheme)
+
+      putResult === 'OK' &&
+        Alert.alert('', 'SUCCESS', [
+          {
+            text: 'OK',
+            onPress: () => returnApp(returnScheme),
+          },
+        ])
     } catch (e) {
       Alert.alert('Error', e.toString())
-      console.log(e)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -193,21 +164,6 @@ const SendTxView = (props: Props) => {
         onChangeText={setPassword}
         onSubmitEditing={Keyboard.dismiss}
       />
-      {/* <Button
-        title='1. GET UNSIGNED TX'
-        onPress={(e) => getUnsignedTx(endpointAddress)}
-      />
-      <View style={{ margin: 4 }} />
-      <Button
-        title='2. BROADCAST SIGNED TX'
-        onPress={(e) => BroadcastSignedTx('')}
-      />
-      <View style={{ margin: 4 }} />
-      <Button
-        title='3. PUT TX RESULT'
-        onPress={(e) => putTxResult(endpointAddress)}
-      />
-      <View style={{ margin: 4 }} /> */}
       <Button
         title='SIGN'
         onPress={(e) => {
@@ -218,11 +174,28 @@ const SendTxView = (props: Props) => {
       <Button
         title='RETURN APP'
         onPress={() => {
-          Linking.openURL(RETURN_APP_SCHEME)
+          Linking.openURL(returnScheme)
         }}
       />
       <View style={{ margin: 4 }} />
       <Button title='RETURN DASHBOARD' onPress={gotoDashboard} />
+
+      {/* LOADING INDICATOR */}
+      {loading && (
+        <View
+          style={{
+            position: 'absolute',
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            alignContent: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <ActivityIndicator size='large' color='#000' />
+        </View>
+      )}
     </View>
   )
 }

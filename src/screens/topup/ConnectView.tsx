@@ -1,12 +1,18 @@
 import { CommonActions } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { View, Text, Button, Linking, Alert, Keyboard } from 'react-native'
+import {
+  View,
+  Text,
+  Button,
+  Linking,
+  Alert,
+  Keyboard,
+  ActivityIndicator,
+} from 'react-native'
 import { Buffer } from 'buffer'
 import { useAuth } from '@terra-money/use-native-station'
 import { TextInput } from 'react-native-gesture-handler'
 import EStyleSheet from 'react-native-extended-stylesheet'
-import { getDecyrptedKey } from '../../utils/wallet'
-import { LCDClient, RawKey, StdSignMsg } from '@terra-money/terra.js'
 
 interface Props {
   navigation: any
@@ -16,13 +22,6 @@ interface Props {
     }
   }
 }
-
-const RETURN_APP_SCHEME = 'mirrorapp://'
-
-const lcdClient = new LCDClient({
-  chainID: 'tequila-0004',
-  URL: 'https://tequila-lcd.terra.dev',
-})
 
 interface SchemeArgs {
   return_scheme: string
@@ -41,6 +40,7 @@ const ConnectView = (props: Props) => {
   const [returnScheme, setReturnScheme] = useState('')
   const [endpointAddress, setEndpointAddress] = useState('')
 
+  const [loading, setLoading] = useState<boolean>(false)
   const [arg, setArg] = useState<SchemeArgs | undefined>(undefined)
   try {
     if (props.route.params.arg !== undefined) {
@@ -51,12 +51,10 @@ const ConnectView = (props: Props) => {
     }
   } catch (e) {
     Alert.alert(e.toString())
-    console.log(e)
   }
 
   useEffect(() => {
     if (arg !== undefined) {
-      console.log('arg', arg)
       setEndpointAddress(arg.endpoint_address)
       setReturnScheme(arg.return_scheme)
     } else {
@@ -68,52 +66,22 @@ const ConnectView = (props: Props) => {
     const init = {
       method: 'PUT',
       headers: {
+        Origin: 'https://topup.terra.dev',
         'Content-Type': 'application/json',
       },
-      body: address ? `{address: "${address}"}` : `{"address":""}`,
+      body: JSON.stringify({ address }),
     }
-    console.log('init', init)
-    const response = await fetch(url, init)
-    console.log('response', response)
 
+    const response = await fetch(url, init)
     if (response.status !== 200) {
       throw new Error(JSON.stringify(response))
     }
 
-    // const ret = await response.json()
-    // return ret
+    return await response.text()
   }
 
   const returnApp = (scheme: string) => {
     Linking.openURL(scheme)
-  }
-
-  const SendTx = async (msg: string) => {
-    try {
-      const decyrptedKey = await getDecyrptedKey(user?.name!, password)
-
-      const rk = new RawKey(Buffer.from(decyrptedKey, 'hex'))
-      const stdSignMsg = StdSignMsg.fromData(msg as any)
-      const signedTx = await rk.signTx(stdSignMsg)
-
-      // const wallet = lcdClient.wallet(rk)
-      // const msgs = [
-      //   new MsgGrantAuthorization(
-      //     wallet.key.accAddress,
-      //     grantee,
-      //     new SendAuthorization(spendLimit),
-      //     duration
-      //   ),
-      // ]
-      // const signedTx = await wallet.createAndSignTx({ msgs })
-      const result = await lcdClient.tx.broadcastSync(signedTx)
-
-      console.log(JSON.stringify(result))
-      Alert.alert(JSON.stringify(result))
-    } catch (e) {
-      console.log(e)
-      Alert.alert('Error', e.toString())
-    }
   }
 
   const gotoDashboard = () => {
@@ -131,44 +99,71 @@ const ConnectView = (props: Props) => {
 
   const processConnect = async () => {
     try {
+      setLoading(true)
       const ret = await putConnect(endpointAddress, user?.address)
-      console.log('ret', ret)
-      returnApp(returnScheme)
+
+      ret === 'OK' &&
+        Alert.alert('', 'SUCCESS', [
+          {
+            text: 'OK',
+            onPress: () => returnApp(returnScheme),
+          },
+        ])
     } catch (e) {
       Alert.alert('Error', e.toString())
-      console.log(e)
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <Text>{`user: ${JSON.stringify(user)}`}</Text>
-      <Text>{`arg: ${arg && JSON.stringify(arg)}`}</Text>
-      <Text>{'Password: '}</Text>
-      <TextInput
-        style={styles.textInput}
-        underlineColorAndroid='#ccc'
-        value={password}
-        secureTextEntry={true}
-        onChangeText={setPassword}
-        onSubmitEditing={Keyboard.dismiss}
-      />
-      <Button
-        title='CONNECT'
-        onPress={(e) => {
-          processConnect()
-        }}
-      />
-      <View style={{ margin: 4 }} />
-      <Button
-        title='RETURN APP'
-        onPress={() => {
-          Linking.openURL(RETURN_APP_SCHEME)
-        }}
-      />
-      <View style={{ margin: 4 }} />
-      <Button title='RETURN DASHBOARD' onPress={gotoDashboard} />
-    </View>
+    <>
+      <View style={{ flex: 1 }}>
+        <Text>{`user: ${JSON.stringify(user)}`}</Text>
+        <Text>{`arg: ${arg && JSON.stringify(arg)}`}</Text>
+        <Text>{'Password: '}</Text>
+        <TextInput
+          style={styles.textInput}
+          underlineColorAndroid='#ccc'
+          value={password}
+          secureTextEntry={true}
+          onChangeText={setPassword}
+          onSubmitEditing={Keyboard.dismiss}
+        />
+        <Button
+          title='CONNECT'
+          onPress={(e) => {
+            processConnect()
+          }}
+        />
+        <View style={{ margin: 4 }} />
+        <Button
+          title='RETURN APP'
+          onPress={() => {
+            Linking.openURL(returnScheme)
+          }}
+        />
+        <View style={{ margin: 4 }} />
+        <Button title='RETURN DASHBOARD' onPress={gotoDashboard} />
+      </View>
+
+      {/* LOADING INDICATOR */}
+      {loading && (
+        <View
+          style={{
+            position: 'absolute',
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            alignContent: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <ActivityIndicator size='large' color='#000' />
+        </View>
+      )}
+    </>
   )
 }
 

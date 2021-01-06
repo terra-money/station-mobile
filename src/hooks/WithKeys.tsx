@@ -1,21 +1,22 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import React, { ReactNode, useCallback, useEffect, useState } from 'react'
 import { getWallets } from '../utils/wallet'
 
 interface Props {
-  render: (wallets:LocalWallet[]) => ReactNode
+  render: (wallets: LocalWallet[]) => ReactNode
 }
 
 const WithKeys = ({ render }: Props) => {
   const [wallets, setWallets] = useState<LocalWallet[]>()
 
-  useEffect(()=>{
+  useEffect(() => {
     const fn = async () => {
-      const wallets =  await getWallets()
+      const wallets = await getWallets()
       setWallets(wallets)
     }
 
     fn()
-  },[])
+  })
 
   return <>{!wallets ? null : render(wallets)}</>
 }
