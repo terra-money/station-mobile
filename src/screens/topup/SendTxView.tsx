@@ -93,13 +93,7 @@ const SendTxView = (props: Props) => {
       body: JSON.stringify(txResult),
     }
 
-    const response = await fetch(url, init)
-
-    if (response.status !== 200) {
-      throw new Error(response.toString())
-    }
-
-    return await response.text()
+    return await fetch(url, init)
   }
 
   const BroadcastSignedTx = async (data: any) => {
@@ -120,13 +114,16 @@ const SendTxView = (props: Props) => {
       const broadcastResult = await BroadcastSignedTx(unsignedTx)
       const putResult = await putTxResult(endpointAddress, broadcastResult)
 
-      putResult === 'OK' &&
-        Alert.alert('', 'SUCCESS', [
-          {
-            text: 'OK',
-            onPress: () => returnApp(returnScheme),
-          },
-        ])
+      if (putResult.status !== 200) {
+        throw new Error(putResult.toString())
+      }
+
+      Alert.alert('', 'SUCCESS', [
+        {
+          text: 'OK',
+          onPress: () => returnApp(returnScheme),
+        },
+      ])
     } catch (e) {
       Alert.alert('Error', e.toString())
     } finally {

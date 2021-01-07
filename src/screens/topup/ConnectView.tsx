@@ -72,12 +72,7 @@ const ConnectView = (props: Props) => {
       body: JSON.stringify({ address }),
     }
 
-    const response = await fetch(url, init)
-    if (response.status !== 200) {
-      throw new Error(JSON.stringify(response))
-    }
-
-    return await response.text()
+    return await fetch(url, init)
   }
 
   const returnApp = (scheme: string) => {
@@ -102,13 +97,16 @@ const ConnectView = (props: Props) => {
       setLoading(true)
       const ret = await putConnect(endpointAddress, user?.address)
 
-      ret === 'OK' &&
-        Alert.alert('', 'SUCCESS', [
-          {
-            text: 'OK',
-            onPress: () => returnApp(returnScheme),
-          },
-        ])
+      if (ret.status !== 200) {
+        throw new Error(JSON.stringify(ret))
+      }
+
+      Alert.alert('', 'SUCCESS', [
+        {
+          text: 'OK',
+          onPress: () => returnApp(returnScheme),
+        },
+      ])
     } catch (e) {
       Alert.alert('Error', e.toString())
     } finally {
