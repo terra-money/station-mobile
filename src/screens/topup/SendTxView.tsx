@@ -115,17 +115,17 @@ const SendTxView = (props: Props) => {
       const putResult = await putTxResult(endpointAddress, broadcastResult)
 
       if (putResult.status !== 200) {
-        throw new Error(putResult.toString())
+        Alert.alert(`${putResult.status} error`, await putResult.json())
+      } else {
+        Alert.alert('', 'SUCCESS', [
+          {
+            text: 'OK',
+            onPress: () => returnApp(returnScheme),
+          },
+        ])
       }
-
-      Alert.alert('', 'SUCCESS', [
-        {
-          text: 'OK',
-          onPress: () => returnApp(returnScheme),
-        },
-      ])
     } catch (e) {
-      Alert.alert('Error', e.toString())
+      Alert.alert('Unexpected Error', e.toString())
     } finally {
       setLoading(false)
     }

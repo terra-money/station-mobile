@@ -98,17 +98,17 @@ const ConnectView = (props: Props) => {
       const ret = await putConnect(endpointAddress, user?.address)
 
       if (ret.status !== 200) {
-        throw new Error(JSON.stringify(ret))
+        Alert.alert(`${ret.status} error`, await ret.json())
+      } else {
+        Alert.alert('', 'SUCCESS', [
+          {
+            text: 'OK',
+            onPress: () => returnApp(returnScheme),
+          },
+        ])
       }
-
-      Alert.alert('', 'SUCCESS', [
-        {
-          text: 'OK',
-          onPress: () => returnApp(returnScheme),
-        },
-      ])
     } catch (e) {
-      Alert.alert('Error', e.toString())
+      Alert.alert('Unexpected Error', e.toString())
     } finally {
       setLoading(false)
     }
