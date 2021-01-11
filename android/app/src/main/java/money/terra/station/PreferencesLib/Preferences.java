@@ -1,4 +1,4 @@
-package com.terrastation.PreferencesLib;
+package money.terra.station.PreferencesLib;
 
 import android.content.Context;
 import android.content.SharedPreferences;

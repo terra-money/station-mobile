@@ -1,4 +1,4 @@
-package com.terrastation.TerraWalletLib;
+package money.terra.station.TerraWalletLib;
 
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;

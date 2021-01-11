@@ -1,4 +1,4 @@
-package com.terrastation.KeystoreLib;
+package money.terra.station.KeystoreLib;
 
 public interface StorageCipher {
     byte[] encrypt(byte[] input) throws Exception;

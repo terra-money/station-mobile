@@ -1,4 +1,4 @@
-package com.terrastation.PreferencesLib;
+package money.terra.station.TerraWalletLib;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PreferencesPackage implements ReactPackage {
+public class TerraWalletPackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
@@ -21,7 +21,7 @@ public class PreferencesPackage implements ReactPackage {
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
 
-        modules.add(new Preferences(reactContext));
+        modules.add(new TerraWallet(reactContext));
 
         return modules;
     }

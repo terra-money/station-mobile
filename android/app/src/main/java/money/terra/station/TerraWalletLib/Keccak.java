@@ -1,4 +1,4 @@
-package com.terrastation.TerraWalletLib;
+package money.terra.station.TerraWalletLib;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

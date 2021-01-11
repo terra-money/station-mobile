@@ -1,4 +1,4 @@
-package com.terrastation.KeystoreLib;
+package money.terra.station.KeystoreLib;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

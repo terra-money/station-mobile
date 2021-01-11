@@ -1,4 +1,4 @@
-package com.terrastation.KeystoreLib;
+package money.terra.station.KeystoreLib;
 
 import android.content.Context;
 import android.content.SharedPreferences;

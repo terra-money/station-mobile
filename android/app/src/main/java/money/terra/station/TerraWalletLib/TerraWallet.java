@@ -1,4 +1,4 @@
-package com.terrastation.TerraWalletLib;
+package money.terra.station.TerraWalletLib;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -17,7 +17,6 @@ public class TerraWallet extends ReactContextBaseJavaModule {
     implementation 'org.web3j:crypto:4.5.17'
     implementation 'com.google.code.gson:gson'
     * */
-
 
     public TerraWallet(ReactApplicationContext context)  {
         super(context);
