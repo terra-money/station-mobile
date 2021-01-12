@@ -1,17 +1,16 @@
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import { useNavigation } from '@react-navigation/native'
+import React from 'react'
 import {
   StyleSheet,
   View,
   Text,
   Platform,
   TouchableOpacity,
-  StatusBar
-} from 'react-native';
+  StatusBar,
+} from 'react-native'
 
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-
 
 interface HeaderProps {
   title?: string
@@ -19,12 +18,12 @@ interface HeaderProps {
 }
 
 interface HeaderTopProps {
-  icName?: string;
-  icSize?: number;
+  icName?: string
+  icSize?: number
 }
 
 interface HeaderBottomProps {
-  title: string;
+  title: string
 }
 
 const HeaderSafeArea = () => {
@@ -34,58 +33,71 @@ const HeaderSafeArea = () => {
 
   return (
     <>
-      {
-        Platform.OS === 'ios'
-          ? <View style={{ backgroundColor: 'rgba(32, 67, 181, 1)', height: insets.top }} />
-          : null
-      }
+      {Platform.OS === 'ios' ? (
+        <View
+          style={{
+            backgroundColor: 'rgba(32, 67, 181, 1)',
+            height: insets.top,
+          }}
+        />
+      ) : null}
     </>
   )
 }
 
-const HeaderTop = ({ icName: iconName, icSize: iconSize }: HeaderTopProps) => {
-  const navigation = useNavigation();
+const HeaderTop = ({
+  icName: iconName,
+  icSize: iconSize,
+}: HeaderTopProps) => {
+  const navigation = useNavigation()
   console.log('canGoBack', navigation.canGoBack())
 
   return (
     <>
       <HeaderSafeArea />
-      {
-        navigation.canGoBack()
-          ?
-          <View style={[styles.headerChild, styles.headerChildFixedHeight]}>
-            <TouchableOpacity onPress={() => {
+      {navigation.canGoBack() ? (
+        <View
+          style={[styles.headerChild, styles.headerChildFixedHeight]}
+        >
+          <TouchableOpacity
+            onPress={() => {
               navigation.canGoBack() && navigation.goBack()
-            }}>
-              <Icon name={iconName ?? 'chevron-left'} size={iconSize ?? 28} color='#fff' />
-            </TouchableOpacity>
-          </View>
-          :
-          <View style={[styles.headerChild, { paddingTop: 20 }]} />
-      }
+            }}
+          >
+            <Icon
+              name={iconName ?? 'chevron-left'}
+              size={iconSize ?? 28}
+              color="#fff"
+            />
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={[styles.headerChild, { paddingTop: 20 }]} />
+      )}
     </>
-  );
+  )
 }
 
-const HeaderBottom = ({ title }: HeaderBottomProps) => {
-  return (
-    <View style={[styles.headerChild,]}>
-      <Text style={{ fontSize: 26, lineHeight: 39, color: '#fff' }}>{title}</Text>
-    </View>
-  );
-}
+const HeaderBottom = ({ title }: HeaderBottomProps) => (
+  <View style={styles.headerChild}>
+    <Text style={{ fontSize: 26, lineHeight: 39, color: '#fff' }}>
+      {title}
+    </Text>
+  </View>
+)
 
-const SubPageHeader = ({ title, headerTop }: HeaderProps) => {
-  return (
-    <>
-    <StatusBar barStyle="dark-content" backgroundColor='rgba(32, 67, 181, 1)' />
+const SubPageHeader = ({ title, headerTop }: HeaderProps) => (
+  <>
+    <StatusBar
+      barStyle="dark-content"
+      backgroundColor="rgba(32, 67, 181, 1)"
+    />
     <View style={styles.headerContainer}>
       <HeaderTop {...headerTop} />
       <HeaderBottom title={title} />
     </View>
-    </>
-  )
-}
+  </>
+)
 
 const styles = StyleSheet.create({
   /**
@@ -97,7 +109,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(32, 67, 181, 1)'
+    backgroundColor: 'rgba(32, 67, 181, 1)',
   },
   /**
    * Header top, bottom 공통 style
@@ -105,7 +117,7 @@ const styles = StyleSheet.create({
   headerChild: {
     width: '100%',
     backgroundColor: 'transparent',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   /**
    * BackButton에 사용되는 추가 style, 60으로 높이 고정
@@ -113,6 +125,6 @@ const styles = StyleSheet.create({
   headerChildFixedHeight: {
     height: 60,
   },
-});
+})
 
 export default SubPageHeader

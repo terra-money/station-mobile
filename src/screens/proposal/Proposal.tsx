@@ -1,7 +1,12 @@
 import React from 'react'
 import { useRoute, RouteProp } from '@react-navigation/native'
-import { ProposalUI } from '@terra-money/use-native-station'
-import { useProposal, useMenu, useAuth } from '@terra-money/use-native-station'
+import {
+  ProposalUI,
+  useProposal,
+  useMenu,
+  useAuth,
+} from '@terra-money/use-native-station'
+
 import { GovernanceRouteParams } from '../../types/navigation'
 import Page from '../../components/Page'
 import ProposalHeader from './ProposalHeader'

@@ -7,7 +7,15 @@ const Stack = createStackNavigator()
 
 export default () => (
   <Stack.Navigator initialRouteName="Staking">
-    <Stack.Screen name="Staking" component={Staking} options={{headerShown: false}} />
-    <Stack.Screen name="Validator" component={Validator} options={{headerShown: false}} />
+    <Stack.Screen
+      name="Staking"
+      component={Staking}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="Validator"
+      component={Validator}
+      options={{ headerShown: false }}
+    />
   </Stack.Navigator>
 )

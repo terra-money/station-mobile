@@ -2,7 +2,10 @@ import React, { FC } from 'react'
 import { useInfo } from '@terra-money/use-native-station'
 import Info from './Info'
 
-const ErrorComponent: FC<{ card?: boolean }> = ({ card, children }) => {
+const ErrorComponent: FC<{ card?: boolean }> = ({
+  card,
+  children,
+}) => {
   const { ERROR } = useInfo()
   const props = { icon: '"sentiment-very-dissatisfied"', card }
 

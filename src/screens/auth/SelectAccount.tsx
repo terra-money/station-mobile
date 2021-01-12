@@ -1,7 +1,12 @@
 import React from 'react'
 import { TouchableOpacity, Text } from 'react-native'
-import { SignUpNext, Field, AccountUI } from '@terra-money/use-native-station'
-import { useSelectAccount } from '@terra-money/use-native-station'
+import {
+  SignUpNext,
+  Field,
+  AccountUI,
+  useSelectAccount,
+} from '@terra-money/use-native-station'
+
 import Badge from '../../components/Badge'
 
 interface Props {
@@ -9,13 +14,16 @@ interface Props {
   checkedSome: boolean
 }
 
-const Account = ({ field, checkedSome }: Props) => {
+const Account = ({ field }: Props) => {
   const { attrs, setValue, label, ui } = field
   const { bip, badges, balances } = ui!
 
   return (
     <TouchableOpacity {...attrs} onPress={() => setValue?.('')}>
-      <Badge>BIP {bip}</Badge>
+      <Badge>
+        BIP
+        {bip}
+      </Badge>
 
       {badges.map((badge) => (
         <Badge key={badge}>{badge}</Badge>
@@ -24,7 +32,9 @@ const Account = ({ field, checkedSome }: Props) => {
       <Text>{label}</Text>
 
       {Array.isArray(balances)
-        ? balances.map((balance, index) => <Text key={index}>{balance}</Text>)
+        ? balances.map((balance, index) => (
+            <Text key={index}>{balance}</Text>
+          ))
         : balances}
     </TouchableOpacity>
   )

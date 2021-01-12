@@ -17,7 +17,7 @@ const NotVoted = ({ title, list, button }: Props) => (
 
           {email && (
             <Text>
-              {'mailto:' + email}
+              {`mailto:${email}`}
               {button}
             </Text>
           )}

@@ -14,7 +14,7 @@ const Actions = (v: ValidatorUI) => {
 
   /* tx */
   const open = {
-    delegate: ({ undelegate }: { undelegate?: boolean }) => {
+    delegate: ({}: { undelegate?: boolean }) => {
       // open(delegate)
     },
     withdraw: () => {
@@ -23,9 +23,12 @@ const Actions = (v: ValidatorUI) => {
   }
 
   /* render */
-  const content = myActionsTable && <DelegationTooltip {...myActionsTable} />
+  const content = myActionsTable && (
+    <DelegationTooltip {...myActionsTable} />
+  )
   const myDelegation =
-    myDelegations.display ?? format.display({ amount: '0', denom: 'uluna' })
+    myDelegations.display ??
+    format.display({ amount: '0', denom: 'uluna' })
 
   return (
     <>
@@ -40,7 +43,10 @@ const Actions = (v: ValidatorUI) => {
         <Number {...myDelegation} fontSize={18} />
       )}
 
-      <ButtonWithAuth {...delegate} onPress={() => open.delegate({})} />
+      <ButtonWithAuth
+        {...delegate}
+        onPress={() => open.delegate({})}
+      />
       <ButtonWithAuth
         {...undelegate}
         onPress={() => open.delegate({ undelegate: true })}

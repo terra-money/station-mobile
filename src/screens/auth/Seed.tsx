@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
-import { TouchableOpacity } from 'react-native'
-import { View, Text, TextInput } from 'react-native'
-import EStyleSheet from 'react-native-extended-stylesheet';
+import { TouchableOpacity, View, Text, TextInput } from 'react-native'
+
+import EStyleSheet from 'react-native-extended-stylesheet'
 
 interface Props {
   label: string
@@ -30,7 +30,7 @@ const Seed: FC<Props> = (props) => {
       <Text>{label}.</Text>
       <TextInput {...attrs} />
       {showSuggestions &&
-        suggestions.map((w, index) => (
+        suggestions.map((w) => (
           <TouchableOpacity onPress={() => onSelect(w)} key={w}>
             <Text>{w}</Text>
           </TouchableOpacity>

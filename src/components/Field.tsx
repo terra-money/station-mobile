@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react'
-import { ReactNode } from 'react'
+import React, { useRef, useEffect, ReactNode } from 'react'
+
 import { TextInput, Text } from 'react-native'
 import { Field as FieldProps } from '@terra-money/use-native-station'
 import Picker from './Picker'
@@ -55,7 +55,9 @@ const Field = ({ field, focus, onFocus, render }: Props) => {
             </>
           )}
 
-          {error ? <InvalidFeedback tooltip>{error}</InvalidFeedback> : null}
+          {error ? (
+            <InvalidFeedback tooltip>{error}</InvalidFeedback>
+          ) : null}
         </>
       ) : (
         <>

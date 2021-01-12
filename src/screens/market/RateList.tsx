@@ -1,6 +1,10 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import { useRate, RateItem, RateUI } from '@terra-money/use-native-station'
+import {
+  useRate,
+  RateItem,
+  RateUI,
+} from '@terra-money/use-native-station'
 import ErrorComponent from '../../components/ErrorComponent'
 import Loading from '../../components/Loading'
 import Card from '../../components/Card'
@@ -9,7 +13,9 @@ import Info from '../../components/Info'
 import Variation from './Variation'
 
 const RateList = ({ denoms }: { denoms: string[] }) => {
-  const { error, loading, title, message, filter, ui } = useRate(denoms)
+  const { error, loading, title, message, filter, ui } = useRate(
+    denoms
+  )
 
   const renderFilter = () => {
     const { value, set, options } = filter.denom
@@ -25,9 +31,15 @@ const RateList = ({ denoms }: { denoms: string[] }) => {
     )
   }
 
-  const renderRow = ({ display, variation }: RateItem, index: number) => (
+  const renderRow = (
+    { display, variation }: RateItem,
+    index: number
+  ) => (
     <View
-      style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+      }}
       key={index}
     >
       <Text>

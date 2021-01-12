@@ -3,7 +3,7 @@ import { Text } from 'react-native'
 import Icon from './Icon'
 
 type Props = { tooltip?: boolean; children: string }
-const InvalidFeedback = ({ tooltip, children }: Props) =>
+const InvalidFeedback = ({ children }: Props) =>
   children ? (
     <>
       <Icon name="error" />

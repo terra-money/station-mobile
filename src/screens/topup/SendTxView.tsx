@@ -13,8 +13,8 @@ import { Buffer } from 'buffer'
 import { useAuth } from '@terra-money/use-native-station'
 import { TextInput } from 'react-native-gesture-handler'
 import EStyleSheet from 'react-native-extended-stylesheet'
-import { getDecyrptedKey } from '../../utils/wallet'
 import { LCDClient, RawKey, StdSignMsg } from '@terra-money/terra.js'
+import { getDecyrptedKey } from '../../utils/wallet'
 
 interface Props {
   navigation: any
@@ -52,7 +52,9 @@ const SendTxView = (props: Props) => {
   try {
     if (props.route.params.arg !== undefined) {
       setArg(
-        JSON.parse(Buffer.from(props.route.params.arg, 'base64').toString())
+        JSON.parse(
+          Buffer.from(props.route.params.arg, 'base64').toString()
+        )
       )
       props.route.params.arg = undefined
     }
@@ -97,7 +99,10 @@ const SendTxView = (props: Props) => {
   }
 
   const BroadcastSignedTx = async (data: any) => {
-    const decyrptedKey = await getDecyrptedKey(user?.name!, password)
+    const decyrptedKey = await getDecyrptedKey(
+      user?.name || '',
+      password
+    )
 
     const rk = new RawKey(Buffer.from(decyrptedKey, 'hex'))
     const stdSignMsg = StdSignMsg.fromData(data.stdSignMsg)
@@ -112,10 +117,16 @@ const SendTxView = (props: Props) => {
       setLoading(true)
       const unsignedTx = await getUnsignedTx(endpointAddress)
       const broadcastResult = await BroadcastSignedTx(unsignedTx)
-      const putResult = await putTxResult(endpointAddress, broadcastResult)
+      const putResult = await putTxResult(
+        endpointAddress,
+        broadcastResult
+      )
 
       if (putResult.status !== 200) {
-        Alert.alert(`${putResult.status} error`, await putResult.json())
+        Alert.alert(
+          `${putResult.status} error`,
+          await putResult.json()
+        )
       } else {
         Alert.alert('', 'SUCCESS', [
           {
@@ -155,27 +166,22 @@ const SendTxView = (props: Props) => {
       <Text>{'Password: '}</Text>
       <TextInput
         style={styles.textInput}
-        underlineColorAndroid='#ccc'
+        underlineColorAndroid="#ccc"
         value={password}
-        secureTextEntry={true}
+        secureTextEntry
         onChangeText={setPassword}
         onSubmitEditing={Keyboard.dismiss}
       />
-      <Button
-        title='SIGN'
-        onPress={(e) => {
-          processSignedTx()
-        }}
-      />
+      <Button title="SIGN" onPress={processSignedTx} />
       <View style={{ margin: 4 }} />
       <Button
-        title='RETURN APP'
+        title="RETURN APP"
         onPress={() => {
           Linking.openURL(returnScheme)
         }}
       />
       <View style={{ margin: 4 }} />
-      <Button title='RETURN DASHBOARD' onPress={gotoDashboard} />
+      <Button title="RETURN DASHBOARD" onPress={gotoDashboard} />
 
       {/* LOADING INDICATOR */}
       {loading && (
@@ -190,7 +196,7 @@ const SendTxView = (props: Props) => {
             justifyContent: 'center',
           }}
         >
-          <ActivityIndicator size='large' color='#000' />
+          <ActivityIndicator size="large" color="#000" />
         </View>
       )}
     </View>

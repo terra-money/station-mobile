@@ -1,5 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native'
-import React, { ReactNode, useCallback, useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { getWallets } from '../utils/wallet'
 
 interface Props {

@@ -4,8 +4,14 @@ import { ProposalUI } from '@terra-money/use-native-station'
 import Badge from '../../components/Badge'
 import Voter from './Voter'
 
-const ProposerHeader = ({ title, status, ...rest }: ProposalUI) => {
-  const { statusTranslation, meta, proposer, description, details } = rest
+const ProposerHeader = ({ title, ...rest }: ProposalUI) => {
+  const {
+    statusTranslation,
+    meta,
+    proposer,
+    description,
+    details,
+  } = rest
 
   return (
     <>

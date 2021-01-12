@@ -17,9 +17,15 @@ const AuthMenu = ({ canSelect }: { canSelect: boolean }) => {
 
   const menu = [
     !user &&
-      canSelect && { text: 'Select wallet', onPress: () => navigate('Select') },
+      canSelect && {
+        text: 'Select wallet',
+        onPress: () => navigate('Select'),
+      },
     !user && { text: 'New wallet', onPress: () => navigate('New') },
-    !user && { text: 'Add existing wallet', onPress: () => navigate('Add') },
+    !user && {
+      text: 'Add existing wallet',
+      onPress: () => navigate('Add'),
+    },
     user && { text: 'Sign out', onPress: () => signOut() },
     { text: '(DEV) Clear settings', onPress: () => settings.clear() },
     { text: '(DEV) Clear keys', onPress: () => clearKeys() },
@@ -40,5 +46,7 @@ const AuthMenu = ({ canSelect }: { canSelect: boolean }) => {
 }
 
 export default () => (
-  <WithKeys render={(wallets) => <AuthMenu canSelect={!!wallets?.length} />} />
+  <WithKeys
+    render={(wallets) => <AuthMenu canSelect={!!wallets?.length} />}
+  />
 )

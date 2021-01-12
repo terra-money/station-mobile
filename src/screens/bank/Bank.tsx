@@ -5,13 +5,19 @@ import {
   useMenu,
   User,
 } from '@terra-money/use-native-station'
-import Page from '../../components/Page'
-import WithAuth from '../../components/WithAuth'
-import { StatusBar, View, Text, Button, TextInput } from 'react-native'
-import { getDecyrptedKey } from '../../utils/wallet'
+import {
+  StatusBar,
+  View,
+  Text,
+  Button,
+  TextInput,
+} from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { LCDClient, MsgSend, RawKey } from '@terra-money/terra.js'
 import { BigNumber } from 'bignumber.js'
+import { getDecyrptedKey } from '../../utils/wallet'
+import WithAuth from '../../components/WithAuth'
+import Page from '../../components/Page'
 
 const SendComponent = ({ denom }: { denom: string }) => {
   const { user } = useAuth()
@@ -28,37 +34,40 @@ const SendComponent = ({ denom }: { denom: string }) => {
       <Text>Send to:</Text>
       <TextInput
         style={styles.textInput}
-        underlineColorAndroid='#ccc'
+        underlineColorAndroid="#ccc"
         value={sendTo}
         onChangeText={setSendTo}
       />
       <Text>Amount:</Text>
       <TextInput
         style={styles.textInput}
-        underlineColorAndroid='#ccc'
+        underlineColorAndroid="#ccc"
         value={amount}
         onChangeText={setAmount}
       />
       <Text>Memo:</Text>
       <TextInput
         style={styles.textInput}
-        underlineColorAndroid='#ccc'
+        underlineColorAndroid="#ccc"
         value={memo}
         onChangeText={setMemo}
       />
       <Text>Password:</Text>
       <TextInput
         style={styles.textInput}
-        underlineColorAndroid='#ccc'
+        underlineColorAndroid="#ccc"
         value={password}
-        secureTextEntry={true}
+        secureTextEntry
         onChangeText={setPassword}
       />
       <Button
-        title='Send'
+        title="Send"
         onPress={async () => {
           try {
-            const decyrptedKey = await getDecyrptedKey(user?.name!, password)
+            const decyrptedKey = await getDecyrptedKey(
+              user?.name || '',
+              password
+            )
 
             const msg = new MsgSend(
               user!.address,
@@ -73,7 +82,10 @@ const SendComponent = ({ denom }: { denom: string }) => {
 
             const rk = new RawKey(Buffer.from(decyrptedKey, 'hex'))
             const wallet = lcdClient.wallet(rk)
-            const signedTx = await wallet.createAndSignTx({ msgs: [msg], memo })
+            const signedTx = await wallet.createAndSignTx({
+              msgs: [msg],
+              memo,
+            })
             const result = await lcdClient.tx.broadcastSync(signedTx)
             // broadcast = POST
 
@@ -116,7 +128,10 @@ const Bank = () => {
 
   return (
     <Page title={title}>
-      <StatusBar barStyle='dark-content' backgroundColor='transparent' />
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+      />
       <WithAuth card>{(user) => <Assets user={user} />}</WithAuth>
     </Page>
   )

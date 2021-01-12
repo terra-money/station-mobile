@@ -8,7 +8,11 @@ const Stack = createStackNavigator<DashboardRouteParams>()
 
 export default () => (
   <Stack.Navigator initialRouteName="Dashboard">
-    <Stack.Screen name="Dashboard" component={Dashboard} options={{headerShown: false}} />
+    <Stack.Screen
+      name="Dashboard"
+      component={Dashboard}
+      options={{ headerShown: false }}
+    />
     <Stack.Screen name="Chart" component={Chart} />
   </Stack.Navigator>
 )
