@@ -1,0 +1,50 @@
+{
+  "plugins": [
+    "react",
+    "react-native",
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "ecmaFeatures": {
+      "tsx": true,
+      "modules": true
+    },
+    "sourceType": "module",
+    "useJSXTextNode": false
+  },
+  "env": {
+    "es6": true,
+    "jest": true,
+    "react-native/react-native": true
+  },
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:react/recommended",
+    "plugin:react-native/all",
+    "plugin:prettier/recommended"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "react/jsx-filename-extension": "off",
+    "react-native/no-raw-text": "off",
+    "react/prop-types": "off",
+    "react/display-name": "off",
+    "react-native/no-inline-styles": "off",
+    "react-native/no-color-literals": "off",
+    "react-native/sort-styles": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/class-name-casing": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "no-debugger": "error",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/camelcase": "off"
+  }
+}

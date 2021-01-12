@@ -22,7 +22,9 @@ export const loadKey = async (name: string): Promise<Key> => {
 export const storeKeys = (keys: Key[]) => {
   const names = keys.map(({ name }) => name)
   Preferences.setString('names', JSON.stringify(names))
-  keys.forEach((key) => Keystore.write(key.name, JSON.stringify(keys)))
+  keys.forEach((key) =>
+    Keystore.write(key.name, JSON.stringify(keys))
+  )
 }
 
 export const getStoredWallet = async (
@@ -43,12 +45,20 @@ export const getStoredWallet = async (
 
 type Params = { name: string; password: string; wallet: Wallet }
 
-export const importKey = async ({ name, password, wallet }: Params) => {
+export const importKey = async ({
+  name,
+  password,
+  wallet,
+}: Params) => {
   const names = await loadNames()
 
-  if (names.includes(name)) throw new Error('Key with that name already exists')
+  if (names.includes(name))
+    throw new Error('Key with that name already exists')
 
-  const encrypted = encrypt(JSON.stringify(wallet), password).toString()
+  const encrypted = encrypt(
+    JSON.stringify(wallet),
+    password
+  ).toString()
 
   if (!encrypted) throw new Error('Encryption error occurred')
 
@@ -64,7 +74,9 @@ export const importKey = async ({ name, password, wallet }: Params) => {
 
 export const clearKeys = async (): Promise<void> => {
   const names = await Preferences.getString('names')
-  await names.split(SEP).forEach((name: string) => Keystore.remove(name))
+  await names
+    .split(SEP)
+    .forEach((name: string) => Keystore.remove(name))
 }
 
 export const testPassword = (
@@ -91,14 +103,24 @@ const getSettings = async (): Promise<Settings> => {
   return settings ? JSON.parse(settings) : {}
 }
 
-const setSettings = async (next: Partial<Settings>): Promise<void> => {
+const setSettings = async (
+  next: Partial<Settings>
+): Promise<void> => {
   const settings = await getSettings()
-  Preferences.setString(SETTINGS, JSON.stringify(merge(settings, next)))
+  Preferences.setString(
+    SETTINGS,
+    JSON.stringify(merge(settings, next))
+  )
 }
 
-const deleteSettings = async (keys: (keyof Settings)[]): Promise<void> => {
+const deleteSettings = async (
+  keys: (keyof Settings)[]
+): Promise<void> => {
   const settings = await getSettings()
-  Preferences.setString(SETTINGS, JSON.stringify(omit(keys, settings)))
+  Preferences.setString(
+    SETTINGS,
+    JSON.stringify(omit(keys, settings))
+  )
 }
 
 export const clearSettings = (): void => {

@@ -7,8 +7,6 @@ interface Props {
   small?: boolean
 }
 
-const Badge: FC<Props> = ({ active, light, small, children }) => (
-  <Text>{children}</Text>
-)
+const Badge: FC<Props> = ({ children }) => <Text>{children}</Text>
 
 export default Badge

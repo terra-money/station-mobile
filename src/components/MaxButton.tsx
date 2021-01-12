@@ -1,10 +1,14 @@
 import React from 'react'
-import { TouchableOpacity, Text } from 'react-native'
+import {
+  TouchableOpacity,
+  TouchableOpacityProps,
+  Text,
+} from 'react-native'
 import { DisplayCoin } from '@terra-money/use-native-station'
 import Number from './Number'
 
 interface Props {
-  attrs: {}
+  attrs: TouchableOpacityProps
   label: string
   display: DisplayCoin
 }

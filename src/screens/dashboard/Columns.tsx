@@ -1,20 +1,27 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { DashboardUI } from '@terra-money/use-native-station'
-import { PricesUI, TaxRateUI } from '@terra-money/use-native-station'
-import { StakingRatioUI } from '@terra-money/use-native-station'
-import { useDashboard } from '@terra-money/use-native-station'
+import {
+  DashboardUI,
+  PricesUI,
+  TaxRateUI,
+  StakingRatioUI,
+  useDashboard,
+} from '@terra-money/use-native-station'
+
+import EStyleSheet from 'react-native-extended-stylesheet'
+import Swiper from 'react-native-swiper'
 import Card from '../../components/Card'
 import DisplaySelector from './DisplaySelector'
-import EStyleSheet from 'react-native-extended-stylesheet';
-import Swiper from 'react-native-swiper'
 
 const Columns = () => {
   const { navigate } = useNavigation()
   const { ui } = useDashboard()
 
-  const renderPrice = ({ title, display: { value, unit } }: PricesUI) => (
+  const renderPrice = ({
+    title,
+    display: { value, unit },
+  }: PricesUI) => (
     <Card
       title={title}
       value={value}
@@ -28,24 +35,30 @@ const Columns = () => {
     <Card {...rest} badge={desc} dark />
   )
 
-  const renderStakingRatio = ({ title, content, ...rest }: StakingRatioUI) => {
+  const renderStakingRatio = ({
+    title,
+    content,
+    ...rest
+  }: StakingRatioUI) => {
     const { small, desc } = rest
     return (
       <Card title={title} badge={desc} dark>
-        <Text style={styles.value}>{content} <Text style={styles.small}>({small})</Text></Text>
+        <Text style={styles.value}>
+          {content} <Text style={styles.small}>({small})</Text>
+        </Text>
       </Card>
     )
   }
 
   const SwiperDotView = () => (
     <View
-        style={{
-          backgroundColor: 'rgba(32, 67, 181, .2)',
-          width: 6,
-          height: 6,
-          borderRadius: 3,
-          margin: 5
-        }}
+      style={{
+        backgroundColor: 'rgba(32, 67, 181, .2)',
+        width: 6,
+        height: 6,
+        borderRadius: 3,
+        margin: 5,
+      }}
     />
   )
   const SwiperActiveDotView = () => (
@@ -55,26 +68,36 @@ const Columns = () => {
         width: 6,
         height: 6,
         borderRadius: 3,
-        margin: 5
+        margin: 5,
       }}
     />
   )
 
   const render = (ui: DashboardUI) => (
     <Swiper
-        style={[styles.carousel, {height: 168}]}
-        loop={true}
-        autoplay={true}
-        autoplayTimeout={10} // seconds
-        dot={SwiperDotView()}
-        activeDot={SwiperActiveDotView()}
-      >
-          <View style={styles.carousel_item}>{renderPrice(ui.prices)}</View>
-          <View style={styles.carousel_item}>{renderTaxRate(ui.taxRate)}</View>
-          <View style={styles.carousel_item}><DisplaySelector {...ui.issuance} /></View>
-          <View style={styles.carousel_item}><DisplaySelector {...ui.communityPool} /></View>
-          <View style={styles.carousel_item}>{renderStakingRatio(ui.stakingRatio)}</View>
-      </Swiper>
+      style={[styles.carousel, { height: 168 }]}
+      loop
+      autoplay
+      autoplayTimeout={10} // seconds
+      dot={SwiperDotView()}
+      activeDot={SwiperActiveDotView()}
+    >
+      <View style={styles.carousel_item}>
+        {renderPrice(ui.prices)}
+      </View>
+      <View style={styles.carousel_item}>
+        {renderTaxRate(ui.taxRate)}
+      </View>
+      <View style={styles.carousel_item}>
+        <DisplaySelector {...ui.issuance} />
+      </View>
+      <View style={styles.carousel_item}>
+        <DisplaySelector {...ui.communityPool} />
+      </View>
+      <View style={styles.carousel_item}>
+        {renderStakingRatio(ui.stakingRatio)}
+      </View>
+    </Swiper>
   )
 
   return ui ? render(ui) : null
@@ -83,40 +106,40 @@ const Columns = () => {
 /* styles */
 const styles = EStyleSheet.create({
   carousel: {
-    flexDirection: "row",
-    flexWrap: "nowrap"
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
   },
   carousel_item: {
-    width: "100%"
+    width: '100%',
   },
   carousel_paging: {
     flexDirection: 'row',
-    justifyContent: "center",
-    marginBottom: 10
+    justifyContent: 'center',
+    marginBottom: 10,
   },
   carousel_paging_indicator: {
-    backgroundColor: "$primaryColor",
+    backgroundColor: '$primaryColor',
     width: 6,
     height: 6,
     borderRadius: 3,
     marginHorizontal: 5,
-    opacity: 0.2
+    opacity: 0.2,
   },
   active: {
-    opacity: 1
+    opacity: 1,
   },
   value: {
-    fontFamily: "TerraCompact-Regular",
+    fontFamily: 'TerraCompact-Regular',
     fontSize: 28,
     letterSpacing: -0.5,
     lineHeight: 36,
-    color: "#fff",
-    marginTop: 10
+    color: '#fff',
+    marginTop: 10,
   },
 
   small: {
     fontSize: 12,
-    letterSpacing: 0
+    letterSpacing: 0,
   },
 })
 

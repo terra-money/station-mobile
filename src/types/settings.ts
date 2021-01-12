@@ -1,4 +1,8 @@
-import { LangKey, ChainOptions, User } from '@terra-money/use-native-station'
+import {
+  LangKey,
+  ChainOptions,
+  User,
+} from '@terra-money/use-native-station'
 
 export interface Settings {
   lang?: LangKey

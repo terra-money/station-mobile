@@ -2,8 +2,10 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 const ONBOARDING_KEY = 'skip_onboarding'
 
-export const getSkipOnboarding = async (set: (v: boolean | null) => any) => {
-  await AsyncStorage.getItem(ONBOARDING_KEY).then(value => {
+export const getSkipOnboarding = async (
+  set: (v: boolean | null) => any
+) => {
+  await AsyncStorage.getItem(ONBOARDING_KEY).then((value) => {
     value === null ? set(false) : set(Boolean(value))
   })
 }

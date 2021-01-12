@@ -1,14 +1,14 @@
 import React from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { ChartUI, ChartKey } from '@terra-money/use-native-station'
-import { useChart } from '@terra-money/use-native-station'
+import { ChartKey, useChart } from '@terra-money/use-native-station'
+
+import EStyleSheet from 'react-native-extended-stylesheet'
+import { AreaChart, Path } from 'react-native-svg-charts'
+import * as shape from 'd3-shape'
 import ErrorBoundary from '../../components/ErrorBoundary'
 import ErrorComponent from '../../components/ErrorComponent'
 import Number from '../../components/Number'
-import EStyleSheet from 'react-native-extended-stylesheet';
-import { AreaChart, Path } from 'react-native-svg-charts'
-import * as shape from 'd3-shape'
 
 interface Props {
   chartKey: ChartKey
@@ -18,17 +18,12 @@ const Component = ({ chartKey }: Props) => {
   const { navigate } = useNavigation()
   const { value, chart, title } = useChart(chartKey)
   const data = [3, 3, 5, 4, 6, 7, 8]
-  const Line = ({ line }) => (
-    <Path
-        key={ 'line ' }
-        d={ line }
-        stroke={ 'rgba(32, 67, 181,.45)' }
-        fill={ 'none' }
-    />
+  const Line = () => (
+    <Path key="line " stroke="rgba(32, 67, 181,.45)" fill="none" />
   )
 
   /* render */
-  const renderChart = (chart: ChartUI) => (
+  const renderChart = () => (
     <TouchableOpacity onPress={() => navigate('Chart', { chartKey })}>
       <View style={styles.chart_item}>
         <Text style={styles.chart_item_title}>{title}</Text>
@@ -48,19 +43,19 @@ const Component = ({ chartKey }: Props) => {
             curve={shape.curveNatural}
             svg={{ fill: 'rgba(32, 67, 181, 0.15)' }}
           >
-            <Line/>
+            <Line />
           </AreaChart>
         </View>
       </View>
     </TouchableOpacity>
   )
 
-  return chart ? renderChart(chart) : null
+  return chart ? renderChart() : null
 }
 
 const ChartItem = (props: Props) => (
   <ErrorBoundary fallback={<ErrorComponent />}>
-      <Component {...props} />
+    <Component {...props} />
   </ErrorBoundary>
 )
 
@@ -69,29 +64,29 @@ const styles = EStyleSheet.create({
     padding: 20,
   },
   chart_item_title: {
-    color: "$primaryColor",
+    color: '$primaryColor',
     fontSize: 14,
     lineHeight: 21,
-    fontFamily: "TerraCompact-Bold",
-    textTransform: "capitalize",
+    fontFamily: 'TerraCompact-Bold',
+    textTransform: 'capitalize',
     marginBottom: 4,
   },
   chart_item_value: {
-    color: "$primaryColor",
+    color: '$primaryColor',
     fontSize: 24,
     lineHeight: 36,
-    fontFamily: "TerraCompact-Regular",
-    letterSpacing: -0.5
+    fontFamily: 'TerraCompact-Regular',
+    letterSpacing: -0.5,
   },
   chart_item_unit: {
     fontSize: 18,
-    letterSpacing: 0
+    letterSpacing: 0,
   },
   bottom: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end"
-  }
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
 })
 
 export default ChartItem

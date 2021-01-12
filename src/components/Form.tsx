@@ -1,6 +1,9 @@
 import React, { FC, ReactNode, useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import { FormUI, Field as FieldProps } from '@terra-money/use-native-station'
+import {
+  FormUI,
+  Field as FieldProps,
+} from '@terra-money/use-native-station'
 import Field from './Field'
 
 interface Props {
@@ -16,11 +19,19 @@ export interface State {
   setIndex: (index: number) => void
 }
 
-const Form: FC<Props> = ({ form, renderField, render, children, ...props }) => {
+const Form: FC<Props> = ({
+  form,
+  renderField,
+  render,
+  children,
+  ...props
+}) => {
   const { reversed } = props
   const { title, fields, submitLabel, onSubmit } = form
   const disabled = props.disabled || form.disabled
-  const [currentFieldIndex, setCurrentFieldIndex] = useState<number>(-1)
+  const [currentFieldIndex, setCurrentFieldIndex] = useState<number>(
+    -1
+  )
 
   return (
     <View>
@@ -38,7 +49,10 @@ const Form: FC<Props> = ({ form, renderField, render, children, ...props }) => {
       ))}
 
       {!reversed && children}
-      {render?.({ index: currentFieldIndex, setIndex: setCurrentFieldIndex })}
+      {render?.({
+        index: currentFieldIndex,
+        setIndex: setCurrentFieldIndex,
+      })}
 
       <TouchableOpacity onPress={onSubmit} disabled={disabled}>
         <Text>{submitLabel}</Text>

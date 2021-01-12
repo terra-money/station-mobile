@@ -21,7 +21,7 @@ interface SeparatorProps {
 }
 
 const Setting = () => {
-  const SettingItem = ({k, v}: SettingItemProps) => (
+  const SettingItem = ({ k, v }: SettingItemProps) => (
     <>
       <TouchableOpacity style={styles.settingContainer}>
         <Text style={styles.settingKey}>{k}</Text>
@@ -29,43 +29,51 @@ const Setting = () => {
       </TouchableOpacity>
     </>
   )
-  const ButtonItem = ({name, icon}: ButtonItemProps) => (
+  const ButtonItem = ({}: ButtonItemProps) => (
     <>
-      <TouchableOpacity style={[styles.settingContainer, {justifyContent: 'center'}]}>
-        <Icon name="wallet" color='rgb(32,67,181)' size={24} style={{ marginRight: 5 }} />
+      <TouchableOpacity
+        style={[
+          styles.settingContainer,
+          { justifyContent: 'center' },
+        ]}
+      >
+        <Icon
+          name="wallet"
+          color="rgb(32,67,181)"
+          size={24}
+          style={{ marginRight: 5 }}
+        />
         <Text style={styles.buttonText}>Connect</Text>
       </TouchableOpacity>
     </>
   )
-  
-  const Separator = ({height}: SeparatorProps) => (
-    <View style={{
-      height:height, 
-      width:'100%', 
-      backgroundColor:'transparent'
-    }} />
+
+  const Separator = ({ height }: SeparatorProps) => (
+    <View
+      style={{
+        height,
+        width: '100%',
+        backgroundColor: 'transparent',
+      }}
+    />
   )
 
   return (
-    <View style={{backgroundColor:'rgb(249, 250, 255)'}}>
+    <View style={{ backgroundColor: 'rgb(249, 250, 255)' }}>
       <SubPageHeader title="settings" />
       {
         // 로그인 이후 나올 설정
       }
-      {
-        // 로그인 이전 나올 설정
-        <>
-        <SettingItem k='Lauguage' v='English' />
+      <>
+        <SettingItem k="Lauguage" v="English" />
         <Separator height={1} />
-        <SettingItem k='Currency' v='UST' />
+        <SettingItem k="Currency" v="UST" />
         <Separator height={1} />
-        <SettingItem k='Network' v='Columbus-4' />
+        <SettingItem k="Network" v="Columbus-4" />
         <Separator height={20} />
-        <ButtonItem name='Connect' icon='wallet' />
-        </>
-      }
-      {
-      }
+        <ButtonItem name="Connect" icon="wallet" />
+      </>
+      {}
     </View>
   )
 }
@@ -73,14 +81,14 @@ const Setting = () => {
 const styles = EStyleSheet.create({
   settingContainer: {
     backgroundColor: 'white',
-    flexDirection: 'row', 
-    justifyContent:'space-between',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     padding: 20,
   },
   settingKey: {
     fontSize: 16,
     lineHeight: 24,
-    color: "$primaryColor",
+    color: '$primaryColor',
   },
   settingValue: {
     fontSize: 16,
@@ -88,10 +96,10 @@ const styles = EStyleSheet.create({
     color: 'rgb(84, 147, 247)',
   },
   buttonText: {
-    fontSize:16,
-    lineHeight:24,
-    color: "$primaryColor",
-  }
+    fontSize: 16,
+    lineHeight: 24,
+    color: '$primaryColor',
+  },
 })
 
 export default Setting

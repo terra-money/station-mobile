@@ -4,7 +4,7 @@ import { DepositUI } from '@terra-money/use-native-station'
 import Orb from '../../components/Orb'
 import Displays from '../../components/Displays'
 
-const Deposit = ({ title, contents, ...rest }: DepositUI) => {
+const Deposit = ({ contents, ...rest }: DepositUI) => {
   const { ratio, completed, percent, total } = rest
 
   return (

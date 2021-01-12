@@ -45,7 +45,9 @@ const ConnectView = (props: Props) => {
   try {
     if (props.route.params.arg !== undefined) {
       setArg(
-        JSON.parse(Buffer.from(props.route.params.arg, 'base64').toString())
+        JSON.parse(
+          Buffer.from(props.route.params.arg, 'base64').toString()
+        )
       )
       props.route.params.arg = undefined
     }
@@ -122,27 +124,22 @@ const ConnectView = (props: Props) => {
         <Text>{'Password: '}</Text>
         <TextInput
           style={styles.textInput}
-          underlineColorAndroid='#ccc'
+          underlineColorAndroid="#ccc"
           value={password}
-          secureTextEntry={true}
+          secureTextEntry
           onChangeText={setPassword}
           onSubmitEditing={Keyboard.dismiss}
         />
-        <Button
-          title='CONNECT'
-          onPress={(e) => {
-            processConnect()
-          }}
-        />
+        <Button title="CONNECT" onPress={processConnect} />
         <View style={{ margin: 4 }} />
         <Button
-          title='RETURN APP'
+          title="RETURN APP"
           onPress={() => {
             Linking.openURL(returnScheme)
           }}
         />
         <View style={{ margin: 4 }} />
-        <Button title='RETURN DASHBOARD' onPress={gotoDashboard} />
+        <Button title="RETURN DASHBOARD" onPress={gotoDashboard} />
       </View>
 
       {/* LOADING INDICATOR */}
@@ -158,7 +155,7 @@ const ConnectView = (props: Props) => {
             justifyContent: 'center',
           }}
         >
-          <ActivityIndicator size='large' color='#000' />
+          <ActivityIndicator size="large" color="#000" />
         </View>
       )}
     </>

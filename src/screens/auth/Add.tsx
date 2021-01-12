@@ -1,12 +1,17 @@
-import React, { RefObject, useRef, useState } from 'react'
-import { Text, TextInput, Button, Keyboard } from 'react-native'
-import { WithKeys } from '../../hooks'
+import React, { useRef, useState } from 'react'
+import {
+  Text,
+  TextInput,
+  Button,
+  Keyboard,
+  Alert,
+} from 'react-native'
 import { recover } from '../../utils/wallet'
 import useOnAuth from './useOnAuth'
 import { MnemonicKey } from '@terra-money/terra.js'
-import { Alert } from 'react-native'
+
 import EStyleSheet from 'react-native-extended-stylesheet'
-import { props } from 'ramda'
+import { WithKeys } from '../../hooks'
 
 interface Props {
   generated?: string[]
@@ -17,7 +22,7 @@ interface Keys {
   keys?: Key[]
 }
 
-const Add = ({ generated, names, keys }: Props & Keys) => {
+const Add = ({ generated }: Props & Keys) => {
   useOnAuth()
 
   const [name, setName] = useState('test1')
@@ -63,7 +68,7 @@ const Add = ({ generated, names, keys }: Props & Keys) => {
       <TextInput
         ref={textInputName}
         style={styles.textInput}
-        underlineColorAndroid='#ccc'
+        underlineColorAndroid="#ccc"
         value={name}
         onChangeText={(text) => {
           setName(text)
@@ -75,22 +80,24 @@ const Add = ({ generated, names, keys }: Props & Keys) => {
       <TextInput
         ref={textInputPassword}
         style={styles.textInput}
-        underlineColorAndroid='#ccc'
+        underlineColorAndroid="#ccc"
         value={password}
-        secureTextEntry={true}
+        secureTextEntry
         onChangeText={(text) => {
           setPassword(text)
         }}
         blurOnSubmit={false}
-        onSubmitEditing={() => textInputPasswordConfirm.current?.focus()}
+        onSubmitEditing={() =>
+          textInputPasswordConfirm.current?.focus()
+        }
       />
       <Text>Password confirm: </Text>
       <TextInput
         ref={textInputPasswordConfirm}
         style={styles.textInput}
-        underlineColorAndroid='#ccc'
+        underlineColorAndroid="#ccc"
         value={confirm}
-        secureTextEntry={true}
+        secureTextEntry
         onChangeText={(text) => {
           setConfirm(text)
         }}
@@ -101,18 +108,21 @@ const Add = ({ generated, names, keys }: Props & Keys) => {
       <TextInput
         ref={textInputSeedPhrase}
         style={styles.textInput}
-        multiline={true}
-        underlineColorAndroid='#ccc'
+        multiline
+        underlineColorAndroid="#ccc"
         value={seed}
         onChangeText={(text) => {
           setSeed(text)
         }}
-        blurOnSubmit={true}
+        blurOnSubmit
         onSubmitEditing={Keyboard.dismiss}
       />
-      <Text>Address: {address}</Text>
+      <Text>Address:{address}</Text>
 
-      <Button title='Generate' onPress={() => seed && generateAddresses()} />
+      <Button
+        title="Generate"
+        onPress={() => seed && generateAddresses()}
+      />
       {mk118 &&
         mk330 &&
         [mk118, mk330].map((mk) => (
@@ -123,13 +133,13 @@ const Add = ({ generated, names, keys }: Props & Keys) => {
           />
         ))}
 
-      <Button title='Submit' onPress={submit} />
+      <Button title="Submit" onPress={submit} />
     </>
   )
 }
 
 export default (props: Props) => (
-  <WithKeys render={(wallets) => <Add {...props} />} />
+  <WithKeys render={() => <Add {...props} />} />
 )
 
 const useGenerateAddresses = (mnemonic: string) => {

@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { useAuth, useSignIn } from '@terra-money/use-native-station'
-import { testPassword } from '../../utils/wallet'
-import { WithKeys } from '../../hooks'
-import Form from '../../components/Form'
-import useOnAuth from './useOnAuth'
+import { useAuth } from '@terra-money/use-native-station'
 import { Alert, Button, Text, TextInput } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet'
+import { testPassword } from '../../utils/wallet'
+import { WithKeys } from '../../hooks'
+import useOnAuth from './useOnAuth'
 
 interface Props {
   wallets: LocalWallet[]
@@ -32,19 +31,23 @@ const Select = ({ wallets }: Props) => {
 
   return (
     <>
-      <Text>{'Select wallet: ' + name}</Text>
-      {wallets.map(({ name }) => (
-        <Button title={name} onPress={() => setName(name)} />
+      <Text>{`Select wallet: ${name}`}</Text>
+      {wallets.map(({ name }, index) => (
+        <Button
+          key={index}
+          title={name}
+          onPress={() => setName(name)}
+        />
       ))}
       <Text>{'Password: '}</Text>
       <TextInput
         style={styles.textInput}
-        underlineColorAndroid='#ccc'
+        underlineColorAndroid="#ccc"
         value={password}
-        secureTextEntry={true}
+        secureTextEntry
         onChangeText={setPassword}
       />
-      <Button title='Log in' onPress={submit} />
+      <Button title="Log in" onPress={submit} />
     </>
   )
 }

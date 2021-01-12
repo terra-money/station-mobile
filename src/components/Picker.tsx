@@ -1,11 +1,16 @@
-import React from 'react'
-import { Text, View } from 'react-native'
-import { StyleProp, TextStyle } from 'react-native'
-import { TouchableOpacity } from 'react-native'
+import React, { ReactElement } from 'react'
+import {
+  Text,
+  View,
+  StyleProp,
+  TextStyle,
+  TouchableOpacity,
+} from 'react-native'
+
 import { Options } from '@terra-money/use-native-station'
-import { useApp } from '../hooks'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import EStyleSheet from 'react-native-extended-stylesheet';
+import EStyleSheet from 'react-native-extended-stylesheet'
+import { useApp } from '../hooks'
 
 interface Props {
   value?: string
@@ -13,9 +18,16 @@ interface Props {
   options?: Options
   style?: StyleProp<TextStyle>
   showBox: boolean
+  children: ReactElement
 }
 
-const Picker = ({ value: current, onChange, options, style, showBox }: Props) => {
+const Picker = ({
+  value: current,
+  onChange,
+  options,
+  style,
+  showBox,
+}: Props) => {
   const { drawer } = useApp()
 
   const submit = (value: string) => {
@@ -26,21 +38,24 @@ const Picker = ({ value: current, onChange, options, style, showBox }: Props) =>
   const picker = (
     <View style={styles.pickerContainer}>
       {options?.map(({ value, children }, index) => (
-        <View
-          key={value}>
+        <View key={value}>
           <TouchableOpacity
             style={styles.pickerItemContainer}
-            onPress={() => submit(value)}>
+            onPress={() => submit(value)}
+          >
             <Text style={styles.pickerItemText}>{children}</Text>
             <View style={styles.pickerItemRadio}>
-              {value === current && <View style={styles.pickerItemRadioSelected} />}
+              {value === current && (
+                <View style={styles.pickerItemRadioSelected} />
+              )}
             </View>
           </TouchableOpacity>
 
-          { // 마지막 index는 separator를 출력하지 않음
-            options?.length !== index + 1
-              ? <View style={styles.pickerSeparator} />
-              : null
+          {
+            // 마지막 index는 separator를 출력하지 않음
+            options?.length !== index + 1 ? (
+              <View style={styles.pickerSeparator} />
+            ) : null
           }
         </View>
       ))}
@@ -50,21 +65,22 @@ const Picker = ({ value: current, onChange, options, style, showBox }: Props) =>
   const { children } = options?.find((o) => o.value === current) ?? {}
 
   return (
-    
     <TouchableOpacity onPress={() => drawer.open(picker)}>
-      {
-        showBox === undefined
-        ?
-        // DASHBOARD에서 사용
+      {showBox === undefined ? (
+        //DASHBOARD에서 사용
         <View style={styles.badge}>
-          <Text style={[styles.badgeText]}>{children}</Text>
-          <Icon name="arrow-drop-down" size={18} color="#fff" style={styles.badgeIcon} />
+          <Text style={styles.badgeText}>{children}</Text>
+          <Icon
+            name="arrow-drop-down"
+            size={18}
+            color="#fff"
+            style={styles.badgeIcon}
+          />
         </View>
-        :
+      ) : (
         // DASHBOARD 이외 Text만 출력되어야 할 곳에서 사용
         <Text style={style}>{children}</Text>
-      }
-      
+      )}
     </TouchableOpacity>
   )
 }
@@ -75,22 +91,22 @@ const styles = EStyleSheet.create({
    * BADGE
    */
   badge: {
-    backgroundColor: "rgba(255,255,255,0.1)",
+    backgroundColor: 'rgba(255,255,255,0.1)',
     height: 28,
     borderRadius: 8,
     paddingHorizontal: 12,
     marginTop: -2,
-    flexDirection: "row",
-    alignItems: "center"
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   badgeIcon: {
     marginLeft: 5,
-    marginRight: -5
+    marginRight: -5,
   },
   badgeText: {
     fontSize: 12,
     lineHeight: 22,
-    color: "rgba(255,255,255,1)",
+    color: 'rgba(255,255,255,1)',
     // fontFamily: "TerraCompact-Regular",
   },
 
@@ -100,19 +116,19 @@ const styles = EStyleSheet.create({
   pickerContainer: {
     borderRadius: 18,
     flexDirection: 'column',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   pickerItemContainer: {
     paddingHorizontal: 30,
     paddingVertical: 18,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   pickerItemText: {
     fontFamily: '$fontGothamMedium',
     fontSize: 16,
     lineHeight: 24,
-    color: '$primaryColor'
+    color: '$primaryColor',
   },
   pickerItemRadio: {
     width: 20,
@@ -120,7 +136,7 @@ const styles = EStyleSheet.create({
     borderRadius: 10,
     backgroundColor: '$primaryColorOp20',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   pickerItemRadioSelected: {
     width: 12,
@@ -128,12 +144,11 @@ const styles = EStyleSheet.create({
     borderRadius: 6,
     backgroundColor: '$primaryColor',
   },
-  pickerDivider: { 
-    width: '100%', 
-    height: 1, 
+  pickerDivider: {
+    width: '100%',
+    height: 1,
     backgroundColor: '$dividerColor',
   },
-
 })
 
 export default Picker

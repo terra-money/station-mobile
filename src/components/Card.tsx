@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react'
 import { View, Text, TouchableOpacity, ViewStyle } from 'react-native'
-import { API, AuthProvider } from '@terra-money/use-native-station'
+import { API } from '@terra-money/use-native-station'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import EStyleSheet from 'react-native-extended-stylesheet';
+import EStyleSheet from 'react-native-extended-stylesheet'
 import { AreaChart, Path } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 
@@ -19,31 +19,55 @@ interface Props extends Partial<API<any>> {
   dark?: boolean
 }
 
-const Card = ({ style, title, badge, action, content, value, unit, children, ...rest }: Props) => {
+const Card = ({
+  style,
+  title,
+  badge,
+  action,
+  content,
+  value,
+  unit,
+  children,
+  ...rest
+}: Props) => {
   const { onPress, dark, error, loading } = rest
   const textStyle = [styles.text, dark && darkStyles.text]
   const data = [460, 466, 480, 490, 500, 510, 520]
   const Line = ({ line }: any) => (
     <Path
-        key={ 'line ' }
-        d={ line }
-        stroke={ 'rgba(255, 255, 255,.6)' }
-        fill={ 'none' }
+      key="line "
+      d={line}
+      stroke="rgba(255, 255, 255,.6)"
+      fill="none"
     />
   )
 
   const render = () => (
-    <View style={[styles.card, dark ? darkStyles.card : lightStyles.card, style]}>
+    <View
+      style={[
+        styles.card,
+        dark ? darkStyles.card : lightStyles.card,
+        style,
+      ]}
+    >
       {title && (
         <View style={styles.header}>
           <Text style={[textStyle, styles.title]}>{title}</Text>
-          {action ?? 
-            (badge 
-            ? <View style={styles.badge}>
-                <Text style={[textStyle, styles.badge_text]}>{badge}</Text>
-              </View> 
-            : <Icon name="chevron-right" size={25} color="#fff" style={styles.icon} />)
-          }
+          {action ??
+            (badge ? (
+              <View style={styles.badge}>
+                <Text style={[textStyle, styles.badge_text]}>
+                  {badge}
+                </Text>
+              </View>
+            ) : (
+              <Icon
+                name="chevron-right"
+                size={25}
+                color="#fff"
+                style={styles.icon}
+              />
+            ))}
         </View>
       )}
 
@@ -52,25 +76,29 @@ const Card = ({ style, title, badge, action, content, value, unit, children, ...
       ) : loading ? (
         <Text style={textStyle}>Loading...</Text>
       ) : (
-        children ?? 
-        <View style={styles.bottom}>
-          <Text style={[textStyle, styles.value]}>
-            {content}
-            {value}
-            <Text style={styles.unit}> {unit}</Text>
-          </Text>
-          {action ?? (badge ? <View/> :
-            <AreaChart
-              style={{ width: 60, height: 30, marginBottom: 5 }}
-              data={data}
-              contentInset={{ top: 0, bottom: 10 }}
-              curve={shape.curveNatural}
-              svg={{ fill: 'rgba(255, 255, 255, 0.2)' }}
-            >
-              <Line/>
-            </AreaChart>
-          )}
-        </View>
+        children ?? (
+          <View style={styles.bottom}>
+            <Text style={[textStyle, styles.value]}>
+              {content}
+              {value}
+              <Text style={styles.unit}> {unit}</Text>
+            </Text>
+            {action ??
+              (badge ? (
+                <View />
+              ) : (
+                <AreaChart
+                  style={{ width: 60, height: 30, marginBottom: 5 }}
+                  data={data}
+                  contentInset={{ top: 0, bottom: 10 }}
+                  curve={shape.curveNatural}
+                  svg={{ fill: 'rgba(255, 255, 255, 0.2)' }}
+                >
+                  <Line />
+                </AreaChart>
+              ))}
+          </View>
+        )
       )}
     </View>
   )
@@ -87,7 +115,7 @@ export default Card
 /* styles */
 const styles = EStyleSheet.create({
   text: {
-    color: "$primaryColor",
+    color: '$primaryColor',
   },
 
   card: {
@@ -96,13 +124,13 @@ const styles = EStyleSheet.create({
     marginVertical: 10,
     padding: 20,
     // paddingVertical: 20,
-    flexDirection: "column"
+    flexDirection: 'column',
   },
 
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    height: 25
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: 25,
   },
 
   icon: {
@@ -111,50 +139,50 @@ const styles = EStyleSheet.create({
   },
 
   badge: {
-    backgroundColor: "rgba(255,255,255,0.1)",
+    backgroundColor: 'rgba(255,255,255,0.1)',
     height: 24,
     borderRadius: 12,
     paddingHorizontal: 12,
-    marginTop: -1
+    marginTop: -1,
   },
 
   badge_text: {
     fontSize: 12,
     lineHeight: 22,
-    color: "rgba(255,255,255,0.75)",
-    fontFamily: "TerraCompact-Regular",
+    color: 'rgba(255,255,255,0.75)',
+    fontFamily: 'TerraCompact-Regular',
   },
 
   title: {
-    fontFamily: "TerraCompact-Bold",
+    fontFamily: 'TerraCompact-Bold',
     fontSize: 14,
     lineHeight: 21,
-    textTransform: "capitalize"
+    textTransform: 'capitalize',
   },
-  
+
   value: {
-    fontFamily: "TerraCompact-Regular",
+    fontFamily: 'TerraCompact-Regular',
     fontSize: 28,
     letterSpacing: -0.5,
     lineHeight: 36,
-    marginTop: 10
+    marginTop: 10,
   },
 
   unit: {
     fontSize: 18,
-    letterSpacing: 0
+    letterSpacing: 0,
   },
   bottom: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end"
-  }
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
 })
 
 const lightStyles = EStyleSheet.create({
   card: {
-    backgroundColor: "white",
-    shadowColor: "black",
+    backgroundColor: 'white',
+    shadowColor: 'black',
     shadowOffset: { width: 0, height: 20 },
     shadowRadius: 20,
     shadowOpacity: 0.05,
@@ -162,10 +190,10 @@ const lightStyles = EStyleSheet.create({
 })
 
 const darkStyles = EStyleSheet.create({
-  text: { color: "white" },
+  text: { color: 'white' },
   card: {
-    backgroundColor: "$primaryColor",
-    shadowColor: "black",
+    backgroundColor: '$primaryColor',
+    shadowColor: 'black',
     shadowOffset: { width: 0, height: 20 },
     shadowRadius: 20,
     shadowOpacity: 0.05,

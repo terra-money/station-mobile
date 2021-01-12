@@ -9,10 +9,17 @@ interface Props extends CardProps {
   card?: boolean
 }
 
-const Info: FC<Props> = ({ icon, title, content, children, card }) => {
+const Info: FC<Props> = ({
+  icon,
+  title,
+  content,
+  children,
+  card,
+}) => {
   const inner = (
     <>
-      {icon && (typeof icon === 'string' ? <Icon name={icon} /> : icon)}
+      {icon &&
+        (typeof icon === 'string' ? <Icon name={icon} /> : icon)}
       {title && <Text>{title}</Text>}
       <Text>{content ?? children}</Text>
     </>

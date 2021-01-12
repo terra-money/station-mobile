@@ -14,7 +14,7 @@ const DisplaySelector = (props: Props) => {
       value={current}
       options={options}
       onChange={setCurrent}
-      style={{ color: "white" }}
+      style={{ color: 'white' }}
     />
   )
 

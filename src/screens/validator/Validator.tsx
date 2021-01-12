@@ -1,8 +1,13 @@
 import React from 'react'
 import { Text } from 'react-native'
 import { useRoute, RouteProp } from '@react-navigation/native'
-import { useMenu, useAuth, useValidator } from '@terra-money/use-native-station'
-import { ValidatorUI } from '@terra-money/use-native-station'
+import {
+  useMenu,
+  useAuth,
+  useValidator,
+  ValidatorUI,
+} from '@terra-money/use-native-station'
+
 import { StakingRouteParams } from '../../types/navigation'
 import SubPage from '../../components/SubPage'
 import Header from './Header'
@@ -30,7 +35,7 @@ const Staking = () => {
       <Claims address={address} />
     </>
   )
-  
+
   console.log(api)
 
   return (

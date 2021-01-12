@@ -7,7 +7,14 @@ import ExtLink from '../../components/ExtLink'
 import ViewProfile from './ViewProfile'
 
 const Header = (v: ValidatorUI) => {
-  const { profile, moniker, status, link, details, operatorAddress } = v
+  const {
+    profile,
+    moniker,
+    status,
+    link,
+    details,
+    operatorAddress,
+  } = v
   const { votingPower, selfDelegation, commission, uptime } = v
 
   const title = (
@@ -41,14 +48,3 @@ const Header = (v: ValidatorUI) => {
 }
 
 export default Header
-
-/* helpers */
-const getBadgeColor = (status: string) => {
-  const suffix: { [status: string]: string } = {
-    active: 'success',
-    inactive: 'warning',
-    jailed: 'danger',
-  }
-
-  return suffix[status]
-}

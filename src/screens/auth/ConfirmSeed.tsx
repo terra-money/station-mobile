@@ -1,5 +1,8 @@
 import React from 'react'
-import { useConfirmSeed, SignUpNext } from '@terra-money/use-native-station'
+import {
+  useConfirmSeed,
+  SignUpNext,
+} from '@terra-money/use-native-station'
 import Form, { State } from '../../components/Form'
 import ButtonGroup from '../../components/ButtonGroup'
 

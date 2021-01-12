@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import { TallyingUI } from '@terra-money/use-native-station'
 
-const ProposalFooter = ({ title, contents }: TallyingUI) => (
+const ProposalFooter = ({ contents }: TallyingUI) => (
   <>
     {contents.map(({ title, content }) => (
       <View key={title}>

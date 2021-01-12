@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Text, View } from 'react-native'
 import { Mnemonics as Props } from '@terra-money/use-native-station'
+import EStyleSheet from 'react-native-extended-stylesheet'
 import Seed from './Seed'
-import EStyleSheet from 'react-native-extended-stylesheet';
 
 const Seeds = ({ title, fields, paste, suggest }: Props) => {
   const [currentFocusIndex, setCurrentFocusIndex] = useState<number>()
