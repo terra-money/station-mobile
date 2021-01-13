@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import {
   useMenu,
   useGovernance,
@@ -15,13 +15,13 @@ import ProposalItem from './ProposalItem'
 import Info from '../../components/Info'
 import Page from '../../components/Page'
 
-const Governance = () => {
+const Governance = (): ReactElement => {
   const { Governance: title } = useMenu()
   const { ui, ...api } = useGovernance({ status: '' })
 
   console.log(JSON.stringify(ui))
 
-  const renderItem = (item: ProposalItemUI) => (
+  const renderItem = (item: ProposalItemUI): ReactElement => (
     <ProposalItem {...item} key={item.id + item.status} />
   )
 
@@ -94,7 +94,7 @@ const Governance = () => {
               </View>
               <TouchableOpacity
                 style={{}}
-                onPress={() => {
+                onPress={(): void => {
                   setParamVisibility(!paramVisibility)
                 }}
               >

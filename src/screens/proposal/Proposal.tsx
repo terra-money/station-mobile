@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { useRoute, RouteProp } from '@react-navigation/native'
 import {
   ProposalUI,
@@ -19,14 +19,14 @@ import NotVoted from './NotVoted'
 
 type ValidatorRouteProp = RouteProp<GovernanceRouteParams, 'Proposal'>
 
-const Proposal = () => {
+const Proposal = (): ReactElement => {
   const { Proposal: title } = useMenu()
   const { params } = useRoute<ValidatorRouteProp>()
   const { id } = params
   const { user } = useAuth()
   const { ui, ...api } = useProposal(id, user)
 
-  const render = (ui: ProposalUI) => {
+  const render = (ui: ProposalUI): ReactElement => {
     const { vote, deposit, tallying } = ui
 
     return (

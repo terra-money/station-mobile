@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import {
   PriceUI,
   Filter,
@@ -11,16 +11,23 @@ import Number from '../../components/Number'
 import Picker from '../../components/Picker'
 import Variation from './Variation'
 
-const Price = ({ actives }: { actives: string[] }) => {
+const Price = ({ actives }: { actives: string[] }): ReactElement => {
   const { title, filter, ui, ...api } = usePrice(actives)
   const { denom, interval } = filter
 
-  const renderFilter = ({ value, set, options }: Filter) =>
-    !!options.length && (
-      <Picker value={value} onChange={set} options={options} />
-    )
+  const renderFilter = ({
+    value,
+    set,
+    options,
+  }: Filter): ReactElement => (
+    <>
+      {!!options.length && (
+        <Picker value={value} onChange={set} options={options} />
+      )}
+    </>
+  )
 
-  const render = ({ price, variation }: PriceUI) => (
+  const render = ({ price, variation }: PriceUI): ReactElement => (
     <>
       <Number>{format.decimal(String(price))}</Number>
       <Variation variation={variation} showPercent />

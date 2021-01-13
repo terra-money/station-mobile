@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { ReactElement, useRef, useState } from 'react'
 import {
   Text,
   TextInput,
@@ -22,7 +22,7 @@ interface Keys {
   keys?: Key[]
 }
 
-const Add = ({ generated }: Props & Keys) => {
+const Add = ({ generated }: Props & Keys): ReactElement => {
   useOnAuth()
 
   const [name, setName] = useState('test1')
@@ -34,7 +34,7 @@ const Add = ({ generated }: Props & Keys) => {
   const [mk118, setMk118] = useState<MnemonicKey>()
   const [mk330, setMk330] = useState<MnemonicKey>()
 
-  const generateAddresses = () => {
+  const generateAddresses = (): void => {
     if (seed) {
       const { mk118, mk330 } = useGenerateAddresses(seed)
       setMk118(mk118)
@@ -42,7 +42,7 @@ const Add = ({ generated }: Props & Keys) => {
     }
   }
 
-  const submit = () => {
+  const submit = (): void => {
     try {
       const mk = address === mk118?.accAddress ? mk118 : mk330
       mk && recover(mk, { name, password })
@@ -70,11 +70,13 @@ const Add = ({ generated }: Props & Keys) => {
         style={styles.textInput}
         underlineColorAndroid="#ccc"
         value={name}
-        onChangeText={(text) => {
+        onChangeText={(text): void => {
           setName(text)
         }}
         blurOnSubmit={false}
-        onSubmitEditing={() => textInputPassword.current?.focus()}
+        onSubmitEditing={(): void =>
+          textInputPassword.current?.focus()
+        }
       />
       <Text>Password: </Text>
       <TextInput
@@ -83,11 +85,11 @@ const Add = ({ generated }: Props & Keys) => {
         underlineColorAndroid="#ccc"
         value={password}
         secureTextEntry
-        onChangeText={(text) => {
+        onChangeText={(text): void => {
           setPassword(text)
         }}
         blurOnSubmit={false}
-        onSubmitEditing={() =>
+        onSubmitEditing={(): void =>
           textInputPasswordConfirm.current?.focus()
         }
       />
@@ -98,11 +100,13 @@ const Add = ({ generated }: Props & Keys) => {
         underlineColorAndroid="#ccc"
         value={confirm}
         secureTextEntry
-        onChangeText={(text) => {
+        onChangeText={(text): void => {
           setConfirm(text)
         }}
         blurOnSubmit={false}
-        onSubmitEditing={() => textInputSeedPhrase.current?.focus()}
+        onSubmitEditing={(): void =>
+          textInputSeedPhrase.current?.focus()
+        }
       />
       <Text>Seed phrase:</Text>
       <TextInput
@@ -111,7 +115,7 @@ const Add = ({ generated }: Props & Keys) => {
         multiline
         underlineColorAndroid="#ccc"
         value={seed}
-        onChangeText={(text) => {
+        onChangeText={(text): void => {
           setSeed(text)
         }}
         blurOnSubmit
@@ -121,7 +125,9 @@ const Add = ({ generated }: Props & Keys) => {
 
       <Button
         title="Generate"
-        onPress={() => seed && generateAddresses()}
+        onPress={(): void => {
+          seed && generateAddresses()
+        }}
       />
       {mk118 &&
         mk330 &&
@@ -129,7 +135,7 @@ const Add = ({ generated }: Props & Keys) => {
           <Button
             key={mk.accAddress}
             title={mk.accAddress}
-            onPress={() => setAddress(mk.accAddress)}
+            onPress={(): void => setAddress(mk.accAddress)}
           />
         ))}
 
@@ -138,11 +144,16 @@ const Add = ({ generated }: Props & Keys) => {
   )
 }
 
-export default (props: Props) => (
-  <WithKeys render={() => <Add {...props} />} />
+export default (props: Props): ReactElement => (
+  <WithKeys render={(): ReactElement => <Add {...props} />} />
 )
 
-const useGenerateAddresses = (mnemonic: string) => {
+const useGenerateAddresses = (
+  mnemonic: string
+): {
+  mk118: MnemonicKey
+  mk330: MnemonicKey
+} => {
   const mk118 = new MnemonicKey({ mnemonic, coinType: 118 })
   const mk330 = new MnemonicKey({ mnemonic, coinType: 330 })
 

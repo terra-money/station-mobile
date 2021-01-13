@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import {
   StyleSheet,
   View,
@@ -26,7 +26,7 @@ interface HeaderBottomProps {
   title: string
 }
 
-const HeaderSafeArea = () => {
+const HeaderSafeArea = (): ReactElement => {
   const insets = useSafeAreaInsets()
   console.log('insets.top', insets.top)
   console.log('insets.bottom', insets.bottom)
@@ -48,7 +48,7 @@ const HeaderSafeArea = () => {
 const HeaderTop = ({
   icName: iconName,
   icSize: iconSize,
-}: HeaderTopProps) => {
+}: HeaderTopProps): ReactElement => {
   const navigation = useNavigation()
   console.log('canGoBack', navigation.canGoBack())
 
@@ -60,7 +60,7 @@ const HeaderTop = ({
           style={[styles.headerChild, styles.headerChildFixedHeight]}
         >
           <TouchableOpacity
-            onPress={() => {
+            onPress={(): void => {
               navigation.canGoBack() && navigation.goBack()
             }}
           >
@@ -78,7 +78,7 @@ const HeaderTop = ({
   )
 }
 
-const HeaderBottom = ({ title }: HeaderBottomProps) => (
+const HeaderBottom = ({ title }: HeaderBottomProps): ReactElement => (
   <View style={styles.headerChild}>
     <Text style={{ fontSize: 26, lineHeight: 39, color: '#fff' }}>
       {title}
@@ -86,7 +86,10 @@ const HeaderBottom = ({ title }: HeaderBottomProps) => (
   </View>
 )
 
-const SubPageHeader = ({ title, headerTop }: HeaderProps) => (
+const SubPageHeader = ({
+  title,
+  headerTop,
+}: HeaderProps): ReactElement => (
   <>
     <StatusBar
       barStyle="dark-content"
@@ -94,7 +97,7 @@ const SubPageHeader = ({ title, headerTop }: HeaderProps) => (
     />
     <View style={styles.headerContainer}>
       <HeaderTop {...headerTop} />
-      <HeaderBottom title={title} />
+      <HeaderBottom title={title || ''} />
     </View>
   </>
 )

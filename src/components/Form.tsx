@@ -42,7 +42,7 @@ const Form: FC<Props> = ({
         <Field
           field={field}
           focus={index === currentFieldIndex}
-          onFocus={() => setCurrentFieldIndex(index)}
+          onFocus={(): void => setCurrentFieldIndex(index)}
           render={renderField}
           key={field.attrs.id}
         />

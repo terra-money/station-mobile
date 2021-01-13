@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, ReactElement } from 'react'
 import { modules } from '../../utils'
 import Add from './Add'
 
-const New = () => {
+const New = (): ReactElement => {
   const [seed, setSeed] = useState<string[]>([])
 
   useEffect(() => {
-    const generate = async () => {
+    const generate = async (): Promise<void> => {
       const mnemonic = await modules.generateSeed()
       setSeed(mnemonic.split(' '))
     }
@@ -14,7 +14,7 @@ const New = () => {
     generate()
   }, [])
 
-  return seed.length === 24 ? <Add generated={seed} /> : null
+  return <>{seed.length === 24 && <Add generated={seed} />}</>
 }
 
 export default New

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import {
   useAssets,
   useAuth,
@@ -19,7 +19,11 @@ import { getDecyrptedKey } from '../../utils/wallet'
 import WithAuth from '../../components/WithAuth'
 import Page from '../../components/Page'
 
-const SendComponent = ({ denom }: { denom: string }) => {
+const SendComponent = ({
+  denom,
+}: {
+  denom: string
+}): ReactElement => {
   const { user } = useAuth()
 
   const [sendTo, setSendTo] = useState<string>(
@@ -62,7 +66,7 @@ const SendComponent = ({ denom }: { denom: string }) => {
       />
       <Button
         title="Send"
-        onPress={async () => {
+        onPress={async (): Promise<void> => {
           try {
             const decyrptedKey = await getDecyrptedKey(
               user?.name || '',
@@ -104,7 +108,7 @@ const SendComponent = ({ denom }: { denom: string }) => {
   )
 }
 
-const Assets = ({ user }: { user: User }) => {
+const Assets = ({ user }: { user: User }): ReactElement => {
   const { ui } = useAssets(user)
 
   console.log(ui?.available?.list, user.address)
@@ -123,7 +127,7 @@ const Assets = ({ user }: { user: User }) => {
   )
 }
 
-const Bank = () => {
+const Bank = (): ReactElement => {
   const { Bank: title } = useMenu()
 
   return (
@@ -132,7 +136,9 @@ const Bank = () => {
         barStyle="dark-content"
         backgroundColor="transparent"
       />
-      <WithAuth card>{(user) => <Assets user={user} />}</WithAuth>
+      <WithAuth>
+        {(user): ReactElement => <Assets user={user} />}
+      </WithAuth>
     </Page>
   )
 }

@@ -1,4 +1,9 @@
-import React, { useRef, useEffect, ReactNode } from 'react'
+import React, {
+  useRef,
+  useEffect,
+  ReactNode,
+  ReactElement,
+} from 'react'
 
 import { TextInput, Text } from 'react-native'
 import { Field as FieldProps } from '@terra-money/use-native-station'
@@ -13,7 +18,12 @@ interface Props {
   render?: (field: FieldProps) => ReactNode
 }
 
-const Field = ({ field, focus, onFocus, render }: Props) => {
+const Field = ({
+  field,
+  focus,
+  onFocus,
+  render,
+}: Props): ReactElement => {
   const { label, element, attrs, setValue, error } = field
   const { button, unit, options } = field
 
@@ -42,7 +52,7 @@ const Field = ({ field, focus, onFocus, render }: Props) => {
   )
 
   const elements = {
-    input: () =>
+    input: (): ReactElement =>
       !['checkbox', 'radio'].includes(attrs.type!) ? (
         <>
           {header}
@@ -65,13 +75,13 @@ const Field = ({ field, focus, onFocus, render }: Props) => {
           <Text>{label}</Text>
         </>
       ),
-    select: () => (
+    select: (): ReactElement => (
       <>
         {header}
         <Picker {...attrs} onChange={setValue} options={options} />
       </>
     ),
-    textarea: () => (
+    textarea: (): ReactElement => (
       <>
         {header}
         <TextInput

@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View, Text } from 'react-native'
 import { TallyingUI } from '@terra-money/use-native-station'
 
-const ProposalFooter = ({ contents }: TallyingUI) => (
+const ProposalFooter = ({ contents }: TallyingUI): ReactElement => (
   <>
     {contents.map(({ title, content }) => (
       <View key={title}>

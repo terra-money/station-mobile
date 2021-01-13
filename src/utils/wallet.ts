@@ -7,7 +7,7 @@ const { Preferences, Keystore } = NativeModules
 export const recover = async (
   mk: MnemonicKey,
   { name, password }: { name: string; password: string }
-) => {
+): Promise<void> => {
   try {
     const key = encrypt(mk.privateKey.toString('hex'), password)
     if (!key) {
@@ -23,7 +23,7 @@ export const recover = async (
 export const decryptKey = (
   encryptedKey: string,
   password: string
-) => {
+): string => {
   try {
     return decrypt(encryptedKey, password)
   } catch {
@@ -60,7 +60,7 @@ const addWallet = async ({
 }: {
   wallet: LocalWallet
   key: string
-}) => {
+}): Promise<void> => {
   const wallets = await getWallets()
 
   if (wallets.find((w) => w.name === wallet.name))
@@ -76,7 +76,7 @@ const addWallet = async ({
 export const getDecyrptedKey = async (
   name: string,
   password: string
-) => {
+): Promise<string> => {
   const encryptedKey = await getEncryptedKey(name)
   const decrypted = decryptKey(encryptedKey, password)
   return decrypted
@@ -88,7 +88,7 @@ export const testPassword = async ({
 }: {
   name: string
   password: string
-}) => {
+}): Promise<boolean> => {
   const wallet = await getWallet(name)
 
   if (!wallet) throw new Error('Wallet with that name does not exist')

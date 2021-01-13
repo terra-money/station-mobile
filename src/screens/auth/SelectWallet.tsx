@@ -39,7 +39,7 @@ const Screen = (): ReactElement => {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('1234567890')
 
-  const submit = async () => {
+  const submit = async (): Promise<void> => {
     try {
       if ((await testPassword({ name, password })) === false)
         throw new Error('Wrong Password!')
@@ -84,7 +84,7 @@ const Screen = (): ReactElement => {
                       value: name,
                     }
                   })}
-                  onValueChange={(itemValue) => {
+                  onValueChange={(itemValue): void => {
                     setName(`${itemValue}`)
                   }}
                 />
@@ -111,7 +111,7 @@ const Screen = (): ReactElement => {
             <Button
               title={<BiometricButtonTitle />}
               type={'gray'}
-              onPress={() => {
+              onPress={(): void => {
                 Alert.alert('Comming Soon')
               }}
             />
@@ -125,7 +125,7 @@ const Screen = (): ReactElement => {
 const navigationOptions = (): StackNavigationOptions => {
   return {
     animationEnabled: false,
-    header: () => (
+    header: (): ReactElement => (
       <Header
         type={'blue'}
         goBackIconType="close"

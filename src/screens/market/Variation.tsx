@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Text } from 'react-native'
 import {
   Variation as VariationProps,
@@ -13,7 +13,10 @@ interface Props {
   showPercent?: boolean
 }
 
-const Variation = ({ variation, showPercent }: Props) => {
+const Variation = ({
+  variation,
+  showPercent,
+}: Props): ReactElement => {
   const { amount, value, percent } = variation
   const inc = gt(amount, 0)
   const dec = lt(amount, 0)

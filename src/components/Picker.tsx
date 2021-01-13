@@ -27,10 +27,10 @@ const Picker = ({
   options,
   style,
   showBox,
-}: Props) => {
+}: Props): ReactElement => {
   const { drawer } = useApp()
 
-  const submit = (value: string) => {
+  const submit = (value: string): void => {
     onChange?.(value)
     drawer.close()
   }
@@ -41,7 +41,7 @@ const Picker = ({
         <View key={value}>
           <TouchableOpacity
             style={styles.pickerItemContainer}
-            onPress={() => submit(value)}
+            onPress={(): void => submit(value)}
           >
             <Text style={styles.pickerItemText}>{children}</Text>
             <View style={styles.pickerItemRadio}>
@@ -65,7 +65,7 @@ const Picker = ({
   const { children } = options?.find((o) => o.value === current) ?? {}
 
   return (
-    <TouchableOpacity onPress={() => drawer.open(picker)}>
+    <TouchableOpacity onPress={(): void => drawer.open(picker)}>
       {showBox === undefined ? (
         //DASHBOARD에서 사용
         <View style={styles.badge}>

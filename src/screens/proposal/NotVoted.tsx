@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View, Text } from 'react-native'
 import { NotVoted as Props } from '@terra-money/use-native-station'
 import validators from '../../../validators'
 import Icon from '../../components/Icon'
 
-const NotVoted = ({ title, list, button }: Props) => (
+const NotVoted = ({ title, list, button }: Props): ReactElement => (
   <>
     <Icon name="how_to_vote" />
     <Text>{title}:</Text>

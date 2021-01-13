@@ -1,5 +1,5 @@
 import { CommonActions } from '@react-navigation/native'
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -28,12 +28,12 @@ interface SchemeArgs {
   endpoint_address: string
 }
 
-const ConnectView = (props: Props) => {
+const ConnectView = (props: Props): ReactElement => {
   const [password, setPassword] = useState('1234567890')
   const { user } = useAuth()
   if (user === undefined) {
     Alert.alert('Error', 'Wallet not connected!', [
-      { text: 'OK', onPress: () => gotoWallet() },
+      { text: 'OK', onPress: (): void => gotoWallet() },
     ])
   }
 
@@ -64,7 +64,10 @@ const ConnectView = (props: Props) => {
     }
   }, [arg])
 
-  const putConnect = async (url: string, address?: string) => {
+  const putConnect = async (
+    url: string,
+    address?: string
+  ): Promise<Response> => {
     const init = {
       method: 'PUT',
       headers: {
@@ -77,11 +80,11 @@ const ConnectView = (props: Props) => {
     return await fetch(url, init)
   }
 
-  const returnApp = (scheme: string) => {
+  const returnApp = (scheme: string): void => {
     Linking.openURL(scheme)
   }
 
-  const gotoDashboard = () => {
+  const gotoDashboard = (): void => {
     props.navigation.dispatch(
       CommonActions.reset({
         index: 1,
@@ -90,11 +93,11 @@ const ConnectView = (props: Props) => {
     )
   }
 
-  const gotoWallet = () => {
+  const gotoWallet = (): void => {
     props.navigation.navigate('AuthMenu')
   }
 
-  const processConnect = async () => {
+  const processConnect = async (): Promise<void> => {
     try {
       setLoading(true)
       const ret = await putConnect(endpointAddress, user?.address)
@@ -105,7 +108,7 @@ const ConnectView = (props: Props) => {
         Alert.alert('', 'SUCCESS', [
           {
             text: 'OK',
-            onPress: () => returnApp(returnScheme),
+            onPress: (): void => returnApp(returnScheme),
           },
         ])
       }
@@ -134,7 +137,7 @@ const ConnectView = (props: Props) => {
         <View style={{ margin: 4 }} />
         <Button
           title="RETURN APP"
-          onPress={() => {
+          onPress={(): void => {
             Linking.openURL(returnScheme)
           }}
         />

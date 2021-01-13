@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Text, CheckBoxProps } from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
 import { Trans, SignUpWarning } from '@terra-money/use-native-station'
@@ -8,7 +8,11 @@ interface Props extends SignUpWarning {
   attrs: CheckBoxProps
 }
 
-const Warning = ({ tooltip, i18nKey, attrs }: Props) => (
+const Warning = ({
+  tooltip,
+  i18nKey,
+  attrs,
+}: Props): ReactElement => (
   <>
     <Icon name="error" />
     <Text>{tooltip[0]}</Text>

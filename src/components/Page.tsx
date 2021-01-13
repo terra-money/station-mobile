@@ -46,7 +46,7 @@ const Page: FC<Props> = ({ loading, error, title, children }) => {
             // !auth
             isAuth ? null : (
               <TouchableOpacity
-                onPress={() => navigate('AuthMenu')}
+                onPress={(): void => navigate('AuthMenu')}
                 style={styles.user}
               >
                 <View
@@ -75,7 +75,7 @@ const Page: FC<Props> = ({ loading, error, title, children }) => {
           }
 
           <TouchableOpacity
-            onPress={() => navigate('Setting')}
+            onPress={(): void => navigate('Setting')}
             style={styles.user}
           >
             {
