@@ -7,7 +7,7 @@ export type RootStackParams = {
   Tabs: undefined
   Setting: undefined
   AuthMenu: undefined
-  Select: undefined
+  SelectWallet: undefined
   New: undefined
   Add: undefined
   ConnectView: undefined

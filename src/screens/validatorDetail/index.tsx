@@ -43,7 +43,7 @@ const Staking = (): ReactElement => {
 
 const navigationOptions = (): StackNavigationOptions => {
   return {
-    header: () => <Header />,
+    header: (): ReactElement => <Header />,
   }
 }
 

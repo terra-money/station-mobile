@@ -93,7 +93,7 @@ const Screen = (): ReactElement => {
                   <Button
                     type={'white'}
                     title={'Select Wallet'}
-                    onPress={() => navigate('Select')}
+                    onPress={(): void => navigate('SelectWallet')}
                     containerStyle={{ marginBottom: 10 }}
                   />
                 )}
@@ -101,7 +101,7 @@ const Screen = (): ReactElement => {
                 <Button
                   type={_.some(wallets) ? 'transparent' : 'white'}
                   title={'New Wallet'}
-                  onPress={() => navigate('New')}
+                  onPress={(): void => navigate('New')}
                 />
 
                 <View style={styles.orBox}>
@@ -110,7 +110,7 @@ const Screen = (): ReactElement => {
                 <Button
                   type={'transparent'}
                   title={'Recover Existing Wallet'}
-                  onPress={() => navigate('Add')}
+                  onPress={(): void => navigate('Add')}
                 />
               </>
             ) : (
@@ -132,7 +132,9 @@ const Screen = (): ReactElement => {
 const navigationOptions = (): StackNavigationOptions => {
   return {
     animationEnabled: false,
-    header: () => <Header type={'blue'} goBackIconType="close" />,
+    header: (): ReactElement => (
+      <Header type={'blue'} goBackIconType="close" />
+    ),
   }
 }
 

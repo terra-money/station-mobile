@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View, Text } from 'react-native'
 import { ProposalUI } from '@terra-money/use-native-station'
 import Badge from '../../components/Badge'
 import Voter from './Voter'
 
-const ProposerHeader = ({ title, ...rest }: ProposalUI) => {
+const ProposerHeader = ({
+  title,
+  ...rest
+}: ProposalUI): ReactElement => {
   const {
     statusTranslation,
     meta,

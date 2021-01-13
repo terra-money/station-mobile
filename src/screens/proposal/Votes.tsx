@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Text, View } from 'react-native'
 import { VoteUI, percent } from '@terra-money/use-native-station'
 import Number from '../../components/Number'
 import VoteChart from '../governance/VoteChart'
 import VoteProgress from './VoteProgress'
 
-const Vote = ({ list, total, end, voted, progress }: VoteUI) => (
+const Vote = ({
+  list,
+  total,
+  end,
+  voted,
+  progress,
+}: VoteUI): ReactElement => (
   <>
     <VoteChart options={list} />
     <Text>{total.title}</Text>

@@ -1,5 +1,5 @@
 import { CommonActions } from '@react-navigation/native'
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -35,12 +35,12 @@ interface SchemeArgs {
   endpoint_address: string
 }
 
-const SendTxView = (props: Props) => {
+const SendTxView = (props: Props): ReactElement => {
   const [password, setPassword] = useState('1234567890')
   const { user } = useAuth()
   if (user === undefined) {
     Alert.alert('Error', 'Wallet not connected!', [
-      { text: 'OK', onPress: () => gotoWallet() },
+      { text: 'OK', onPress: (): void => gotoWallet() },
     ])
   }
 
@@ -69,7 +69,7 @@ const SendTxView = (props: Props) => {
     }
   }, [arg])
 
-  const getUnsignedTx = async (url: string) => {
+  const getUnsignedTx = async (url: string): Promise<any> => {
     const response = await fetch(url, { method: 'GET' })
 
     if (response.status !== 200) {
@@ -79,7 +79,10 @@ const SendTxView = (props: Props) => {
     return await response.json()
   }
 
-  const putTxResult = async (url: string, txResult: any) => {
+  const putTxResult = async (
+    url: string,
+    txResult: any
+  ): Promise<Response> => {
     for (const k in txResult) {
       if (txResult.hasOwnProperty(k) && txResult[k] !== undefined) {
         txResult[k] = String(txResult[k])
@@ -98,7 +101,7 @@ const SendTxView = (props: Props) => {
     return await fetch(url, init)
   }
 
-  const BroadcastSignedTx = async (data: any) => {
+  const BroadcastSignedTx = async (data: any): Promise<any> => {
     const decyrptedKey = await getDecyrptedKey(
       user?.name || '',
       password
@@ -112,7 +115,7 @@ const SendTxView = (props: Props) => {
     return result
   }
 
-  const processSignedTx = async () => {
+  const processSignedTx = async (): Promise<void> => {
     try {
       setLoading(true)
       const unsignedTx = await getUnsignedTx(endpointAddress)
@@ -131,7 +134,7 @@ const SendTxView = (props: Props) => {
         Alert.alert('', 'SUCCESS', [
           {
             text: 'OK',
-            onPress: () => returnApp(returnScheme),
+            onPress: (): void => returnApp(returnScheme),
           },
         ])
       }
@@ -142,11 +145,11 @@ const SendTxView = (props: Props) => {
     }
   }
 
-  const returnApp = (scheme: string) => {
+  const returnApp = (scheme: string): void => {
     Linking.openURL(scheme)
   }
 
-  const gotoDashboard = () => {
+  const gotoDashboard = (): void => {
     props.navigation.dispatch(
       CommonActions.reset({
         index: 1,
@@ -155,7 +158,7 @@ const SendTxView = (props: Props) => {
     )
   }
 
-  const gotoWallet = () => {
+  const gotoWallet = (): void => {
     props.navigation.navigate('AuthMenu')
   }
 
@@ -176,7 +179,7 @@ const SendTxView = (props: Props) => {
       <View style={{ margin: 4 }} />
       <Button
         title="RETURN APP"
-        onPress={() => {
+        onPress={(): void => {
           Linking.openURL(returnScheme)
         }}
       />

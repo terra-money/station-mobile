@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { Text, View } from 'react-native'
 import { Mnemonics as Props } from '@terra-money/use-native-station'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import Seed from './Seed'
 
-const Seeds = ({ title, fields, paste, suggest }: Props) => {
+const Seeds = ({
+  title,
+  fields,
+  paste,
+  suggest,
+}: Props): ReactElement => {
   const [currentFocusIndex, setCurrentFocusIndex] = useState<number>()
 
   return (
@@ -16,16 +21,16 @@ const Seeds = ({ title, fields, paste, suggest }: Props) => {
             label={label}
             attrs={{
               ...attrs,
-              onFocus: () => setCurrentFocusIndex(index),
+              onFocus: (): void => setCurrentFocusIndex(index),
               onChangeText: setValue,
-              onPaste: () => {
+              onPaste: (): void => {
                 const clipboard = ''
                 paste(clipboard, index)
               },
             }}
             isFocused={index === currentFocusIndex}
             suggest={suggest}
-            onSelect={(w) => {
+            onSelect={(w): void => {
               setValue?.(w)
               setCurrentFocusIndex((i = 0) =>
                 i + 1 < fields.length ? i + 1 : i

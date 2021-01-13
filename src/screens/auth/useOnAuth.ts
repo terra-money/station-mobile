@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useAuth } from '@terra-money/use-native-station'
 import { settings } from '../../utils/storage'
 
-export default () => {
+export default (): void => {
   const { goBack } = useNavigation()
   const { user } = useAuth()
 

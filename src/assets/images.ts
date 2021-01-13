@@ -7,4 +7,5 @@ export default {
   on_boarding_4: require('../../assets/on_boarding_4.png'),
   terra: require('../../assets/terra.png'),
   satelite: require('../../assets/satelite.png'),
+  bio_face: require('../../assets/bio_face.png'),
 }

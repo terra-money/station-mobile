@@ -31,7 +31,7 @@ const Seed: FC<Props> = (props) => {
       <TextInput {...attrs} />
       {showSuggestions &&
         suggestions.map((w) => (
-          <TouchableOpacity onPress={() => onSelect(w)} key={w}>
+          <TouchableOpacity onPress={(): void => onSelect(w)} key={w}>
             <Text>{w}</Text>
           </TouchableOpacity>
         ))}

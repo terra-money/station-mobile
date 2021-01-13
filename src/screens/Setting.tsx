@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View, Text } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -20,8 +20,8 @@ interface SeparatorProps {
   height: number | string
 }
 
-const Setting = () => {
-  const SettingItem = ({ k, v }: SettingItemProps) => (
+const Setting = (): ReactElement => {
+  const SettingItem = ({ k, v }: SettingItemProps): ReactElement => (
     <>
       <TouchableOpacity style={styles.settingContainer}>
         <Text style={styles.settingKey}>{k}</Text>
@@ -29,7 +29,7 @@ const Setting = () => {
       </TouchableOpacity>
     </>
   )
-  const ButtonItem = ({}: ButtonItemProps) => (
+  const ButtonItem = ({}: ButtonItemProps): ReactElement => (
     <>
       <TouchableOpacity
         style={[
@@ -48,7 +48,7 @@ const Setting = () => {
     </>
   )
 
-  const Separator = ({ height }: SeparatorProps) => (
+  const Separator = ({ height }: SeparatorProps): ReactElement => (
     <View
       style={{
         height,

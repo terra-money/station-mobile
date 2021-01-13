@@ -19,7 +19,7 @@ export const loadKey = async (name: string): Promise<Key> => {
   return JSON.parse(key)
 }
 
-export const storeKeys = (keys: Key[]) => {
+export const storeKeys = (keys: Key[]): void => {
   const names = keys.map(({ name }) => name)
   Preferences.setString('names', JSON.stringify(names))
   keys.forEach((key) =>
@@ -49,7 +49,7 @@ export const importKey = async ({
   name,
   password,
   wallet,
-}: Params) => {
+}: Params): Promise<void> => {
   const names = await loadNames()
 
   if (names.includes(name))
@@ -82,7 +82,7 @@ export const clearKeys = async (): Promise<void> => {
 export const testPassword = (
   { name, password }: { name: string; password: string },
   keys: Key[]
-) => {
+): boolean => {
   const key = keys.find((key) => key.name === name)
 
   if (!key) throw new Error('Key with that name does not exist')

@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useRef, useState } from 'react'
+import React, { ReactElement, useRef, useState } from 'react'
 import {
   Image,
   View,
@@ -63,7 +63,7 @@ interface RenderSwiperProps {
 const RenderSwiper = ({
   refSwipe,
   setLastPage,
-}: RenderSwiperProps) => (
+}: RenderSwiperProps): ReactElement => (
   <Swiper
     ref={refSwipe}
     style={
@@ -71,7 +71,7 @@ const RenderSwiper = ({
         // backgroundColor: '#eee',
       }
     }
-    onIndexChanged={(index) =>
+    onIndexChanged={(index): void =>
       setLastPage(index + 1 === PagerContents.length)
     }
     loop={false}
@@ -103,19 +103,19 @@ const RenderButton = ({
   refSwipe: React.RefObject<Swiper>
   navigation: any
   isLastPage: boolean
-}) => (
+}): ReactElement => (
   <View style={styles.SwiperButtonContainer}>
     {!isLastPage ? (
       <>
         <TouchableOpacity
           style={styles.SwiperButtonSkip}
-          onPress={() => enterTabs({ navigation })}
+          onPress={(): void => enterTabs({ navigation })}
         >
           <Text style={styles.SwiperButtonSkipText}>Skip</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.SwiperButtonNext}
-          onPress={() => refSwipe.current?.scrollBy(1)}
+          onPress={(): void => refSwipe.current?.scrollBy(1)}
         >
           <Icon
             name="arrow-right"
@@ -128,7 +128,7 @@ const RenderButton = ({
       <>
         <TouchableOpacity
           style={styles.SwiperButtonStart}
-          onPress={() => enterTabs({ navigation })}
+          onPress={(): void => enterTabs({ navigation })}
         >
           <Text
             style={{
@@ -145,7 +145,7 @@ const RenderButton = ({
   </View>
 )
 
-const RenderLanguageButton = () => (
+const RenderLanguageButton = (): ReactElement => (
   <View style={styles.SelectLanguageContainer}>
     <TouchableOpacity style={styles.SelectLanguageButton}>
       <Text style={styles.SelectLanguageButtonText}>English</Text>
@@ -159,12 +159,12 @@ const RenderLanguageButton = () => (
   </View>
 )
 
-const enterTabs = ({ navigation }: { navigation: any }) => {
+const enterTabs = ({ navigation }: { navigation: any }): void => {
   setSkipOnboarding(true)
   navigation.navigate('Tabs')
 }
 
-const OnBoarding = () => {
+const OnBoarding = (): ReactElement => {
   const [lastPage, setLastPage] = useState(false)
   const refSwipe = useRef<Swiper>(undefined!)
   const navigation = useNavigation()

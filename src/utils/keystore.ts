@@ -1,4 +1,5 @@
 import CryptoJS from 'crypto-js'
+import dev from './dev'
 
 const keySize = 256
 const iterations = 100
@@ -51,7 +52,7 @@ export const decrypt = (
 
     return decrypted.toString(CryptoJS.enc.Utf8)
   } catch (error) {
-    console.log(error)
+    dev.log(error)
     return ''
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Text } from 'react-native'
 import { ValidatorUI, format } from '@terra-money/use-native-station'
 import Number from '../../components/Number'
@@ -8,16 +8,16 @@ import DelegationTooltip from '../staking/DelegationTooltip'
 // import Delegate from '../../post/Delegate'
 // import Withdraw from '../../post/Withdraw'
 
-const Actions = (v: ValidatorUI) => {
+const Actions = (v: ValidatorUI): ReactElement => {
   const { delegate, undelegate, withdraw } = v
   const { myDelegations, myActionsTable, myRewards } = v
 
   /* tx */
   const open = {
-    delegate: ({}: { undelegate?: boolean }) => {
+    delegate: ({}: { undelegate?: boolean }): void => {
       // open(delegate)
     },
-    withdraw: () => {
+    withdraw: (): void => {
       // myRewards.amounts && open(withdraw)
     },
   }
@@ -45,17 +45,20 @@ const Actions = (v: ValidatorUI) => {
 
       <ButtonWithAuth
         {...delegate}
-        onPress={() => open.delegate({})}
+        onPress={(): void => open.delegate({})}
       />
       <ButtonWithAuth
         {...undelegate}
-        onPress={() => open.delegate({ undelegate: true })}
+        onPress={(): void => open.delegate({ undelegate: true })}
       />
 
       <Text>{myRewards.title}</Text>
       <Number {...myRewards.display} fontSize={18} estimated />
 
-      <ButtonWithAuth {...withdraw} onPress={() => open.withdraw()} />
+      <ButtonWithAuth
+        {...withdraw}
+        onPress={(): void => open.withdraw()}
+      />
     </>
   )
 }
