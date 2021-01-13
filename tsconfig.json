@@ -8,6 +8,13 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "strict": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "baseUrl": "./src",
+    "paths": {
+      "components/*": ["./components/*"],
+      "styles/*": ["./styles/*"],
+      "utils/*": ["./utils/*"],
+      "assets/*": ["./assets/*"]
+    }
   }
 }

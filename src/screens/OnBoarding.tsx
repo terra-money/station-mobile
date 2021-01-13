@@ -14,6 +14,8 @@ import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { setSkipOnboarding } from '../utils/storage'
 
+import images from 'assets/images'
+
 LogBox.ignoreLogs([
   // https://reactjs.org/blog/2020/02/26/react-v16.13.0.html#warnings-for-some-updates-during-render
   'Warning: Cannot update a component from inside the function body of a different component.',
@@ -22,31 +24,31 @@ LogBox.ignoreLogs([
 // H. REQ i18n
 const PagerContents = [
   {
-    image: require('../../assets/on_boarding_0.png'),
+    image: images.on_boarding_0,
     title: 'Welcome Abroad',
     description:
       'Terra Station is where you can experience through Terra network.',
   },
   {
-    image: require('../../assets/on_boarding_1.png'),
+    image: images.on_boarding_1,
     title: 'Manage Assets',
     description:
       'Send and receive Terra coins from anyone around the world, or even swap among the coins.',
   },
   {
-    image: require('../../assets/on_boarding_2.png'),
+    image: images.on_boarding_2,
     title: 'Get More',
     description:
       'Delegate your coins to Terra Validators to earn even more coins.',
   },
   {
-    image: require('../../assets/on_boarding_3.png'),
+    image: images.on_boarding_3,
     title: 'Get Involved',
     description:
       'Vote and participate in proposals to develop the Terra Ecosystem.',
   },
   {
-    image: require('../../assets/on_boarding_4.png'),
+    image: images.on_boarding_4,
     title: 'Start Exploring',
     description:
       'There are even more useful features. Start Exploring Terra Station',

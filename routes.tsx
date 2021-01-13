@@ -7,7 +7,7 @@ import Market from './src/screens/market/Market'
 import Governance from './src/screens/governance'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 // import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons'
-import EStyleSheet from 'react-native-extended-stylesheet';
+import EStyleSheet from 'react-native-extended-stylesheet'
 
 export const INITIAL = 'Dashboard'
 // export const INITIAL = 'Governance'
@@ -23,9 +23,14 @@ export default [
         </Text>
       ),
       tabBarIcon: ({ color }: any) => (
-        <Icon name="dashboard" color={color} size={26} style={{ marginTop: 5 }} />
+        <Icon
+          name="dashboard"
+          color={color}
+          size={26}
+          style={{ marginTop: 5 }}
+        />
       ),
-    }
+    },
   },
   {
     name: 'Bank',
@@ -37,9 +42,14 @@ export default [
         </Text>
       ),
       tabBarIcon: ({ color }: any) => (
-        <Icon name="account-balance" color={color} size={28} style={{ marginTop: 5 }} />
+        <Icon
+          name="account-balance"
+          color={color}
+          size={28}
+          style={{ marginTop: 5 }}
+        />
       ),
-    }
+    },
   },
   {
     name: 'Staking',
@@ -51,9 +61,14 @@ export default [
         </Text>
       ),
       tabBarIcon: ({ color }: any) => (
-        <Icon name="layers" color={color} size={28} style={{ marginTop: 5 }} />
+        <Icon
+          name="layers"
+          color={color}
+          size={28}
+          style={{ marginTop: 5 }}
+        />
       ),
-    }
+    },
   },
   {
     name: 'Market',
@@ -65,9 +80,14 @@ export default [
         </Text>
       ),
       tabBarIcon: ({ color }: any) => (
-        <Icon name="timeline" color={color} size={28} style={{ marginTop: 5 }} />
+        <Icon
+          name="timeline"
+          color={color}
+          size={28}
+          style={{ marginTop: 5 }}
+        />
       ),
-    }
+    },
   },
   {
     name: 'Governance',
@@ -79,9 +99,14 @@ export default [
         </Text>
       ),
       tabBarIcon: ({ color }: any) => (
-        <Icon name="how-to-vote" color={color} size={28} style={{ marginTop: 5 }} />
+        <Icon
+          name="how-to-vote"
+          color={color}
+          size={28}
+          style={{ marginTop: 5 }}
+        />
       ),
-    }
+    },
   },
 ]
 
@@ -89,7 +114,7 @@ const styles = EStyleSheet.create({
   tabbar_text: {
     fontSize: 8,
     // fontFamily: "TerraCompact-Semibold",
-    fontFamily: "$fontGothamBold",
-    marginBottom: 3
-  }
+    fontFamily: '$fontGothamBold',
+    marginBottom: 3,
+  },
 })

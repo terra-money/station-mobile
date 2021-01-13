@@ -1,11 +1,15 @@
 import React, { ReactNode, useState, useEffect } from 'react'
-import { Modal, View, TouchableOpacity } from 'react-native'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
 import {
-  NavigationContainer,
-  DefaultTheme,
-  LinkingOptions,
-} from '@react-navigation/native'
+  Modal,
+  View,
+  TouchableOpacity,
+  StatusBar,
+  Platform,
+} from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import EStyleSheet from 'react-native-extended-stylesheet'
+import SplashScreen from 'react-native-splash-screen'
+import { hasNotch } from 'react-native-device-info'
 
 import {
   useConfigState,
@@ -16,25 +20,11 @@ import {
   AuthProvider,
 } from '@terra-money/use-native-station'
 
-import { RootStack, Settings } from './src/types'
+import { Settings } from './src/types'
 import { getSkipOnboarding, settings } from './src/utils/storage'
 import { AppProvider } from './src/hooks'
 
-import Tabs from './src/screens/Tabs'
-import AuthMenu from './src/screens/auth/AuthMenu'
-import Select from './src/screens/auth/Select'
-import New from './src/screens/auth/New'
-import Add from './src/screens/auth/Add'
-
-import EStyleSheet from 'react-native-extended-stylesheet'
-import { StatusBar } from 'react-native'
-import { Platform } from 'react-native'
-import SplashScreen from 'react-native-splash-screen'
-import { hasNotch } from 'react-native-device-info'
-import OnBoarding from './src/screens/OnBoarding'
-import Setting from './src/screens/Setting'
-import ConnectView from './src/screens/topup/ConnectView'
-import SendTxView from './src/screens/topup/SendTxView'
+import AppNavigator from './src/navigatoin'
 
 EStyleSheet.build({
   $primaryColor: 'rgb(32,67,181)', //"#2043B5",
@@ -60,14 +50,6 @@ EStyleSheet.build({
   },
 })
 
-const TerraTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: '#F9FAFF',
-  },
-}
-
 /* config */
 // const chain = {
 //   key: 'columbus',
@@ -90,10 +72,6 @@ const App = ({
 }: {
   settings: Settings
 }) => {
-  // if(__DEV__) {
-  //   console.log("Hello __DEV__")
-  // }
-
   /* drawer */
   const drawer = useDrawerState()
 
@@ -122,95 +100,22 @@ const App = ({
     checkShowOnboarding()
   }, [])
 
-  /* linking */
-  const linking: LinkingOptions = {
-    prefixes: ['terrastation://'],
-    config: {
-      screens: {
-        ConnectView: {
-          path: 'connect/:arg',
-        },
-        SendTxView: {
-          path: 'sign/:arg',
-        },
-      },
-    },
-  }
-
   return !ready || skipOnboarding === null ? null : (
     <AppProvider value={{ drawer }}>
       <ConfigProvider value={config}>
         <AuthProvider value={auth}>
           <SafeAreaProvider>
-            <NavigationContainer theme={TerraTheme} linking={linking}>
-              <StatusBar
-                barStyle='dark-content'
-                backgroundColor='transparent'
-                translucent={false}
-              />
-              <RootStack.Navigator
-                initialRouteName={
-                  skipOnboarding ? 'Tabs' : 'OnBoarding'
-                }
-              >
-                <RootStack.Screen
-                  name='OnBoarding'
-                  component={OnBoarding}
-                  options={{
-                    headerShown: false,
-                    animationEnabled: false,
-                  }}
-                />
-                <RootStack.Screen
-                  name='Tabs'
-                  component={Tabs}
-                  options={{
-                    headerShown: false,
-                    animationEnabled: false,
-                  }}
-                />
-                <RootStack.Screen
-                  name='Setting'
-                  component={Setting}
-                  options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                  name='AuthMenu'
-                  component={AuthMenu}
-                  options={{ animationEnabled: false }}
-                />
-                <RootStack.Screen
-                  name='Select'
-                  component={Select}
-                  options={{ animationEnabled: false }}
-                />
-                <RootStack.Screen
-                  name='New'
-                  component={New}
-                  options={{ animationEnabled: false }}
-                />
-                <RootStack.Screen
-                  name='Add'
-                  component={Add}
-                  options={{ animationEnabled: false }}
-                />
-                <RootStack.Screen
-                  name='ConnectView'
-                  component={ConnectView}
-                  options={{ animationEnabled: false }}
-                />
-                <RootStack.Screen
-                  name='SendTxView'
-                  component={SendTxView}
-                  options={{ animationEnabled: false }}
-                />
-              </RootStack.Navigator>
-            </NavigationContainer>
+            <StatusBar
+              barStyle="dark-content"
+              backgroundColor="transparent"
+              translucent={false}
+            />
+            <AppNavigator skipOnboarding={skipOnboarding} />
           </SafeAreaProvider>
 
           <Modal
             visible={drawer.isOpen}
-            animationType='fade'
+            animationType="fade"
             transparent
           >
             <View
