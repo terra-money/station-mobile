@@ -133,3 +133,17 @@ export const settings = {
   delete: deleteSettings,
   clear: clearSettings,
 }
+
+// Onboarding
+const ONBOARDING = 'skip_onboarding'
+
+export const getSkipOnboarding = async (): Promise<boolean> => {
+  const onboarding = await Preferences.getBool(ONBOARDING)
+  return onboarding ? onboarding : false
+}
+
+export const setSkipOnboarding = async (
+  skip: boolean
+): Promise<void> => {
+  Preferences.setBool(ONBOARDING, skip)
+}

@@ -21,10 +21,9 @@ import {
 } from '@terra-money/use-native-station'
 
 import { Settings } from './src/types'
-import { settings } from './src/utils/storage'
+import { getSkipOnboarding, settings } from './src/utils/storage'
 import { AppProvider } from './src/hooks'
 
-import { getSkipOnboarding } from './src/utils/InternalStorage'
 import AppNavigator from './src/navigatoin'
 
 EStyleSheet.build({
@@ -73,10 +72,6 @@ const App = ({
 }: {
   settings: Settings
 }) => {
-  // if(__DEV__) {
-  //   console.log("Hello __DEV__")
-  // }
-
   /* drawer */
   const drawer = useDrawerState()
 
@@ -98,8 +93,11 @@ const App = ({
   const ready = !!(currentLang && currentChain)
 
   useEffect(() => {
-    getSkipOnboarding(setSkipOnboarding)
-    SplashScreen.hide()
+    const checkShowOnboarding = async () => {
+      setSkipOnboarding(await getSkipOnboarding())
+      SplashScreen.hide()
+    }
+    checkShowOnboarding()
   }, [])
 
   return !ready || skipOnboarding === null ? null : (
