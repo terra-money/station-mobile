@@ -28,7 +28,7 @@ const HeaderLeft = ({
     <TouchableOpacity onPress={goBack}>
       <MaterialIcons
         name={
-          goBackIconType === 'arrow' ? 'keyboard-arrow-left' : 'clear'
+          goBackIconType === 'close' ? 'clear' : 'keyboard-arrow-left'
         }
         color={type === 'blue' ? color.white : color.sapphire}
         size={32}

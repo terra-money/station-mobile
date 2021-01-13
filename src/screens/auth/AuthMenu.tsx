@@ -13,8 +13,10 @@ import { settings, clearKeys } from 'utils/storage'
 import { getWallets } from 'utils/wallet'
 import color from 'styles/color'
 import images from 'assets/images'
+import { StackNavigationOptions } from '@react-navigation/stack'
+import Header from 'components/layout/Header'
 
-export default (): ReactElement => {
+const Screen = (): ReactElement => {
   const [initPageComplete, setInitPageComplete] = useState(false)
   const [wallets, setWallets] = useState<LocalWallet[]>()
   const { navigate } = useNavigation()
@@ -126,6 +128,17 @@ export default (): ReactElement => {
     </>
   )
 }
+
+const navigationOptions = (): StackNavigationOptions => {
+  return {
+    animationEnabled: false,
+    header: () => <Header type={'blue'} goBackIconType="close" />,
+  }
+}
+
+Screen.navigationOptions = navigationOptions
+
+export default Screen
 
 const styles = StyleSheet.create({
   title: {

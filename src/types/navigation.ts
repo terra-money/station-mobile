@@ -32,7 +32,7 @@ export type DashboardRouteParams = {
 
 /* Staking */
 export type StakingRouteParams = {
-  Validator: { address: string }
+  ValidatorDetail: { address: string }
 }
 
 /* Governance */

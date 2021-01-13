@@ -1,25 +1,45 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createStackNavigator } from '@react-navigation/stack'
 import { Text } from 'react-native'
-import Dashboard from './src/screens/dashboard'
-import Bank from './src/screens/bank/Bank'
-import Staking from './src/screens/staking'
-import Market from './src/screens/market/Market'
-import Governance from './src/screens/governance'
+
+import Dashboard from '../screens/dashboard'
+import Bank from '../screens/bank/Bank'
+import Market from '../screens/market/Market'
+import Governance from '../screens/governance'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-// import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons'
 import EStyleSheet from 'react-native-extended-stylesheet'
 
-export const INITIAL = 'Dashboard'
-// export const INITIAL = 'Governance'
+import Staking from '../screens/staking'
+import validatorDetail from '../screens/validatorDetail'
 
-export default [
+export const INITIAL = 'Dashboard'
+
+const Stack = createStackNavigator()
+
+const StakingStack = () => (
+  <Stack.Navigator initialRouteName="Staking">
+    <Stack.Screen
+      name="Staking"
+      component={Staking}
+      options={Staking.navigationOptions}
+    />
+    <Stack.Screen
+      name="ValidatorDetail"
+      component={validatorDetail}
+      options={validatorDetail.navigationOptions}
+    />
+  </Stack.Navigator>
+)
+
+const tabScreenList = [
   {
     name: 'Dashboard',
     component: Dashboard,
     options: {
       tabBarLabel: ({ color }: any) => (
-        <Text style={styles.tabbar_text}>
-          <Text style={{ color: color }}>DASHBOARD</Text>
+        <Text style={[styles.tabbar_text, { color: color }]}>
+          DASHBOARD
         </Text>
       ),
       tabBarIcon: ({ color }: any) => (
@@ -37,8 +57,8 @@ export default [
     component: Bank,
     options: {
       tabBarLabel: ({ color }: any) => (
-        <Text style={styles.tabbar_text}>
-          <Text style={{ color: color }}>BANK</Text>
+        <Text style={[styles.tabbar_text, { color: color }]}>
+          BANK
         </Text>
       ),
       tabBarIcon: ({ color }: any) => (
@@ -53,11 +73,11 @@ export default [
   },
   {
     name: 'Staking',
-    component: Staking,
+    component: StakingStack,
     options: {
       tabBarLabel: ({ color }: any) => (
-        <Text style={styles.tabbar_text}>
-          <Text style={{ color: color }}>STAKING</Text>
+        <Text style={[styles.tabbar_text, { color: color }]}>
+          STAKING
         </Text>
       ),
       tabBarIcon: ({ color }: any) => (
@@ -75,8 +95,8 @@ export default [
     component: Market,
     options: {
       tabBarLabel: ({ color }: any) => (
-        <Text style={styles.tabbar_text}>
-          <Text style={{ color: color }}>MARKET</Text>
+        <Text style={[styles.tabbar_text, { color: color }]}>
+          MARKET
         </Text>
       ),
       tabBarIcon: ({ color }: any) => (
@@ -94,8 +114,8 @@ export default [
     component: Governance,
     options: {
       tabBarLabel: ({ color }: any) => (
-        <Text style={styles.tabbar_text}>
-          <Text style={{ color: color }}>GOVERNANCE</Text>
+        <Text style={[styles.tabbar_text, { color: color }]}>
+          GOVERNANCE
         </Text>
       ),
       tabBarIcon: ({ color }: any) => (
@@ -113,8 +133,26 @@ export default [
 const styles = EStyleSheet.create({
   tabbar_text: {
     fontSize: 8,
-    // fontFamily: "TerraCompact-Semibold",
     fontFamily: '$fontGothamBold',
     marginBottom: 3,
   },
 })
+
+/* routes */
+const Tab = createBottomTabNavigator()
+
+const Tabs = (): ReactElement => (
+  <Tab.Navigator
+    initialRouteName={INITIAL}
+    tabBarOptions={{
+      activeTintColor: '#2043B5',
+      inactiveTintColor: '#C1C7D0',
+    }}
+  >
+    {tabScreenList.map((route) => (
+      <Tab.Screen {...route} key={route.name} />
+    ))}
+  </Tab.Navigator>
+)
+
+export default Tabs

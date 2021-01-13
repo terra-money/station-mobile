@@ -7,7 +7,7 @@ import {
 
 import { RootStack } from '../types'
 
-import Tabs from '../screens/Tabs'
+import Tabs from './Tabs'
 import AuthMenu from '../screens/auth/AuthMenu'
 import Select from '../screens/auth/Select'
 import New from '../screens/auth/New'
@@ -17,8 +17,6 @@ import OnBoarding from '../screens/OnBoarding'
 import Setting from '../screens/Setting'
 import ConnectView from '../screens/topup/ConnectView'
 import SendTxView from '../screens/topup/SendTxView'
-
-import Header from 'components/layout/Header'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -77,12 +75,7 @@ const AppNavigator = ({
         <RootStack.Screen
           name="AuthMenu"
           component={AuthMenu}
-          options={{
-            animationEnabled: false,
-            header: () => (
-              <Header type={'blue'} goBackIconType="close" />
-            ),
-          }}
+          options={AuthMenu.navigationOptions}
         />
         <RootStack.Screen
           name="Select"
