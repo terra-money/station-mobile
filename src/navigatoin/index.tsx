@@ -9,7 +9,7 @@ import { RootStack } from '../types'
 
 import Tabs from './Tabs'
 import AuthMenu from '../screens/auth/AuthMenu'
-import Select from '../screens/auth/Select'
+import SelectWallet from '../screens/auth/SelectWallet'
 import New from '../screens/auth/New'
 import Add from '../screens/auth/Add'
 
@@ -78,9 +78,9 @@ const AppNavigator = ({
           options={AuthMenu.navigationOptions}
         />
         <RootStack.Screen
-          name="Select"
-          component={Select}
-          options={{ animationEnabled: false }}
+          name="SelectWallet"
+          component={SelectWallet}
+          options={SelectWallet.navigationOptions}
         />
         <RootStack.Screen
           name="New"

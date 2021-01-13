@@ -14,7 +14,7 @@ export type ButtonProps = {
   onPress?: (event: GestureResponderEvent) => void
   containerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
-  title: string
+  title: string | ReactElement
   type?: 'blue' | 'red' | 'gray' | 'white' | 'transparent'
 }
 
@@ -57,9 +57,13 @@ const Button = (props: ButtonProps): ReactElement => {
       onPress={props.onPress}
       style={[styles.container, containerStyle, props.containerStyle]}
     >
-      <Text style={[titleStyle, props.titleStyle]}>
-        {props.title}
-      </Text>
+      {typeof props.title === 'string' ? (
+        <Text style={[titleStyle, props.titleStyle]}>
+          {props.title}
+        </Text>
+      ) : (
+        props.title
+      )}
     </TouchableOpacity>
   )
 }

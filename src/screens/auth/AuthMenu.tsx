@@ -93,7 +93,7 @@ const Screen = (): ReactElement => {
                   <Button
                     type={'white'}
                     title={'Select Wallet'}
-                    onPress={() => navigate('Select')}
+                    onPress={() => navigate('SelectWallet')}
                     containerStyle={{ marginBottom: 10 }}
                   />
                 )}
