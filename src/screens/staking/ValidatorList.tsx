@@ -141,7 +141,7 @@ const ValidatorList = ({ contents }: StakingUI) => {
         {contents.map((content, index) => (
           <TouchableOpacity
             onPress={() =>
-              navigate('Validator', {
+              navigate('ValidatorDetail', {
                 address: content.operatorAddress.address,
               })
             }
@@ -231,6 +231,7 @@ const ValidatorList = ({ contents }: StakingUI) => {
     </>
   )
 }
+ValidatorList.option = {}
 
 export default ValidatorList
 
