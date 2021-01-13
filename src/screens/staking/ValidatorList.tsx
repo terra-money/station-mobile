@@ -11,6 +11,7 @@ import EntypoIcon from 'react-native-vector-icons/Entypo'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import Picker from '../../components/Picker'
 import Card from '../../components/Card'
+import images from 'assets/images'
 
 // H. REQ i18n
 const validatorTitle = 'Validators'
@@ -192,7 +193,7 @@ const ValidatorList = ({ contents }: StakingUI) => {
                   source={
                     content.profile
                       ? { uri: content.profile }
-                      : require('../../../assets/terra.png')
+                      : images.terra
                   }
                   style={styles.profileImage}
                 />

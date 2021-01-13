@@ -16,8 +16,7 @@
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
-      "npm run lint",
-      "npm run format"
+      "npm run lint"
     ]
   },
   "dependencies": {
@@ -64,6 +63,7 @@
     "@babel/runtime": "^7.6.2",
     "@react-native-community/eslint-config": "^2.0.0",
     "@types/crypto-js": "^3.1.47",
+    "@types/lodash": "^4.14.167",
     "@types/ramda": "^0.27.6",
     "@types/react": "^17.0.0",
     "@types/react-native": "^0.63.4",
@@ -73,6 +73,7 @@
     "@typescript-eslint/eslint-plugin": "^4.13.0",
     "@typescript-eslint/parser": "^4.13.0",
     "babel-jest": "^26.6.3",
+    "babel-plugin-module-resolver": "^4.1.0",
     "eslint": "^7.17.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",

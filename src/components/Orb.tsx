@@ -1,6 +1,8 @@
 import React from 'react'
 import { View, Image } from 'react-native'
 
+import images from 'assets/images'
+
 interface Props {
   ratio?: string
   size: number
@@ -25,10 +27,7 @@ const Orb = ({ ratio = '0' }: Props) => {
         }}
       >
         {orbHeight > 0 && (
-          <Image
-            source={require('../../assets/orb_fill.png')}
-            style={{ top: 3 }}
-          />
+          <Image source={images.orb_fill} style={{ top: 3 }} />
         )}
         <View
           style={{
