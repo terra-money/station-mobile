@@ -1,5 +1,6 @@
 import React, { FC, ReactNode } from 'react'
 import { Text } from 'react-native'
+import _ from 'lodash'
 import { Card as CardProps } from '@terra-money/use-native-station'
 import Icon from './Icon'
 import Card from './Card'
@@ -18,9 +19,8 @@ const Info: FC<Props> = ({
 }) => {
   const inner = (
     <>
-      {icon &&
-        (typeof icon === 'string' ? <Icon name={icon} /> : icon)}
-      {title && <Text>{title}</Text>}
+      {typeof icon === 'string' ? <Icon name={icon} /> : icon}
+      {_.some(title) && <Text>{title}</Text>}
       <Text>{content ?? children}</Text>
     </>
   )

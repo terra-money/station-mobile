@@ -1,5 +1,6 @@
 import React, { ReactElement, ReactNode } from 'react'
 import { View, Text, TouchableOpacity, ViewStyle } from 'react-native'
+import _ from 'lodash'
 import { API } from '@terra-money/use-native-station'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EStyleSheet from 'react-native-extended-stylesheet'
@@ -50,7 +51,7 @@ const Card = ({
         style,
       ]}
     >
-      {title && (
+      {_.some(title) && (
         <View style={styles.header}>
           <Text style={[textStyle, styles.title]}>{title}</Text>
           {action ??

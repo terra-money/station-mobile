@@ -16,14 +16,13 @@ interface Props {
 
 const Component = ({ chartKey }: Props): ReactElement => {
   const { navigate } = useNavigation()
-  const { value, chart, title } = useChart(chartKey)
+  const { value, title } = useChart(chartKey)
   const data = [3, 3, 5, 4, 6, 7, 8]
   const Line = (): ReactElement => (
     <Path key="line " stroke="rgba(32, 67, 181,.45)" fill="none" />
   )
 
-  /* render */
-  const renderChart = (): ReactElement => (
+  return (
     <TouchableOpacity
       onPress={(): void => navigate('Chart', { chartKey })}
     >
@@ -51,10 +50,7 @@ const Component = ({ chartKey }: Props): ReactElement => {
       </View>
     </TouchableOpacity>
   )
-
-  return <> {chart ? renderChart() : null} </>
 }
-
 const ChartItem = (props: Props): ReactElement => (
   <ErrorBoundary fallback={<ErrorComponent />}>
     <Component {...props} />

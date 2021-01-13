@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 import { Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import _ from 'lodash'
 import {
-  DashboardUI,
   PricesUI,
   TaxRateUI,
   StakingRatioUI,
@@ -74,34 +74,36 @@ const Columns = (): ReactElement => {
     />
   )
 
-  const render = (ui: DashboardUI): ReactElement => (
-    <Swiper
-      style={[styles.carousel, { height: 168 }]}
-      loop
-      autoplay
-      autoplayTimeout={10} // seconds
-      dot={SwiperDotView()}
-      activeDot={SwiperActiveDotView()}
-    >
-      <View style={styles.carousel_item}>
-        {renderPrice(ui.prices)}
-      </View>
-      <View style={styles.carousel_item}>
-        {renderTaxRate(ui.taxRate)}
-      </View>
-      <View style={styles.carousel_item}>
-        <DisplaySelector {...ui.issuance} />
-      </View>
-      <View style={styles.carousel_item}>
-        <DisplaySelector {...ui.communityPool} />
-      </View>
-      <View style={styles.carousel_item}>
-        {renderStakingRatio(ui.stakingRatio)}
-      </View>
-    </Swiper>
+  return (
+    <>
+      {_.some(ui) && (
+        <Swiper
+          style={[styles.carousel, { height: 168 }]}
+          loop
+          autoplay
+          autoplayTimeout={10} // seconds
+          dot={SwiperDotView()}
+          activeDot={SwiperActiveDotView()}
+        >
+          <View style={styles.carousel_item}>
+            {renderPrice(ui.prices)}
+          </View>
+          <View style={styles.carousel_item}>
+            {renderTaxRate(ui.taxRate)}
+          </View>
+          <View style={styles.carousel_item}>
+            <DisplaySelector {...ui.issuance} />
+          </View>
+          <View style={styles.carousel_item}>
+            <DisplaySelector {...ui.communityPool} />
+          </View>
+          <View style={styles.carousel_item}>
+            {renderStakingRatio(ui.stakingRatio)}
+          </View>
+        </Swiper>
+      )}
+    </>
   )
-
-  return <>{ui ? render(ui) : null} </>
 }
 
 /* styles */

@@ -1,4 +1,9 @@
-import React, { ReactNode, useState, useEffect } from 'react'
+import React, {
+  ReactNode,
+  useState,
+  useEffect,
+  ReactElement,
+} from 'react'
 import {
   Modal,
   View,
@@ -71,7 +76,7 @@ const App = ({
   settings: { lang, user },
 }: {
   settings: Settings
-}) => {
+}): ReactElement => {
   /* drawer */
   const drawer = useDrawerState()
 
@@ -82,9 +87,7 @@ const App = ({
   const { key: currentChain = '' } = currentChainOptions
 
   /* onboarding */
-  const [skipOnboarding, setSkipOnboarding] = useState<
-    boolean | null
-  >(null)
+  const [skipOnboarding, setSkipOnboarding] = useState<boolean>()
 
   /* auth */
   const auth = useAuthState(user)
@@ -93,52 +96,59 @@ const App = ({
   const ready = !!(currentLang && currentChain)
 
   useEffect(() => {
-    const checkShowOnboarding = async () => {
+    const checkShowOnboarding = async (): Promise<void> => {
       setSkipOnboarding(await getSkipOnboarding())
       SplashScreen.hide()
     }
     checkShowOnboarding()
   }, [])
 
-  return !ready || skipOnboarding === null ? null : (
-    <AppProvider value={{ drawer }}>
-      <ConfigProvider value={config}>
-        <AuthProvider value={auth}>
-          <SafeAreaProvider>
-            <StatusBar
-              barStyle="dark-content"
-              backgroundColor="transparent"
-              translucent={false}
-            />
-            <AppNavigator skipOnboarding={skipOnboarding} />
-          </SafeAreaProvider>
+  return (
+    <>
+      {ready && (
+        <AppProvider value={{ drawer }}>
+          <ConfigProvider value={config}>
+            <AuthProvider value={auth}>
+              <SafeAreaProvider>
+                <StatusBar
+                  barStyle="dark-content"
+                  backgroundColor="transparent"
+                  translucent={false}
+                />
+                <AppNavigator skipOnboarding={skipOnboarding} />
+              </SafeAreaProvider>
 
-          <Modal
-            visible={drawer.isOpen}
-            animationType="fade"
-            transparent
-          >
-            <View
-              style={{ flex: 1, backgroundColor: 'rgba(0,0,0,.5)' }}
-            >
-              <TouchableOpacity
-                onPress={drawer.close}
-                style={styles.top}
-              />
-              <View style={styles.bottom}>{drawer.content}</View>
-            </View>
-          </Modal>
-        </AuthProvider>
-      </ConfigProvider>
-    </AppProvider>
+              <Modal
+                visible={drawer.isOpen}
+                animationType="fade"
+                transparent
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    backgroundColor: 'rgba(0,0,0,.5)',
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={drawer.close}
+                    style={styles.top}
+                  />
+                  <View style={styles.bottom}>{drawer.content}</View>
+                </View>
+              </Modal>
+            </AuthProvider>
+          </ConfigProvider>
+        </AppProvider>
+      )}
+    </>
   )
 }
 
-export default () => {
+export default (): ReactElement => {
   const [local, setLocal] = useState<Settings>()
 
   useEffect(() => {
-    const init = async () => {
+    const init = async (): Promise<void> => {
       const local = await settings.get()
       setLocal(local)
     }
@@ -146,7 +156,7 @@ export default () => {
     init()
   }, [])
 
-  return local ? <App settings={local} /> : null
+  return <>{local ? <App settings={local} /> : null}</>
 }
 
 /* hooks */
@@ -154,12 +164,12 @@ const useDrawerState = (): Drawer => {
   const [isOpen, setIsOpen] = useState(false)
   const [content, setContent] = useState<ReactNode>(null)
 
-  const open = (content: ReactNode) => {
+  const open = (content: ReactNode): void => {
     setContent(content)
     setIsOpen(true)
   }
 
-  const close = () => {
+  const close = (): void => {
     setIsOpen(false)
     setContent(null)
   }
