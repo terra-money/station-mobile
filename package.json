@@ -31,6 +31,7 @@
     "@terra-money/use-native-station": "3.7.5",
     "bignumber.js": "^9.0.1",
     "crypto-js": "^3.3.0",
+    "expo-local-authentication": "^9.5.0",
     "i18next": "^19.8.4",
     "node-libs-react-native": "^1.2.1",
     "prop-types": "^15.7.2",
@@ -53,6 +54,7 @@
     "react-native-svg-charts": "^5.4.0",
     "react-native-svg-transformer": "^0.14.3",
     "react-native-swiper": "^1.6.0",
+    "react-native-unimodules": "^0.12.0",
     "react-native-url-polyfill": "^1.2.0",
     "react-native-vector-icons": "^7.1.0",
     "react-native-web": "^0.14.10"

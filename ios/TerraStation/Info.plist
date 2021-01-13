@@ -91,5 +91,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+  <key>NSFaceIDUsageDescription</key>
+  <string></string>
 </dict>
 </plist>
