@@ -12,10 +12,9 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import { setSkipOnboarding } from '../utils/InternalStorage'
+import { setSkipOnboarding } from '../utils/storage'
 
 LogBox.ignoreLogs([
-  // 다른 컴포넌트에서 State를 변경할 경우 발생되는 문제를 막기 위해 사용
   // https://reactjs.org/blog/2020/02/26/react-v16.13.0.html#warnings-for-some-updates-during-render
   'Warning: Cannot update a component from inside the function body of a different component.',
 ])

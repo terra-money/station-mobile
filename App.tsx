@@ -7,11 +7,17 @@ import {
   LinkingOptions,
 } from '@react-navigation/native'
 
-import { useConfigState, ConfigProvider } from '@terra-money/use-native-station'
-import { useAuthState, AuthProvider } from '@terra-money/use-native-station'
+import {
+  useConfigState,
+  ConfigProvider,
+} from '@terra-money/use-native-station'
+import {
+  useAuthState,
+  AuthProvider,
+} from '@terra-money/use-native-station'
 
 import { RootStack, Settings } from './src/types'
-import { settings } from './src/utils/storage'
+import { getSkipOnboarding, settings } from './src/utils/storage'
 import { AppProvider } from './src/hooks'
 
 import Tabs from './src/screens/Tabs'
@@ -27,7 +33,6 @@ import SplashScreen from 'react-native-splash-screen'
 import { hasNotch } from 'react-native-device-info'
 import OnBoarding from './src/screens/OnBoarding'
 import Setting from './src/screens/Setting'
-import { getSkipOnboarding } from './src/utils/InternalStorage'
 import ConnectView from './src/screens/topup/ConnectView'
 import SendTxView from './src/screens/topup/SendTxView'
 
@@ -80,7 +85,11 @@ const chain = {
   secure: true,
 }
 
-const App = ({ settings: { lang, user } }: { settings: Settings }) => {
+const App = ({
+  settings: { lang, user },
+}: {
+  settings: Settings
+}) => {
   // if(__DEV__) {
   //   console.log("Hello __DEV__")
   // }
@@ -95,7 +104,9 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
   const { key: currentChain = '' } = currentChainOptions
 
   /* onboarding */
-  const [skipOnboarding, setSkipOnboarding] = useState<boolean | null>(null)
+  const [skipOnboarding, setSkipOnboarding] = useState<
+    boolean | null
+  >(null)
 
   /* auth */
   const auth = useAuthState(user)
@@ -104,8 +115,11 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
   const ready = !!(currentLang && currentChain)
 
   useEffect(() => {
-    getSkipOnboarding(setSkipOnboarding)
-    SplashScreen.hide()
+    const checkShowOnboarding = async () => {
+      setSkipOnboarding(await getSkipOnboarding())
+      SplashScreen.hide()
+    }
+    checkShowOnboarding()
   }, [])
 
   /* linking */
@@ -135,17 +149,25 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
                 translucent={false}
               />
               <RootStack.Navigator
-                initialRouteName={skipOnboarding ? 'Tabs' : 'OnBoarding'}
+                initialRouteName={
+                  skipOnboarding ? 'Tabs' : 'OnBoarding'
+                }
               >
                 <RootStack.Screen
                   name='OnBoarding'
                   component={OnBoarding}
-                  options={{ headerShown: false, animationEnabled: false }}
+                  options={{
+                    headerShown: false,
+                    animationEnabled: false,
+                  }}
                 />
                 <RootStack.Screen
                   name='Tabs'
                   component={Tabs}
-                  options={{ headerShown: false, animationEnabled: false }}
+                  options={{
+                    headerShown: false,
+                    animationEnabled: false,
+                  }}
                 />
                 <RootStack.Screen
                   name='Setting'
@@ -186,9 +208,18 @@ const App = ({ settings: { lang, user } }: { settings: Settings }) => {
             </NavigationContainer>
           </SafeAreaProvider>
 
-          <Modal visible={drawer.isOpen} animationType='fade' transparent>
-            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,.5)' }}>
-              <TouchableOpacity onPress={drawer.close} style={styles.top} />
+          <Modal
+            visible={drawer.isOpen}
+            animationType='fade'
+            transparent
+          >
+            <View
+              style={{ flex: 1, backgroundColor: 'rgba(0,0,0,.5)' }}
+            >
+              <TouchableOpacity
+                onPress={drawer.close}
+                style={styles.top}
+              />
               <View style={styles.bottom}>{drawer.content}</View>
             </View>
           </Modal>
