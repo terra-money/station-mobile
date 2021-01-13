@@ -11,11 +11,12 @@ const WithKeys = ({ render }: Props) => {
   useEffect(() => {
     const fn = async () => {
       const wallets = await getWallets()
+      console.log('wallets : ', wallets)
       setWallets(wallets)
     }
 
     fn()
-  })
+  }, [])
 
   return <>{!wallets ? null : render(wallets)}</>
 }
