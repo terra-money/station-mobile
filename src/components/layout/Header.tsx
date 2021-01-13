@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import color from 'styles/color'
@@ -39,15 +40,18 @@ const HeaderLeft = ({
 
 const Header = (props: HeaderProps): ReactElement => {
   const { type } = props
+  const insets = useSafeAreaInsets()
 
   const containerStyle: StyleProp<ViewStyle> = {}
   switch (type) {
     case 'blue':
       containerStyle.backgroundColor = color.sapphire
+      containerStyle.paddingTop = insets.top
       break
     case 'white':
     default:
       containerStyle.backgroundColor = color.white
+      containerStyle.paddingTop = insets.top
       break
   }
   return (
@@ -65,7 +69,7 @@ export default Header
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
+    minHeight: 60,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
