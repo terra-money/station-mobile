@@ -1,5 +1,6 @@
 import { MnemonicKey } from '@terra-money/terra.js'
 import { Alert, NativeModules } from 'react-native'
+import dev from './dev'
 import { encrypt, decrypt } from './keystore'
 
 const { Preferences, Keystore } = NativeModules
@@ -99,7 +100,7 @@ export const testPassword = async ({
     if (ret === '') return false
     return true
   } catch (e) {
-    console.log(e)
+    dev.log(e)
     return false
   }
 }

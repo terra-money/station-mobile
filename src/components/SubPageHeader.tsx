@@ -28,9 +28,6 @@ interface HeaderBottomProps {
 
 const HeaderSafeArea = (): ReactElement => {
   const insets = useSafeAreaInsets()
-  console.log('insets.top', insets.top)
-  console.log('insets.bottom', insets.bottom)
-
   return (
     <>
       {Platform.OS === 'ios' ? (
@@ -50,7 +47,6 @@ const HeaderTop = ({
   icSize: iconSize,
 }: HeaderTopProps): ReactElement => {
   const navigation = useNavigation()
-  console.log('canGoBack', navigation.canGoBack())
 
   return (
     <>

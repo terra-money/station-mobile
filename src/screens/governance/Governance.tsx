@@ -14,12 +14,13 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 import ProposalItem from './ProposalItem'
 import Info from '../../components/Info'
 import Page from '../../components/Page'
+import dev from 'utils/dev'
 
 const Governance = (): ReactElement => {
   const { Governance: title } = useMenu()
   const { ui, ...api } = useGovernance({ status: '' })
 
-  console.log(JSON.stringify(ui))
+  dev.log(JSON.stringify(ui))
 
   const renderItem = (item: ProposalItemUI): ReactElement => (
     <ProposalItem {...item} key={item.id + item.status} />

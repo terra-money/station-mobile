@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react'
+import dev from 'utils/dev'
 import { getWallets } from '../utils/wallet'
 
 interface Props {
@@ -16,7 +17,8 @@ const WithKeys = ({ render }: Props): ReactElement => {
   useEffect(() => {
     const fn = async (): Promise<void> => {
       const wallets = await getWallets()
-      console.log('wallets : ', wallets)
+
+      dev.log('wallets : ' + wallets)
       setWallets(wallets)
     }
 

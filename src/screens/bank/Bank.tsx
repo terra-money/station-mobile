@@ -18,6 +18,7 @@ import { BigNumber } from 'bignumber.js'
 import { getDecyrptedKey } from '../../utils/wallet'
 import WithAuth from '../../components/WithAuth'
 import Page from '../../components/Page'
+import dev from 'utils/dev'
 
 const SendComponent = ({
   denom,
@@ -98,9 +99,9 @@ const SendComponent = ({
             // broadcastSync: !block, hash (Recommend) << Front-end
             // broadCatsBlock: block = 6s (Not recommended)
 
-            console.log(result.txhash)
+            dev.log(result.txhash)
           } catch (error) {
-            console.log('Password', error.message)
+            dev.log('Password' + error.message)
           }
         }}
       />
@@ -110,8 +111,6 @@ const SendComponent = ({
 
 const Assets = ({ user }: { user: User }): ReactElement => {
   const { ui } = useAssets(user)
-
-  console.log(ui?.available?.list, user.address)
 
   return (
     <>

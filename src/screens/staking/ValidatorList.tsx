@@ -12,6 +12,7 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 import Picker from '../../components/Picker'
 import Card from '../../components/Card'
 import images from 'assets/images'
+import dev from 'utils/dev'
 
 // H. REQ i18n
 const validatorTitle = 'Validators'
@@ -46,7 +47,7 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
       const response = await fetch(VALIDATOR_LIST)
       setContactableValidators(await response.json())
     } catch (e) {
-      console.error(e)
+      dev.log(e)
     }
   }
 
