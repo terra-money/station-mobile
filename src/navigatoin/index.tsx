@@ -29,7 +29,7 @@ const TerraTheme = {
 const AppNavigator = ({
   skipOnboarding,
 }: {
-  skipOnboarding: boolean
+  skipOnboarding?: boolean
 }): ReactElement => {
   /* linking */
   const linking: LinkingOptions = {
