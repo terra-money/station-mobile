@@ -135,7 +135,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0.0"
+        versionName "0.0.1"
+        multiDexEnabled true
     }
     splits {
         abi {
@@ -219,6 +220,8 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    implementation 'androidx.multidex:multidex:2.0.1'
 }
 
 // Run this once to be able to run the application with BUCK
