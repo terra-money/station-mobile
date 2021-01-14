@@ -2,17 +2,18 @@ import React, { ReactElement, useEffect } from 'react'
 import { Text, StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { useRecoilState } from 'recoil'
+import { useNavigation } from '@react-navigation/native'
 
+import Body from 'components/layout/Body'
+import { navigationHeaderOptions } from 'components/layout/Header'
+import SubHeader from 'components/layout/SubHeader'
 import Button from 'components/Button'
 import CopyButton from 'components/CopyButton'
-import Body from 'components/layout/Body'
+import WarningBox from 'components/WarningBox'
 
 import color from 'styles/color'
 import { modules } from 'utils'
-import WarningBox from 'components/WarningBox'
 import NewWalletStore from 'stores/NewWalletStore'
-import { useNavigation } from '@react-navigation/native'
-import Header from 'components/layout/Header'
 
 const Screen = (): ReactElement => {
   const [seed, setSeed] = useRecoilState(NewWalletStore.seed)
@@ -31,61 +32,59 @@ const Screen = (): ReactElement => {
   }, [])
 
   return (
-    <Body
-      type={'sky'}
-      containerStyle={{
-        paddingBottom: 50,
-        paddingTop: 20,
-        justifyContent: 'space-between',
-      }}
-    >
-      <View>
-        <View style={{ alignItems: 'flex-end', marginBottom: 20 }}>
-          <CopyButton copyString={seed.join(' ')} />
-        </View>
-        <View style={styles.seedBox}>
-          <View style={{ flex: 1 }}>
-            {_.map(seed.slice(0, 12), (item, index) => {
-              return (
-                <View key={index} style={styles.seedWordBox}>
-                  <Text style={styles.seedWordNo}>{index + 1}</Text>
-                  <Text style={styles.seedWord}>{item}</Text>
-                </View>
-              )
-            })}
+    <>
+      <SubHeader theme={'blue'} title={'Write Down Your Seed'} />
+      <Body type={'sky'} containerStyle={styles.container}>
+        <View>
+          <View style={{ alignItems: 'flex-end', marginBottom: 20 }}>
+            <CopyButton copyString={seed.join(' ')} />
           </View>
-          <View style={{ flex: 1 }}>
-            {_.map(seed.slice(12, 25), (item, index) => {
-              return (
-                <View key={index} style={styles.seedWordBox}>
-                  <Text style={styles.seedWordNo}>{index + 11}</Text>
-                  <Text style={styles.seedWord}>{item}</Text>
-                </View>
-              )
-            })}
+          <View style={styles.seedBox}>
+            <View style={{ flex: 1 }}>
+              {_.map(seed.slice(0, 12), (item, index) => {
+                return (
+                  <View key={index} style={styles.seedWordBox}>
+                    <Text style={styles.seedWordNo}>{index + 1}</Text>
+                    <Text style={styles.seedWord}>{item}</Text>
+                  </View>
+                )
+              })}
+            </View>
+            <View style={{ flex: 1 }}>
+              {_.map(seed.slice(12, 25), (item, index) => {
+                return (
+                  <View key={index} style={styles.seedWordBox}>
+                    <Text style={styles.seedWordNo}>
+                      {index + 11}
+                    </Text>
+                    <Text style={styles.seedWord}>{item}</Text>
+                  </View>
+                )
+              })}
+            </View>
           </View>
-        </View>
-        <WarningBox
-          message={
-            <Text style={{ color: color.red, lineHeight: 21 }}>
-              {`If you lose your seed phrase it's`}
-              <Text style={{ fontWeight: '700' }}>
-                {' gone forever. '}
+          <WarningBox
+            message={
+              <Text style={{ color: color.red, lineHeight: 21 }}>
+                {`If you lose your seed phrase it's`}
+                <Text style={{ fontWeight: '700' }}>
+                  {' gone forever. '}
+                </Text>
+                {`Station doesn't store any data.`}
               </Text>
-              {`Station doesn't store any data.`}
-            </Text>
-          }
-        />
-      </View>
+            }
+          />
+        </View>
 
-      <Button
-        title="I Have Written Down My Seed."
-        type={'blue'}
-        containerStyle={{ marginBottom: 10 }}
-        disabled={!stepConfirmed}
-        onPress={onPressNext}
-      />
-    </Body>
+        <Button
+          title="I Have Written Down My Seed."
+          type={'blue'}
+          containerStyle={{ marginBottom: 10 }}
+          disabled={!stepConfirmed}
+          onPress={onPressNext}
+        />
+      </Body>
+    </>
   )
 }
 
@@ -97,20 +96,19 @@ const HeaderRight = (): ReactElement => {
   )
 }
 
-const header = (): ReactElement => (
-  <Header
-    type={'blue'}
-    goBackIconType="close"
-    headerBottom={'Write Down Your Seed'}
-    headerRight={<HeaderRight />}
-  />
-)
-
-Screen.header = header
+Screen.navigationOptions = navigationHeaderOptions({
+  theme: 'blue',
+  headerRight: HeaderRight,
+})
 
 export default Screen
 
 const styles = StyleSheet.create({
+  container: {
+    paddingBottom: 50,
+    paddingTop: 20,
+    justifyContent: 'space-between',
+  },
   seedBox: {
     padding: 20,
     marginBottom: 20,

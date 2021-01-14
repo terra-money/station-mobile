@@ -7,8 +7,8 @@ import _ from 'lodash'
 import { getWallets, testPassword } from 'utils/wallet'
 import useOnAuth from './useOnAuth'
 
-import Header from 'components/layout/Header'
 import Body from 'components/layout/Body'
+import { navigationHeaderOptions } from 'components/layout/Header'
 import Button from 'components/Button'
 import Select from 'components/Select'
 import Input from 'components/Input'
@@ -124,15 +124,9 @@ const Screen = (): ReactElement => {
   )
 }
 
-const header = (): ReactElement => (
-  <Header
-    type={'blue'}
-    goBackIconType="close"
-    headerBottom={'Select Wallet'}
-  />
-)
-
-Screen.header = header
+Screen.navigationOptions = navigationHeaderOptions({
+  theme: 'blue',
+})
 
 export default Screen
 

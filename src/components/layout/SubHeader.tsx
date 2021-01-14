@@ -1,0 +1,59 @@
+import React, { ReactElement } from 'react'
+import {
+  View,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  Text,
+  TextStyle,
+} from 'react-native'
+
+import color from 'styles/color'
+
+type HeaderTheme = 'blue' | 'white'
+
+export type SubHeaderProps = {
+  theme?: HeaderTheme
+  title: string
+}
+
+const SubHeader = ({
+  theme,
+  title,
+}: SubHeaderProps): ReactElement => {
+  const containerStyle: StyleProp<ViewStyle> = {}
+  const textStyle: StyleProp<TextStyle> = {}
+  switch (theme) {
+    case 'blue':
+      textStyle.color = color.white
+      containerStyle.backgroundColor = color.sapphire
+      break
+    case 'white':
+    default:
+      textStyle.color = color.sapphire
+      containerStyle.backgroundColor = color.white
+      break
+  }
+
+  return (
+    <View style={[styles.headerBottomTitleBox, containerStyle]}>
+      <Text style={[styles.headerBottomTitle, textStyle]}>
+        {title}
+      </Text>
+    </View>
+  )
+}
+
+export default SubHeader
+
+export const styles = StyleSheet.create({
+  headerBottomTitleBox: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  headerBottomTitle: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    lineHeight: 39,
+  },
+})

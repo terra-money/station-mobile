@@ -11,14 +11,12 @@ import Tabs from './Tabs'
 import AuthMenu from '../screens/auth/AuthMenu'
 import SelectWallet from '../screens/auth/SelectWallet'
 import NewWalletStack from './NewWalletStack'
-import WalletCreated from '../screens/auth/NewWallet/WalletCreated'
 import Add from '../screens/auth/Add'
 
 import OnBoarding from '../screens/OnBoarding'
 import Setting from '../screens/Setting'
 import ConnectView from '../screens/topup/ConnectView'
 import SendTxView from '../screens/topup/SendTxView'
-import { View } from 'react-native'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -77,21 +75,16 @@ const AppNavigator = ({
         <RootStack.Screen
           name="AuthMenu"
           component={AuthMenu}
-          options={{ headerTitle: AuthMenu.header }}
+          options={AuthMenu.navigationOptions}
         />
         <RootStack.Screen
           name="SelectWallet"
           component={SelectWallet}
-          options={{ headerTitle: SelectWallet.header }}
+          options={SelectWallet.navigationOptions}
         />
         <RootStack.Screen
           name="NewWallet"
           component={NewWalletStack}
-          options={{ headerShown: false }}
-        />
-        <RootStack.Screen
-          name="WalletCreated"
-          component={WalletCreated}
           options={{ headerShown: false }}
         />
         <RootStack.Screen

@@ -9,6 +9,16 @@
     "test": "jest",
     "lint": "eslint --fix src --ext .ts,.tsx"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.@(ts|tsx)": [
+      "npm run lint"
+    ]
+  },
   "dependencies": {
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/checkbox": "^0.5.6",

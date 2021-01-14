@@ -5,6 +5,7 @@ import NewWalletStep1 from '../screens/auth/NewWallet/Step1'
 import NewWalletStep2 from '../screens/auth/NewWallet/Step2'
 import NewWalletStep3 from '../screens/auth/NewWallet/Step3'
 
+import WalletCreated from '../screens/auth/NewWallet/WalletCreated'
 const Stack = createStackNavigator()
 
 const StakingStack = (): ReactElement => (
@@ -12,17 +13,22 @@ const StakingStack = (): ReactElement => (
     <Stack.Screen
       name="NewWalletStep1"
       component={NewWalletStep1}
-      options={{ headerTitle: NewWalletStep1.header }}
+      options={NewWalletStep1.navigationOptions}
     />
     <Stack.Screen
       name="NewWalletStep2"
       component={NewWalletStep2}
-      options={{ headerTitle: NewWalletStep2.header }}
+      options={NewWalletStep2.navigationOptions}
     />
     <Stack.Screen
       name="NewWalletStep3"
       component={NewWalletStep3}
-      options={{ headerTitle: NewWalletStep3.header }}
+      options={NewWalletStep3.navigationOptions}
+    />
+    <Stack.Screen
+      name="WalletCreated"
+      component={WalletCreated}
+      options={{ headerShown: false }}
     />
   </Stack.Navigator>
 )
