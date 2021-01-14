@@ -24,6 +24,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		949FEADAEFB0713765D29056 /* libPods-TerraStation-TerraStationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66745909255D7E904677F954 /* libPods-TerraStation-TerraStationTests.a */; };
 		BAA2C4D925199CEC007B81D3 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = BAA2C4D825199CEC007B81D3 /* fonts */; };
+		BAE2649F25B0373A004D0E76 /* RootChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = BAE2649E25B0373A004D0E76 /* RootChecker.m */; };
 		DFE65CCAD1AB7A414EDA81DE /* libPods-TerraStation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5A5761F1EDDEB8FAB48137A /* libPods-TerraStation.a */; };
 /* End PBXBuildFile section */
 
@@ -42,18 +43,18 @@
 		00E356EE1AD99517003FC87E /* TerraStationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TerraStationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* TerraStationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TerraStationTests.m; sourceTree = "<group>"; };
-		0243C62024989165001C2EFA /* TerraStation-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TerraStation-Bridging-Header.h"; sourceTree = "<group>"; };
-		0243C62124989166001C2EFA /* KeyDerivation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyDerivation.swift; sourceTree = "<group>"; };
-		0243C62224989166001C2EFA /* TerraWalletSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerraWalletSDK.swift; sourceTree = "<group>"; };
-		0243C62324989166001C2EFA /* KeyPair.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyPair.swift; sourceTree = "<group>"; };
-		0243C62424989166001C2EFA /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		0243C62524989166001C2EFA /* Sign.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sign.swift; sourceTree = "<group>"; };
-		0243C630249891E3001C2EFA /* TerraWallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerraWallet.swift; sourceTree = "<group>"; };
-		0243C631249891E3001C2EFA /* TerraWallet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TerraWallet.m; sourceTree = "<group>"; };
-		0243C636249B50FA001C2EFA /* Keystore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keystore.h; sourceTree = "<group>"; };
-		0243C637249B50FA001C2EFA /* Keystore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keystore.m; sourceTree = "<group>"; };
-		0243C639249B5101001C2EFA /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
-		0243C63A249B5101001C2EFA /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preferences.m; sourceTree = "<group>"; };
+		0243C62024989165001C2EFA /* TerraStation-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TerraStation-Bridging-Header.h"; path = "TerraStation/TerraWalletLib/TerraStation-Bridging-Header.h"; sourceTree = "<group>"; };
+		0243C62124989166001C2EFA /* KeyDerivation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyDerivation.swift; path = TerraStation/TerraWalletLib/SDK/KeyDerivation.swift; sourceTree = "<group>"; };
+		0243C62224989166001C2EFA /* TerraWalletSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TerraWalletSDK.swift; path = TerraStation/TerraWalletLib/SDK/TerraWalletSDK.swift; sourceTree = "<group>"; };
+		0243C62324989166001C2EFA /* KeyPair.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyPair.swift; path = TerraStation/TerraWalletLib/SDK/KeyPair.swift; sourceTree = "<group>"; };
+		0243C62424989166001C2EFA /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utils.swift; path = TerraStation/TerraWalletLib/SDK/Utils.swift; sourceTree = "<group>"; };
+		0243C62524989166001C2EFA /* Sign.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sign.swift; path = TerraStation/TerraWalletLib/SDK/Sign.swift; sourceTree = "<group>"; };
+		0243C630249891E3001C2EFA /* TerraWallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TerraWallet.swift; path = TerraStation/TerraWalletLib/TerraWallet.swift; sourceTree = "<group>"; };
+		0243C631249891E3001C2EFA /* TerraWallet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TerraWallet.m; path = TerraStation/TerraWalletLib/TerraWallet.m; sourceTree = "<group>"; };
+		0243C636249B50FA001C2EFA /* Keystore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Keystore.h; path = TerraStation/KeystoreLib/Keystore.h; sourceTree = "<group>"; };
+		0243C637249B50FA001C2EFA /* Keystore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Keystore.m; path = TerraStation/KeystoreLib/Keystore.m; sourceTree = "<group>"; };
+		0243C639249B5101001C2EFA /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Preferences.swift; path = TerraStation/PreferencesLib/Preferences.swift; sourceTree = "<group>"; };
+		0243C63A249B5101001C2EFA /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Preferences.m; path = TerraStation/PreferencesLib/Preferences.m; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* TerraStation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TerraStation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = TerraStation/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = TerraStation/AppDelegate.m; sourceTree = "<group>"; };
@@ -65,6 +66,8 @@
 		66745909255D7E904677F954 /* libPods-TerraStation-TerraStationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TerraStation-TerraStationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5C1EC3AF4C50F577E0F592 /* Pods-TerraStation-TerraStationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TerraStation-TerraStationTests.release.xcconfig"; path = "Target Support Files/Pods-TerraStation-TerraStationTests/Pods-TerraStation-TerraStationTests.release.xcconfig"; sourceTree = "<group>"; };
 		BAA2C4D825199CEC007B81D3 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fonts; path = ../assets/fonts; sourceTree = "<group>"; };
+		BAE2649D25B0373A004D0E76 /* RootChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootChecker.h; path = TerraStation/UtilLib/RootChecker.h; sourceTree = "<group>"; };
+		BAE2649E25B0373A004D0E76 /* RootChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootChecker.m; path = TerraStation/UtilLib/RootChecker.m; sourceTree = "<group>"; };
 		BC887455F350491D8436E331 /* Pods-TerraStation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TerraStation.debug.xcconfig"; path = "Target Support Files/Pods-TerraStation/Pods-TerraStation.debug.xcconfig"; sourceTree = "<group>"; };
 		C5A5761F1EDDEB8FAB48137A /* libPods-TerraStation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TerraStation.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7C3DC5282434C83FD84BD5B /* Pods-TerraStation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TerraStation.release.xcconfig"; path = "Target Support Files/Pods-TerraStation/Pods-TerraStation.release.xcconfig"; sourceTree = "<group>"; };
@@ -157,6 +160,7 @@
 				0243C635249B50ED001C2EFA /* KeystoreLib */,
 				0243C634249B50E1001C2EFA /* PreferencesLib */,
 				0243C61F24989147001C2EFA /* TerraWalletLib */,
+				BAE2644925B02D91004D0E76 /* UtilLib */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -219,6 +223,15 @@
 				8D5C1EC3AF4C50F577E0F592 /* Pods-TerraStation-TerraStationTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		BAE2644925B02D91004D0E76 /* UtilLib */ = {
+			isa = PBXGroup;
+			children = (
+				BAE2649D25B0373A004D0E76 /* RootChecker.h */,
+				BAE2649E25B0373A004D0E76 /* RootChecker.m */,
+			);
+			name = UtilLib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -517,6 +530,7 @@
 			files = (
 				0243C62724989166001C2EFA /* TerraWalletSDK.swift in Sources */,
 				0243C633249891E3001C2EFA /* TerraWallet.m in Sources */,
+				BAE2649F25B0373A004D0E76 /* RootChecker.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				0243C62A24989166001C2EFA /* Sign.swift in Sources */,
 				0243C632249891E3001C2EFA /* TerraWallet.swift in Sources */,
@@ -622,7 +636,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = money.terra.station;
 				PRODUCT_NAME = TerraStation;
-				SWIFT_OBJC_BRIDGING_HEADER = "TerraStation-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "./TerraStation/TerraWalletLib/TerraStation-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -648,7 +662,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = money.terra.station;
 				PRODUCT_NAME = TerraStation;
-				SWIFT_OBJC_BRIDGING_HEADER = "TerraStation-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "./TerraStation/TerraWalletLib/TerraStation-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

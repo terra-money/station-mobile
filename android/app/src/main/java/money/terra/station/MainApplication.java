@@ -1,8 +1,10 @@
 package money.terra.station;
 
+
 import money.terra.station.generated.BasePackageList;
 
 import android.content.Context;
+
 import androidx.multidex.MultiDexApplication;
 
 import com.facebook.react.PackageList;
@@ -14,6 +16,7 @@ import com.facebook.soloader.SoLoader;
 import money.terra.station.KeystoreLib.KeystorePackage;
 import money.terra.station.PreferencesLib.PreferencesPackage;
 import money.terra.station.TerraWalletLib.TerraWalletPackage;
+import money.terra.station.UtilLib.RootCheckerPackage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -41,8 +44,9 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           packages.add(new KeystorePackage());
           packages.add(new PreferencesPackage());
           packages.add(new TerraWalletPackage());
+          packages.add(new RootCheckerPackage());
 
-          List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
+          List<ReactPackage> unimodules = Arrays.asList(
             new ModuleRegistryAdapter(mModuleRegistryProvider)
           );
           packages.addAll(unimodules);
