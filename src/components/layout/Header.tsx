@@ -7,6 +7,7 @@ import {
   ViewStyle,
   Text,
   TextStyle,
+  GestureResponderEvent,
 } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -24,7 +25,7 @@ export type HeaderProps = {
   headerLeft?: ReactElement
   headerCenter?: ReactElement
   headerRight?: ReactElement
-  headerBottomTitle?: string
+  headerBottom?: string | ReactElement
 }
 
 const HeaderBottomTitle = ({
@@ -64,14 +65,16 @@ const HeaderBottomTitle = ({
 const HeaderLeft = ({
   type,
   goBackIconType,
+  onPress,
 }: {
   type?: HeaderType
   goBackIconType?: 'arrow' | 'close'
+  onPress?: (event: GestureResponderEvent) => void
 }): ReactElement => {
   const { goBack } = useNavigation()
 
   return (
-    <TouchableOpacity onPress={goBack}>
+    <TouchableOpacity onPress={onPress || goBack}>
       <MaterialIcons
         name={
           goBackIconType === 'close' ? 'clear' : 'keyboard-arrow-left'
@@ -86,17 +89,18 @@ const HeaderLeft = ({
 const Header = (props: HeaderProps): ReactElement => {
   const { type } = props
   const insets = useSafeAreaInsets()
-
   const containerStyle: StyleProp<ViewStyle> = {}
   switch (type) {
     case 'blue':
       containerStyle.backgroundColor = color.sapphire
       containerStyle.paddingTop = insets.top
+      containerStyle.paddingBottom = insets.top > 0 ? 10 : 0
       break
     case 'white':
     default:
       containerStyle.backgroundColor = color.white
       containerStyle.paddingTop = insets.top
+      containerStyle.paddingBottom = insets.top > 0 ? 10 : 0
       break
   }
   return (
@@ -112,17 +116,18 @@ const Header = (props: HeaderProps): ReactElement => {
         <View style={{ flex: 1 }}>{props.headerCenter}</View>
         {props.headerRight}
       </View>
-      <HeaderBottomTitle
-        title={props.headerBottomTitle}
-        type={type}
-      />
+      {typeof props.headerBottom === 'string' ? (
+        <HeaderBottomTitle title={props.headerBottom} type={type} />
+      ) : (
+        props.headerBottom
+      )}
     </>
   )
 }
 
 export default Header
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     minHeight: 60,
     justifyContent: 'center',

@@ -8,7 +8,8 @@ export type RootStackParams = {
   Setting: undefined
   AuthMenu: undefined
   SelectWallet: undefined
-  New: undefined
+  NewWallet: undefined
+  WalletCreated: undefined
   Add: undefined
   ConnectView: undefined
   SendTxView: undefined

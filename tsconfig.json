@@ -14,7 +14,9 @@
       "components/*": ["./components/*"],
       "styles/*": ["./styles/*"],
       "utils/*": ["./utils/*"],
-      "assets/*": ["./assets/*"]
+      "assets/*": ["./assets/*"],
+      "hooks/*": ["./hooks/*"],
+      "stores/*": ["./stores/*"]
     }
   }
 }

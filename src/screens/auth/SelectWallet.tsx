@@ -1,7 +1,6 @@
 import React, { useState, useEffect, ReactElement } from 'react'
 import { Alert, Text, StyleSheet, View, Image } from 'react-native'
 import { useAuth } from '@terra-money/use-native-station'
-import { StackNavigationOptions } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/native'
 import _ from 'lodash'
 
@@ -68,40 +67,43 @@ const Screen = (): ReactElement => {
   return (
     <>
       {initPageComplete && (
-        <>
-          <Body
-            type={'sky'}
-            containerStyle={{ paddingBottom: 50, paddingTop: 10 }}
-          >
-            <View style={{ flex: 1 }}>
-              <View style={styles.section}>
-                <Text style={styles.title}>Wallet</Text>
-                <Select
-                  selectedValue={name}
-                  optionList={wallets.map(({ name }) => {
-                    return {
-                      label: name,
-                      value: name,
-                    }
-                  })}
-                  onValueChange={(itemValue): void => {
-                    setName(`${itemValue}`)
-                  }}
-                />
-              </View>
-
-              <View style={styles.section}>
-                <Text style={styles.title}>Password</Text>
-                <Input
-                  underlineColorAndroid="#ccc"
-                  value={password}
-                  secureTextEntry
-                  onChangeText={setPassword}
-                  placeholder={'Must be at least 10 characters'}
-                />
-              </View>
+        <Body
+          type={'sky'}
+          containerStyle={{
+            paddingBottom: 50,
+            paddingTop: 10,
+            justifyContent: 'space-between',
+          }}
+        >
+          <View>
+            <View style={styles.section}>
+              <Text style={styles.title}>Wallet</Text>
+              <Select
+                selectedValue={name}
+                optionList={wallets.map(({ name }) => {
+                  return {
+                    label: name,
+                    value: name,
+                  }
+                })}
+                onValueChange={(itemValue): void => {
+                  setName(`${itemValue}`)
+                }}
+              />
             </View>
 
+            <View style={styles.section}>
+              <Text style={styles.title}>Password</Text>
+              <Input
+                underlineColorAndroid="#ccc"
+                value={password}
+                secureTextEntry
+                onChangeText={setPassword}
+                placeholder={'Must be at least 10 characters'}
+              />
+            </View>
+          </View>
+          <View>
             <Button
               title="Next"
               type={'blue'}
@@ -115,27 +117,22 @@ const Screen = (): ReactElement => {
                 Alert.alert('Comming Soon')
               }}
             />
-          </Body>
-        </>
+          </View>
+        </Body>
       )}
     </>
   )
 }
 
-const navigationOptions = (): StackNavigationOptions => {
-  return {
-    animationEnabled: false,
-    header: (): ReactElement => (
-      <Header
-        type={'blue'}
-        goBackIconType="close"
-        headerBottomTitle={'Select Wallet'}
-      />
-    ),
-  }
-}
+const header = (): ReactElement => (
+  <Header
+    type={'blue'}
+    goBackIconType="close"
+    headerBottom={'Select Wallet'}
+  />
+)
 
-Screen.navigationOptions = navigationOptions
+Screen.header = header
 
 export default Screen
 

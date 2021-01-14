@@ -10,11 +10,13 @@ import {
   TouchableOpacity,
   StatusBar,
   Platform,
+  SafeAreaView,
 } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import SplashScreen from 'react-native-splash-screen'
 import { hasNotch } from 'react-native-device-info'
+import { RecoilRoot } from 'recoil'
 
 import {
   useConfigState,
@@ -79,6 +81,7 @@ const App = ({
 }): ReactElement => {
   /* drawer */
   const drawer = useDrawerState()
+  const modal = useModalState()
 
   /* provider */
   const config = useConfigState({ lang, chain })
@@ -106,7 +109,7 @@ const App = ({
   return (
     <>
       {ready && (
-        <AppProvider value={{ drawer }}>
+        <AppProvider value={{ drawer, modal }}>
           <ConfigProvider value={config}>
             <AuthProvider value={auth}>
               <SafeAreaProvider>
@@ -115,7 +118,9 @@ const App = ({
                   backgroundColor="transparent"
                   translucent={false}
                 />
-                <AppNavigator skipOnboarding={skipOnboarding} />
+                <RecoilRoot>
+                  <AppNavigator skipOnboarding={skipOnboarding} />
+                </RecoilRoot>
               </SafeAreaProvider>
 
               <Modal
@@ -135,6 +140,12 @@ const App = ({
                   />
                   <View style={styles.bottom}>{drawer.content}</View>
                 </View>
+              </Modal>
+              <Modal
+                visible={modal.isOpen}
+                onRequestClose={modal.close}
+              >
+                <SafeAreaView>{modal.content}</SafeAreaView>
               </Modal>
             </AuthProvider>
           </ConfigProvider>
@@ -161,6 +172,23 @@ export default (): ReactElement => {
 
 /* hooks */
 const useDrawerState = (): Drawer => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [content, setContent] = useState<ReactNode>(null)
+
+  const open = (content: ReactNode): void => {
+    setContent(content)
+    setIsOpen(true)
+  }
+
+  const close = (): void => {
+    setIsOpen(false)
+    setContent(null)
+  }
+
+  return { isOpen, open, close, content }
+}
+
+const useModalState = (): Drawer => {
   const [isOpen, setIsOpen] = useState(false)
   const [content, setContent] = useState<ReactNode>(null)
 
