@@ -23,6 +23,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		949FEADAEFB0713765D29056 /* libPods-TerraStation-TerraStationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66745909255D7E904677F954 /* libPods-TerraStation-TerraStationTests.a */; };
+		BA92551525B134EB0081BC42 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = BA92551425B134EA0081BC42 /* AppCenter-Config.plist */; };
 		BAA2C4D925199CEC007B81D3 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = BAA2C4D825199CEC007B81D3 /* fonts */; };
 		BAE2649F25B0373A004D0E76 /* RootChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = BAE2649E25B0373A004D0E76 /* RootChecker.m */; };
 		BAE264A925B05245004D0E76 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BAE264A825B05245004D0E76 /* GoogleService-Info.plist */; };
@@ -66,6 +67,7 @@
 		2D5A2B6408BCAEF90EBF2A24 /* Pods-TerraStation-TerraStationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TerraStation-TerraStationTests.debug.xcconfig"; path = "Target Support Files/Pods-TerraStation-TerraStationTests/Pods-TerraStation-TerraStationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		66745909255D7E904677F954 /* libPods-TerraStation-TerraStationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TerraStation-TerraStationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5C1EC3AF4C50F577E0F592 /* Pods-TerraStation-TerraStationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TerraStation-TerraStationTests.release.xcconfig"; path = "Target Support Files/Pods-TerraStation-TerraStationTests/Pods-TerraStation-TerraStationTests.release.xcconfig"; sourceTree = "<group>"; };
+		BA92551425B134EA0081BC42 /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "TerraStation/AppCenter-Config.plist"; sourceTree = "<group>"; };
 		BAA2C4D825199CEC007B81D3 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fonts; path = ../assets/fonts; sourceTree = "<group>"; };
 		BAE2649D25B0373A004D0E76 /* RootChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootChecker.h; path = TerraStation/UtilLib/RootChecker.h; sourceTree = "<group>"; };
 		BAE2649E25B0373A004D0E76 /* RootChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootChecker.m; path = TerraStation/UtilLib/RootChecker.m; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 		13B07FAE1A68108700A75B9A /* TerraStation */ = {
 			isa = PBXGroup;
 			children = (
+				BA92551425B134EA0081BC42 /* AppCenter-Config.plist */,
 				BAA2C4D825199CEC007B81D3 /* fonts */,
 				0243C635249B50ED001C2EFA /* KeystoreLib */,
 				0243C634249B50E1001C2EFA /* PreferencesLib */,
@@ -332,6 +335,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAA2C4D925199CEC007B81D3 /* fonts in Resources */,
+				BA92551525B134EB0081BC42 /* AppCenter-Config.plist in Resources */,
 				BAE264A925B05245004D0E76 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,

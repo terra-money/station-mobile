@@ -5,6 +5,7 @@ import money.terra.station.generated.BasePackageList;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
 import androidx.multidex.MultiDexApplication;
 
 import com.facebook.react.PackageList;
@@ -57,6 +58,12 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         @Override
         protected String getJSMainModuleName() {
           return "index";
+        }
+
+        @Nullable
+        @Override
+        protected String getJSBundleFile() {
+          return super.getJSBundleFile();
         }
       };
 
