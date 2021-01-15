@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Text } from 'react-native'
 import { useRoute, RouteProp } from '@react-navigation/native'
 import { useChart } from '@terra-money/use-native-station'
@@ -7,7 +7,7 @@ import Page from '../../components/Page'
 
 type ChartRouteProp = RouteProp<DashboardRouteParams, 'Chart'>
 
-const Chart = () => {
+const Chart = (): ReactElement => {
   const { params } = useRoute<ChartRouteProp>()
   const { title } = useChart(params.chartKey)
 

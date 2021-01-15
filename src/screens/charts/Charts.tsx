@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { ChartKey } from '@terra-money/use-native-station'
 import { View } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet'
@@ -11,7 +11,7 @@ const List: ChartKey[] = [
   'TotalAccounts',
 ]
 
-const Charts = () => (
+const Charts = (): ReactElement => (
   <View style={styles.charts}>
     {List.map((chartKey, index) => (
       <View

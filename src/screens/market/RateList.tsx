@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View, Text } from 'react-native'
 import {
   useRate,
@@ -12,12 +12,12 @@ import Picker from '../../components/Picker'
 import Info from '../../components/Info'
 import Variation from './Variation'
 
-const RateList = ({ denoms }: { denoms: string[] }) => {
+const RateList = ({ denoms }: { denoms: string[] }): ReactElement => {
   const { error, loading, title, message, filter, ui } = useRate(
     denoms
   )
 
-  const renderFilter = () => {
+  const renderFilter = (): ReactElement => {
     const { value, set, options } = filter.denom
     return (
       <Picker
@@ -34,7 +34,7 @@ const RateList = ({ denoms }: { denoms: string[] }) => {
   const renderRow = (
     { display, variation }: RateItem,
     index: number
-  ) => (
+  ): ReactElement => (
     <View
       style={{
         flexDirection: 'row',
@@ -49,7 +49,7 @@ const RateList = ({ denoms }: { denoms: string[] }) => {
     </View>
   )
 
-  const render = ({ message, list }: RateUI) =>
+  const render = ({ message, list }: RateUI): ReactElement =>
     message ? (
       <Info>{message}</Info>
     ) : (

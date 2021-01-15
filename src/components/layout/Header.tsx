@@ -1,25 +1,31 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
-import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native'
+import { StyleSheet, StyleProp, ViewStyle } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import color from 'styles/color'
+import {
+  StackHeaderLeftButtonProps,
+  StackNavigationOptions,
+} from '@react-navigation/stack'
+
+type HeaderTheme = 'blue' | 'white'
 
 export type HeaderProps = {
-  type?: 'blue' | 'white'
+  theme?: HeaderTheme
   goBackIconType?: 'arrow' | 'close'
-  containerStyle?: StyleProp<ViewStyle>
-  headerLeft?: ReactElement
-  headerTitle?: ReactElement
-  headerRight?: ReactElement
+  headerLeft?: (props: StackHeaderLeftButtonProps) => React.ReactNode
+  headerRight?: (props: {
+    tintColor?: string | undefined
+  }) => React.ReactNode
 }
 
 const HeaderLeft = ({
-  type,
+  theme,
   goBackIconType,
 }: {
-  type?: 'blue' | 'white'
+  theme?: HeaderTheme
   goBackIconType?: 'arrow' | 'close'
 }): ReactElement => {
   const { goBack } = useNavigation()
@@ -28,20 +34,21 @@ const HeaderLeft = ({
     <TouchableOpacity onPress={goBack}>
       <MaterialIcons
         name={
-          goBackIconType === 'arrow' ? 'keyboard-arrow-left' : 'clear'
+          goBackIconType === 'close' ? 'clear' : 'keyboard-arrow-left'
         }
-        color={type === 'blue' ? color.white : color.sapphire}
+        color={theme === 'blue' ? color.white : color.sapphire}
         size={32}
       />
     </TouchableOpacity>
   )
 }
 
-const Header = (props: HeaderProps): ReactElement => {
-  const { type } = props
-
+export const navigationHeaderOptions = (
+  props: HeaderProps
+): StackNavigationOptions => {
+  const { theme, goBackIconType, headerRight } = props
   const containerStyle: StyleProp<ViewStyle> = {}
-  switch (type) {
+  switch (theme) {
     case 'blue':
       containerStyle.backgroundColor = color.sapphire
       break
@@ -50,25 +57,22 @@ const Header = (props: HeaderProps): ReactElement => {
       containerStyle.backgroundColor = color.white
       break
   }
-  return (
-    <View
-      style={[styles.container, containerStyle, props.containerStyle]}
-    >
-      {props.headerLeft || <HeaderLeft type={type} />}
-      <View style={{ flex: 1 }}>{props.headerTitle}</View>
-      {props.headerRight}
-    </View>
-  )
+  return {
+    headerStyle: { ...styles.container, ...containerStyle },
+    headerLeftContainerStyle: { paddingLeft: 20 },
+    headerLeft: (): ReactElement => (
+      <HeaderLeft {...{ theme, goBackIconType }} />
+    ),
+    headerTitle: '',
+    headerRightContainerStyle: { paddingRight: 20 },
+    headerRight,
+  }
 }
 
-export default Header
-
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 20,
+    elevation: 0,
+    shadowOpacity: 0,
+    borderBottomWidth: 0,
   },
 })

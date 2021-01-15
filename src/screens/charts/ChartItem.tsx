@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { ChartKey, useChart } from '@terra-money/use-native-station'
@@ -14,17 +14,18 @@ interface Props {
   chartKey: ChartKey
 }
 
-const Component = ({ chartKey }: Props) => {
+const Component = ({ chartKey }: Props): ReactElement => {
   const { navigate } = useNavigation()
-  const { value, chart, title } = useChart(chartKey)
+  const { value, title } = useChart(chartKey)
   const data = [3, 3, 5, 4, 6, 7, 8]
-  const Line = () => (
+  const Line = (): ReactElement => (
     <Path key="line " stroke="rgba(32, 67, 181,.45)" fill="none" />
   )
 
-  /* render */
-  const renderChart = () => (
-    <TouchableOpacity onPress={() => navigate('Chart', { chartKey })}>
+  return (
+    <TouchableOpacity
+      onPress={(): void => navigate('Chart', { chartKey })}
+    >
       <View style={styles.chart_item}>
         <Text style={styles.chart_item_title}>{title}</Text>
         <View style={styles.bottom}>
@@ -49,11 +50,8 @@ const Component = ({ chartKey }: Props) => {
       </View>
     </TouchableOpacity>
   )
-
-  return chart ? renderChart() : null
 }
-
-const ChartItem = (props: Props) => (
+const ChartItem = (props: Props): ReactElement => (
   <ErrorBoundary fallback={<ErrorComponent />}>
     <Component {...props} />
   </ErrorBoundary>

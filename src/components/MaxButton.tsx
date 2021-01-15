@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import {
   TouchableOpacity,
   TouchableOpacityProps,
@@ -13,7 +13,11 @@ interface Props {
   display: DisplayCoin
 }
 
-const MaxButton = ({ attrs, label, display }: Props) => (
+const MaxButton = ({
+  attrs,
+  label,
+  display,
+}: Props): ReactElement => (
   <>
     <Text>{label}: </Text>
     <TouchableOpacity {...attrs}>

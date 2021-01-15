@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import {
   useConfirmSeed,
   SignUpNext,
@@ -6,13 +6,16 @@ import {
 import Form, { State } from '../../components/Form'
 import ButtonGroup from '../../components/ButtonGroup'
 
-const ConfirmSeed = (props: SignUpNext) => {
+const ConfirmSeed = (props: SignUpNext): ReactElement => {
   const { form, hint } = useConfirmSeed(props)
 
-  const renderButtonGroup = ({ index, setIndex }: State) => {
+  const renderButtonGroup = ({
+    index,
+    setIndex,
+  }: State): ReactElement => {
     const buttons = hint.map(({ label: children, onClick }) => ({
       children,
-      onClick: () => {
+      onClick: (): void => {
         onClick(index)
         setIndex(index + 1)
       },

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { ProposalItemUI } from '@terra-money/use-native-station'
@@ -15,7 +15,7 @@ const GOV_STATE_VOTING = 'VOTING'
  * i18n 적용 시 어떻게 분기할 것인지... 우선 API Call로 들어오는 것은 영문으로 들어오므로 체크는 그대로 가야 하는 것인지?
  * Spec 필요
  */
-const getStatusColor = (c: string) =>
+const getStatusColor = (c: string): string =>
   c.toUpperCase() === GOV_STATE_PASSED
     ? 'rgb(84, 147, 247)'
     : c.toUpperCase() === GOV_STATE_REJECTED
@@ -26,7 +26,7 @@ const getStatusColor = (c: string) =>
     ? 'rgb(122, 111, 240)'
     : 'rgb(0,0,0)' // undefined
 
-const ProposalItem = (proposal: ProposalItemUI) => {
+const ProposalItem = (proposal: ProposalItemUI): ReactElement => {
   const {
     id,
     statusTranslation,
@@ -42,7 +42,7 @@ const ProposalItem = (proposal: ProposalItemUI) => {
   const renderDetail = (
     d: { title: string; content: string },
     i: number
-  ) =>
+  ): ReactElement =>
     i === 0 ? (
       <View style={{ flexDirection: 'column', alignItems: 'center' }}>
         <Text
@@ -123,7 +123,7 @@ const ProposalItem = (proposal: ProposalItemUI) => {
   ) : null
 
   return (
-    <Card onPress={() => navigate('Proposal', { id })}>
+    <Card onPress={(): void => navigate('Proposal', { id })}>
       {/* <Badge>{statusTranslation}</Badge> */}
       <View
         style={{

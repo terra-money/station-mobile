@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Text, View, Image, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import {
@@ -12,6 +12,7 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 import Picker from '../../components/Picker'
 import Card from '../../components/Card'
 import images from 'assets/images'
+import dev from 'utils/dev'
 
 // H. REQ i18n
 const validatorTitle = 'Validators'
@@ -25,7 +26,7 @@ const validatorFilter: Options = [
   { value: 'Uptime', children: 'Uptime' },
 ]
 
-const ValidatorList = ({ contents }: StakingUI) => {
+const ValidatorList = ({ contents }: StakingUI): ReactElement => {
   const { navigate } = useNavigation()
 
   const [currentFilter, setCurrentFilter] = useState(
@@ -41,12 +42,12 @@ const ValidatorList = ({ contents }: StakingUI) => {
   /**
    * email이 있는 validator 얻어오기
    */
-  const getContactableValidators = async () => {
+  const getContactableValidators = async (): Promise<void> => {
     try {
       const response = await fetch(VALIDATOR_LIST)
       setContactableValidators(await response.json())
     } catch (e) {
-      console.error(e)
+      dev.log(e)
     }
   }
 
@@ -60,7 +61,7 @@ const ValidatorList = ({ contents }: StakingUI) => {
    *
    * 1차 정렬 이후 Staking return값으로 2차 정렬. 이후 Moniker로 3차 정렬
    */
-  const sortContents = (a: ValidatorUI, b: ValidatorUI) => {
+  const sortContents = (a: ValidatorUI, b: ValidatorUI): number => {
     const [_a, _b] =
       currentFilter === 'Delegation Return'
         ? [a.delegationReturn.percent, b.delegationReturn.percent]
@@ -123,7 +124,7 @@ const ValidatorList = ({ contents }: StakingUI) => {
               <Text>{currentFilter}</Text>
             </Picker>
             <TouchableOpacity
-              onPress={() => {
+              onPress={(): void => {
                 contents.reverse()
                 contents.sort(sortContents)
                 setReverseContents(!reverseContents)
@@ -140,8 +141,8 @@ const ValidatorList = ({ contents }: StakingUI) => {
         </View>
         {contents.map((content, index) => (
           <TouchableOpacity
-            onPress={() =>
-              navigate('Validator', {
+            onPress={(): void =>
+              navigate('ValidatorDetail', {
                 address: content.operatorAddress.address,
               })
             }
@@ -231,6 +232,7 @@ const ValidatorList = ({ contents }: StakingUI) => {
     </>
   )
 }
+ValidatorList.option = {}
 
 export default ValidatorList
 

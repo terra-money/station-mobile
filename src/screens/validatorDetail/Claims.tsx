@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { View, Text } from 'react-native'
 import {
   ClaimsTable,
@@ -14,11 +14,13 @@ import Number from '../../components/Number'
 import Table from '../../components/Table'
 import ExtLink from '../../components/ExtLink'
 
-const Claims = ({ address }: { address: string }) => {
+const Claims = ({ address }: { address: string }): ReactElement => {
   const [page] = useState(1)
   const { error, title, ui } = useClaims(address, { page })
 
-  const renderHeadings = (headings: ClaimsTable['headings']) => {
+  const renderHeadings = (
+    headings: ClaimsTable['headings']
+  ): ReactElement => {
     const { hash, type, displays, date } = headings
     return (
       <View>
@@ -33,7 +35,7 @@ const Claims = ({ address }: { address: string }) => {
   const renderRow = (
     { link, hash, ...rest }: ClaimContent,
     index: number
-  ) => {
+  ): ReactElement => {
     const { type, displays, date } = rest
     return (
       <View key={index}>
@@ -51,14 +53,16 @@ const Claims = ({ address }: { address: string }) => {
     )
   }
 
-  const render = ({ table }: TableUI<ClaimsTable>) => {
+  const render = ({ table }: TableUI<ClaimsTable>): ReactElement => {
     return (
-      table && (
-        <Table>
-          {renderHeadings(table.headings)}
-          {table.contents.map(renderRow)}
-        </Table>
-      )
+      <>
+        {table && (
+          <Table>
+            {renderHeadings(table.headings)}
+            {table.contents.map(renderRow)}
+          </Table>
+        )}
+      </>
     )
   }
 

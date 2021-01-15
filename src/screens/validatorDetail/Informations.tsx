@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View, Text } from 'react-native'
 import { ValidatorUI } from '@terra-money/use-native-station'
 import ExtLink from '../../components/ExtLink'
 
-const Informations = (v: ValidatorUI) => {
+const Informations = (v: ValidatorUI): ReactElement => {
   const { accountAddress, operatorAddress } = v
   const { maxRate, maxChangeRate, delegationReturn, updateTime } = v
 
   const link = (
-    <ExtLink href={accountAddress.link}>
+    <ExtLink href={accountAddress.link || ''}>
       {accountAddress.address}
     </ExtLink>
   )

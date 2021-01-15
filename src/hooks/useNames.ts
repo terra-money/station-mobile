@@ -5,7 +5,7 @@ export default (): string[] | undefined => {
   const [names, setNames] = useState<string[]>()
 
   useEffect(() => {
-    const load = async () => {
+    const load = async (): Promise<void> => {
       const names = await loadNames()
       setNames(names)
     }

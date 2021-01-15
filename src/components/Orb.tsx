@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { View, Image } from 'react-native'
 
 import images from 'assets/images'
@@ -10,7 +10,7 @@ interface Props {
   completed?: string
 }
 
-const Orb = ({ ratio = '0' }: Props) => {
+const Orb = ({ ratio = '0' }: Props): ReactElement => {
   const orbSize = 60
   const orbHeight = orbSize * parseFloat(ratio)
 

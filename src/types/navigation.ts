@@ -7,8 +7,8 @@ export type RootStackParams = {
   Tabs: undefined
   Setting: undefined
   AuthMenu: undefined
-  Select: undefined
-  New: undefined
+  SelectWallet: undefined
+  NewWallet: undefined
   Add: undefined
   ConnectView: undefined
   SendTxView: undefined
@@ -32,7 +32,7 @@ export type DashboardRouteParams = {
 
 /* Staking */
 export type StakingRouteParams = {
-  Validator: { address: string }
+  ValidatorDetail: { address: string }
 }
 
 /* Governance */

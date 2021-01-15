@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { DisplaySelector as Props } from '@terra-money/use-native-station'
 import Card from '../../components/Card'
 import Number from '../../components/Number'
 import Picker from '../../components/Picker'
 
-const DisplaySelector = (props: Props) => {
+const DisplaySelector = (props: Props): ReactElement => {
   const { title, select, displays } = props
   const { defaultValue, options } = select
   const [current, setCurrent] = useState<string>(defaultValue)

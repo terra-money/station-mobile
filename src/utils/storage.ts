@@ -3,14 +3,16 @@ import CryptoJS from 'crypto-js'
 import { mergeRight as merge, omit } from 'ramda'
 import { Wallet } from '@terra-money/use-native-station'
 import { Settings } from '../types/settings'
+import preferences from 'nativeModules/preferences'
 
-const { Preferences, Keystore } = NativeModules
+const { Keystore } = NativeModules
+
 export const { encrypt, decrypt } = CryptoJS.AES
 
 /* keys */
 const SEP = ','
 export const loadNames = async (): Promise<string[]> => {
-  const names = await Preferences.getString('names')
+  const names = await preferences.getString('names')
   return names ? JSON.parse(names) : []
 }
 
@@ -19,9 +21,9 @@ export const loadKey = async (name: string): Promise<Key> => {
   return JSON.parse(key)
 }
 
-export const storeKeys = (keys: Key[]) => {
+export const storeKeys = (keys: Key[]): void => {
   const names = keys.map(({ name }) => name)
-  Preferences.setString('names', JSON.stringify(names))
+  preferences.setString('names', JSON.stringify(names))
   keys.forEach((key) =>
     Keystore.write(key.name, JSON.stringify(keys))
   )
@@ -49,7 +51,7 @@ export const importKey = async ({
   name,
   password,
   wallet,
-}: Params) => {
+}: Params): Promise<void> => {
   const names = await loadNames()
 
   if (names.includes(name))
@@ -68,12 +70,12 @@ export const importKey = async ({
     wallet: encrypted,
   }
 
-  Preferences.setString('names', JSON.stringify([...names, name]))
+  preferences.setString('names', JSON.stringify([...names, name]))
   Keystore.write(name, JSON.stringify(key))
 }
 
 export const clearKeys = async (): Promise<void> => {
-  const names = await Preferences.getString('names')
+  const names = await preferences.getString('names')
   await names
     .split(SEP)
     .forEach((name: string) => Keystore.remove(name))
@@ -82,7 +84,7 @@ export const clearKeys = async (): Promise<void> => {
 export const testPassword = (
   { name, password }: { name: string; password: string },
   keys: Key[]
-) => {
+): boolean => {
   const key = keys.find((key) => key.name === name)
 
   if (!key) throw new Error('Key with that name does not exist')
@@ -99,7 +101,7 @@ export const testPassword = (
 const SETTINGS = 'settings'
 
 const getSettings = async (): Promise<Settings> => {
-  const settings = await Preferences.getString(SETTINGS)
+  const settings = await preferences.getString(SETTINGS)
   return settings ? JSON.parse(settings) : {}
 }
 
@@ -107,7 +109,7 @@ const setSettings = async (
   next: Partial<Settings>
 ): Promise<void> => {
   const settings = await getSettings()
-  Preferences.setString(
+  preferences.setString(
     SETTINGS,
     JSON.stringify(merge(settings, next))
   )
@@ -117,14 +119,14 @@ const deleteSettings = async (
   keys: (keyof Settings)[]
 ): Promise<void> => {
   const settings = await getSettings()
-  Preferences.setString(
+  preferences.setString(
     SETTINGS,
     JSON.stringify(omit(keys, settings))
   )
 }
 
 export const clearSettings = (): void => {
-  Preferences.clear()
+  preferences.clear()
 }
 
 export const settings = {
@@ -138,12 +140,21 @@ export const settings = {
 const ONBOARDING = 'skip_onboarding'
 
 export const getSkipOnboarding = async (): Promise<boolean> => {
-  const onboarding = await Preferences.getBool(ONBOARDING)
+  const onboarding = await preferences.getBool(ONBOARDING)
   return onboarding ? onboarding : false
 }
 
 export const setSkipOnboarding = async (
   skip: boolean
 ): Promise<void> => {
-  Preferences.setBool(ONBOARDING, skip)
+  preferences.setBool(ONBOARDING, skip)
 }
+
+const USE_BIO_AUTH = 'use_bio_auth'
+
+export const setUseBioAuth = async (use: boolean): Promise<void> => {
+  preferences.setBool(USE_BIO_AUTH, use)
+}
+
+export const getUseBioAuth = async (): Promise<boolean> =>
+  preferences.getBool(USE_BIO_AUTH)

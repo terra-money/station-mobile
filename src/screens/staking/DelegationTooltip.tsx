@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Text, View } from 'react-native'
 import { MyActionsTable } from '@terra-money/use-native-station'
 import Number from '../../components/Number'
@@ -7,7 +7,7 @@ import Table from '../../components/Table'
 const DelegationTooltip = ({
   headings,
   contents,
-}: MyActionsTable) => (
+}: MyActionsTable): ReactElement => (
   <Table light small>
     <Text>{headings.action}</Text>
     <Text>{headings.display}</Text>

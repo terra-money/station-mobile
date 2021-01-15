@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 import { View, Text, TouchableOpacity, ViewStyle } from 'react-native'
+import _ from 'lodash'
 import { API } from '@terra-money/use-native-station'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EStyleSheet from 'react-native-extended-stylesheet'
@@ -29,11 +30,11 @@ const Card = ({
   unit,
   children,
   ...rest
-}: Props) => {
+}: Props): ReactElement => {
   const { onPress, dark, error, loading } = rest
   const textStyle = [styles.text, dark && darkStyles.text]
   const data = [460, 466, 480, 490, 500, 510, 520]
-  const Line = ({ line }: any) => (
+  const Line = ({ line }: any): ReactElement => (
     <Path
       key="line "
       d={line}
@@ -42,7 +43,7 @@ const Card = ({
     />
   )
 
-  const render = () => (
+  const render = (): ReactElement => (
     <View
       style={[
         styles.card,
@@ -50,7 +51,7 @@ const Card = ({
         style,
       ]}
     >
-      {title && (
+      {_.some(title) && (
         <View style={styles.header}>
           <Text style={[textStyle, styles.title]}>{title}</Text>
           {action ??

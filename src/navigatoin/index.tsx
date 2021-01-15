@@ -7,18 +7,16 @@ import {
 
 import { RootStack } from '../types'
 
-import Tabs from '../screens/Tabs'
+import Tabs from './Tabs'
 import AuthMenu from '../screens/auth/AuthMenu'
-import Select from '../screens/auth/Select'
-import New from '../screens/auth/New'
+import SelectWallet from '../screens/auth/SelectWallet'
+import NewWalletStack from './NewWalletStack'
 import Add from '../screens/auth/Add'
 
 import OnBoarding from '../screens/OnBoarding'
 import Setting from '../screens/Setting'
 import ConnectView from '../screens/topup/ConnectView'
 import SendTxView from '../screens/topup/SendTxView'
-
-import Header from 'components/layout/Header'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -31,7 +29,7 @@ const TerraTheme = {
 const AppNavigator = ({
   skipOnboarding,
 }: {
-  skipOnboarding: boolean
+  skipOnboarding?: boolean
 }): ReactElement => {
   /* linking */
   const linking: LinkingOptions = {
@@ -77,22 +75,17 @@ const AppNavigator = ({
         <RootStack.Screen
           name="AuthMenu"
           component={AuthMenu}
-          options={{
-            animationEnabled: false,
-            header: () => (
-              <Header type={'blue'} goBackIconType="close" />
-            ),
-          }}
+          options={AuthMenu.navigationOptions}
         />
         <RootStack.Screen
-          name="Select"
-          component={Select}
-          options={{ animationEnabled: false }}
+          name="SelectWallet"
+          component={SelectWallet}
+          options={SelectWallet.navigationOptions}
         />
         <RootStack.Screen
-          name="New"
-          component={New}
-          options={{ animationEnabled: false }}
+          name="NewWallet"
+          component={NewWalletStack}
+          options={{ headerShown: false }}
         />
         <RootStack.Screen
           name="Add"

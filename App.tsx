@@ -1,15 +1,22 @@
-import React, { ReactNode, useState, useEffect } from 'react'
+import React, {
+  ReactNode,
+  useState,
+  useEffect,
+  ReactElement,
+} from 'react'
 import {
   Modal,
   View,
   TouchableOpacity,
   StatusBar,
   Platform,
+  SafeAreaView,
 } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import SplashScreen from 'react-native-splash-screen'
 import { hasNotch } from 'react-native-device-info'
+import { RecoilRoot } from 'recoil'
 
 import {
   useAuthState,
@@ -66,9 +73,14 @@ const chain = {
   secure: true,
 }
 
-let App = ({ settings: { lang, user } }: { settings: Settings }) => {
+let App = ({
+  settings: { lang, user },
+}: {
+  settings: Settings
+}): ReactElement => {
   /* drawer */
   const drawer = useDrawerState()
+  const modal = useModalState()
 
   /* provider */
   const config = useConfigState({ lang, chain })
@@ -77,9 +89,7 @@ let App = ({ settings: { lang, user } }: { settings: Settings }) => {
   const { key: currentChain = '' } = currentChainOptions
 
   /* onboarding */
-  const [skipOnboarding, setSkipOnboarding] = useState<
-    boolean | null
-  >(null)
+  const [skipOnboarding, setSkipOnboarding] = useState<boolean>()
 
   /* auth */
   const auth = useAuthState(user)
@@ -88,44 +98,61 @@ let App = ({ settings: { lang, user } }: { settings: Settings }) => {
   const ready = !!(currentLang && currentChain)
 
   useEffect(() => {
-    const checkShowOnboarding = async () => {
+    const checkShowOnboarding = async (): Promise<void> => {
       setSkipOnboarding(await getSkipOnboarding())
       SplashScreen.hide()
     }
     checkShowOnboarding()
   }, [])
 
-  return !ready || skipOnboarding === null ? null : (
-    <AppProvider value={{ drawer }}>
-      <ConfigProvider value={config}>
-        <AuthProvider value={auth}>
-          <SafeAreaProvider>
-            <StatusBar
-              barStyle="dark-content"
-              backgroundColor="transparent"
-              translucent={false}
-            />
-            <AppNavigator skipOnboarding={skipOnboarding} />
-          </SafeAreaProvider>
+  return (
+    <>
+      {ready && (
+        <AppProvider value={{ drawer, modal }}>
+          <ConfigProvider value={config}>
+            <AuthProvider value={auth}>
+              <SafeAreaProvider>
+                <StatusBar
+                  barStyle="dark-content"
+                  backgroundColor="transparent"
+                  translucent={false}
+                />
+                <RecoilRoot>
+                  <AppNavigator skipOnboarding={skipOnboarding} />
+                  <Modal
+                    visible={modal.isOpen}
+                    onRequestClose={modal.close}
+                  >
+                    <SafeAreaView style={{ flex: 1 }}>
+                      {modal.content}
+                    </SafeAreaView>
+                  </Modal>
+                </RecoilRoot>
+              </SafeAreaProvider>
 
-          <Modal
-            visible={drawer.isOpen}
-            animationType="fade"
-            transparent
-          >
-            <View
-              style={{ flex: 1, backgroundColor: 'rgba(0,0,0,.5)' }}
-            >
-              <TouchableOpacity
-                onPress={drawer.close}
-                style={styles.top}
-              />
-              <View style={styles.bottom}>{drawer.content}</View>
-            </View>
-          </Modal>
-        </AuthProvider>
-      </ConfigProvider>
-    </AppProvider>
+              <Modal
+                visible={drawer.isOpen}
+                animationType="fade"
+                transparent
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    backgroundColor: 'rgba(0,0,0,.5)',
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={drawer.close}
+                    style={styles.top}
+                  />
+                  <View style={styles.bottom}>{drawer.content}</View>
+                </View>
+              </Modal>
+            </AuthProvider>
+          </ConfigProvider>
+        </AppProvider>
+      )}
+    </>
   )
 }
 
@@ -137,11 +164,11 @@ const CodePushOptions = {
 
 App = CodePush(CodePushOptions)(App)
 
-export default () => {
+export default (): ReactElement => {
   const [local, setLocal] = useState<Settings>()
 
   useEffect(() => {
-    const init = async () => {
+    const init = async (): Promise<void> => {
       const local = await settings.get()
       setLocal(local)
     }
@@ -149,7 +176,7 @@ export default () => {
     init()
   }, [])
 
-  return local ? <App settings={local} /> : null
+  return <>{local ? <App settings={local} /> : null}</>
 }
 
 /* hooks */
@@ -157,12 +184,29 @@ const useDrawerState = (): Drawer => {
   const [isOpen, setIsOpen] = useState(false)
   const [content, setContent] = useState<ReactNode>(null)
 
-  const open = (content: ReactNode) => {
+  const open = (content: ReactNode): void => {
     setContent(content)
     setIsOpen(true)
   }
 
-  const close = () => {
+  const close = (): void => {
+    setIsOpen(false)
+    setContent(null)
+  }
+
+  return { isOpen, open, close, content }
+}
+
+const useModalState = (): Drawer => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [content, setContent] = useState<ReactNode>(null)
+
+  const open = (content: ReactNode): void => {
+    setContent(content)
+    setIsOpen(true)
+  }
+
+  const close = (): void => {
     setIsOpen(false)
     setContent(null)
   }

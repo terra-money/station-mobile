@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Text } from 'react-native'
 import { VoterUI, format } from '@terra-money/use-native-station'
 import ExtLink from '../../components/ExtLink'
@@ -8,7 +8,7 @@ interface Props {
   noTruncate?: boolean
 }
 
-const Voter = ({ voter, noTruncate }: Props) => {
+const Voter = ({ voter, noTruncate }: Props): ReactElement => {
   // TODO: Return to this
   const { address } = voter
 

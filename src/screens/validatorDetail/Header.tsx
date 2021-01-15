@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Text } from 'react-native'
 import { ValidatorUI } from '@terra-money/use-native-station'
 import Badge from '../../components/Badge'
@@ -6,7 +6,7 @@ import Number from '../../components/Number'
 import ExtLink from '../../components/ExtLink'
 import ViewProfile from './ViewProfile'
 
-const Header = (v: ValidatorUI) => {
+const Header = (v: ValidatorUI): ReactElement => {
   const {
     profile,
     moniker,

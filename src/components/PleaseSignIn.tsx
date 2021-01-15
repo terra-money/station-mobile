@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { TouchableWithoutFeedback, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useInfo, Trans } from '@terra-money/use-native-station'
@@ -6,7 +6,7 @@ import { useInfo, Trans } from '@terra-money/use-native-station'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import Card from './Card'
 
-const PleaseSignIn = ({}: { card?: boolean }) => {
+const PleaseSignIn = (): ReactElement => {
   const { navigate } = useNavigation()
   const { SIGN_IN_REQUIRED } = useInfo()
   const { title, i18nKey, button } = SIGN_IN_REQUIRED
@@ -19,7 +19,9 @@ const PleaseSignIn = ({}: { card?: boolean }) => {
           <Text />
         </Trans>
       </Text>
-      <TouchableWithoutFeedback onPress={() => navigate('AuthMenu')}>
+      <TouchableWithoutFeedback
+        onPress={(): void => navigate('AuthMenu')}
+      >
         <View style={styles.button}>
           <Text style={styles.button_text}>{button}</Text>
         </View>

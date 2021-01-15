@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import _ from 'lodash'
 import {
-  DashboardUI,
   PricesUI,
   TaxRateUI,
   StakingRatioUI,
@@ -14,32 +14,33 @@ import Swiper from 'react-native-swiper'
 import Card from '../../components/Card'
 import DisplaySelector from './DisplaySelector'
 
-const Columns = () => {
+const Columns = (): ReactElement => {
   const { navigate } = useNavigation()
   const { ui } = useDashboard()
 
   const renderPrice = ({
     title,
     display: { value, unit },
-  }: PricesUI) => (
+  }: PricesUI): ReactElement => (
     <Card
       title={title}
       value={value}
       unit={unit}
-      onPress={() => navigate('Market')}
+      onPress={(): void => navigate('Market')}
       dark
     />
   )
 
-  const renderTaxRate = ({ desc, ...rest }: TaxRateUI) => (
-    <Card {...rest} badge={desc} dark />
-  )
+  const renderTaxRate = ({
+    desc,
+    ...rest
+  }: TaxRateUI): ReactElement => <Card {...rest} badge={desc} dark />
 
   const renderStakingRatio = ({
     title,
     content,
     ...rest
-  }: StakingRatioUI) => {
+  }: StakingRatioUI): ReactElement => {
     const { small, desc } = rest
     return (
       <Card title={title} badge={desc} dark>
@@ -50,7 +51,7 @@ const Columns = () => {
     )
   }
 
-  const SwiperDotView = () => (
+  const SwiperDotView = (): ReactElement => (
     <View
       style={{
         backgroundColor: 'rgba(32, 67, 181, .2)',
@@ -61,7 +62,7 @@ const Columns = () => {
       }}
     />
   )
-  const SwiperActiveDotView = () => (
+  const SwiperActiveDotView = (): ReactElement => (
     <View
       style={{
         backgroundColor: 'rgba(32, 67, 181, 1)',
@@ -73,34 +74,36 @@ const Columns = () => {
     />
   )
 
-  const render = (ui: DashboardUI) => (
-    <Swiper
-      style={[styles.carousel, { height: 168 }]}
-      loop
-      autoplay
-      autoplayTimeout={10} // seconds
-      dot={SwiperDotView()}
-      activeDot={SwiperActiveDotView()}
-    >
-      <View style={styles.carousel_item}>
-        {renderPrice(ui.prices)}
-      </View>
-      <View style={styles.carousel_item}>
-        {renderTaxRate(ui.taxRate)}
-      </View>
-      <View style={styles.carousel_item}>
-        <DisplaySelector {...ui.issuance} />
-      </View>
-      <View style={styles.carousel_item}>
-        <DisplaySelector {...ui.communityPool} />
-      </View>
-      <View style={styles.carousel_item}>
-        {renderStakingRatio(ui.stakingRatio)}
-      </View>
-    </Swiper>
+  return (
+    <>
+      {_.some(ui) && (
+        <Swiper
+          style={[styles.carousel, { height: 168 }]}
+          loop
+          autoplay
+          autoplayTimeout={10} // seconds
+          dot={SwiperDotView()}
+          activeDot={SwiperActiveDotView()}
+        >
+          <View style={styles.carousel_item}>
+            {renderPrice(ui.prices)}
+          </View>
+          <View style={styles.carousel_item}>
+            {renderTaxRate(ui.taxRate)}
+          </View>
+          <View style={styles.carousel_item}>
+            <DisplaySelector {...ui.issuance} />
+          </View>
+          <View style={styles.carousel_item}>
+            <DisplaySelector {...ui.communityPool} />
+          </View>
+          <View style={styles.carousel_item}>
+            {renderStakingRatio(ui.stakingRatio)}
+          </View>
+        </Swiper>
+      )}
+    </>
   )
-
-  return ui ? render(ui) : null
 }
 
 /* styles */

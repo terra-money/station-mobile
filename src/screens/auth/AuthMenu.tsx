@@ -6,6 +6,8 @@ import { useAuth } from '@terra-money/use-native-station'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
 import Body from 'components/layout/Body'
+import { navigationHeaderOptions } from 'components/layout/Header'
+
 import Button from 'components/Button'
 import Dot from 'components/Dot'
 
@@ -14,7 +16,7 @@ import { getWallets } from 'utils/wallet'
 import color from 'styles/color'
 import images from 'assets/images'
 
-export default (): ReactElement => {
+const Screen = (): ReactElement => {
   const [initPageComplete, setInitPageComplete] = useState(false)
   const [wallets, setWallets] = useState<LocalWallet[]>()
   const { navigate } = useNavigation()
@@ -91,7 +93,7 @@ export default (): ReactElement => {
                   <Button
                     type={'white'}
                     title={'Select Wallet'}
-                    onPress={() => navigate('Select')}
+                    onPress={(): void => navigate('SelectWallet')}
                     containerStyle={{ marginBottom: 10 }}
                   />
                 )}
@@ -99,7 +101,7 @@ export default (): ReactElement => {
                 <Button
                   type={_.some(wallets) ? 'transparent' : 'white'}
                   title={'New Wallet'}
-                  onPress={() => navigate('New')}
+                  onPress={(): void => navigate('NewWallet')}
                 />
 
                 <View style={styles.orBox}>
@@ -108,7 +110,7 @@ export default (): ReactElement => {
                 <Button
                   type={'transparent'}
                   title={'Recover Existing Wallet'}
-                  onPress={() => navigate('Add')}
+                  onPress={(): void => navigate('Add')}
                 />
               </>
             ) : (
@@ -126,6 +128,13 @@ export default (): ReactElement => {
     </>
   )
 }
+
+Screen.navigationOptions = navigationHeaderOptions({
+  theme: 'blue',
+  goBackIconType: 'close',
+})
+
+export default Screen
 
 const styles = StyleSheet.create({
   title: {

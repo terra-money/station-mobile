@@ -6,20 +6,21 @@ import {
   TextStyle,
   StyleSheet,
   GestureResponderEvent,
+  TouchableOpacity,
 } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import color from 'styles/color'
 
 export type ButtonProps = {
   onPress?: (event: GestureResponderEvent) => void
   containerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
-  title: string
+  title: string | ReactElement
   type?: 'blue' | 'red' | 'gray' | 'white' | 'transparent'
+  disabled?: boolean
 }
 
 const Button = (props: ButtonProps): ReactElement => {
-  const { type } = props
+  const { type, disabled } = props
   const titleStyle: StyleProp<TextStyle> = {}
   const containerStyle: StyleProp<ViewStyle> = {}
 
@@ -52,14 +53,21 @@ const Button = (props: ButtonProps): ReactElement => {
       break
   }
 
+  containerStyle.opacity = disabled ? 0.3 : 1
+
   return (
     <TouchableOpacity
       onPress={props.onPress}
       style={[styles.container, containerStyle, props.containerStyle]}
+      disabled={disabled}
     >
-      <Text style={[titleStyle, props.titleStyle]}>
-        {props.title}
-      </Text>
+      {typeof props.title === 'string' ? (
+        <Text style={[titleStyle, props.titleStyle]}>
+          {props.title}
+        </Text>
+      ) : (
+        props.title
+      )}
     </TouchableOpacity>
   )
 }
