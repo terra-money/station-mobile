@@ -8,7 +8,7 @@ import {
 } from '@terra-money/use-native-station'
 
 import { GovernanceRouteParams } from '../../types/navigation'
-import Page from '../../components/Page'
+import Page from 'components/Page'
 import ProposalHeader from './ProposalHeader'
 import ProposalFooter from './ProposalFooter'
 import Deposit from './Deposit'

@@ -8,11 +8,11 @@ import {
   format,
 } from '@terra-money/use-native-station'
 
-import ErrorComponent from '../../components/ErrorComponent'
-import Loading from '../../components/Loading'
-import Number from '../../components/Number'
-import Table from '../../components/Table'
-import ExtLink from '../../components/ExtLink'
+import ErrorComponent from 'components/ErrorComponent'
+import Loading from 'components/Loading'
+import Number from 'components/Number'
+import Table from 'components/Table'
+import ExtLink from 'components/ExtLink'
 
 const Claims = ({ address }: { address: string }): ReactElement => {
   const [page] = useState(1)

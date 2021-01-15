@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactElement } from 'react'
-import { Alert, Text, StyleSheet, View, Image } from 'react-native'
+import { Alert, StyleSheet, View, Image } from 'react-native'
 import { useAuth } from '@terra-money/use-native-station'
 import { useNavigation } from '@react-navigation/native'
 import _ from 'lodash'
@@ -9,6 +9,8 @@ import useOnAuth from './useOnAuth'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
+
+import Text from 'components/Text'
 import Button from 'components/Button'
 import Select from 'components/Select'
 import Input from 'components/Input'
@@ -77,7 +79,9 @@ const Screen = (): ReactElement => {
         >
           <View>
             <View style={styles.section}>
-              <Text style={styles.title}>Wallet</Text>
+              <Text style={styles.title} fontType={'medium'}>
+                Wallet
+              </Text>
               <Select
                 selectedValue={name}
                 optionList={wallets.map(({ name }) => {
@@ -93,7 +97,9 @@ const Screen = (): ReactElement => {
             </View>
 
             <View style={styles.section}>
-              <Text style={styles.title}>Password</Text>
+              <Text style={styles.title} fontType={'medium'}>
+                Password
+              </Text>
               <Input
                 underlineColorAndroid="#ccc"
                 value={password}
@@ -134,7 +140,6 @@ const styles = StyleSheet.create({
   title: {
     color: color.sapphire,
     fontSize: 14,
-    fontWeight: '500',
     marginBottom: 5,
   },
   section: {

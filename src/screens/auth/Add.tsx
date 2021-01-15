@@ -1,17 +1,12 @@
 import React, { ReactElement, useRef, useState } from 'react'
-import {
-  Text,
-  TextInput,
-  Button,
-  Keyboard,
-  Alert,
-} from 'react-native'
-import { recover } from '../../utils/wallet'
+import { TextInput, Button, Keyboard, Alert } from 'react-native'
+import { recover } from 'utils/wallet'
 import useOnAuth from './useOnAuth'
 import { MnemonicKey } from '@terra-money/terra.js'
 
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { WithKeys } from '../../hooks'
+import Text from 'components/Text'
 
 interface Props {
   generated?: string[]

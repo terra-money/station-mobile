@@ -1,10 +1,11 @@
 import React, { ReactElement } from 'react'
-import { TouchableWithoutFeedback, Text, View } from 'react-native'
+import { TouchableWithoutFeedback, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useInfo, Trans } from '@terra-money/use-native-station'
 // import Info from './Info'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import Card from './Card'
+import Text from 'components/Text'
 
 const PleaseSignIn = (): ReactElement => {
   const { navigate } = useNavigation()

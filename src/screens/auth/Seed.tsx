@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
-import { TouchableOpacity, View, Text, TextInput } from 'react-native'
+import { TouchableOpacity, View, TextInput } from 'react-native'
 
 import EStyleSheet from 'react-native-extended-stylesheet'
+import Text from 'components/Text'
 
 interface Props {
   label: string

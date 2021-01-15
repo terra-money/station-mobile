@@ -4,10 +4,10 @@ import {
   StyleSheet,
   StyleProp,
   ViewStyle,
-  Text,
   TextStyle,
 } from 'react-native'
 
+import Text from 'components/Text'
 import color from 'styles/color'
 
 type HeaderTheme = 'blue' | 'white'
@@ -37,7 +37,10 @@ const SubHeader = ({
 
   return (
     <View style={[styles.headerBottomTitleBox, containerStyle]}>
-      <Text style={[styles.headerBottomTitle, textStyle]}>
+      <Text
+        style={[styles.headerBottomTitle, textStyle]}
+        fontType={'medium'}
+      >
         {title}
       </Text>
     </View>
@@ -53,7 +56,6 @@ export const styles = StyleSheet.create({
   },
   headerBottomTitle: {
     fontSize: 26,
-    fontWeight: 'bold',
     lineHeight: 39,
   },
 })

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { useAuth } from '@terra-money/use-native-station'
-import { settings } from '../../utils/storage'
+import { settings } from 'utils/storage'
 
 export default (): void => {
   const { goBack } = useNavigation()

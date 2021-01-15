@@ -14,7 +14,7 @@ import { useAuth } from '@terra-money/use-native-station'
 import { TextInput } from 'react-native-gesture-handler'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { LCDClient, RawKey, StdSignMsg } from '@terra-money/terra.js'
-import { getDecyrptedKey } from '../../utils/wallet'
+import { getDecyrptedKey } from 'utils/wallet'
 
 interface Props {
   navigation: any

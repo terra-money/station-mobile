@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { useRecoilState } from 'recoil'
 import { useNavigation } from '@react-navigation/native'
@@ -8,6 +8,7 @@ import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 import Button from 'components/Button'
+import Text from 'components/Text'
 import CopyButton from 'components/CopyButton'
 import WarningBox from 'components/WarningBox'
 
@@ -68,7 +69,7 @@ const Screen = (): ReactElement => {
             message={
               <Text style={{ color: color.red, lineHeight: 21 }}>
                 {`If you lose your seed phrase it's`}
-                <Text style={{ fontWeight: '700' }}>
+                <Text style={{ color: color.red }} fontType={'bold'}>
                   {' gone forever. '}
                 </Text>
                 {`Station doesn't store any data.`}

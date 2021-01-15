@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 import {
-  Text,
   StyleProp,
   ViewStyle,
   TextStyle,
@@ -8,7 +7,9 @@ import {
   GestureResponderEvent,
   TouchableOpacity,
 } from 'react-native'
+
 import color from 'styles/color'
+import Text from 'components/Text'
 
 export type ButtonProps = {
   onPress?: (event: GestureResponderEvent) => void

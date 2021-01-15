@@ -1,11 +1,7 @@
 import React, { FC } from 'react'
-import {
-  ActivityIndicator,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native'
+import { ActivityIndicator, ScrollView, View } from 'react-native'
 import { API } from '@terra-money/use-native-station'
+import Text from 'components/Text'
 import SubPageHeader from '../components/SubPageHeader'
 
 interface Props extends Partial<API<any>> {

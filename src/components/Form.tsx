@@ -1,10 +1,11 @@
 import React, { FC, ReactNode, useState } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
 import {
   FormUI,
   Field as FieldProps,
 } from '@terra-money/use-native-station'
 import Field from './Field'
+import Text from 'components/Text'
 
 interface Props {
   form: FormUI

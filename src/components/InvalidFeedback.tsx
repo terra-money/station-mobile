@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react'
-import { Text } from 'react-native'
+
 import _ from 'lodash'
 import Icon from './Icon'
 
+import Text from 'components/Text'
 type Props = { tooltip?: boolean; children: string }
 const InvalidFeedback = ({ children }: Props): ReactElement => (
   <>

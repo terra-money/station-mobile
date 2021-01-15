@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
-import { Text } from 'react-native'
 import { format, DisplayCoin } from '@terra-money/use-native-station'
 import EStyleSheet from 'react-native-extended-stylesheet'
+
+import Text from 'components/Text'
 
 interface Props extends Partial<DisplayCoin> {
   children?: string

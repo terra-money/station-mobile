@@ -1,10 +1,7 @@
 import React, { ReactElement } from 'react'
-import {
-  TouchableOpacity,
-  TouchableOpacityProps,
-  Text,
-} from 'react-native'
+import { TouchableOpacity, TouchableOpacityProps } from 'react-native'
 import { DisplayCoin } from '@terra-money/use-native-station'
+import Text from 'components/Text'
 import Number from './Number'
 
 interface Props {

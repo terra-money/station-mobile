@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import { ProposalUI } from '@terra-money/use-native-station'
-import Badge from '../../components/Badge'
+import Badge from 'components/Badge'
 import Voter from './Voter'
+import Text from 'components/Text'
 
 const ProposerHeader = ({
   title,

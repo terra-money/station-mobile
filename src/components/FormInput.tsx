@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react'
-import { Text, StyleSheet, TextInputProps, View } from 'react-native'
+import { StyleSheet, TextInputProps, View } from 'react-native'
 import _ from 'lodash'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
+import Text from 'components/Text'
 import Input from './Input'
 import color from 'styles/color'
 
@@ -26,7 +27,9 @@ const FormInput = (props: FormInputProps): ReactElement => {
       {_.some(errorMessage) && (
         <View style={styles.errorMessageBox}>
           <MaterialIcons name={'info'} color={color.red} size={12} />
-          <Text style={styles.errorMessage}>{errorMessage}</Text>
+          <Text style={styles.errorMessage} fontType={'medium'}>
+            {errorMessage}
+          </Text>
         </View>
       )}
     </>
@@ -43,7 +46,6 @@ const styles = StyleSheet.create({
   errorMessage: {
     color: color.red,
     fontSize: 10,
-    fontWeight: '500',
     paddingLeft: 5,
   },
 })

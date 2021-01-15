@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import { ValidatorUI } from '@terra-money/use-native-station'
-import ExtLink from '../../components/ExtLink'
+import ExtLink from 'components/ExtLink'
+import Text from 'components/Text'
 
 const Informations = (v: ValidatorUI): ReactElement => {
   const { accountAddress, operatorAddress } = v
