@@ -1,17 +1,18 @@
 import { atom } from 'recoil'
+import { StoreKeyEnum } from './StoreKeyEnum'
 
 const name = atom<string>({
-  key: 'name',
+  key: StoreKeyEnum.recoverWalletName,
   default: '',
 })
 
 const password = atom<string>({
-  key: 'password',
+  key: StoreKeyEnum.recoverWalletPassword,
   default: '',
 })
 
 const seed = atom<string[]>({
-  key: 'seed',
+  key: StoreKeyEnum.recoverWalletSeed,
   default: [],
 })
 

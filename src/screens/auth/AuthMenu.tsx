@@ -113,7 +113,7 @@ const Screen = (): ReactElement => {
                 <Button
                   type={'transparent'}
                   title={'Recover Existing Wallet'}
-                  onPress={(): void => navigate('Add')}
+                  onPress={(): void => navigate('RecoverWallet')}
                 />
               </>
             ) : (
