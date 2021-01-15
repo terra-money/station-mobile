@@ -5,10 +5,36 @@ import { encrypt, decrypt } from './keystore'
 
 const { Preferences, Keystore } = NativeModules
 
+export const generateAddresses = (
+  mnemonic: string
+): {
+  mk118: MnemonicKey
+  mk330: MnemonicKey
+} => {
+  const mk118 = new MnemonicKey({ mnemonic, coinType: 118 })
+  const mk330 = new MnemonicKey({ mnemonic, coinType: 330 })
+
+  return { mk118, mk330 }
+}
+
+export const createWallet = async ({
+  seed,
+  name,
+  password,
+}: {
+  seed: string
+  name: string
+  password: string
+}): Promise<boolean> => {
+  const { mk330 } = generateAddresses(seed)
+
+  return recover(mk330, { name, password })
+}
+
 export const recover = async (
   mk: MnemonicKey,
   { name, password }: { name: string; password: string }
-): Promise<void> => {
+): Promise<boolean> => {
   try {
     const key = encrypt(mk.privateKey.toString('hex'), password)
     if (!key) {
@@ -16,9 +42,11 @@ export const recover = async (
     }
     const wallet = { name, address: mk.accAddress }
     await addWallet({ wallet, key })
+    return true
   } catch (e) {
     Alert.alert(e.toString())
   }
+  return false
 }
 
 export const decryptKey = (

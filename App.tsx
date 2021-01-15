@@ -120,6 +120,14 @@ const App = ({
                 />
                 <RecoilRoot>
                   <AppNavigator skipOnboarding={skipOnboarding} />
+                  <Modal
+                    visible={modal.isOpen}
+                    onRequestClose={modal.close}
+                  >
+                    <SafeAreaView style={{ flex: 1 }}>
+                      {modal.content}
+                    </SafeAreaView>
+                  </Modal>
                 </RecoilRoot>
               </SafeAreaProvider>
 
@@ -140,12 +148,6 @@ const App = ({
                   />
                   <View style={styles.bottom}>{drawer.content}</View>
                 </View>
-              </Modal>
-              <Modal
-                visible={modal.isOpen}
-                onRequestClose={modal.close}
-              >
-                <SafeAreaView>{modal.content}</SafeAreaView>
               </Modal>
             </AuthProvider>
           </ConfigProvider>

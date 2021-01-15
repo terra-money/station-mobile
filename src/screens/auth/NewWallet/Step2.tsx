@@ -14,6 +14,7 @@ import WarningBox from 'components/WarningBox'
 import color from 'styles/color'
 import { modules } from 'utils'
 import NewWalletStore from 'stores/NewWalletStore'
+import NumberStep from 'components/NumberStep'
 
 const Screen = (): ReactElement => {
   const [seed, setSeed] = useRecoilState(NewWalletStore.seed)
@@ -88,13 +89,9 @@ const Screen = (): ReactElement => {
   )
 }
 
-const HeaderRight = (): ReactElement => {
-  return (
-    <View>
-      <Text>2</Text>
-    </View>
-  )
-}
+const HeaderRight = (): ReactElement => (
+  <NumberStep stepSize={3} nowStep={2} />
+)
 
 Screen.navigationOptions = navigationHeaderOptions({
   theme: 'blue',

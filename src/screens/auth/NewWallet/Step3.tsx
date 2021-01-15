@@ -22,10 +22,14 @@ import color from 'styles/color'
 import NewWalletStore from 'stores/NewWalletStore'
 import { useBioAuth } from 'hooks/useBioAuth'
 import { isSupportedBiometricAuthentication } from 'utils/bio'
+import { createWallet } from 'utils/wallet'
+import NumberStep from 'components/NumberStep'
 
 const Screen = (): ReactElement => {
   const { dispatch } = useNavigation()
   const seed = useRecoilValue(NewWalletStore.seed)
+  const name = useRecoilValue(NewWalletStore.name)
+  const password = useRecoilValue(NewWalletStore.password)
   const [firstSeedWord, setFirstSeedWord] = useState('')
   const [secondSeedWord, setSecondSeedWord] = useState('')
   const [focusInputIndex, setFocusInputIndex] = useState<0 | 1>()
@@ -48,9 +52,12 @@ const Screen = (): ReactElement => {
   }
 
   const onPressNext = async (): Promise<void> => {
-    if (await isSupportedBiometricAuthentication()) {
-      openBioAuth()
-    } else {
+    if (
+      await createWallet({ name, password, seed: seed.join(' ') })
+    ) {
+      if (await isSupportedBiometricAuthentication()) {
+        openBioAuth()
+      }
       dispatch(StackActions.popToTop())
       dispatch(StackActions.replace('WalletCreated'))
     }
@@ -129,13 +136,9 @@ const Screen = (): ReactElement => {
   )
 }
 
-const HeaderRight = (): ReactElement => {
-  return (
-    <View>
-      <Text>3</Text>
-    </View>
-  )
-}
+const HeaderRight = (): ReactElement => (
+  <NumberStep stepSize={3} nowStep={3} />
+)
 
 Screen.navigationOptions = navigationHeaderOptions({
   theme: 'blue',

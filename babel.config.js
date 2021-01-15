@@ -12,6 +12,7 @@ module.exports = function (api) {
         assets: './src/assets',
         hooks: './src/hooks',
         stores: './src/stores',
+        nativeModules: './src/nativeModules',
       },
     },
   ]

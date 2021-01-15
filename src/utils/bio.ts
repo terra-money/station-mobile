@@ -1,6 +1,6 @@
 import * as LocalAuthentication from 'expo-local-authentication'
 
-enum BiometricType {
+export enum BiometricType {
   NONE,
   FACE,
   FINGERPRINT,

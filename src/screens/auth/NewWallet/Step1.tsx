@@ -13,6 +13,7 @@ import FormInput from 'components/FormInput'
 import color from 'styles/color'
 import { useValueValidator } from 'hooks/useValueValidator'
 import NewWalletStore from 'stores/NewWalletStore'
+import NumberStep from 'components/NumberStep'
 
 const Screen = (): ReactElement => {
   const [name, setName] = useRecoilState(NewWalletStore.name)
@@ -111,13 +112,9 @@ const Screen = (): ReactElement => {
   )
 }
 
-const HeaderRight = (): ReactElement => {
-  return (
-    <View>
-      <Text>1</Text>
-    </View>
-  )
-}
+const HeaderRight = (): ReactElement => (
+  <NumberStep stepSize={3} nowStep={1} />
+)
 
 Screen.navigationOptions = navigationHeaderOptions({
   theme: 'blue',

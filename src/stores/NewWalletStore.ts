@@ -2,7 +2,7 @@ import { atom } from 'recoil'
 
 const name = atom<string>({
   key: 'name',
-  default: 'test1',
+  default: '',
 })
 
 const password = atom<string>({

@@ -16,7 +16,8 @@
       "utils/*": ["./utils/*"],
       "assets/*": ["./assets/*"],
       "hooks/*": ["./hooks/*"],
-      "stores/*": ["./stores/*"]
+      "stores/*": ["./stores/*"],
+      "nativeModules/*": ["./nativeModules/*"]
     }
   }
 }
