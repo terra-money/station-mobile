@@ -10,7 +10,7 @@ import { RootStack } from '../types'
 import Tabs from './Tabs'
 import AuthMenu from '../screens/auth/AuthMenu'
 import SelectWallet from '../screens/auth/SelectWallet'
-import New from '../screens/auth/New'
+import NewWalletStack from './NewWalletStack'
 import Add from '../screens/auth/Add'
 
 import OnBoarding from '../screens/OnBoarding'
@@ -83,9 +83,9 @@ const AppNavigator = ({
           options={SelectWallet.navigationOptions}
         />
         <RootStack.Screen
-          name="New"
-          component={New}
-          options={{ animationEnabled: false }}
+          name="NewWallet"
+          component={NewWalletStack}
+          options={{ headerShown: false }}
         />
         <RootStack.Screen
           name="Add"

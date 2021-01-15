@@ -8,4 +8,5 @@ export default {
   terra: require('../../assets/terra.png'),
   satelite: require('../../assets/satelite.png'),
   bio_face: require('../../assets/bio_face.png'),
+  finger_print: require('../../assets/finger_print.png'),
 }

@@ -22,6 +22,7 @@
   "dependencies": {
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/checkbox": "^0.5.6",
+    "@react-native-community/clipboard": "^1.5.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/toolbar-android": "^0.1.0-rc.2",
     "@react-native-picker/picker": "^1.9.10",
@@ -59,7 +60,8 @@
     "react-native-unimodules": "^0.12.0",
     "react-native-url-polyfill": "^1.2.0",
     "react-native-vector-icons": "^7.1.0",
-    "react-native-web": "^0.14.10"
+    "react-native-web": "^0.14.10",
+    "recoil": "^0.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -67,6 +69,7 @@
     "@react-native-community/eslint-config": "^2.0.0",
     "@types/crypto-js": "^3.1.47",
     "@types/lodash": "^4.14.167",
+    "@types/numeral": "0.0.29",
     "@types/ramda": "^0.27.6",
     "@types/react": "^17.0.0",
     "@types/react-native": "^0.63.4",

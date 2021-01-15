@@ -9,6 +9,7 @@ import {
 import color from 'styles/color'
 
 const Input = (props: TextInputProps): ReactElement => {
+  const { style, ...rest } = props
   const defaultStyle: StyleProp<TextStyle> = {
     height: 45,
     borderRadius: 8,
@@ -18,7 +19,13 @@ const Input = (props: TextInputProps): ReactElement => {
     justifyContent: 'center',
     paddingLeft: 15,
   }
-  return <TextInput style={defaultStyle} {...props} />
+  return (
+    <TextInput
+      style={[defaultStyle, style]}
+      {...rest}
+      underlineColorAndroid={'#ffffff'}
+    />
+  )
 }
 
 export default Input

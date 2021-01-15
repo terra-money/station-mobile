@@ -28,6 +28,7 @@ const Select = (props: SelectProps): ReactElement => {
           paddingLeft: 15,
         },
       }}
+      placeholder={{}}
       {...props}
     />
   )

@@ -6,6 +6,8 @@ import { useAuth } from '@terra-money/use-native-station'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
 import Body from 'components/layout/Body'
+import { navigationHeaderOptions } from 'components/layout/Header'
+
 import Button from 'components/Button'
 import Dot from 'components/Dot'
 
@@ -13,8 +15,6 @@ import { settings, clearKeys } from 'utils/storage'
 import { getWallets } from 'utils/wallet'
 import color from 'styles/color'
 import images from 'assets/images'
-import { StackNavigationOptions } from '@react-navigation/stack'
-import Header from 'components/layout/Header'
 
 const Screen = (): ReactElement => {
   const [initPageComplete, setInitPageComplete] = useState(false)
@@ -101,7 +101,7 @@ const Screen = (): ReactElement => {
                 <Button
                   type={_.some(wallets) ? 'transparent' : 'white'}
                   title={'New Wallet'}
-                  onPress={(): void => navigate('New')}
+                  onPress={(): void => navigate('NewWallet')}
                 />
 
                 <View style={styles.orBox}>
@@ -129,16 +129,10 @@ const Screen = (): ReactElement => {
   )
 }
 
-const navigationOptions = (): StackNavigationOptions => {
-  return {
-    animationEnabled: false,
-    header: (): ReactElement => (
-      <Header type={'blue'} goBackIconType="close" />
-    ),
-  }
-}
-
-Screen.navigationOptions = navigationOptions
+Screen.navigationOptions = navigationHeaderOptions({
+  theme: 'blue',
+  goBackIconType: 'close',
+})
 
 export default Screen
 
