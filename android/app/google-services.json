@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "238441005774",
+    "project_id": "terra-station",
+    "storage_bucket": "terra-station.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238441005774:android:3b0ff8bd9811006cab069f",
+        "android_client_info": {
+          "package_name": "money.terra.station"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "238441005774-1d83lfkd39quq1pm0mei8dl08f2jvkpf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlABZHJuaQiW1_2t9LzChi4YTBbQ2DOCU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "238441005774-1d83lfkd39quq1pm0mei8dl08f2jvkpf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "238441005774-h8lf9ado2sa61k194g3caj9a1504fp0s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "money.terra.station"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
