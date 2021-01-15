@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 import {
-  Text,
   View,
   StyleProp,
   TextStyle,
@@ -11,6 +10,7 @@ import { Options } from '@terra-money/use-native-station'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { useApp } from '../hooks'
+import Text from 'components/Text'
 
 interface Props {
   value?: string

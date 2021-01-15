@@ -1,7 +1,9 @@
 import React, { Fragment, ReactElement } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
+
 import color from 'styles/color'
+import Text from 'components/Text'
 
 const NumberStep = ({
   stepSize,
@@ -21,7 +23,12 @@ const NumberStep = ({
                 nowStep === index + 1 && styles.nowStepIcon,
               ]}
             >
-              <Text style={{ color: color.sapphire }}>
+              <Text
+                style={{
+                  color: color.sapphire,
+                  fontVariant: ['tabular-nums'],
+                }}
+              >
                 {index + 1}
               </Text>
             </View>

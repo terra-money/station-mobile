@@ -1,9 +1,11 @@
 import React, { ReactElement } from 'react'
-import { Text } from 'react-native'
+
 import { ValidatorUI } from '@terra-money/use-native-station'
-import Badge from '../../components/Badge'
-import Number from '../../components/Number'
-import ExtLink from '../../components/ExtLink'
+import Badge from 'components/Badge'
+import Number from 'components/Number'
+import ExtLink from 'components/ExtLink'
+import Text from 'components/Text'
+
 import ViewProfile from './ViewProfile'
 
 const Header = (v: ValidatorUI): ReactElement => {

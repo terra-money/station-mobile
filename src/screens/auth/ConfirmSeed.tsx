@@ -3,8 +3,8 @@ import {
   useConfirmSeed,
   SignUpNext,
 } from '@terra-money/use-native-station'
-import Form, { State } from '../../components/Form'
-import ButtonGroup from '../../components/ButtonGroup'
+import Form, { State } from 'components/Form'
+import ButtonGroup from 'components/ButtonGroup'
 
 const ConfirmSeed = (props: SignUpNext): ReactElement => {
   const { form, hint } = useConfirmSeed(props)

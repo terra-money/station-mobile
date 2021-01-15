@@ -1,14 +1,16 @@
 import React, { ReactElement } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { ChartKey, useChart } from '@terra-money/use-native-station'
 
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { AreaChart, Path } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
-import ErrorBoundary from '../../components/ErrorBoundary'
-import ErrorComponent from '../../components/ErrorComponent'
-import Number from '../../components/Number'
+
+import ErrorBoundary from 'components/ErrorBoundary'
+import ErrorComponent from 'components/ErrorComponent'
+import Number from 'components/Number'
+import Text from 'components/Text'
 
 interface Props {
   chartKey: ChartKey

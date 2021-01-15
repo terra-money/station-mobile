@@ -1,9 +1,10 @@
 import React, { ReactElement } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useNavigation } from '@react-navigation/native'
 
 import Body from 'components/layout/Body'
+import Text from 'components/Text'
 import Button from 'components/Button'
 import color from 'styles/color'
 

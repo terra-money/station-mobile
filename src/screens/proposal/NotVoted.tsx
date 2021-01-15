@@ -1,8 +1,10 @@
 import React, { ReactElement } from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import { NotVoted as Props } from '@terra-money/use-native-station'
+
 import validators from '../../../validators'
-import Icon from '../../components/Icon'
+import Icon from 'components/Icon'
+import Text from 'components/Text'
 
 const NotVoted = ({ title, list, button }: Props): ReactElement => (
   <>

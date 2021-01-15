@@ -7,7 +7,7 @@ import {
 import { StackNavigationOptions } from '@react-navigation/stack'
 import { StatusBar } from 'react-native'
 import ValidatorList from './ValidatorList'
-import Page from '../../components/Page'
+import Page from 'components/Page'
 
 const Staking = (): ReactElement => {
   const { user } = useAuth()

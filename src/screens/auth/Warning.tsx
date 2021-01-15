@@ -1,8 +1,10 @@
 import React, { ReactElement } from 'react'
-import { Text, CheckBoxProps } from 'react-native'
+import { CheckBoxProps } from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
 import { Trans, SignUpWarning } from '@terra-money/use-native-station'
-import Icon from '../../components/Icon'
+
+import Icon from 'components/Icon'
+import Text from 'components/Text'
 
 interface Props extends SignUpWarning {
   attrs: CheckBoxProps

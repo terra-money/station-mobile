@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import _ from 'lodash'
 import {
@@ -11,7 +11,9 @@ import {
 
 import EStyleSheet from 'react-native-extended-stylesheet'
 import Swiper from 'react-native-swiper'
-import Card from '../../components/Card'
+import Card from 'components/Card'
+import Text from 'components/Text'
+
 import DisplaySelector from './DisplaySelector'
 
 const Columns = (): ReactElement => {

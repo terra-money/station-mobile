@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import { Text } from 'react-native'
 
 import Dashboard from '../screens/dashboard'
 import Bank from '../screens/bank/Bank'
@@ -12,6 +11,7 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 
 import Staking from '../screens/staking'
 import validatorDetail from '../screens/validatorDetail'
+import Text from 'components/Text'
 
 export const INITIAL = 'Dashboard'
 

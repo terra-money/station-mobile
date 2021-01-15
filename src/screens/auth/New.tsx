@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactElement } from 'react'
-import { modules } from '../../utils'
+import { modules } from 'utils'
 import Add from './Add'
 
 const New = (): ReactElement => {

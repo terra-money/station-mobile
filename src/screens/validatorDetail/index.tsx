@@ -1,13 +1,12 @@
 import React, { ReactElement } from 'react'
-import { Text } from 'react-native'
 import { useRoute, RouteProp } from '@react-navigation/native'
 import {
   useAuth,
   useValidator,
 } from '@terra-money/use-native-station'
-import { StackNavigationOptions } from '@react-navigation/stack'
 
-import Header from 'components/layout/Header'
+import { navigationHeaderOptions } from 'components/layout/Header'
+import Text from 'components/Text'
 
 import { StakingRouteParams } from '../../types/navigation'
 
@@ -41,12 +40,6 @@ const Staking = (): ReactElement => {
   )
 }
 
-const navigationOptions = (): StackNavigationOptions => {
-  return {
-    header: (): ReactElement => <Header />,
-  }
-}
-
-Staking.navigationOptions = navigationOptions
+Staking.navigationOptions = navigationHeaderOptions({})
 
 export default Staking
