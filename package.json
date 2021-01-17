@@ -1,5 +1,5 @@
 {
-  "name": "TerraStation",
+  "name": "terra-station",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -25,6 +25,8 @@
     "@react-native-community/clipboard": "^1.5.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/toolbar-android": "^0.1.0-rc.2",
+    "@react-native-firebase/analytics": "^10.4.1",
+    "@react-native-firebase/app": "^10.4.0",
     "@react-native-picker/picker": "^1.9.10",
     "@react-navigation/bottom-tabs": "^5.5.1",
     "@react-navigation/native": "^5.5.0",
@@ -42,6 +44,7 @@
     "react-dom": "^17.0.1",
     "react-i18next": "^11.7.0",
     "react-native": "^0.63.4",
+    "react-native-code-push": "^7.0.0",
     "react-native-device-info": "^7.3.1",
     "react-native-extended-stylesheet": "^0.12.0",
     "react-native-gesture-handler": "^1.9.0",

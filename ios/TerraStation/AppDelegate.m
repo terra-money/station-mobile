@@ -10,6 +10,8 @@
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 
 #import "RNSplashScreen.h"
+#import <Firebase.h>
+#import <CodePush/CodePush.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -60,6 +62,11 @@ static void InitializeFlipper(UIApplication *application) {
   [self.window makeKeyAndVisible];
   
   [super application:application didFinishLaunchingWithOptions:launchOptions];
+  
+  if ([FIRApp defaultApp] == nil) {
+    [FIRApp configure];
+  }
+  
   [RNSplashScreen show];
   return YES;
 }
@@ -91,7 +98,7 @@ static void InitializeFlipper(UIApplication *application) {
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 #else
-  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  return [CodePush bundleURL];
 #endif
 }
 

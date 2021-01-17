@@ -19,12 +19,10 @@ import { hasNotch } from 'react-native-device-info'
 import { RecoilRoot } from 'recoil'
 
 import {
-  useConfigState,
-  ConfigProvider,
-} from '@terra-money/use-native-station'
-import {
   useAuthState,
   AuthProvider,
+  useConfigState,
+  ConfigProvider,
 } from '@terra-money/use-native-station'
 
 import { Settings } from './src/types'
@@ -32,6 +30,7 @@ import { getSkipOnboarding, settings } from './src/utils/storage'
 import { AppProvider } from './src/hooks'
 
 import AppNavigator from './src/navigatoin'
+import CodePush from 'react-native-code-push'
 
 EStyleSheet.build({
   $primaryColor: 'rgb(32,67,181)', //"#2043B5",
@@ -74,7 +73,7 @@ const chain = {
   secure: true,
 }
 
-const App = ({
+let App = ({
   settings: { lang, user },
 }: {
   settings: Settings
@@ -156,6 +155,14 @@ const App = ({
     </>
   )
 }
+
+const CodePushOptions = {
+  checkFrequency: CodePush.CheckFrequency.MANUAL,
+  updateDialog: false,
+  installMode: CodePush.InstallMode.IMMEDIATE,
+}
+
+App = CodePush(CodePushOptions)(App)
 
 export default (): ReactElement => {
   const [local, setLocal] = useState<Settings>()
