@@ -65,7 +65,7 @@ const Screen = (): ReactElement => {
   return (
     <>
       <SubHeader theme={'blue'} title={'New Wallet'} />
-      <Body type={'sky'} containerStyle={styles.container}>
+      <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={styles.section}>
             <Text style={styles.title}>Wallet Name</Text>

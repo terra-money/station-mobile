@@ -10,7 +10,7 @@ import {
   StackNavigationOptions,
 } from '@react-navigation/stack'
 
-type HeaderTheme = 'blue' | 'white'
+type HeaderTheme = 'white' | 'sky' | 'blue'
 
 export type HeaderProps = {
   theme?: HeaderTheme
@@ -31,7 +31,7 @@ const HeaderLeft = ({
   const { goBack } = useNavigation()
 
   return (
-    <TouchableOpacity onPress={goBack}>
+    <TouchableOpacity onPress={goBack} style={{ paddingLeft: 20 }}>
       <MaterialIcons
         name={
           goBackIconType === 'close' ? 'clear' : 'keyboard-arrow-left'
@@ -46,11 +46,14 @@ const HeaderLeft = ({
 export const navigationHeaderOptions = (
   props: HeaderProps
 ): StackNavigationOptions => {
-  const { theme, goBackIconType, headerRight } = props
+  const { theme, goBackIconType, headerLeft, headerRight } = props
   const containerStyle: StyleProp<ViewStyle> = {}
   switch (theme) {
     case 'blue':
       containerStyle.backgroundColor = color.sapphire
+      break
+    case 'sky':
+      containerStyle.backgroundColor = color.sky
       break
     case 'white':
     default:
@@ -59,12 +62,12 @@ export const navigationHeaderOptions = (
   }
   return {
     headerStyle: { ...styles.container, ...containerStyle },
-    headerLeftContainerStyle: { paddingLeft: 20 },
-    headerLeft: (): ReactElement => (
-      <HeaderLeft {...{ theme, goBackIconType }} />
-    ),
+    headerLeft:
+      headerLeft ||
+      ((): ReactElement => (
+        <HeaderLeft {...{ theme, goBackIconType }} />
+      )),
     headerTitle: '',
-    headerRightContainerStyle: { paddingRight: 20 },
     headerRight,
   }
 }

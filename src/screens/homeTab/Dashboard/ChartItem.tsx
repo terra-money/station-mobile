@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
-import { View, TouchableOpacity } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { View } from 'react-native'
 import { ChartKey, useChart } from '@terra-money/use-native-station'
 
 import EStyleSheet from 'react-native-extended-stylesheet'
@@ -17,7 +16,6 @@ interface Props {
 }
 
 const Component = ({ chartKey }: Props): ReactElement => {
-  const { navigate } = useNavigation()
   const { value, title } = useChart(chartKey)
   const data = [3, 3, 5, 4, 6, 7, 8]
   const Line = (): ReactElement => (
@@ -25,32 +23,28 @@ const Component = ({ chartKey }: Props): ReactElement => {
   )
 
   return (
-    <TouchableOpacity
-      onPress={(): void => navigate('Chart', { chartKey })}
-    >
-      <View style={styles.chart_item}>
-        <Text style={styles.chart_item_title}>{title}</Text>
-        <View style={styles.bottom}>
-          {Array.isArray(value) ? (
-            <Text style={styles.chart_item_value}>
-              {value[0]}
-              <Text style={styles.chart_item_unit}> {value[1]}</Text>
-            </Text>
-          ) : (
-            <Number {...value} integer />
-          )}
-          <AreaChart
-            style={{ width: 60, height: 30, marginBottom: 5 }}
-            data={data}
-            contentInset={{ top: 0, bottom: 10 }}
-            curve={shape.curveNatural}
-            svg={{ fill: 'rgba(32, 67, 181, 0.15)' }}
-          >
-            <Line />
-          </AreaChart>
-        </View>
+    <View style={styles.chart_item}>
+      <Text style={styles.chart_item_title}>{title}</Text>
+      <View style={styles.bottom}>
+        {Array.isArray(value) ? (
+          <Text style={styles.chart_item_value}>
+            {value[0]}
+            <Text style={styles.chart_item_unit}> {value[1]}</Text>
+          </Text>
+        ) : (
+          <Number {...value} integer />
+        )}
+        <AreaChart
+          style={{ width: 60, height: 30, marginBottom: 5 }}
+          data={data}
+          contentInset={{ top: 0, bottom: 10 }}
+          curve={shape.curveNatural}
+          svg={{ fill: 'rgba(32, 67, 181, 0.15)' }}
+        >
+          <Line />
+        </AreaChart>
       </View>
-    </TouchableOpacity>
+    </View>
   )
 }
 const ChartItem = (props: Props): ReactElement => (

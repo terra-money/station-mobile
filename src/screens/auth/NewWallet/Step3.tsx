@@ -75,7 +75,7 @@ const Screen = (): ReactElement => {
   return (
     <>
       <SubHeader theme={'blue'} title={'Confirm Your Seed'} />
-      <Body type={'sky'} containerStyle={styles.container}>
+      <Body theme={'sky'} containerStyle={styles.container}>
         <View style={{ flex: 1 }}>
           <View style={styles.sectionGroup}>
             <View style={styles.section}>

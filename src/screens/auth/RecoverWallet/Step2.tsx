@@ -51,7 +51,7 @@ const Screen = (): ReactElement => {
   return (
     <>
       <SubHeader theme={'blue'} title={'Enter Your Seed Phase'} />
-      <Body type={'sky'} containerStyle={styles.container}>
+      <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={{ alignItems: 'flex-end', marginBottom: 20 }}>
             <PasteButton onPress={onPressPasteButton} />

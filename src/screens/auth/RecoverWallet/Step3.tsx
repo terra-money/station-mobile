@@ -123,7 +123,7 @@ const Screen = (): ReactElement => {
   return (
     <>
       <SubHeader theme={'blue'} title={'Select Address to Recover'} />
-      <Body type={'sky'} containerStyle={styles.container}>
+      <Body theme={'sky'} containerStyle={styles.container}>
         <View style={{ flex: 1 }}>
           {mk118 && (
             <View style={{ marginBottom: 20 }}>

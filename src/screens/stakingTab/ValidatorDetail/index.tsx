@@ -8,7 +8,7 @@ import {
 import { navigationHeaderOptions } from 'components/layout/Header'
 import Text from 'components/Text'
 
-import { StakingRouteParams } from '../../types/navigation'
+import { StakingRouteParams } from '../../../types/navigation'
 
 import Actions from './Actions'
 import Informations from './Informations'

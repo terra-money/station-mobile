@@ -36,7 +36,7 @@ const Screen = (): ReactElement => {
   return (
     <>
       <SubHeader theme={'blue'} title={'Write Down Your Seed'} />
-      <Body type={'sky'} containerStyle={styles.container}>
+      <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={{ alignItems: 'flex-end', marginBottom: 20 }}>
             <CopyButton copyString={seed.join(' ')} />
