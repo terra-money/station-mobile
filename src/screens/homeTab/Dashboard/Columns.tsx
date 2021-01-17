@@ -28,7 +28,7 @@ const Columns = (): ReactElement => {
       title={title}
       value={value}
       unit={unit}
-      onPress={(): void => navigate('Market')}
+      onPress={(): void => navigate('Swap')}
       dark
     />
   )
@@ -127,7 +127,6 @@ const styles = EStyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    marginHorizontal: 5,
     opacity: 0.2,
   },
   active: {

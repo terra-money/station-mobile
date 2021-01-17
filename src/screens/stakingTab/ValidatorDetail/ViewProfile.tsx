@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import validators from '../../../validators'
+import validators from '../../../../validators'
 import ExtLink from 'components/ExtLink'
 
 const PROJECT = 'https://github.com/terra-project/validator-profiles'

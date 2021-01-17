@@ -15,9 +15,9 @@ import {
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { LCDClient, MsgSend, RawKey } from '@terra-money/terra.js'
 import { BigNumber } from 'bignumber.js'
-import { getDecyrptedKey } from 'utils/wallet'
-import WithAuth from 'components/WithAuth'
-import Page from 'components/Page'
+import { getDecyrptedKey } from '../../utils/wallet'
+import WithAuth from '../../components/WithAuth'
+import Page from '../../components/Page'
 import dev from 'utils/dev'
 
 const SendComponent = ({

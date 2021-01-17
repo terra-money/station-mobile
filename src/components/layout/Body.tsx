@@ -3,17 +3,17 @@ import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native'
 import color from 'styles/color'
 
 export type BodyProps = {
-  type?: 'white' | 'sky' | 'blue'
+  theme?: 'white' | 'sky' | 'blue'
   containerStyle?: StyleProp<ViewStyle>
   children: ReactNode
 }
 
 const Body = (props: BodyProps): ReactElement => {
-  const { type } = props
+  const { theme } = props
 
   const containerStyle: StyleProp<ViewStyle> = {}
 
-  switch (type) {
+  switch (theme) {
     case 'blue':
       containerStyle.backgroundColor = color.sapphire
       break

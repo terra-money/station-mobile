@@ -26,7 +26,6 @@ const Charts = (): ReactElement => (
 
 const styles = EStyleSheet.create({
   charts: {
-    marginHorizontal: 20,
     marginVertical: 10,
     backgroundColor: '#fff',
     borderRadius: 20,

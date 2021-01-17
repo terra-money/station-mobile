@@ -36,7 +36,7 @@ const Screen = (): ReactElement => {
     <>
       {initPageComplete && (
         <Body
-          type={'blue'}
+          theme={'blue'}
           containerStyle={{ paddingBottom: 50, paddingTop: 10 }}
         >
           <View style={{ flex: 1 }}>
@@ -113,7 +113,7 @@ const Screen = (): ReactElement => {
                 <Button
                   type={'transparent'}
                   title={'Recover Existing Wallet'}
-                  onPress={(): void => navigate('Add')}
+                  onPress={(): void => navigate('RecoverWallet')}
                 />
               </>
             ) : (

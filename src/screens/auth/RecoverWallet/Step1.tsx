@@ -13,18 +13,18 @@ import Text from 'components/Text'
 
 import color from 'styles/color'
 import { useValueValidator } from 'hooks/useValueValidator'
-import NewWalletStore from 'stores/NewWalletStore'
+import RecoverWalletStore from 'stores/RecoverWalletStore'
 import NumberStep from 'components/NumberStep'
 
 const Screen = (): ReactElement => {
-  const [name, setName] = useRecoilState(NewWalletStore.name)
+  const [name, setName] = useRecoilState(RecoverWalletStore.name)
 
   const { navigate } = useNavigation()
 
   const { valueValidate } = useValueValidator()
   const [nameErrMsg, setNameErrMsg] = useState('')
   const [password, setPassword] = useRecoilState(
-    NewWalletStore.password
+    RecoverWalletStore.password
   )
   const [passwordErrMsg, setPasswordErrMsg] = useState('')
 
@@ -59,12 +59,12 @@ const Screen = (): ReactElement => {
   }
 
   const onPressNext = (): void => {
-    navigate('NewWalletStep2')
+    navigate('RecoverWalletStep2')
   }
 
   return (
     <>
-      <SubHeader theme={'blue'} title={'New Wallet'} />
+      <SubHeader theme={'blue'} title={'Recover Existing Wallet'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={styles.section}>

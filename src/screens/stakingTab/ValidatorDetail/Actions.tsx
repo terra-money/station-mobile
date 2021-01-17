@@ -4,7 +4,7 @@ import Number from 'components/Number'
 import Icon from 'components/Icon'
 import ButtonWithAuth from 'components/ButtonWithAuth'
 import Text from 'components/Text'
-import DelegationTooltip from '../staking/DelegationTooltip'
+import DelegationTooltip from './DelegationTooltip'
 // import Delegate from '../../post/Delegate'
 // import Withdraw from '../../post/Withdraw'
 

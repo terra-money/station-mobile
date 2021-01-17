@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react'
 import { gt, VoteOption } from '@terra-money/use-native-station'
 
-// import Chart from 'components/Chart'
-// import Orb from 'components/Orb'
+// import Chart from '../../components/Chart'
+// import Orb from '../../components/Orb'
 
-import PieChart from 'components/PieChart'
+import PieChart from '../../components/PieChart'
 
 const VoteChart = ({
   options,

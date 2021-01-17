@@ -70,7 +70,7 @@ const Screen = (): ReactElement => {
     <>
       {initPageComplete && (
         <Body
-          type={'sky'}
+          theme={'sky'}
           containerStyle={{
             paddingBottom: 50,
             paddingTop: 10,

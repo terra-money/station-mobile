@@ -36,7 +36,7 @@ const Screen = (): ReactElement => {
   return (
     <>
       <SubHeader theme={'blue'} title={'Write Down Your Seed'} />
-      <Body type={'sky'} containerStyle={styles.container}>
+      <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={{ alignItems: 'flex-end', marginBottom: 20 }}>
             <CopyButton copyString={seed.join(' ')} />
@@ -45,7 +45,10 @@ const Screen = (): ReactElement => {
             <View style={{ flex: 1 }}>
               {_.map(seed.slice(0, 12), (item, index) => {
                 return (
-                  <View key={index} style={styles.seedWordBox}>
+                  <View
+                    key={`seedWord-${index}`}
+                    style={styles.seedWordBox}
+                  >
                     <Text style={styles.seedWordNo}>{index + 1}</Text>
                     <Text style={styles.seedWord}>{item}</Text>
                   </View>
@@ -55,9 +58,12 @@ const Screen = (): ReactElement => {
             <View style={{ flex: 1 }}>
               {_.map(seed.slice(12, 25), (item, index) => {
                 return (
-                  <View key={index} style={styles.seedWordBox}>
+                  <View
+                    key={`seedWord-${index + 13}`}
+                    style={styles.seedWordBox}
+                  >
                     <Text style={styles.seedWordNo}>
-                      {index + 11}
+                      {index + 13}
                     </Text>
                     <Text style={styles.seedWord}>{item}</Text>
                   </View>

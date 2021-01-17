@@ -19,17 +19,17 @@ const Text = (props: TextProps): ReactElement => {
   const fontStyle: StyleProp<TextStyle> = {}
   switch (fontType) {
     case 'light':
-      fontStyle.fontWeight = '300'
+      fontStyle.fontFamily = 'Gotham-Light'
       break
     case 'medium':
-      fontStyle.fontWeight = '500'
+      fontStyle.fontFamily = 'Gotham-Medium'
       break
     case 'bold':
-      fontStyle.fontWeight = '700'
+      fontStyle.fontFamily = 'Gotham-Bold'
       break
     case 'book':
     default:
-      fontStyle.fontWeight = '400'
+      fontStyle.fontFamily = 'Gotham-Book'
       break
   }
 
