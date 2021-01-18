@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
-import { Text } from 'react-native'
+
 import { useAuth, useText } from '@terra-money/use-native-station'
+import Text from 'components/Text'
 
 /* Show tooltip if user can't use this button */
 const ButtonWithAuth: FC<{ onPress: () => void }> = ({

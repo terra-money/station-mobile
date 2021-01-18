@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { AppState, AppStateStatus, Platform } from 'react-native'
 
 import CodePush from 'react-native-code-push'
+import dev from 'utils/dev'
 
 export enum SyncStatus {
   UP_TO_DATE,
@@ -66,8 +67,8 @@ export const useUpdateCheck = (): {
     boolean | undefined
   >(undefined)
 
-  const checkUpdate = async () => {
-    console.log('CodePush::checkUpdate')
+  const checkUpdate = async (): Promise<void> => {
+    dev.log('CodePush::checkUpdate')
 
     const update = await CodePush.checkForUpdate()
     if (update) {
@@ -80,12 +81,12 @@ export const useUpdateCheck = (): {
   useEffect(() => {
     Platform.OS === 'android' && checkUpdate()
 
-    const activeListener = (state: AppStateStatus) => {
+    const activeListener = (state: AppStateStatus): void => {
       state === 'active' && checkUpdate()
     }
 
     AppState.addEventListener('change', activeListener)
-    return () => {
+    return (): void => {
       AppState.removeEventListener('change', activeListener)
     }
   }, [])

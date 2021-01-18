@@ -1,6 +1,8 @@
 import React, { FC, ReactElement } from 'react'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { VoteProgressBar } from '@terra-money/use-native-station'
+
+import Text from 'components/Text'
 
 const Flag: FC<{ left: string }> = ({ children }) => (
   <Text>{children}</Text>

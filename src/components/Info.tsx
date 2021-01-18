@@ -1,9 +1,10 @@
 import React, { FC, ReactNode } from 'react'
-import { Text } from 'react-native'
+
 import _ from 'lodash'
 import { Card as CardProps } from '@terra-money/use-native-station'
 import Icon from './Icon'
 import Card from './Card'
+import Text from 'components/Text'
 
 interface Props extends CardProps {
   icon?: string | ReactNode

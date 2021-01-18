@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import _ from 'lodash'
 import {
@@ -11,7 +11,9 @@ import {
 
 import EStyleSheet from 'react-native-extended-stylesheet'
 import Swiper from 'react-native-swiper'
-import Card from '../../components/Card'
+import Card from 'components/Card'
+import Text from 'components/Text'
+
 import DisplaySelector from './DisplaySelector'
 
 const Columns = (): ReactElement => {
@@ -26,7 +28,7 @@ const Columns = (): ReactElement => {
       title={title}
       value={value}
       unit={unit}
-      onPress={(): void => navigate('Market')}
+      onPress={(): void => navigate('Swap')}
       dark
     />
   )
@@ -125,7 +127,6 @@ const styles = EStyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    marginHorizontal: 5,
     opacity: 0.2,
   },
   active: {

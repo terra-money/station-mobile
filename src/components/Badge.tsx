@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Text } from 'react-native'
+import Text from 'components/Text'
 
 interface Props {
   active?: boolean

@@ -1,7 +1,10 @@
 import React, { ReactElement } from 'react'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
+
 import { VoteUI, percent } from '@terra-money/use-native-station'
-import Number from '../../components/Number'
+import Number from 'components/Number'
+import Text from 'components/Text'
+
 import VoteChart from '../governance/VoteChart'
 import VoteProgress from './VoteProgress'
 

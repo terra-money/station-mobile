@@ -5,11 +5,12 @@ import React, {
   ReactElement,
 } from 'react'
 
-import { TextInput, Text } from 'react-native'
+import { TextInput } from 'react-native'
 import { Field as FieldProps } from '@terra-money/use-native-station'
 import Picker from './Picker'
 import MaxButton from './MaxButton'
 import InvalidFeedback from './InvalidFeedback'
+import Text from 'components/Text'
 
 interface Props {
   field: FieldProps

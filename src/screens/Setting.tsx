@@ -1,10 +1,12 @@
 import React, { ReactElement } from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import SubPageHeader from '../components/SubPageHeader'
+
+import Text from 'components/Text'
 
 interface SettingItemProps {
   k: string // key

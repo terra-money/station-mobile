@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { useRecoilState } from 'recoil'
 import { useNavigation } from '@react-navigation/native'
@@ -8,6 +8,7 @@ import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 import Button from 'components/Button'
+import Text from 'components/Text'
 import CopyButton from 'components/CopyButton'
 import WarningBox from 'components/WarningBox'
 
@@ -35,7 +36,7 @@ const Screen = (): ReactElement => {
   return (
     <>
       <SubHeader theme={'blue'} title={'Write Down Your Seed'} />
-      <Body type={'sky'} containerStyle={styles.container}>
+      <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={{ alignItems: 'flex-end', marginBottom: 20 }}>
             <CopyButton copyString={seed.join(' ')} />
@@ -44,7 +45,10 @@ const Screen = (): ReactElement => {
             <View style={{ flex: 1 }}>
               {_.map(seed.slice(0, 12), (item, index) => {
                 return (
-                  <View key={index} style={styles.seedWordBox}>
+                  <View
+                    key={`seedWord-${index}`}
+                    style={styles.seedWordBox}
+                  >
                     <Text style={styles.seedWordNo}>{index + 1}</Text>
                     <Text style={styles.seedWord}>{item}</Text>
                   </View>
@@ -54,9 +58,12 @@ const Screen = (): ReactElement => {
             <View style={{ flex: 1 }}>
               {_.map(seed.slice(12, 25), (item, index) => {
                 return (
-                  <View key={index} style={styles.seedWordBox}>
+                  <View
+                    key={`seedWord-${index + 13}`}
+                    style={styles.seedWordBox}
+                  >
                     <Text style={styles.seedWordNo}>
-                      {index + 11}
+                      {index + 13}
                     </Text>
                     <Text style={styles.seedWord}>{item}</Text>
                   </View>
@@ -68,7 +75,7 @@ const Screen = (): ReactElement => {
             message={
               <Text style={{ color: color.red, lineHeight: 21 }}>
                 {`If you lose your seed phrase it's`}
-                <Text style={{ fontWeight: '700' }}>
+                <Text style={{ color: color.red }} fontType={'bold'}>
                   {' gone forever. '}
                 </Text>
                 {`Station doesn't store any data.`}

@@ -17,13 +17,14 @@ const Input = (props: TextInputProps): ReactElement => {
     borderColor: '#cfd8ea',
     backgroundColor: color.white,
     justifyContent: 'center',
+    padding: 0,
     paddingLeft: 15,
   }
   return (
     <TextInput
       style={[defaultStyle, style]}
       {...rest}
-      underlineColorAndroid={'#ffffff'}
+      underlineColorAndroid={'#ffffff00'}
     />
   )
 }

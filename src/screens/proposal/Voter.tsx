@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
-import { Text } from 'react-native'
 import { VoterUI, format } from '@terra-money/use-native-station'
-import ExtLink from '../../components/ExtLink'
+import ExtLink from 'components/ExtLink'
+import Text from 'components/Text'
 
 interface Props {
   voter: VoterUI

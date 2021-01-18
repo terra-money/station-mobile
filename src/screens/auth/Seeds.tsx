@@ -1,8 +1,9 @@
 import React, { ReactElement, useState } from 'react'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { Mnemonics as Props } from '@terra-money/use-native-station'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import Seed from './Seed'
+import Text from 'components/Text'
 
 const Seeds = ({
   title,

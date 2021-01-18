@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { Text, View, Image, TouchableOpacity } from 'react-native'
+import { View, Image, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import {
   Options,
@@ -9,8 +9,10 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
 import EStyleSheet from 'react-native-extended-stylesheet'
-import Picker from '../../components/Picker'
-import Card from '../../components/Card'
+import Picker from 'components/Picker'
+import Card from 'components/Card'
+import Text from 'components/Text'
+
 import images from 'assets/images'
 import dev from 'utils/dev'
 

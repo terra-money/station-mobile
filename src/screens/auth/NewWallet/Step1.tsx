@@ -1,5 +1,5 @@
 import React, { useState, ReactElement } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { useRecoilState } from 'recoil'
 import { useNavigation } from '@react-navigation/native'
@@ -9,6 +9,7 @@ import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 import Button from 'components/Button'
 import FormInput from 'components/FormInput'
+import Text from 'components/Text'
 
 import color from 'styles/color'
 import { useValueValidator } from 'hooks/useValueValidator'
@@ -64,7 +65,7 @@ const Screen = (): ReactElement => {
   return (
     <>
       <SubHeader theme={'blue'} title={'New Wallet'} />
-      <Body type={'sky'} containerStyle={styles.container}>
+      <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={styles.section}>
             <Text style={styles.title}>Wallet Name</Text>

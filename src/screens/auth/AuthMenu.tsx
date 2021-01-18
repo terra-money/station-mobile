@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import _ from 'lodash'
-import { Text, View, StyleSheet, Image } from 'react-native'
+import { View, StyleSheet, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useAuth } from '@terra-money/use-native-station'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
@@ -8,6 +8,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 
+import Text from 'components/Text'
 import Button from 'components/Button'
 import Dot from 'components/Dot'
 
@@ -35,11 +36,13 @@ const Screen = (): ReactElement => {
     <>
       {initPageComplete && (
         <Body
-          type={'blue'}
+          theme={'blue'}
           containerStyle={{ paddingBottom: 50, paddingTop: 10 }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.title}>Connect</Text>
+            <Text style={styles.title} fontType={'bold'}>
+              Connect
+            </Text>
             <Text style={styles.subTitle}>
               {_.some(wallets)
                 ? 'Connect to your wallet, Create a new wallet or recover an existing wallet using a seed phrase'
@@ -110,7 +113,7 @@ const Screen = (): ReactElement => {
                 <Button
                   type={'transparent'}
                   title={'Recover Existing Wallet'}
-                  onPress={(): void => navigate('Add')}
+                  onPress={(): void => navigate('RecoverWallet')}
                 />
               </>
             ) : (
@@ -139,8 +142,6 @@ export default Screen
 const styles = StyleSheet.create({
   title: {
     fontSize: 26,
-    fontWeight: 'bold',
-    fontStyle: 'normal',
     lineHeight: 39,
     letterSpacing: 0,
     textAlign: 'center',
@@ -149,8 +150,6 @@ const styles = StyleSheet.create({
   subTitle: {
     marginHorizontal: 20,
     fontSize: 16,
-    fontWeight: 'normal',
-    fontStyle: 'normal',
     lineHeight: 24,
     letterSpacing: 0,
     textAlign: 'center',

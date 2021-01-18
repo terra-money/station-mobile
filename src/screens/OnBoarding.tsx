@@ -3,7 +3,6 @@ import React, { ReactElement, useRef, useState } from 'react'
 import {
   Image,
   View,
-  Text,
   TouchableOpacity,
   Platform,
   LogBox,
@@ -14,6 +13,7 @@ import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { setSkipOnboarding } from '../utils/storage'
 
+import Text from 'components/Text'
 import images from 'assets/images'
 
 LogBox.ignoreLogs([

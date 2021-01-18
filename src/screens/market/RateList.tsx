@@ -1,15 +1,16 @@
 import React, { ReactElement } from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import {
   useRate,
   RateItem,
   RateUI,
 } from '@terra-money/use-native-station'
-import ErrorComponent from '../../components/ErrorComponent'
-import Loading from '../../components/Loading'
-import Card from '../../components/Card'
-import Picker from '../../components/Picker'
-import Info from '../../components/Info'
+import ErrorComponent from 'components/ErrorComponent'
+import Loading from 'components/Loading'
+import Card from 'components/Card'
+import Picker from 'components/Picker'
+import Info from 'components/Info'
+import Text from 'components/Text'
 import Variation from './Variation'
 
 const RateList = ({ denoms }: { denoms: string[] }): ReactElement => {

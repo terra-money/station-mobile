@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
-import { TouchableOpacity, Text } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import { format } from '@terra-money/use-native-station'
+import Text from 'components/Text'
 
 interface Props {
   buttons: { onClick: () => void; children: any }[]

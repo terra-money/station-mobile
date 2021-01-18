@@ -11,7 +11,7 @@ import Tabs from './Tabs'
 import AuthMenu from '../screens/auth/AuthMenu'
 import SelectWallet from '../screens/auth/SelectWallet'
 import NewWalletStack from './NewWalletStack'
-import Add from '../screens/auth/Add'
+import RecoverWalletStack from './RecoverWalletStack'
 
 import OnBoarding from '../screens/OnBoarding'
 import Setting from '../screens/Setting'
@@ -88,9 +88,9 @@ const AppNavigator = ({
           options={{ headerShown: false }}
         />
         <RootStack.Screen
-          name="Add"
-          component={Add}
-          options={{ animationEnabled: false }}
+          name="RecoverWallet"
+          component={RecoverWalletStack}
+          options={{ headerShown: false }}
         />
         <RootStack.Screen
           name="ConnectView"

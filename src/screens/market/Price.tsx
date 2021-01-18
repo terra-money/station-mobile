@@ -6,9 +6,9 @@ import {
   format,
 } from '@terra-money/use-native-station'
 
-import Card from '../../components/Card'
-import Number from '../../components/Number'
-import Picker from '../../components/Picker'
+import Card from 'components/Card'
+import Number from 'components/Number'
+import Picker from 'components/Picker'
 import Variation from './Variation'
 
 const Price = ({ actives }: { actives: string[] }): ReactElement => {

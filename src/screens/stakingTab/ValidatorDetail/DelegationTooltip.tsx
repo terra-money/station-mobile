@@ -1,8 +1,10 @@
 import React, { ReactElement } from 'react'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { MyActionsTable } from '@terra-money/use-native-station'
-import Number from '../../components/Number'
-import Table from '../../components/Table'
+
+import Number from 'components/Number'
+import Table from 'components/Table'
+import Text from 'components/Text'
 
 const DelegationTooltip = ({
   headings,

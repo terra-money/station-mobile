@@ -1,8 +1,9 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { View, Image, StyleSheet, Text } from 'react-native'
+import { View, Image, StyleSheet } from 'react-native'
 
 import Button from 'components/Button'
 import Body from 'components/layout/Body'
+import Text from 'components/Text'
 
 import { useApp } from './useApp'
 
