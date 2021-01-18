@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingHorizontal: 10,
     paddingVertical: 6,
+    height: 28,
   },
   connectText: {
     color: color.sapphire,
