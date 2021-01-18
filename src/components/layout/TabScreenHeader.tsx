@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     lineHeight: 36,
     letterSpacing: -0.4,
     color: color.sapphire,
+    height: 36,
   },
   headerRight: {
     paddingRight: 20,
