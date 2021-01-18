@@ -21,43 +21,36 @@ LogBox.ignoreLogs([
   'Warning: Cannot update a component from inside the function body of a different component.',
 ])
 
-// H. REQ i18n
 const PagerContents = [
   {
     image: images.on_boarding_0,
-    title: 'Welcome Abroad',
+    title: 'Welcome aboard',
     description:
       'Terra Station is where you can experience through Terra network.',
   },
   {
     image: images.on_boarding_1,
-    title: 'Manage Assets',
+    title: 'Manage assets',
     description:
       'Send and receive Terra coins from anyone around the world, or even swap among the coins.',
   },
   {
     image: images.on_boarding_2,
-    title: 'Get More',
+    title: 'Get rewards',
     description:
       'Delegate your coins to Terra Validators to earn even more coins.',
   },
   {
-    image: images.on_boarding_3,
-    title: 'Get Involved',
-    description:
-      'Vote and participate in proposals to develop the Terra Ecosystem.',
-  },
-  {
     image: images.on_boarding_4,
-    title: 'Start Exploring',
+    title: 'Start exploring',
     description:
-      'There are even more useful features. Start Exploring Terra Station',
+      'There are even more useful features. Start Exploring Terra Station.',
   },
 ]
 
 interface RenderSwiperProps {
   refSwipe: React.RefObject<Swiper>
-  setLastPage: (b: boolean) => any
+  setLastPage: (b: boolean) => void
 }
 
 const RenderSwiper = ({
@@ -66,11 +59,6 @@ const RenderSwiper = ({
 }: RenderSwiperProps): ReactElement => (
   <Swiper
     ref={refSwipe}
-    style={
-      {
-        // backgroundColor: '#eee',
-      }
-    }
     onIndexChanged={(index): void =>
       setLastPage(index + 1 === PagerContents.length)
     }
@@ -166,7 +154,7 @@ const enterTabs = ({ navigation }: { navigation: any }): void => {
 
 const OnBoarding = (): ReactElement => {
   const [lastPage, setLastPage] = useState(false)
-  const refSwipe = useRef<Swiper>(undefined!)
+  const refSwipe = useRef<Swiper>(null)
   const navigation = useNavigation()
 
   return (
@@ -185,14 +173,12 @@ const OnBoarding = (): ReactElement => {
 const styles = EStyleSheet.create({
   SelectLanguageContainer: {
     alignItems: 'flex-end',
-    // backgroundColor: '#ccc',;
     marginTop: Platform.OS === 'ios' ? getStatusBarHeight() : 0,
     padding: 10,
   },
   SelectLanguageButton: {
     padding: 10,
     flexDirection: 'row',
-    //   backgroundColor: '#bbb'
   },
   SelectLanguageButtonText: {
     color: '$primaryColor',
