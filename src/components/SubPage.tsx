@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { ActivityIndicator, ScrollView, View } from 'react-native'
-import { API } from '@terra-money/use-native-station'
+import { API } from 'use-station/src'
 import Text from 'components/Text'
 import SubPageHeader from '../components/SubPageHeader'
 

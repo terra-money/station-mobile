@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from 'react-native'
 import { Buffer } from 'buffer'
-import { useAuth } from '@terra-money/use-native-station'
+import { useAuth } from 'use-station/src'
 import { TextInput } from 'react-native-gesture-handler'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { LCDClient, RawKey, StdSignMsg } from '@terra-money/terra.js'

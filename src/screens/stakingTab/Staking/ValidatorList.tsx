@@ -1,11 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { View, Image, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import {
-  Options,
-  StakingUI,
-  ValidatorUI,
-} from '@terra-money/use-native-station'
+import { Options, StakingUI, ValidatorUI } from 'use-station/src'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
 import EStyleSheet from 'react-native-extended-stylesheet'

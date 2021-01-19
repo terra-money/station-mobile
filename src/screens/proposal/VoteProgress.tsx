@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from 'react'
 import { View } from 'react-native'
-import { VoteProgressBar } from '@terra-money/use-native-station'
+import { VoteProgressBar } from 'use-station/src'
 
 import Text from 'components/Text'
 

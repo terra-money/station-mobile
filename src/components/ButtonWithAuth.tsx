@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-import { useAuth, useText } from '@terra-money/use-native-station'
+import { useAuth, useText } from 'use-station/src'
 import Text from 'components/Text'
 
 /* Show tooltip if user can't use this button */

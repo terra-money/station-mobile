@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import { MyActionsTable } from '@terra-money/use-native-station'
+import { MyActionsTable } from 'use-station/src'
 
 import Number from 'components/Number'
 import Table from 'components/Table'

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { useAuth } from '@terra-money/use-native-station'
+import { useAuth } from 'use-station/src'
 import { settings } from 'utils/storage'
 
 export default (): void => {

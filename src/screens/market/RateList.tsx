@@ -1,10 +1,6 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import {
-  useRate,
-  RateItem,
-  RateUI,
-} from '@terra-money/use-native-station'
+import { useRate, RateItem, RateUI } from 'use-station/src'
 import ErrorComponent from 'components/ErrorComponent'
 import Loading from 'components/Loading'
 import Card from 'components/Card'

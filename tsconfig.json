@@ -17,7 +17,8 @@
       "assets/*": ["./assets/*"],
       "hooks/*": ["./hooks/*"],
       "stores/*": ["./stores/*"],
-      "nativeModules/*": ["./nativeModules/*"]
+      "nativeModules/*": ["./nativeModules/*"],
+      "use-station/*": ["./use-station/*"]
     }
   }
 }

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { useStaking, useAuth } from '@terra-money/use-native-station'
+import { useStaking, useAuth } from 'use-station/src'
 
 import { navigationHeaderOptions } from 'components/layout/TabScreenHeader'
 import ValidatorList from './ValidatorList'

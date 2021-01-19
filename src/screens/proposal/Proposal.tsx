@@ -5,7 +5,7 @@ import {
   useProposal,
   useMenu,
   useAuth,
-} from '@terra-money/use-native-station'
+} from 'use-station/src'
 
 import { GovernanceRouteParams } from '../../types/navigation'
 import Page from 'components/Page'

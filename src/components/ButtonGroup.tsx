@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { TouchableOpacity } from 'react-native'
-import { format } from '@terra-money/use-native-station'
+import { format } from 'use-station/src'
 import Text from 'components/Text'
 
 interface Props {

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import { ChartKey, useChart } from '@terra-money/use-native-station'
+import { ChartKey, useChart } from 'use-station/src'
 
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { AreaChart, Path } from 'react-native-svg-charts'
@@ -61,7 +61,6 @@ const styles = EStyleSheet.create({
     color: '$primaryColor',
     fontSize: 14,
     lineHeight: 21,
-    fontFamily: 'TerraCompact-Bold',
     textTransform: 'capitalize',
     marginBottom: 4,
   },
@@ -69,7 +68,6 @@ const styles = EStyleSheet.create({
     color: '$primaryColor',
     fontSize: 24,
     lineHeight: 36,
-    fontFamily: 'TerraCompact-Regular',
     letterSpacing: -0.5,
   },
   chart_item_unit: {

@@ -2,7 +2,7 @@ import React, { useState, ReactElement, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useRecoilValue } from 'recoil'
 import { StackActions, useNavigation } from '@react-navigation/native'
-import { useBank } from '@terra-money/use-native-station'
+import { useBank } from 'use-station/src'
 import { MnemonicKey } from '@terra-money/terra.js'
 import _ from 'lodash'
 

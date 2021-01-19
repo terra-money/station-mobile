@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import { ChartKey } from '@terra-money/use-native-station'
+import { ChartKey } from 'use-station/src'
 
 /* Root */
 export type RootStackParams = {

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { VoterUI, format } from '@terra-money/use-native-station'
+import { VoterUI, format } from 'use-station/src'
 import ExtLink from 'components/ExtLink'
 import Text from 'components/Text'
 

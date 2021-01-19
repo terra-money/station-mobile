@@ -6,7 +6,7 @@ import React, {
 } from 'react'
 
 import { TextInput } from 'react-native'
-import { Field as FieldProps } from '@terra-money/use-native-station'
+import { Field as FieldProps } from 'use-station/src'
 import Picker from './Picker'
 import MaxButton from './MaxButton'
 import InvalidFeedback from './InvalidFeedback'

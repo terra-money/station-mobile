@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ReactElement } from 'react'
 import { Alert, StyleSheet, View, Image } from 'react-native'
-import { useAuth } from '@terra-money/use-native-station'
+import { useAuth } from 'use-station/src'
 import { useNavigation } from '@react-navigation/native'
 import _ from 'lodash'
 

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { ValidatorUI, format } from '@terra-money/use-native-station'
+import { ValidatorUI, format } from 'use-station/src'
 import Number from 'components/Number'
 import Icon from 'components/Icon'
 import ButtonWithAuth from 'components/ButtonWithAuth'

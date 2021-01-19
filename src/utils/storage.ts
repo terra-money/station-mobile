@@ -1,7 +1,7 @@
 import { NativeModules } from 'react-native'
 import CryptoJS from 'crypto-js'
 import { mergeRight as merge, omit } from 'ramda'
-import { Wallet } from '@terra-money/use-native-station'
+import { Wallet } from 'use-station/src'
 import { Settings } from '../types/settings'
 import preferences from 'nativeModules/preferences'
 

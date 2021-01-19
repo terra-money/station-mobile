@@ -23,7 +23,7 @@ import {
   AuthProvider,
   useConfigState,
   ConfigProvider,
-} from '@terra-money/use-native-station'
+} from 'use-station/src'
 
 import { Settings } from './src/types'
 import { getSkipOnboarding, settings } from './src/utils/storage'
@@ -66,11 +66,11 @@ EStyleSheet.build({
 // }
 
 const chain = {
-  key: 'tequila',
-  name: 'tequila-0004',
-  hostname: 'tequila-fcd.terra.dev',
-  port: 443,
-  secure: true,
+  name: 'testnet',
+  chainID: 'tequila-0004',
+  lcd: 'https://tequila-lcd.terra.dev',
+  fcd: 'https://tequila-fcd.terra.dev',
+  ws: 'wss://tequila-fcd.terra.dev',
 }
 
 let App = ({
@@ -86,7 +86,7 @@ let App = ({
   const config = useConfigState({ lang, chain })
   const { current: currentLang = '' } = config.lang
   const { current: currentChainOptions } = config.chain
-  const { key: currentChain = '' } = currentChainOptions
+  const { name: currentChain = '' } = currentChainOptions
 
   /* onboarding */
   const [skipOnboarding, setSkipOnboarding] = useState<boolean>()
@@ -122,10 +122,19 @@ let App = ({
                   <Modal
                     visible={modal.isOpen}
                     onRequestClose={modal.close}
+                    transparent
                   >
-                    <SafeAreaView style={{ flex: 1 }}>
-                      {modal.content}
-                    </SafeAreaView>
+                    <TouchableOpacity
+                      style={{
+                        flex: 1,
+                        backgroundColor: 'rgba(0,0,0,.5)',
+                      }}
+                      onPress={modal.close}
+                    >
+                      <SafeAreaView style={{ flex: 1 }}>
+                        {modal.content}
+                      </SafeAreaView>
+                    </TouchableOpacity>
                   </Modal>
                 </RecoilRoot>
               </SafeAreaProvider>

@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react'
 import { View } from 'react-native'
-import { Mnemonics as Props } from '@terra-money/use-native-station'
+import { Mnemonics as Props } from 'use-station/src'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import Seed from './Seed'
 import Text from 'components/Text'

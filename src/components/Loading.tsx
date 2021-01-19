@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { useInfo } from '@terra-money/use-native-station'
+import { useInfo } from 'use-station/src'
 import Info from './Info'
 
 const Loading = (): ReactElement => {

@@ -1,9 +1,6 @@
 import React, { ReactElement } from 'react'
 import { useRoute, RouteProp } from '@react-navigation/native'
-import {
-  useAuth,
-  useValidator,
-} from '@terra-money/use-native-station'
+import { useAuth, useValidator } from 'use-station/src'
 
 import { navigationHeaderOptions } from 'components/layout/Header'
 import Text from 'components/Text'

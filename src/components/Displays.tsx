@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { DisplayCoin } from '@terra-money/use-native-station'
+import { DisplayCoin } from 'use-station/src'
 import Number from './Number'
 
 interface Props {
