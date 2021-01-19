@@ -1,10 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import {
-  useAssets,
-  useAuth,
-  useMenu,
-  User,
-} from '@terra-money/use-native-station'
+import { useAssets, useAuth, useMenu, User } from 'use-station/src'
 import {
   StatusBar,
   View,
@@ -16,7 +11,7 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 import { LCDClient, MsgSend, RawKey } from '@terra-money/terra.js'
 import { BigNumber } from 'bignumber.js'
 import { getDecyrptedKey } from '../../utils/wallet'
-import WithAuth from '../../components/WithAuth'
+import WithAuth from '../../components/layout/WithAuth'
 import Page from '../../components/Page'
 import dev from 'utils/dev'
 

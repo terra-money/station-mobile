@@ -1,5 +1,11 @@
 import React, { ReactElement } from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import {
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native'
 import Clipboard from '@react-native-community/clipboard'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Text from 'components/Text'
@@ -8,20 +14,39 @@ import color from 'styles/color'
 
 export type CopyButtonProps = {
   copyString: string
+  theme?: 'blue' | 'white'
 }
 
 const CopyButton = (props: CopyButtonProps): ReactElement => {
+  const { theme } = props
+  const containerStyle: StyleProp<ViewStyle> = {}
+  const textStyle: StyleProp<TextStyle> = {}
+
+  switch (theme) {
+    case 'blue':
+      containerStyle.borderColor = color.white
+      containerStyle.backgroundColor = color.sapphire
+      textStyle.color = color.white
+      break
+    case 'white':
+    default:
+      containerStyle.borderColor = color.sapphire
+      containerStyle.backgroundColor = color.white
+      textStyle.color = color.sapphire
+      break
+  }
   return (
     <TouchableOpacity
       onPress={(): void => {
         Clipboard.setString(props.copyString)
       }}
-      style={styles.copyButton}
+      style={[styles.copyButton, containerStyle]}
     >
-      <MaterialIcons name={'description'} color={color.sapphire} />
-      <Text style={{ color: color.sapphire, fontSize: 10 }}>
-        COPY
-      </Text>
+      <MaterialIcons
+        name={'description'}
+        color={theme === 'blue' ? color.white : color.sapphire}
+      />
+      <Text style={[{ fontSize: 10 }, textStyle]}>COPY</Text>
     </TouchableOpacity>
   )
 }
@@ -33,7 +58,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 15,
     borderWidth: 1,
-    borderColor: color.sapphire,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 10,

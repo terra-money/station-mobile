@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native'
-import { Address, Wallet, Bip } from '@terra-money/use-native-station'
+import { Address, Wallet, Bip } from 'use-station/src'
 
 const { TerraWallet } = NativeModules
 

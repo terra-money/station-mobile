@@ -15,6 +15,7 @@ type HeaderTheme = 'white' | 'sky' | 'blue'
 export type HeaderProps = {
   theme?: HeaderTheme
   goBackIconType?: 'arrow' | 'close'
+  headerStyle?: StyleProp<ViewStyle>
   headerLeft?: (props: StackHeaderLeftButtonProps) => React.ReactNode
   headerRight?: (props: {
     tintColor?: string | undefined
@@ -46,7 +47,13 @@ const HeaderLeft = ({
 export const navigationHeaderOptions = (
   props: HeaderProps
 ): StackNavigationOptions => {
-  const { theme, goBackIconType, headerLeft, headerRight } = props
+  const {
+    theme,
+    goBackIconType,
+    headerLeft,
+    headerRight,
+    headerStyle,
+  } = props
   const containerStyle: StyleProp<ViewStyle> = {}
   switch (theme) {
     case 'blue':
@@ -61,7 +68,13 @@ export const navigationHeaderOptions = (
       break
   }
   return {
-    headerStyle: { ...styles.container, ...containerStyle },
+    headerStyle: [
+      {
+        ...styles.container,
+        ...containerStyle,
+      },
+      headerStyle,
+    ],
     headerLeft:
       headerLeft ||
       ((): ReactElement => (

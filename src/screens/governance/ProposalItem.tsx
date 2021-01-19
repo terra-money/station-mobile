@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { ProposalItemUI } from '@terra-money/use-native-station'
+import { ProposalItemUI } from 'use-station/src'
 import Card from 'components/Card'
 import Orb from 'components/Orb'
 import VoteChart from './VoteChart'

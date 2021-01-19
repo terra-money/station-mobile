@@ -3,7 +3,7 @@ import {
   useMenu,
   useGovernance,
   ProposalItemUI,
-} from '@terra-money/use-native-station'
+} from 'use-station/src'
 
 import Icon from 'react-native-vector-icons/MaterialIcons'
 

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { TouchableWithoutFeedback, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { useInfo, Trans } from '@terra-money/use-native-station'
+import { useInfo, Trans } from 'use-station/src'
 // import Info from './Info'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import Card from './Card'
@@ -34,14 +34,12 @@ const PleaseSignIn = (): ReactElement => {
 const styles = EStyleSheet.create({
   title: {
     color: '$primaryColor',
-    fontFamily: 'TerraCompact-Bold',
     fontSize: 18,
     lineHeight: 27,
     marginBottom: 5,
   },
   content: {
     color: '$primaryColor',
-    fontFamily: 'TerraCompact-Regular',
     fontSize: 14,
     lineHeight: 21,
   },
@@ -55,7 +53,6 @@ const styles = EStyleSheet.create({
   },
   button_text: {
     color: '#fff',
-    fontFamily: 'TerraCompact-Medium',
     fontSize: 16,
   },
 })

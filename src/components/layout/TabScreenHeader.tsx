@@ -6,7 +6,7 @@ import { StackNavigationOptions } from '@react-navigation/stack'
 import { navigationHeaderOptions as defaultNHO } from 'components/layout/Header'
 import Text from 'components/Text'
 import color from 'styles/color'
-import { useAuth } from '@terra-money/use-native-station'
+import { useAuth } from 'use-station/src'
 import { useNavigation } from '@react-navigation/native'
 
 const HeaderLeft = ({ title }: { title: string }): ReactElement => {
@@ -67,6 +67,7 @@ export const navigationHeaderOptions = ({
 }): StackNavigationOptions => {
   return defaultNHO({
     theme: 'sky',
+    headerStyle: { height: 80 },
     headerLeft: () => <HeaderLeft {...{ title }} />,
     headerRight: () => <HeaderRight />,
   })

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import { ValidatorUI } from '@terra-money/use-native-station'
+import { ValidatorUI } from 'use-station/src'
 import ExtLink from 'components/ExtLink'
 import Text from 'components/Text'
 

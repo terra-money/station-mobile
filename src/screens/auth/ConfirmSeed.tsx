@@ -1,8 +1,5 @@
 import React, { ReactElement } from 'react'
-import {
-  useConfirmSeed,
-  SignUpNext,
-} from '@terra-money/use-native-station'
+import { useConfirmSeed, SignUpNext } from 'use-station/src'
 import Form, { State } from 'components/Form'
 import ButtonGroup from 'components/ButtonGroup'
 

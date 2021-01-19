@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import { DepositUI } from '@terra-money/use-native-station'
+import { DepositUI } from 'use-station/src'
 
 import Orb from 'components/Orb'
 import Displays from 'components/Displays'

@@ -1,38 +1,38 @@
 import React, { FC } from 'react'
-import { format, DisplayCoin } from '@terra-money/use-native-station'
-import EStyleSheet from 'react-native-extended-stylesheet'
+import { StyleProp, StyleSheet, TextStyle } from 'react-native'
+import { format, DisplayCoin } from 'use-station/src'
 
 import Text from 'components/Text'
+import color from 'styles/color'
 
 interface Props extends Partial<DisplayCoin> {
   children?: string
 
   /* config */
-  fontSize?: number
+  numberFontStyle?: StyleProp<TextStyle>
+  decimalFontStyle?: StyleProp<TextStyle>
   estimated?: boolean
   integer?: boolean
   dark?: boolean
 }
 
-const Number: FC<Props> = ({
-  value,
-  unit,
-  children,
-  dark,
-  ...config
-}) => {
-  const { estimated, integer: hideDecimal } = config
+const Number: FC<Props> = ({ value, unit, children, ...config }) => {
+  const {
+    estimated,
+    integer: hideDecimal,
+    numberFontStyle,
+    decimalFontStyle,
+  } = config
+
   const number = value ?? children ?? format.amount('0')
   const [integer, decimal] = number.split('.')
-  const textColor = [lightStyles.text, dark && darkStyles.text]
-  const textSize = [lightStyles.value, dark && darkStyles.value]
 
   return (
-    <Text style={[textSize, textColor]}>
+    <Text style={[styles.number, numberFontStyle]}>
       {estimated && '≈ '}
       {integer}
 
-      <Text style={styles.unit}>
+      <Text style={[styles.decimal, decimalFontStyle]}>
         {!hideDecimal && `.${decimal}`}
         {unit && ` ${unit}`}
       </Text>
@@ -41,32 +41,14 @@ const Number: FC<Props> = ({
 }
 
 /* styles */
-const styles = EStyleSheet.create({
-  unit: {
-    fontSize: 18,
-    letterSpacing: 0,
-  },
-})
-
-const lightStyles = EStyleSheet.create({
-  text: { color: '$primaryColor' },
-  value: {
-    fontFamily: 'TerraCompact-Regular',
+const styles = StyleSheet.create({
+  number: {
     fontSize: 24,
-    lineHeight: 36,
-    letterSpacing: -0.5,
+    color: color.sapphire,
+  },
+  decimal: {
+    fontSize: 18,
+    color: color.sapphire,
   },
 })
-
-const darkStyles = EStyleSheet.create({
-  text: { color: 'white' },
-  value: {
-    fontFamily: 'TerraCompact-Regular',
-    fontSize: 28,
-    lineHeight: 36,
-    letterSpacing: -0.5,
-    marginTop: 10,
-  },
-})
-
 export default Number

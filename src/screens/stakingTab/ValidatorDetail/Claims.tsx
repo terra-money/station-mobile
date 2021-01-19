@@ -6,7 +6,7 @@ import {
   TableUI,
   useClaims,
   format,
-} from '@terra-money/use-native-station'
+} from 'use-station/src'
 
 import ErrorComponent from 'components/ErrorComponent'
 import Loading from 'components/Loading'

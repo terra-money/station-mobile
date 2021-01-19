@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { gt, VoteOption } from '@terra-money/use-native-station'
+import { gt, VoteOption } from 'use-station/src'
 
 // import Chart from '../../components/Chart'
 // import Orb from '../../components/Orb'
