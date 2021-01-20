@@ -21,8 +21,12 @@ const Info: FC<Props> = ({
   const inner = (
     <>
       {typeof icon === 'string' ? <Icon name={icon} /> : icon}
-      {_.some(title) && <Text>{title}</Text>}
-      <Text>{content ?? children}</Text>
+      {_.some(title) && (
+        <Text style={{ textAlign: 'center' }}>{title}</Text>
+      )}
+      <Text style={{ textAlign: 'center' }}>
+        {content ?? children}
+      </Text>
     </>
   )
 

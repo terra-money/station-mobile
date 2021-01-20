@@ -8,4 +8,6 @@ export enum StoreKeyEnum {
   recoverWalletSeed = 'recoverWalletSeed',
   swapRate = 'swapRate',
   swapValue = 'swapValue',
+  sendConfirm = 'sendConfirm',
+  swapConfirm = 'swapConfirm',
 }

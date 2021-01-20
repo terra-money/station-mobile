@@ -32,7 +32,9 @@ const Number: FC<Props> = ({ value, unit, children, ...config }) => {
       {estimated && '≈ '}
       {integer}
 
-      <Text style={[styles.decimal, decimalFontStyle]}>
+      <Text
+        style={[styles.decimal, decimalFontStyle || numberFontStyle]}
+      >
         {!hideDecimal && `.${decimal}`}
         {unit && ` ${unit}`}
       </Text>

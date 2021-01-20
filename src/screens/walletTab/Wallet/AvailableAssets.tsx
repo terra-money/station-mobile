@@ -64,7 +64,7 @@ const CoinMenu = ({
         </TouchableOpacity>
         <TouchableOpacity
           onPress={(): void => {
-            navigate('Swap', { denom })
+            navigate('Swap')
             close()
           }}
           style={{ padding: 10 }}
