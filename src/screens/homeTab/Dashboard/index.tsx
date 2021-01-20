@@ -1,18 +1,18 @@
 import React, { ReactElement } from 'react'
-import { ScrollView } from 'react-native'
 
 import { navigationHeaderOptions } from 'components/layout/TabScreenHeader'
 import Columns from './Columns'
 import Charts from './Charts'
 import Body from 'components/layout/Body'
+import { View } from 'react-native'
 
 const Screen = (): ReactElement => {
   return (
-    <Body theme={'sky'}>
-      <ScrollView>
+    <Body theme={'sky'} scrollable>
+      <View style={{ height: 168 }}>
         <Columns />
-        <Charts />
-      </ScrollView>
+      </View>
+      <Charts />
     </Body>
   )
 }

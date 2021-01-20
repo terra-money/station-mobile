@@ -24,7 +24,7 @@ const Screen = (): ReactElement => {
         </Text>
       </View>
       <Button
-        type={'blue'}
+        theme={'blue'}
         title={'Explore The Terra Network'}
         onPress={(): void => navigate('Tabs')}
       />

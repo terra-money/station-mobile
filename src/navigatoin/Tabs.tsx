@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createStackNavigator } from '@react-navigation/stack'
 
 import Dashboard from '../screens/homeTab/Dashboard'
 import Wallet from '../screens/walletTab/Wallet'
@@ -10,57 +9,56 @@ import Swap from '../screens/swapTab/Swap'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import EStyleSheet from 'react-native-extended-stylesheet'
 
+import { RootStack } from 'types/navigation'
 import Staking from '../screens/stakingTab/Staking'
 import validatorDetail from '../screens/stakingTab/ValidatorDetail'
 import Text from 'components/Text'
 
 export const INITIAL = 'Dashboard'
 
-const Stack = createStackNavigator()
-
 const DashboardStack = (): ReactElement => (
-  <Stack.Navigator initialRouteName={INITIAL}>
-    <Stack.Screen
+  <RootStack.Navigator initialRouteName={INITIAL}>
+    <RootStack.Screen
       name={INITIAL}
       component={Dashboard}
       options={Dashboard.navigationOptions}
     />
-  </Stack.Navigator>
+  </RootStack.Navigator>
 )
 
 const WalletStack = (): ReactElement => (
-  <Stack.Navigator initialRouteName="Wallet">
-    <Stack.Screen
+  <RootStack.Navigator initialRouteName="Wallet">
+    <RootStack.Screen
       name="Wallet"
       component={Wallet}
       options={Wallet.navigationOptions}
     />
-  </Stack.Navigator>
+  </RootStack.Navigator>
 )
 
 const StakingStack = (): ReactElement => (
-  <Stack.Navigator initialRouteName="Staking">
-    <Stack.Screen
+  <RootStack.Navigator initialRouteName="Staking">
+    <RootStack.Screen
       name="Staking"
       component={Staking}
       options={Staking.navigationOptions}
     />
-    <Stack.Screen
+    <RootStack.Screen
       name="ValidatorDetail"
       component={validatorDetail}
       options={validatorDetail.navigationOptions}
     />
-  </Stack.Navigator>
+  </RootStack.Navigator>
 )
 
 const SwapStack = (): ReactElement => (
-  <Stack.Navigator initialRouteName="Swap">
-    <Stack.Screen
+  <RootStack.Navigator initialRouteName="Swap">
+    <RootStack.Screen
       name="Swap"
       component={Swap}
       options={Swap.navigationOptions}
     />
-  </Stack.Navigator>
+  </RootStack.Navigator>
 )
 
 const tabScreenList = [

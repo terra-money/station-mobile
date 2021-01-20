@@ -17,6 +17,9 @@ import OnBoarding from '../screens/OnBoarding'
 import Setting from '../screens/Setting'
 import ConnectView from '../screens/topup/ConnectView'
 import SendTxView from '../screens/topup/SendTxView'
+import SendStack from './SendStack'
+
+import Complete from '../screens/Complete'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -101,6 +104,16 @@ const AppNavigator = ({
           name="SendTxView"
           component={SendTxView}
           options={{ animationEnabled: false }}
+        />
+        <RootStack.Screen
+          name="Send"
+          component={SendStack}
+          options={{ headerShown: false }}
+        />
+        <RootStack.Screen
+          name="Complete"
+          component={Complete}
+          options={{ headerShown: false }}
         />
       </RootStack.Navigator>
     </NavigationContainer>

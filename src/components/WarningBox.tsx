@@ -31,6 +31,7 @@ export default WarningBox
 
 const styles = StyleSheet.create({
   container: {
+    marginBottom: 5,
     borderRadius: 8,
     backgroundColor: '#ffeff0',
     borderStyle: 'solid',

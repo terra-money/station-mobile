@@ -15,7 +15,8 @@ const Input = (props: TextInputProps): ReactElement => {
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#cfd8ea',
-    backgroundColor: color.white,
+    backgroundColor:
+      false === rest.editable ? '#ebeff8' : color.white,
     justifyContent: 'center',
     padding: 0,
     paddingLeft: 15,

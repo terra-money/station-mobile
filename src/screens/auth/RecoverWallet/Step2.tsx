@@ -117,7 +117,7 @@ const Screen = (): ReactElement => {
         </View>
         <Button
           title="Finish"
-          type={'blue'}
+          theme={'blue'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}

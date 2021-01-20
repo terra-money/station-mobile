@@ -50,7 +50,7 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
       </View>
       <View>
         <Button
-          type={'blue'}
+          theme={'blue'}
           title={'Enable'}
           onPress={(): void => {
             setUseBioAuth(true)
@@ -58,7 +58,7 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
           }}
           containerStyle={{ marginBottom: 10 }}
         />
-        <Button type={'gray'} title={'Later'} onPress={close} />
+        <Button theme={'gray'} title={'Later'} onPress={close} />
       </View>
     </Body>
   )

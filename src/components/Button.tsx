@@ -16,16 +16,16 @@ export type ButtonProps = {
   containerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
   title: string | ReactElement
-  type?: 'blue' | 'red' | 'gray' | 'white' | 'transparent'
+  theme?: 'blue' | 'red' | 'gray' | 'white' | 'transparent'
   disabled?: boolean
 }
 
 const Button = (props: ButtonProps): ReactElement => {
-  const { type, disabled } = props
+  const { theme, disabled } = props
   const titleStyle: StyleProp<TextStyle> = {}
   const containerStyle: StyleProp<ViewStyle> = {}
 
-  switch (type) {
+  switch (theme) {
     case 'blue':
       titleStyle.color = color.white
       containerStyle.backgroundColor = color.sapphire

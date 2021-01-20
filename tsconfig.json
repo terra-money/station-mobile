@@ -12,6 +12,7 @@
     "baseUrl": "./src",
     "paths": {
       "components/*": ["./components/*"],
+      "types/*": ["./types/*"],
       "styles/*": ["./styles/*"],
       "utils/*": ["./utils/*"],
       "assets/*": ["./assets/*"],

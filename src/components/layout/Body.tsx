@@ -1,11 +1,18 @@
 import React, { ReactElement, ReactNode } from 'react'
-import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  ScrollView,
+} from 'react-native'
 import color from 'styles/color'
 
 export type BodyProps = {
   theme?: 'white' | 'sky' | 'blue'
   containerStyle?: StyleProp<ViewStyle>
   children: ReactNode
+  scrollable?: boolean
 }
 
 const Body = (props: BodyProps): ReactElement => {
@@ -26,12 +33,25 @@ const Body = (props: BodyProps): ReactElement => {
       break
   }
 
+  const Component = props.scrollable ? ScrollView : View
+  const ComponentStyle = props.scrollable
+    ? {
+        contentContainerStyle: [
+          styles.container,
+          containerStyle,
+          props.containerStyle,
+        ],
+      }
+    : {
+        style: [
+          styles.container,
+          containerStyle,
+          props.containerStyle,
+        ],
+      }
+
   return (
-    <View
-      style={[styles.container, containerStyle, props.containerStyle]}
-    >
-      {props.children}
-    </View>
+    <Component {...{ ...ComponentStyle }}>{props.children}</Component>
   )
 }
 

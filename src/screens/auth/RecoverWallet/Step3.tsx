@@ -11,7 +11,7 @@ import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 import Button from 'components/Button'
 import NumberStep from 'components/NumberStep'
-import Label from 'components/Label'
+import Badge from 'components/Badge'
 import Text from 'components/Text'
 
 import RecoverWalletStore from 'stores/RecoverWalletStore'
@@ -68,11 +68,11 @@ const AddressBox = ({
       }}
     >
       <View style={[styles.addressBox, selectedStyle]}>
-        <View style={styles.addressLabelBox}>
-          <Label text={`BIP ${bip}`} />
-          {isVested && <Label text={'Vested'} />}
-          {isDelegated && <Label text={'Delegated'} />}
-          {isUndelegated && <Label text={'Undelegated'} />}
+        <View style={styles.addressBadgeBox}>
+          <Badge text={`BIP ${bip}`} />
+          {isVested && <Badge text={'Vested'} />}
+          {isDelegated && <Badge text={'Delegated'} />}
+          {isUndelegated && <Badge text={'Undelegated'} />}
         </View>
         <View style={styles.addressBoxAddress}>
           <Text>{mk.accAddress}</Text>
@@ -147,7 +147,7 @@ const Screen = (): ReactElement => {
 
         <Button
           title="Recover"
-          type={'blue'}
+          theme={'blue'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e9edf8',
     marginBottom: 20,
   },
-  addressLabelBox: {
+  addressBadgeBox: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },

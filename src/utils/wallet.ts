@@ -1,7 +1,7 @@
 import { MnemonicKey } from '@terra-money/terra.js'
 import { Alert, NativeModules } from 'react-native'
 import dev from './dev'
-import { encrypt, decrypt } from './keystore'
+import { encrypt, decrypt } from '@terra-money/key-utils'
 
 const { Preferences, Keystore } = NativeModules
 
@@ -108,6 +108,7 @@ export const getDecyrptedKey = async (
 ): Promise<string> => {
   const encryptedKey = await getEncryptedKey(name)
   const decrypted = decryptKey(encryptedKey, password)
+
   return decrypted
 }
 
