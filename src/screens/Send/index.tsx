@@ -4,7 +4,6 @@ import _ from 'lodash'
 import { StackScreenProps } from '@react-navigation/stack'
 
 import { User, useSend, RecentSentUI, FormUI } from 'use-station/src'
-import useLang from 'use-station/src/contexts/useLang'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -98,7 +97,6 @@ const Render = ({
 }: { user: User } & Props): ReactElement => {
   const denom = route.params.denom
   const setConfirm = useSetRecoilState(SendStore.confirm)
-  useLang('ko')
 
   const { loading, form, ui, submitted, confirm } = useSend(
     user,

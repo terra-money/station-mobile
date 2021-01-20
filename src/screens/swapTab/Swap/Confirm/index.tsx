@@ -17,10 +17,10 @@ import Button from 'components/Button'
 import Select from 'components/Select'
 import FormLabel from 'components/FormLabel'
 import Number from 'components/Number'
-import SendStore from 'stores/SendStore'
+import SwapStore from 'stores/SwapStore'
 import { getDecyrptedKey } from 'utils/wallet'
 
-import { RootStackParams, SendStackParams } from 'types/navigation'
+import { RootStackParams } from 'types/navigation'
 
 // @ts-ignore
 import getSigner from 'utils/wallet-helper/signer'
@@ -34,7 +34,7 @@ import {
 } from '@react-navigation/native'
 import WarningBox from 'components/WarningBox'
 
-type Props = StackScreenProps<SendStackParams, 'Confirm'>
+type Props = StackScreenProps<RootStackParams, 'SwapConfirm'>
 
 const Render = ({
   user,
@@ -43,7 +43,7 @@ const Render = ({
   user: User
   confirm: ConfirmProps
 } & Props): ReactElement => {
-  const { dispatch } = useNavigation<
+  const { navigate, dispatch } = useNavigation<
     NavigationProp<RootStackParams>
   >()
   const { contents, fee, form, result } = useConfirm(confirm, {
@@ -65,7 +65,11 @@ const Render = ({
   })
   useEffect(() => {
     if (result) {
-      dispatch(StackActions.replace('Complete', { result }))
+      dispatch(StackActions.popToTop())
+      navigate('Complete', {
+        result,
+        confirmNavigateTo: 'Swap',
+      })
     }
   }, [result])
 
@@ -78,7 +82,7 @@ const Render = ({
         containerStyle={{
           paddingTop: 20,
           justifyContent: 'space-between',
-          marginBottom: 40,
+          paddingBottom: 40,
         }}
       >
         <View>
@@ -147,7 +151,7 @@ const Render = ({
 }
 
 const Screen = (props: Props): ReactElement => {
-  const confirm = useRecoilValue(SendStore.confirm)
+  const confirm = useRecoilValue(SwapStore.confirm)
 
   return (
     <WithAuth>

@@ -10,7 +10,8 @@ export type RootStackParams = {
   Wallet: undefined
   Staking: undefined
   ValidatorDetail: undefined
-  Swap: { denom: string }
+  Swap: undefined
+  SwapConfirm: undefined
 
   Setting: undefined
   AuthMenu: undefined
@@ -20,7 +21,7 @@ export type RootStackParams = {
   ConnectView: undefined
   SendTxView: undefined
   Send: NavigatorScreenParams<SendStackParams>
-  Complete: { result: Card }
+  Complete: { result: Card; confirmNavigateTo: keyof RootStackParams }
 }
 
 export const RootStack = createStackNavigator<RootStackParams>()

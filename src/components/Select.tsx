@@ -27,7 +27,7 @@ const Select = (props: SelectProps): ReactElement => {
           borderColor: '#cfd8ea',
           backgroundColor: color.white,
           justifyContent: 'center',
-          paddingLeft: 15,
+          paddingLeft: 5,
         },
       }}
       placeholder={{}}
