@@ -24,6 +24,7 @@ import { useBioAuth } from 'hooks/useBioAuth'
 import { isSupportedBiometricAuthentication } from 'utils/bio'
 import { createWallet } from 'utils/wallet'
 import NumberStep from 'components/NumberStep'
+import FormLabel from 'components/FormLabel'
 
 const Screen = (): ReactElement => {
   const { dispatch } = useNavigation()
@@ -79,9 +80,9 @@ const Screen = (): ReactElement => {
         <View style={{ flex: 1 }}>
           <View style={styles.sectionGroup}>
             <View style={styles.section}>
-              <Text style={styles.title}>
-                {numeral(quiz[0] + 1).format('0o')} Word
-              </Text>
+              <FormLabel
+                text={`${numeral(quiz[0] + 1).format('0o')} Word`}
+              />
               <Input
                 onFocus={(): void => setFocusInputIndex(0)}
                 underlineColorAndroid="#ccc"
@@ -93,9 +94,9 @@ const Screen = (): ReactElement => {
             </View>
             <View style={{ width: 15 }} />
             <View style={styles.section}>
-              <Text style={styles.title}>
-                {numeral(quiz[1] + 1).format('0o')} Word
-              </Text>
+              <FormLabel
+                text={`${numeral(quiz[1] + 1).format('0o')} Word`}
+              />
               <Input
                 onFocus={(): void => setFocusInputIndex(1)}
                 underlineColorAndroid="#ccc"
@@ -126,7 +127,7 @@ const Screen = (): ReactElement => {
 
         <Button
           title="Confirm And Finish"
-          type={'blue'}
+          theme={'blue'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
@@ -152,12 +153,6 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     paddingTop: 20,
     justifyContent: 'space-between',
-  },
-  title: {
-    color: color.sapphire,
-    fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 5,
   },
   sectionGroup: {
     flexDirection: 'row',

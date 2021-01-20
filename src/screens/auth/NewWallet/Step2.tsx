@@ -86,7 +86,7 @@ const Screen = (): ReactElement => {
 
         <Button
           title="I Have Written Down My Seed."
-          type={'blue'}
+          theme={'blue'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}

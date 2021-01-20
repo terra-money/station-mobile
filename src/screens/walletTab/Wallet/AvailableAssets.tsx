@@ -13,47 +13,77 @@ import Loading from 'components/Loading'
 import AvailableItem from './AvailableItem'
 import Text from 'components/Text'
 import { useApp } from 'hooks'
-import { useNavigation } from '@react-navigation/native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
+import { RootStackParams } from 'types/navigation'
+import color from 'styles/color'
 
 const CoinMenu = ({
-  symbol,
+  denom,
   navigate,
   close,
 }: {
-  symbol: string
-  navigate: (...args: any) => void
+  denom: string
+  navigate<RouteName extends keyof RootStackParams>(
+    ...args: undefined extends RootStackParams[RouteName]
+      ? [RouteName] | [RouteName, RootStackParams[RouteName]]
+      : [RouteName, RootStackParams[RouteName]]
+  ): void
 } & Modal): ReactElement => {
   return (
     <View
       style={{
         flex: 1,
+        padding: 20,
         justifyContent: 'flex-end',
       }}
     >
-      <View style={{ backgroundColor: 'green', padding: 20 }}>
+      <View
+        style={{
+          borderRadius: 18,
+          backgroundColor: color.white,
+          marginBottom: 20,
+        }}
+      >
         <TouchableOpacity
           onPress={(): void => {
-            navigate('Send', { symbol })
+            navigate('Send', { screen: 'Send', params: { denom } })
             close()
           }}
-          style={{ backgroundColor: 'white', padding: 10 }}
+          style={{
+            padding: 10,
+            borderBottomColor: '#edf1f7',
+            borderBottomWidth: 1,
+          }}
         >
-          <Text>Send</Text>
+          <Text style={styles.coninMenuItemText} fontType={'medium'}>
+            Send
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={(): void => {
-            navigate('Swap', { symbol })
+            navigate('Swap', { denom })
             close()
           }}
-          style={{ backgroundColor: 'white', padding: 10 }}
+          style={{ padding: 10 }}
         >
-          <Text>Swap</Text>
+          <Text style={styles.coninMenuItemText} fontType={'medium'}>
+            Swap
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={close}
-          style={{ backgroundColor: 'white', padding: 10 }}
-        >
-          <Text>Cancel</Text>
+      </View>
+      <View
+        style={{
+          borderRadius: 18,
+          backgroundColor: color.white,
+        }}
+      >
+        <TouchableOpacity onPress={close} style={{ padding: 10 }}>
+          <Text style={styles.coninMenuItemText} fontType={'medium'}>
+            Cancel
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -64,7 +94,7 @@ const AvailableList = ({
   list,
   openCoinMenu,
 }: {
-  openCoinMenu: ({ symbol }: { symbol: string }) => void
+  openCoinMenu: ({ denom }: { denom: string }) => void
 } & AvailableUI): ReactElement => {
   return (
     <View>
@@ -83,7 +113,7 @@ const VestingList = ({
   list,
   openCoinMenu,
 }: {
-  openCoinMenu: ({ symbol }: { symbol: string }) => void
+  openCoinMenu: ({ denom }: { denom: string }) => void
 } & VestingUI): ReactElement => {
   return (
     <View>
@@ -101,10 +131,12 @@ const VestingList = ({
 const WalletAddress = ({ user }: { user: User }): ReactElement => {
   const { ui, loading } = useAssets(user)
   const { modal } = useApp()
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
 
-  const openCoinMenu = ({ symbol }: { symbol: string }): void => {
-    modal.open(() => CoinMenu({ symbol, navigate, ...modal }))
+  const openCoinMenu = ({ denom }: { denom: string }): void => {
+    modal.open(() => CoinMenu({ denom, navigate, ...modal }))
   }
 
   const render = ({
@@ -145,5 +177,9 @@ const styles = StyleSheet.create({
   section: { marginTop: 20 },
   assetListTitle: {
     marginBottom: 10,
+  },
+  coninMenuItemText: {
+    paddingVertical: 18,
+    textAlign: 'center',
   },
 })

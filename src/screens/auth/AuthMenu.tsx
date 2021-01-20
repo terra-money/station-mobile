@@ -70,7 +70,7 @@ const Screen = (): ReactElement => {
               >
                 <View style={{ flex: 1 }}>
                   <Button
-                    type={'red'}
+                    theme={'red'}
                     title={'(DEV) Clear settings'}
                     onPress={settings.clear}
                     containerStyle={{
@@ -80,7 +80,7 @@ const Screen = (): ReactElement => {
                 </View>
                 <View style={{ flex: 1 }}>
                   <Button
-                    type={'red'}
+                    theme={'red'}
                     title={'(DEV) Clear keys'}
                     onPress={clearKeys}
                     containerStyle={{
@@ -94,7 +94,7 @@ const Screen = (): ReactElement => {
               <>
                 {_.some(wallets) && (
                   <Button
-                    type={'white'}
+                    theme={'white'}
                     title={'Select Wallet'}
                     onPress={(): void => navigate('SelectWallet')}
                     containerStyle={{ marginBottom: 10 }}
@@ -102,7 +102,7 @@ const Screen = (): ReactElement => {
                 )}
 
                 <Button
-                  type={_.some(wallets) ? 'transparent' : 'white'}
+                  theme={_.some(wallets) ? 'transparent' : 'white'}
                   title={'New Wallet'}
                   onPress={(): void => navigate('NewWallet')}
                 />
@@ -111,7 +111,7 @@ const Screen = (): ReactElement => {
                   <Text style={styles.orText}>OR</Text>
                 </View>
                 <Button
-                  type={'transparent'}
+                  theme={'transparent'}
                   title={'Recover Existing Wallet'}
                   onPress={(): void => navigate('RecoverWallet')}
                 />
@@ -119,7 +119,7 @@ const Screen = (): ReactElement => {
             ) : (
               <>
                 <Button
-                  type={'white'}
+                  theme={'white'}
                   title={'Sign Out'}
                   onPress={signOut}
                 />

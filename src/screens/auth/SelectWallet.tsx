@@ -17,6 +17,7 @@ import Input from 'components/Input'
 
 import color from 'styles/color'
 import images from 'assets/images'
+import FormLabel from 'components/FormLabel'
 
 const BiometricButtonTitle = (): ReactElement => {
   return (
@@ -79,9 +80,7 @@ const Screen = (): ReactElement => {
         >
           <View>
             <View style={styles.section}>
-              <Text style={styles.title} fontType={'medium'}>
-                Wallet
-              </Text>
+              <FormLabel text={'Wallet'} />
               <Select
                 selectedValue={name}
                 optionList={wallets.map(({ name }) => {
@@ -97,9 +96,7 @@ const Screen = (): ReactElement => {
             </View>
 
             <View style={styles.section}>
-              <Text style={styles.title} fontType={'medium'}>
-                Password
-              </Text>
+              <FormLabel text={'Password'} />
               <Input
                 underlineColorAndroid="#ccc"
                 value={password}
@@ -112,13 +109,13 @@ const Screen = (): ReactElement => {
           <View>
             <Button
               title="Next"
-              type={'blue'}
+              theme={'blue'}
               onPress={submit}
               containerStyle={{ marginBottom: 10 }}
             />
             <Button
               title={<BiometricButtonTitle />}
-              type={'gray'}
+              theme={'gray'}
               onPress={(): void => {
                 Alert.alert('Comming Soon')
               }}
@@ -137,11 +134,6 @@ Screen.navigationOptions = navigationHeaderOptions({
 export default Screen
 
 const styles = StyleSheet.create({
-  title: {
-    color: color.sapphire,
-    fontSize: 14,
-    marginBottom: 5,
-  },
   section: {
     marginBottom: 20,
   },

@@ -9,12 +9,11 @@ import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 import Button from 'components/Button'
 import FormInput from 'components/FormInput'
-import Text from 'components/Text'
 
-import color from 'styles/color'
 import { useValueValidator } from 'hooks/useValueValidator'
 import NewWalletStore from 'stores/NewWalletStore'
 import NumberStep from 'components/NumberStep'
+import FormLabel from 'components/FormLabel'
 
 const Screen = (): ReactElement => {
   const [name, setName] = useRecoilState(NewWalletStore.name)
@@ -68,7 +67,7 @@ const Screen = (): ReactElement => {
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={styles.section}>
-            <Text style={styles.title}>Wallet Name</Text>
+            <FormLabel text={'Wallet Name'} />
             <FormInput
               underlineColorAndroid="#ccc"
               value={name}
@@ -78,7 +77,7 @@ const Screen = (): ReactElement => {
             />
           </View>
           <View style={styles.section}>
-            <Text style={styles.title}>Password</Text>
+            <FormLabel text={'Password'} />
             <FormInput
               underlineColorAndroid="#ccc"
               value={password}
@@ -89,7 +88,7 @@ const Screen = (): ReactElement => {
             />
           </View>
           <View style={styles.section}>
-            <Text style={styles.title}>Confirm Password</Text>
+            <FormLabel text={'Confirm Password'} />
             <FormInput
               underlineColorAndroid="#ccc"
               value={passwordConfirm}
@@ -103,7 +102,7 @@ const Screen = (): ReactElement => {
 
         <Button
           title="Next"
-          type={'blue'}
+          theme={'blue'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
@@ -129,12 +128,6 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     paddingTop: 20,
     justifyContent: 'space-between',
-  },
-  title: {
-    color: color.sapphire,
-    fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 5,
   },
   section: {
     marginBottom: 20,

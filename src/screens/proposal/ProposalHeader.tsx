@@ -19,7 +19,7 @@ const ProposerHeader = ({
 
   return (
     <>
-      <Badge>{statusTranslation}</Badge>
+      <Badge text={statusTranslation} />
 
       <Text>{title}</Text>
       <Text>{meta}</Text>

@@ -1,13 +1,10 @@
 import { NativeModules } from 'react-native'
-import CryptoJS from 'crypto-js'
 import { mergeRight as merge, omit } from 'ramda'
-import { Wallet } from 'use-station/src'
 import { Settings } from '../types/settings'
 import preferences from 'nativeModules/preferences'
+import { decrypt } from '@terra-money/key-utils'
 
 const { Keystore } = NativeModules
-
-export const { encrypt, decrypt } = CryptoJS.AES
 
 /* keys */
 const SEP = ','
@@ -16,9 +13,9 @@ export const loadNames = async (): Promise<string[]> => {
   return names ? JSON.parse(names) : []
 }
 
-export const loadKey = async (name: string): Promise<Key> => {
+export const loadKey = async (name: string): Promise<string> => {
   const key = await Keystore.read(name)
-  return JSON.parse(key)
+  return key
 }
 
 export const storeKeys = (keys: Key[]): void => {
@@ -27,51 +24,6 @@ export const storeKeys = (keys: Key[]): void => {
   keys.forEach((key) =>
     Keystore.write(key.name, JSON.stringify(keys))
   )
-}
-
-export const getStoredWallet = async (
-  name: string,
-  password: string
-): Promise<Wallet> => {
-  const key = await Keystore.read(name)
-
-  if (!key) throw new Error('Key with that name does not exist')
-
-  try {
-    const parsed = JSON.parse(key)
-    return decrypt(parsed.wallet, password) as Wallet
-  } catch (err) {
-    throw new Error('Incorrect password')
-  }
-}
-
-type Params = { name: string; password: string; wallet: Wallet }
-
-export const importKey = async ({
-  name,
-  password,
-  wallet,
-}: Params): Promise<void> => {
-  const names = await loadNames()
-
-  if (names.includes(name))
-    throw new Error('Key with that name already exists')
-
-  const encrypted = encrypt(
-    JSON.stringify(wallet),
-    password
-  ).toString()
-
-  if (!encrypted) throw new Error('Encryption error occurred')
-
-  const key: Key = {
-    name,
-    address: wallet.terraAddress,
-    wallet: encrypted,
-  }
-
-  preferences.setString('names', JSON.stringify([...names, name]))
-  Keystore.write(name, JSON.stringify(key))
 }
 
 export const clearKeys = async (): Promise<void> => {
@@ -90,7 +42,7 @@ export const testPassword = (
   if (!key) throw new Error('Key with that name does not exist')
 
   try {
-    decrypt(key.wallet, password).toString(CryptoJS.enc.Utf8)
+    decrypt(key.wallet, password)
     return true
   } catch (error) {
     return false

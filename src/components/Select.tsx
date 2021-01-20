@@ -3,9 +3,11 @@ import PickerSelect, { PickerStyle } from 'react-native-picker-select'
 
 import color from 'styles/color'
 
+export type OptionProps = { label: string; value: string | number }
+
 export type SelectProps = {
   selectedValue?: string | number
-  optionList: { label: string; value: string | number }[]
+  optionList: OptionProps[]
   onValueChange: (
     itemValue: string | number,
     itemIndex: number

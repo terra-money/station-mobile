@@ -9,11 +9,11 @@ import AvailableAssets from './AvailableAssets'
 import { useSwapRate } from 'hooks/useSwapRate'
 import { useSetRecoilState } from 'recoil'
 import SwapRateStore from 'stores/SwapRateStore'
-import { ScrollView } from 'react-native'
 
 const Screen = (): ReactElement => {
   const { loading, data } = useSwapRate()
   const setSwapRate = useSetRecoilState(SwapRateStore.swapRate)
+
   useEffect(() => {
     if (false === loading && data) {
       setSwapRate(data)
@@ -23,11 +23,9 @@ const Screen = (): ReactElement => {
   return (
     <WithAuth>
       {(user): ReactElement => (
-        <Body theme={'sky'} containerStyle={{ paddingHorizontal: 0 }}>
-          <ScrollView style={{ paddingHorizontal: 20 }}>
-            <WalletAddress user={user} />
-            <AvailableAssets user={user} />
-          </ScrollView>
+        <Body theme={'sky'} scrollable>
+          <WalletAddress user={user} />
+          <AvailableAssets user={user} />
         </Body>
       )}
     </WithAuth>

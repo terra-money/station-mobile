@@ -16,7 +16,7 @@ const AssetItem = ({
   openCoinMenu,
 }: {
   item: AvailableItem
-  openCoinMenu: ({ symbol }: { symbol: string }) => void
+  openCoinMenu: ({ denom }: { denom: string }) => void
 }): ReactElement => {
   const { currency } = useConfig()
   const { icon, display } = item
@@ -26,7 +26,6 @@ const AssetItem = ({
       value: display.value.replace(/,/g, ''),
     })
   )
-
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -55,7 +54,7 @@ const AssetItem = ({
         </View>
         <TouchableOpacity
           onPress={(): void => {
-            openCoinMenu({ symbol: item.denom || '' })
+            openCoinMenu({ denom: item.denom || item.token || '' })
           }}
         >
           <View style={styles.coinMenu}>

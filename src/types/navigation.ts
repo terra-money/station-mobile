@@ -1,10 +1,17 @@
+import { NavigatorScreenParams } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { ChartKey } from 'use-station/src'
+import { Card } from 'use-station/src'
 
 /* Root */
 export type RootStackParams = {
   OnBoarding: undefined
   Tabs: undefined
+  Dashboard: undefined
+  Wallet: undefined
+  Staking: undefined
+  ValidatorDetail: undefined
+  Swap: { denom: string }
+
   Setting: undefined
   AuthMenu: undefined
   SelectWallet: undefined
@@ -12,31 +19,16 @@ export type RootStackParams = {
   RecoverWallet: undefined
   ConnectView: undefined
   SendTxView: undefined
+  Send: NavigatorScreenParams<SendStackParams>
+  Complete: { result: Card }
 }
 
 export const RootStack = createStackNavigator<RootStackParams>()
 
-/* Tabs */
-export type TabsStackParams = {
-  Dashboard: undefined
-  Market: undefined
+/* Send */
+export type SendStackParams = {
+  Send: { denom: string }
+  Confirm: undefined
 }
 
-export const TabsStack = createStackNavigator<TabsStackParams>()
-
-/* Dashboard */
-export type DashboardRouteParams = {
-  Dashboard: undefined
-  Chart: { chartKey: ChartKey }
-}
-
-/* Staking */
-export type StakingRouteParams = {
-  ValidatorDetail: { address: string }
-}
-
-/* Governance */
-export type GovernanceRouteParams = {
-  Governance: undefined
-  Proposal: { id: string }
-}
+export const SendStack = createStackNavigator<SendStackParams>()
