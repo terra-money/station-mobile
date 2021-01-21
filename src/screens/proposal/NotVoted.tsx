@@ -1,10 +1,12 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import { NotVoted as Props } from '@terra-money/use-native-station'
-import validators from '../../../validators'
-import Icon from '../../components/Icon'
+import React, { ReactElement } from 'react'
+import { View } from 'react-native'
+import { NotVoted as Props } from 'use-station/src'
 
-const NotVoted = ({ title, list, button }: Props) => (
+import validators from '../../../validators'
+import Icon from 'components/Icon'
+import { Text } from 'components'
+
+const NotVoted = ({ title, list, button }: Props): ReactElement => (
   <>
     <Icon name="how_to_vote" />
     <Text>{title}:</Text>
@@ -17,7 +19,7 @@ const NotVoted = ({ title, list, button }: Props) => (
 
           {email && (
             <Text>
-              {'mailto:' + email}
+              {`mailto:${email}`}
               {button}
             </Text>
           )}

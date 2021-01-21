@@ -1,11 +1,20 @@
-import React from 'react'
-import { Text, View } from 'react-native'
-import { VoteUI, percent } from '@terra-money/use-native-station'
-import Number from '../../components/Number'
+import React, { ReactElement } from 'react'
+import { View } from 'react-native'
+
+import { VoteUI, percent } from 'use-station/src'
+import Number from 'components/Number'
+import { Text } from 'components'
+
 import VoteChart from '../governance/VoteChart'
 import VoteProgress from './VoteProgress'
 
-const Vote = ({ title, list, total, end, voted, progress }: VoteUI) => (
+const Vote = ({
+  list,
+  total,
+  end,
+  voted,
+  progress,
+}: VoteUI): ReactElement => (
   <>
     <VoteChart options={list} />
     <Text>{total.title}</Text>
@@ -13,7 +22,7 @@ const Vote = ({ title, list, total, end, voted, progress }: VoteUI) => (
     <Text>{end.title}</Text>
     <Text>{end.date}</Text>
 
-    {list.map(({ label, ratio, display, color }) => (
+    {list.map(({ label, ratio, display }) => (
       <View key={label}>
         <Text>{label}</Text>
         <Text>{percent(ratio)}</Text>

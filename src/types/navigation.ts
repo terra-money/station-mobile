@@ -1,38 +1,35 @@
+import { NavigatorScreenParams } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { ChartKey } from '@terra-money/use-native-station'
+import { Card } from 'use-station/src'
 
 /* Root */
 export type RootStackParams = {
+  OnBoarding: undefined
   Tabs: undefined
+  Dashboard: undefined
+  Wallet: undefined
+  Staking: undefined
+  ValidatorDetail: undefined
+  Swap: undefined
+  SwapConfirm: undefined
+
+  Setting: undefined
   AuthMenu: undefined
-  Select: undefined
-  New: undefined
-  Add: undefined
+  SelectWallet: undefined
+  NewWallet: undefined
+  RecoverWallet: undefined
+  ConnectView: undefined
+  SendTxView: undefined
+  Send: NavigatorScreenParams<SendStackParams>
+  Complete: { result: Card; confirmNavigateTo: keyof RootStackParams }
 }
 
 export const RootStack = createStackNavigator<RootStackParams>()
 
-/* Tabs */
-export type TabsStackParams = {
-  Dashboard: undefined
-  Market: undefined
+/* Send */
+export type SendStackParams = {
+  Send: { denomOrToken: string }
+  Confirm: undefined
 }
 
-export const TabsStack = createStackNavigator<TabsStackParams>()
-
-/* Dashboard */
-export type DashboardRouteParams = {
-  Dashboard: undefined
-  Chart: { chartKey: ChartKey }
-}
-
-/* Staking */
-export type StakingRouteParams = {
-  Validator: { address: string }
-}
-
-/* Staking */
-export type GovernanceRouteParams = {
-  Governance: undefined
-  Proposal: { id: string }
-}
+export const SendStack = createStackNavigator<SendStackParams>()

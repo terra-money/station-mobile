@@ -1,6 +1,5 @@
 import React, { FC, ReactNode } from 'react'
-import { ErrorBoundary as Component } from '@terra-money/use-native-station'
-import { useText } from '@terra-money/use-native-station'
+import { ErrorBoundary as Component, useText } from 'use-station/src'
 
 interface Props {
   fallback?: ReactNode
@@ -9,7 +8,7 @@ interface Props {
 const ErrorBoundary: FC<Props> = ({ fallback, children }) => {
   const { OOPS } = useText()
 
-  const handleError = (error: Error, errorInfo: object) => {
+  const handleError = (): void => {
     // TODO: report
   }
 

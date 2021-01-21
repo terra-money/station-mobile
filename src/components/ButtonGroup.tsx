@@ -1,13 +1,15 @@
-import React from 'react'
-import { TouchableOpacity, Text } from 'react-native'
-import { format } from '@terra-money/use-native-station'
+import React, { ReactElement } from 'react'
+import { TouchableOpacity } from 'react-native'
+import { format } from 'use-station/src'
+
+import { Text } from 'components'
 
 interface Props {
   buttons: { onClick: () => void; children: any }[]
   truncate?: boolean
 }
 
-const ButtonGroup = ({ buttons, truncate }: Props) => (
+const ButtonGroup = ({ buttons, truncate }: Props): ReactElement => (
   <>
     {buttons.map(({ onClick: onPress, children }, index) => (
       <TouchableOpacity onPress={onPress} key={index}>

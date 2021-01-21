@@ -1,15 +1,19 @@
-import React from 'react'
-import { Text } from 'react-native'
-import { Variation as VariationProps } from '@terra-money/use-native-station'
-import { gt, lt } from '@terra-money/use-native-station'
-import Number from '../../components/Number'
+import React, { ReactElement } from 'react'
+
+import { Variation as VariationProps, gt, lt } from 'use-station/src'
+
+import { Text } from 'components'
+import Number from 'components/Number'
 
 interface Props {
   variation: VariationProps
   showPercent?: boolean
 }
 
-const Variation = ({ variation, showPercent }: Props) => {
+const Variation = ({
+  variation,
+  showPercent,
+}: Props): ReactElement => {
   const { amount, value, percent } = variation
   const inc = gt(amount, 0)
   const dec = lt(amount, 0)

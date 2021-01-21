@@ -1,17 +1,20 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import { useRate, RateItem, RateUI } from '@terra-money/use-native-station'
-import ErrorComponent from '../../components/ErrorComponent'
-import Loading from '../../components/Loading'
-import Card from '../../components/Card'
-import Picker from '../../components/Picker'
-import Info from '../../components/Info'
+import React, { ReactElement } from 'react'
+import { View } from 'react-native'
+import { useRate, RateItem, RateUI } from 'use-station/src'
+import ErrorComponent from 'components/ErrorComponent'
+import Loading from 'components/Loading'
+import Card from 'components/Card'
+import Picker from 'components/Picker'
+import Info from 'components/Info'
+import { Text } from 'components'
 import Variation from './Variation'
 
-const RateList = ({ denoms }: { denoms: string[] }) => {
-  const { error, loading, title, message, filter, ui } = useRate(denoms)
+const RateList = ({ denoms }: { denoms: string[] }): ReactElement => {
+  const { error, loading, title, message, filter, ui } = useRate(
+    denoms
+  )
 
-  const renderFilter = () => {
+  const renderFilter = (): ReactElement => {
     const { value, set, options } = filter.denom
     return (
       <Picker
@@ -25,9 +28,15 @@ const RateList = ({ denoms }: { denoms: string[] }) => {
     )
   }
 
-  const renderRow = ({ display, variation }: RateItem, index: number) => (
+  const renderRow = (
+    { display, variation }: RateItem,
+    index: number
+  ): ReactElement => (
     <View
-      style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+      }}
       key={index}
     >
       <Text>
@@ -37,7 +46,7 @@ const RateList = ({ denoms }: { denoms: string[] }) => {
     </View>
   )
 
-  const render = ({ message, list }: RateUI) =>
+  const render = ({ message, list }: RateUI): ReactElement =>
     message ? (
       <Info>{message}</Info>
     ) : (

@@ -1,10 +1,12 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import { DepositUI } from '@terra-money/use-native-station'
-import Orb from '../../components/Orb'
-import Displays from '../../components/Displays'
+import React, { ReactElement } from 'react'
+import { View } from 'react-native'
+import { DepositUI } from 'use-station/src'
 
-const Deposit = ({ title, contents, ...rest }: DepositUI) => {
+import Orb from 'components/Orb'
+import Displays from 'components/Displays'
+import { Text } from 'components'
+
+const Deposit = ({ contents, ...rest }: DepositUI): ReactElement => {
   const { ratio, completed, percent, total } = rest
 
   return (

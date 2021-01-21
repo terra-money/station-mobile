@@ -1,13 +1,29 @@
-import React, { ReactNode } from 'react'
-import useKeys from './useKeys'
+import React, {
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useState,
+} from 'react'
+import { getWallets } from '../utils/wallet'
 
 interface Props {
-  render: (params: { names: string[]; keys: Key[] }) => ReactNode
+  render: (wallets: LocalWallet[]) => ReactNode
 }
 
-const WithKeys = ({ render }: Props) => {
-  const { names, keys } = useKeys()
-  return <>{!!(names && keys) ? render({ names, keys }) : null}</>
+const WithKeys = ({ render }: Props): ReactElement => {
+  const [wallets, setWallets] = useState<LocalWallet[]>()
+
+  useEffect(() => {
+    const fn = async (): Promise<void> => {
+      const wallets = await getWallets()
+
+      setWallets(wallets)
+    }
+
+    fn()
+  }, [])
+
+  return <>{!wallets ? null : render(wallets)}</>
 }
 
 export default WithKeys

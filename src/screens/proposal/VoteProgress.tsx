@@ -1,21 +1,24 @@
-import React, { FC } from 'react'
-import { Text, View } from 'react-native'
-import { VoteProgressBar } from '@terra-money/use-native-station'
+import React, { FC, ReactElement } from 'react'
+import { View } from 'react-native'
+import { VoteProgressBar } from 'use-station/src'
 
-const Flag: FC<{ left: string }> = ({ left, children }) => {
-  return <Text>{children}</Text>
-}
+import { Text } from 'components'
 
-const VoteProgress = ({ flag, list }: VoteProgressBar) => {
-  return (
-    <>
-      {flag && <Flag left={flag.percent}>{flag.text}</Flag>}
+const Flag: FC<{ left: string }> = ({ children }) => (
+  <Text>{children}</Text>
+)
 
-      {list.map(({ percent, color }, index) => {
-        return <View key={index} />
-      })}
-    </>
-  )
-}
+const VoteProgress = ({
+  flag,
+  list,
+}: VoteProgressBar): ReactElement => (
+  <>
+    {flag && <Flag left={flag.percent}>{flag.text}</Flag>}
+
+    {list.map(({}, index) => (
+      <View key={index} />
+    ))}
+  </>
+)
 
 export default VoteProgress

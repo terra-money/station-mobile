@@ -1,15 +1,20 @@
-import React from 'react'
-import { TouchableOpacity, Text } from 'react-native'
-import { DisplayCoin } from '@terra-money/use-native-station'
+import React, { ReactElement } from 'react'
+import { TouchableOpacity, TouchableOpacityProps } from 'react-native'
+import { DisplayCoin } from 'use-station/src'
+import { Text } from 'components'
 import Number from './Number'
 
 interface Props {
-  attrs: {}
+  attrs: TouchableOpacityProps
   label: string
   display: DisplayCoin
 }
 
-const MaxButton = ({ attrs, label, display }: Props) => (
+const MaxButton = ({
+  attrs,
+  label,
+  display,
+}: Props): ReactElement => (
   <>
     <Text>{label}: </Text>
     <TouchableOpacity {...attrs}>

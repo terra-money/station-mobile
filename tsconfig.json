@@ -8,6 +8,18 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "strict": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "baseUrl": "./src",
+    "paths": {
+      "components": ["./components"],
+      "types/*": ["./types/*"],
+      "styles/*": ["./styles/*"],
+      "utils/*": ["./utils/*"],
+      "assets/*": ["./assets/*"],
+      "hooks/*": ["./hooks/*"],
+      "stores/*": ["./stores/*"],
+      "nativeModules/*": ["./nativeModules/*"],
+      "use-station/*": ["./use-station/*"]
+    }
   }
 }
