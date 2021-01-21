@@ -22,7 +22,11 @@ const FormInput = (props: FormInputProps): ReactElement => {
 
   return (
     <>
-      <Input style={inputContainerStyle} {...rest} />
+      <Input
+        style={inputContainerStyle}
+        autoCorrect={false}
+        {...rest}
+      />
       {_.some(errorMessage) && (
         <View style={styles.errorMessageBox}>
           <Icon name={'info'} color={color.red} size={12} />
