@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import SubPageHeader from '../components/SubPageHeader'
 
-import Text from 'components/Text'
+import { Text } from 'components'
 
 interface SettingItemProps {
   k: string // key

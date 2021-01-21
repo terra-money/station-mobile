@@ -20,12 +20,10 @@ import {
 } from 'use-station/src'
 
 import ErrorComponent from 'components/ErrorComponent'
-import Icon from 'components/Icon'
-import Text from 'components/Text'
 import HistoryItem from 'components/history/HistoryItem'
-import Button from 'components/Button'
 import WithAuth from 'components/layout/WithAuth'
-import LoadingIcon from 'components/LoadingIcon'
+import { Text, Icon, LoadingIcon, Button } from 'components'
+
 import color from 'styles/color'
 
 const RenderList = ({

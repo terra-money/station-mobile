@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import Clipboard from '@react-native-community/clipboard'
-import Icon from 'components/Icon'
-import Text from 'components/Text'
+
+import { Text, Icon } from 'components'
 
 import color from 'styles/color'
 

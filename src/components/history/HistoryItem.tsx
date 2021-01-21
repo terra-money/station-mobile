@@ -2,10 +2,8 @@ import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 
-import Icon from 'components/Icon'
-import Text from 'components/Text'
+import { Text, Icon, ExtLink } from 'components'
 import { MessageUI, TxUI } from 'use-station/src'
-import ExtLink from 'components/ExtLink'
 
 const Message = ({
   messages,

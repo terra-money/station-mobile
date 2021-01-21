@@ -7,10 +7,10 @@ import {
 } from 'react-native'
 
 import { Options } from 'use-station/src'
-import Icon from 'components/Icon'
+
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { useApp } from '../hooks'
-import Text from 'components/Text'
+import { Text, Icon } from 'components'
 
 interface Props {
   value?: string

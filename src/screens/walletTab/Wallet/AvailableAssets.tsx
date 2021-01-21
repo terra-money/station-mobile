@@ -9,9 +9,8 @@ import {
   AvailableUI,
   VestingUI,
 } from 'use-station/src'
-import Loading from 'components/Loading'
 import AvailableItem from './AvailableItem'
-import Text from 'components/Text'
+import { Text, Loading } from 'components'
 import { useApp } from 'hooks'
 import {
   NavigationProp,

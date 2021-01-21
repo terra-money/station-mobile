@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import Icon from 'components/Icon'
 import Body from 'components/layout/Body'
-import Text from 'components/Text'
+import { Text } from 'components'
 import Button from 'components/Button'
 import color from 'styles/color'
 

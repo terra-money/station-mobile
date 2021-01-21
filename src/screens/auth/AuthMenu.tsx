@@ -4,13 +4,10 @@ import { View, StyleSheet, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useAuth } from 'use-station/src'
 
-import Icon from 'components/Icon'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 
-import Text from 'components/Text'
-import Button from 'components/Button'
-import Dot from 'components/Dot'
+import { Text, Icon, Button, Dot } from 'components'
 
 import { settings, clearKeys } from 'utils/storage'
 import { getWallets } from 'utils/wallet'

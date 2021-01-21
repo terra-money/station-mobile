@@ -1,11 +1,13 @@
 import React, { ReactElement } from 'react'
-import Text from 'components/Text'
+
 import {
   Linking,
   StyleProp,
   TextStyle,
   TouchableOpacity,
 } from 'react-native'
+
+import { Text } from 'components'
 
 const ExtLink = ({
   url,

@@ -1,13 +1,17 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import _ from 'lodash'
+import { useRecoilValue } from 'recoil'
 
 import { AvailableItem, useConfig } from 'use-station/src'
-import Icon from 'components/Icon'
-import AssetIcon, { AssetIconNameType } from 'components/AssetIcon'
-import Number from 'components/Number'
-import Text from 'components/Text'
-import { useRecoilValue } from 'recoil'
+
+import {
+  Text,
+  Icon,
+  Number,
+  AssetIcon,
+  AssetIconNameType,
+} from 'components'
 import SwapRateStore from 'stores/SwapRateStore'
 import color from 'styles/color'
 

@@ -4,7 +4,7 @@ import { NotVoted as Props } from 'use-station/src'
 
 import validators from '../../../validators'
 import Icon from 'components/Icon'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 const NotVoted = ({ title, list, button }: Props): ReactElement => (
   <>

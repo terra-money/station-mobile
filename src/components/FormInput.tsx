@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, TextInputProps, View } from 'react-native'
 import _ from 'lodash'
-import Icon from 'components/Icon'
 
-import Text from 'components/Text'
+import { Text, Icon } from 'components'
 import Input from './Input'
 import color from 'styles/color'
 

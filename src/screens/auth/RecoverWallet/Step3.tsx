@@ -12,7 +12,7 @@ import SubHeader from 'components/layout/SubHeader'
 import Button from 'components/Button'
 import NumberStep from 'components/NumberStep'
 import Badge from 'components/Badge'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 import RecoverWalletStore from 'stores/RecoverWalletStore'
 import { useBioAuth } from 'hooks/useBioAuth'

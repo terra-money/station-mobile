@@ -4,8 +4,8 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { StackNavigationOptions } from '@react-navigation/stack'
 
 import { navigationHeaderOptions as defaultNHO } from 'components/layout/Header'
-import Text from 'components/Text'
-import Icon from 'components/Icon'
+import { Text, Icon } from 'components'
+
 import color from 'styles/color'
 import { useAuth } from 'use-station/src'
 import { useNavigation } from '@react-navigation/native'

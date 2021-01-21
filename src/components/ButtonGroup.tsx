@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react'
 import { TouchableOpacity } from 'react-native'
 import { format } from 'use-station/src'
-import Text from 'components/Text'
+
+import { Text } from 'components'
 
 interface Props {
   buttons: { onClick: () => void; children: any }[]

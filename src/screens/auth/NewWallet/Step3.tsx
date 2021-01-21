@@ -14,17 +14,19 @@ import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 
-import Text from 'components/Text'
-import Button from 'components/Button'
-import Input from 'components/Input'
+import {
+  FormLabel,
+  NumberStep,
+  Text,
+  Button,
+  Input,
+} from 'components'
 
 import color from 'styles/color'
 import NewWalletStore from 'stores/NewWalletStore'
 import { useBioAuth } from 'hooks/useBioAuth'
 import { isSupportedBiometricAuthentication } from 'utils/bio'
 import { createWallet } from 'utils/wallet'
-import NumberStep from 'components/NumberStep'
-import FormLabel from 'components/FormLabel'
 
 const Screen = (): ReactElement => {
   const { dispatch } = useNavigation()

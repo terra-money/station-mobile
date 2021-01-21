@@ -3,7 +3,7 @@ import { useRoute, RouteProp } from '@react-navigation/native'
 import { useAuth, useValidator } from 'use-station/src'
 
 import { navigationHeaderOptions } from 'components/layout/Header'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 import { StakingRouteParams } from '../../../types/navigation'
 

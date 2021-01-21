@@ -2,11 +2,12 @@ import React, { ReactElement, ReactNode } from 'react'
 import { View, TouchableOpacity, ViewStyle } from 'react-native'
 import _ from 'lodash'
 import { API } from 'use-station/src'
-import Icon from 'components/Icon'
+
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { AreaChart, Path } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
-import Text from 'components/Text'
+
+import { Text, Icon } from 'components'
 
 interface Props extends Partial<API<any>> {
   style?: ViewStyle

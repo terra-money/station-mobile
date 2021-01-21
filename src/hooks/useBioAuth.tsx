@@ -3,7 +3,7 @@ import { View, Image, StyleSheet } from 'react-native'
 
 import Button from 'components/Button'
 import Body from 'components/layout/Body'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 import { useApp } from './useApp'
 

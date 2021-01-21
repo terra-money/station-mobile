@@ -1,12 +1,15 @@
 import React, { ReactElement } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Field, DisplayCoin } from 'use-station/src'
 import _ from 'lodash'
 
-import Select, { OptionProps } from 'components/Select'
-import DefaultFormInput from 'components/FormInput'
-import Text from 'components/Text'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import {
+  Text,
+  Select,
+  SelectOptionProps,
+  FormInput as DefaultFormInput,
+} from 'components'
+
 import Number from './Number'
 import FormLabel from './FormLabel'
 
@@ -71,12 +74,15 @@ const FormInput = ({ field }: { field: Field }): ReactElement => {
 
 const FormSelect = ({ field }: { field: Field }): ReactElement => {
   const { attrs, setValue } = field
-  const options: OptionProps[] = _.map(field.options, (option) => {
-    return {
-      label: option.children,
-      value: option.value,
+  const options: SelectOptionProps[] = _.map(
+    field.options,
+    (option) => {
+      return {
+        label: option.children,
+        value: option.value,
+      }
     }
-  })
+  )
   return (
     <Select
       selectedValue={attrs.value}

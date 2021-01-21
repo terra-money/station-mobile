@@ -11,7 +11,7 @@
     "noUnusedLocals": true,
     "baseUrl": "./src",
     "paths": {
-      "components/*": ["./components/*"],
+      "components": ["./components"],
       "types/*": ["./types/*"],
       "styles/*": ["./styles/*"],
       "utils/*": ["./utils/*"],

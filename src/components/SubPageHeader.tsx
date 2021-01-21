@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Icon from 'components/Icon'
+import { Icon } from 'components'
 
 interface HeaderProps {
   title?: string

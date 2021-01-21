@@ -7,8 +7,7 @@ import {
   ViewStyle,
 } from 'react-native'
 import Clipboard from '@react-native-community/clipboard'
-import Icon from 'components/Icon'
-import Text from 'components/Text'
+import { Icon, Text } from 'components'
 
 import color from 'styles/color'
 

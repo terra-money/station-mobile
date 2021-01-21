@@ -3,10 +3,8 @@ import { View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 
-import Icon from 'components/Icon'
-import Button from 'components/Button'
-import Text from 'components/Text'
 import Body from 'components/layout/Body'
+import { Text, Icon, Button } from 'components'
 import { RootStackParams } from 'types'
 import color from 'styles/color'
 

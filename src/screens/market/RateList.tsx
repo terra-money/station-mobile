@@ -6,7 +6,7 @@ import Loading from 'components/Loading'
 import Card from 'components/Card'
 import Picker from 'components/Picker'
 import Info from 'components/Info'
-import Text from 'components/Text'
+import { Text } from 'components'
 import Variation from './Variation'
 
 const RateList = ({ denoms }: { denoms: string[] }): ReactElement => {

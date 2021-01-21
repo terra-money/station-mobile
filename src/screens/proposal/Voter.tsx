@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { VoterUI, format } from 'use-station/src'
 import ExtLink from 'components/ExtLink'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 interface Props {
   voter: VoterUI

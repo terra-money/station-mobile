@@ -11,7 +11,7 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 
 import ProposalItem from './ProposalItem'
 import Icon from 'components/Icon'
-import Text from 'components/Text'
+import { Text } from 'components'
 import Info from 'components/Info'
 import Page from 'components/Page'
 import dev from 'utils/dev'

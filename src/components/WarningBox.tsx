@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
-import Icon from 'components/Icon'
 
-import Text from 'components/Text'
+import { Text, Icon } from 'components'
 import color from 'styles/color'
 
 const WarningBox = ({

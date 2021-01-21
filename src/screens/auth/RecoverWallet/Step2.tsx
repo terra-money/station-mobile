@@ -8,7 +8,7 @@ import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 import Button from 'components/Button'
-import Text from 'components/Text'
+import { Text } from 'components'
 import PasteButton from 'components/PasteButton'
 import Input from 'components/Input'
 

@@ -3,10 +3,8 @@ import { StyleSheet, View } from 'react-native'
 
 import { useNavigation } from '@react-navigation/native'
 
-import Icon from 'components/Icon'
 import Body from 'components/layout/Body'
-import Text from 'components/Text'
-import Button from 'components/Button'
+import { Text, Icon, Button } from 'components'
 import color from 'styles/color'
 
 const Screen = (): ReactElement => {

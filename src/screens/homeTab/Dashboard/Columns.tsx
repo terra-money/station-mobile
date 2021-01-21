@@ -12,7 +12,7 @@ import {
 import EStyleSheet from 'react-native-extended-stylesheet'
 import Swiper from 'react-native-swiper'
 import Card from 'components/Card'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 import DisplaySelector from './DisplaySelector'
 

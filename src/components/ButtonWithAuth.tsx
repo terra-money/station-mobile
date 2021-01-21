@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
 
 import { useAuth, useText } from 'use-station/src'
-import Text from 'components/Text'
+
+import { Text } from 'components'
 
 /* Show tooltip if user can't use this button */
 const ButtonWithAuth: FC<{ onPress: () => void }> = ({

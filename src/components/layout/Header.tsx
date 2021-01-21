@@ -6,7 +6,7 @@ import {
   ViewStyle,
   TouchableOpacity,
 } from 'react-native'
-import Icon from 'components/Icon'
+import { Icon } from 'components'
 
 import color from 'styles/color'
 import {
