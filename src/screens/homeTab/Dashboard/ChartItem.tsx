@@ -1,25 +1,32 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { View } from 'react-native'
+import _ from 'lodash'
 import { ChartKey, useChart } from 'use-station/src'
 
 import EStyleSheet from 'react-native-extended-stylesheet'
-import { AreaChart, Path } from 'react-native-svg-charts'
+import { AreaChart } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 
 import ErrorBoundary from 'components/ErrorBoundary'
 import ErrorComponent from 'components/ErrorComponent'
-import { Text, Number } from 'components'
+import { Text, Number, LoadingIcon } from 'components'
 
 interface Props {
   chartKey: ChartKey
 }
 
 const Component = ({ chartKey }: Props): ReactElement => {
-  const { value, title } = useChart(chartKey)
-  const data = [3, 3, 5, 4, 6, 7, 8]
-  const Line = (): ReactElement => (
-    <Path key="line " stroke="rgba(32, 67, 181,.45)" fill="none" />
-  )
+  const { value, title, chart, filter } = useChart(chartKey)
+  let displayData: number[] = []
+  if (chart?.data) {
+    const { data } = chart
+    displayData = _.map(data, (item) => item.y)
+  }
+
+  useEffect(() => {
+    const { duration } = filter
+    duration.set('7')
+  }, [])
 
   return (
     <View style={styles.chart_item}>
@@ -33,15 +40,17 @@ const Component = ({ chartKey }: Props): ReactElement => {
         ) : (
           <Number {...value} integer />
         )}
-        <AreaChart
-          style={{ width: 60, height: 30, marginBottom: 5 }}
-          data={data}
-          contentInset={{ top: 0, bottom: 10 }}
-          curve={shape.curveNatural}
-          svg={{ fill: 'rgba(32, 67, 181, 0.15)' }}
-        >
-          <Line />
-        </AreaChart>
+        {chart?.data ? (
+          <AreaChart
+            style={{ width: 60, height: 40, marginBottom: 5 }}
+            data={displayData}
+            contentInset={{ top: 0, bottom: 10 }}
+            curve={shape.curveNatural}
+            svg={{ fill: 'rgba(32, 67, 181, 0.15)' }}
+          />
+        ) : (
+          <LoadingIcon />
+        )}
       </View>
     </View>
   )

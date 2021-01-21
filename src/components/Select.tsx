@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react'
+import { TextStyle, ViewStyle } from 'react-native'
 import PickerSelect, { PickerStyle } from 'react-native-picker-select'
 
 import color from 'styles/color'
@@ -15,6 +16,8 @@ export type SelectProps = {
     itemValue: string | number,
     itemIndex: number
   ) => void
+  containerStyle: ViewStyle
+  textStyle: TextStyle
 } & PickerStyle
 
 const Select = (props: SelectProps): ReactElement => {
@@ -31,7 +34,13 @@ const Select = (props: SelectProps): ReactElement => {
           backgroundColor: color.white,
           justifyContent: 'center',
           paddingLeft: 5,
+          ...props.containerStyle,
         },
+        inputAndroid: {
+          fontFamily: 'Gotham-Medium',
+          ...props.textStyle,
+        },
+        inputIOS: { fontFamily: 'Gotham-Medium', ...props.textStyle },
       }}
       placeholder={{}}
       {...props}
