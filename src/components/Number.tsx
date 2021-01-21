@@ -13,7 +13,6 @@ interface Props extends Partial<DisplayCoin> {
   decimalFontStyle?: StyleProp<TextStyle>
   estimated?: boolean
   integer?: boolean
-  dark?: boolean
 }
 
 const Number: FC<Props> = ({ value, unit, children, ...config }) => {
@@ -35,7 +34,7 @@ const Number: FC<Props> = ({ value, unit, children, ...config }) => {
       <Text
         style={[styles.decimal, decimalFontStyle || numberFontStyle]}
       >
-        {!hideDecimal && `.${decimal}`}
+        {!hideDecimal && decimal && `.${decimal}`}
         {unit && ` ${unit}`}
       </Text>
     </Text>
