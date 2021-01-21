@@ -12,6 +12,7 @@ export {
   SelectOptionProps,
 } from './Select'
 export { default as CopyButton } from './CopyButton'
+export { default as ErrorComponent } from './ErrorComponent'
 export { default as Loading } from './Loading'
 export { default as LoadingIcon } from './LoadingIcon'
 export { default as WarningBox } from './WarningBox'
