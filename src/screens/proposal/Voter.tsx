@@ -15,9 +15,10 @@ const Voter = ({ voter, noTruncate }: Props): ReactElement => {
   return 'moniker' in voter ? (
     <Text>{voter.moniker}</Text>
   ) : (
-    <ExtLink href={voter.link}>
-      {noTruncate ? address : format.truncate(address, [7, 6])}
-    </ExtLink>
+    <ExtLink
+      url={voter.link}
+      title={noTruncate ? address : format.truncate(address, [7, 6])}
+    />
   )
 }
 

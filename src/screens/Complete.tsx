@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useNavigation } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 
+import Icon from 'components/Icon'
 import Button from 'components/Button'
 import Text from 'components/Text'
 import Body from 'components/layout/Body'
@@ -24,7 +24,7 @@ const Complete = ({ route }: Props): ReactElement => {
           alignItems: 'center',
         }}
       >
-        <MaterialIcons
+        <Icon
           size={60}
           color={color.sapphire}
           name={'check-circle-outline'}

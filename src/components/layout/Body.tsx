@@ -1,11 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react'
-import {
-  View,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-  ScrollView,
-} from 'react-native'
+import { View, StyleProp, ViewStyle, ScrollView } from 'react-native'
 import color from 'styles/color'
 
 export type BodyProps = {
@@ -18,7 +12,9 @@ export type BodyProps = {
 const Body = (props: BodyProps): ReactElement => {
   const { theme } = props
 
-  const containerStyle: StyleProp<ViewStyle> = {}
+  const containerStyle: StyleProp<ViewStyle> = {
+    paddingHorizontal: 20,
+  }
 
   switch (theme) {
     case 'blue':
@@ -33,33 +29,27 @@ const Body = (props: BodyProps): ReactElement => {
       break
   }
 
-  const Component = props.scrollable ? ScrollView : View
-  const ComponentStyle = props.scrollable
-    ? {
-        contentContainerStyle: [
-          styles.container,
-          containerStyle,
-          props.containerStyle,
-        ],
-      }
-    : {
-        style: [
-          styles.container,
-          containerStyle,
-          props.containerStyle,
-        ],
-      }
-
   return (
-    <Component {...{ ...ComponentStyle }}>{props.children}</Component>
+    <>
+      {props.scrollable ? (
+        <ScrollView
+          contentContainerStyle={[
+            containerStyle,
+            props.containerStyle,
+          ]}
+          showsVerticalScrollIndicator={false}
+        >
+          {props.children}
+        </ScrollView>
+      ) : (
+        <View
+          style={[containerStyle, { flex: 1 }, props.containerStyle]}
+        >
+          {props.children}
+        </View>
+      )}
+    </>
   )
 }
 
 export default Body
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    flex: 1,
-  },
-})

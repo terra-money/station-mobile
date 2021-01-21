@@ -9,9 +9,10 @@ const Informations = (v: ValidatorUI): ReactElement => {
   const { maxRate, maxChangeRate, delegationReturn, updateTime } = v
 
   const link = (
-    <ExtLink href={accountAddress.link || ''}>
-      {accountAddress.address}
-    </ExtLink>
+    <ExtLink
+      url={accountAddress.link || ''}
+      title={accountAddress.address}
+    />
   )
 
   const list = [

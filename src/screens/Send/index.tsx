@@ -69,14 +69,17 @@ const RenderForm = ({
       <SubHeader theme={'blue'} title={form.title} />
       <Body
         theme={'sky'}
-        scrollable
         containerStyle={{
           flex: 1,
-          marginBottom: -40,
+          marginBottom: 40,
+          justifyContent: 'space-between',
         }}
       >
-        <UseStationForm form={form} />
-        {ui && <RenderUi ui={ui} />}
+        <View>
+          <UseStationForm form={form} />
+          {ui && <RenderUi ui={ui} />}
+        </View>
+
         <Button
           theme={'blue'}
           disabled={form.disabled}

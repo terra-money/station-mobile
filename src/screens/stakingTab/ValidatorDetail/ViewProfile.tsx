@@ -16,9 +16,10 @@ const ViewProfile = ({
   return (
     <>
       {invalid === false && (
-        <ExtLink href={link}>
-          View profile on Terra Validators
-        </ExtLink>
+        <ExtLink
+          url={link || ''}
+          title={'View profile on Terra Validators'}
+        />
       )}
     </>
   )
