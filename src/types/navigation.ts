@@ -28,7 +28,7 @@ export const RootStack = createStackNavigator<RootStackParams>()
 
 /* Send */
 export type SendStackParams = {
-  Send: { denom: string }
+  Send: { denomOrToken: string }
   Confirm: undefined
 }
 

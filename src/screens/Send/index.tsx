@@ -98,7 +98,7 @@ const Render = ({
   user,
   route,
 }: { user: User } & Props): ReactElement => {
-  const denom = route.params.denom
+  const denom = route.params.denomOrToken
   const setConfirm = useSetRecoilState(SendStore.confirm)
 
   const { loading, form, ui, submitted, confirm } = useSend(

@@ -2,6 +2,10 @@ import React, { ReactElement } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import _ from 'lodash'
 import { useRecoilValue } from 'recoil'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 
 import { AvailableItem, useConfig } from 'use-station/src'
 
@@ -14,14 +18,16 @@ import {
 } from 'components'
 import SwapRateStore from 'stores/SwapRateStore'
 import color from 'styles/color'
+import { RootStackParams } from 'types'
 
 const AssetItem = ({
   item,
-  openCoinMenu,
 }: {
   item: AvailableItem
-  openCoinMenu: ({ denom }: { denom: string }) => void
 }): ReactElement => {
+  const { navigate } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
   const { currency } = useConfig()
   const { icon, display } = item
   const swapValue = useRecoilValue(
@@ -41,34 +47,40 @@ const AssetItem = ({
         </View>
         <Text>{display.unit}</Text>
       </View>
+      <TouchableOpacity
+        onPress={(): void => {
+          navigate('Send', {
+            screen: 'Send',
+            params: {
+              denomOrToken: item.denom || item.token || '',
+            },
+          })
+        }}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ alignItems: 'flex-end' }}>
+            <Number
+              numberFontStyle={{ fontSize: 15 }}
+              decimalFontStyle={{ fontSize: 11 }}
+            >
+              {display.value}
+            </Number>
+            {_.some(swapValue) && (
+              <Text style={{ opacity: 0.5, fontSize: 10 }}>
+                {swapValue} {currency.current?.value}
+              </Text>
+            )}
+          </View>
 
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <View style={{ alignItems: 'flex-end' }}>
-          <Number
-            numberFontStyle={{ fontSize: 15 }}
-            decimalFontStyle={{ fontSize: 11 }}
-          >
-            {display.value}
-          </Number>
-          {_.some(swapValue) && (
-            <Text style={{ opacity: 0.5, fontSize: 10 }}>
-              {swapValue} {currency.current?.value}
-            </Text>
-          )}
-        </View>
-        <TouchableOpacity
-          onPress={(): void => {
-            openCoinMenu({ denom: item.denom || item.token || '' })
-          }}
-        >
           <View style={styles.coinMenu}>
             <Icon
+              size={16}
               style={{ color: color.sapphire }}
-              name={'arrow-right-alt'}
+              name={'chevron-right'}
             />
           </View>
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -99,9 +111,6 @@ const styles = StyleSheet.create({
   coinMenu: {
     width: 14,
     height: 14,
-    borderWidth: 1,
-    borderRadius: 20,
-    borderColor: color.sapphire,
     backgroundColor: color.white,
     justifyContent: 'center',
     alignItems: 'center',
