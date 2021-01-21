@@ -7,15 +7,17 @@ import { useNavigation } from '@react-navigation/native'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import Button from 'components/Button'
-import Text from 'components/Text'
-import CopyButton from 'components/CopyButton'
-import WarningBox from 'components/WarningBox'
+import {
+  Text,
+  Button,
+  CopyButton,
+  WarningBox,
+  NumberStep,
+} from 'components'
 
 import color from 'styles/color'
 import { modules } from 'utils'
 import NewWalletStore from 'stores/NewWalletStore'
-import NumberStep from 'components/NumberStep'
 
 const Screen = (): ReactElement => {
   const [seed, setSeed] = useRecoilState(NewWalletStore.seed)

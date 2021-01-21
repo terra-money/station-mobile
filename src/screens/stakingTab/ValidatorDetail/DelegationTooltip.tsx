@@ -4,7 +4,7 @@ import { MyActionsTable } from 'use-station/src'
 
 import Number from 'components/Number'
 import Table from 'components/Table'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 const DelegationTooltip = ({
   headings,

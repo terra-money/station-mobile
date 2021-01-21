@@ -1,10 +1,11 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+
 import { StackNavigationOptions } from '@react-navigation/stack'
 
 import { navigationHeaderOptions as defaultNHO } from 'components/layout/Header'
-import Text from 'components/Text'
+import { Text, Icon } from 'components'
+
 import color from 'styles/color'
 import { useAuth } from 'use-station/src'
 import { useNavigation } from '@react-navigation/native'
@@ -26,7 +27,7 @@ const HeaderRight = (): ReactElement => {
     <View style={styles.headerRight}>
       {user ? (
         <TouchableOpacity onPress={(): void => navigate('AuthMenu')}>
-          <MaterialIcons
+          <Icon
             name="account-balance-wallet"
             size={28}
             color="#2043b5"
@@ -38,7 +39,7 @@ const HeaderRight = (): ReactElement => {
             onPress={(): void => navigate('AuthMenu')}
           >
             <View style={styles.connectButton}>
-              <MaterialIcons
+              <Icon
                 name="account-balance-wallet"
                 size={14}
                 color="#2043b5"
@@ -48,11 +49,7 @@ const HeaderRight = (): ReactElement => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={(): void => navigate('Setting')}>
-            <MaterialIcons
-              name="settings"
-              size={24}
-              color="#2043b5"
-            />
+            <Icon name="settings" size={24} color="#2043b5" />
           </TouchableOpacity>
         </View>
       )}

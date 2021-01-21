@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 import _ from 'lodash'
 import Icon from './Icon'
 
-import Text from 'components/Text'
+import { Text } from 'components'
 type Props = { tooltip?: boolean; children: string }
 const InvalidFeedback = ({ children }: Props): ReactElement => (
   <>

@@ -7,13 +7,10 @@ import { useNavigation } from '@react-navigation/native'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import Button from 'components/Button'
-import FormInput from 'components/FormInput'
+import { Button, FormInput, NumberStep, FormLabel } from 'components'
 
 import { useValueValidator } from 'hooks/useValueValidator'
 import NewWalletStore from 'stores/NewWalletStore'
-import NumberStep from 'components/NumberStep'
-import FormLabel from 'components/FormLabel'
 
 const Screen = (): ReactElement => {
   const [name, setName] = useRecoilState(NewWalletStore.name)

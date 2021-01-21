@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { Card as CardProps } from 'use-station/src'
 import Icon from './Icon'
 import Card from './Card'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 interface Props extends CardProps {
   icon?: string | ReactNode

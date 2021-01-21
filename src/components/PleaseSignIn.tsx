@@ -5,7 +5,7 @@ import { useInfo, Trans } from 'use-station/src'
 // import Info from './Info'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import Card from './Card'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 const PleaseSignIn = (): ReactElement => {
   const { navigate } = useNavigation()

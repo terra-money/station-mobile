@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { User } from 'use-station/src'
-import CopyButton from 'components/CopyButton'
+import { CopyButton } from 'components'
 import color from 'styles/color'
 
 const WalletAddress = ({ user }: { user: User }): ReactElement => {

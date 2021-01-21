@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 
 import color from 'styles/color'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 const NumberStep = ({
   stepSize,

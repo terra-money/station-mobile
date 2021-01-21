@@ -7,7 +7,7 @@ import {
   TextStyle,
 } from 'react-native'
 
-import Text from 'components/Text'
+import { Text } from 'components'
 import color from 'styles/color'
 
 type HeaderTheme = 'blue' | 'white'

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { VoterUI, format } from 'use-station/src'
 import ExtLink from 'components/ExtLink'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 interface Props {
   voter: VoterUI
@@ -15,9 +15,10 @@ const Voter = ({ voter, noTruncate }: Props): ReactElement => {
   return 'moniker' in voter ? (
     <Text>{voter.moniker}</Text>
   ) : (
-    <ExtLink href={voter.link}>
-      {noTruncate ? address : format.truncate(address, [7, 6])}
-    </ExtLink>
+    <ExtLink
+      url={voter.link}
+      title={noTruncate ? address : format.truncate(address, [7, 6])}
+    />
   )
 }
 

@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import Text from 'components/Text'
+import { Text } from 'components'
 
 const Label = ({ text }: { text: string }): ReactElement => {
   return (

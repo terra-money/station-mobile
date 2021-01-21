@@ -8,8 +8,7 @@ import * as shape from 'd3-shape'
 
 import ErrorBoundary from 'components/ErrorBoundary'
 import ErrorComponent from 'components/ErrorComponent'
-import Number from 'components/Number'
-import Text from 'components/Text'
+import { Text, Number } from 'components'
 
 interface Props {
   chartKey: ChartKey

@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { ActivityIndicator, ScrollView, View } from 'react-native'
 import { API } from 'use-station/src'
-import Text from 'components/Text'
+import { Text } from 'components'
 import SubPageHeader from '../components/SubPageHeader'
 
 interface Props extends Partial<API<any>> {

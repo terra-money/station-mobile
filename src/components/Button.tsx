@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 
 import color from 'styles/color'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 export type ButtonProps = {
   onPress?: (event: GestureResponderEvent) => void

@@ -3,14 +3,11 @@ import _ from 'lodash'
 import { View, StyleSheet, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useAuth } from 'use-station/src'
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 
-import Text from 'components/Text'
-import Button from 'components/Button'
-import Dot from 'components/Dot'
+import { Text, Icon, Button, Dot } from 'components'
 
 import { settings, clearKeys } from 'utils/storage'
 import { getWallets } from 'utils/wallet'
@@ -49,7 +46,7 @@ const Screen = (): ReactElement => {
                 : 'Create a new wallet or recover an existing wallet using a seed phrase'}
             </Text>
             <View style={styles.imageBox}>
-              <MaterialIcon
+              <Icon
                 name={'account-balance-wallet'}
                 size={45}
                 color={color.white}

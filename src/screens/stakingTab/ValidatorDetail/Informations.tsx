@@ -2,16 +2,17 @@ import React, { ReactElement } from 'react'
 import { View } from 'react-native'
 import { ValidatorUI } from 'use-station/src'
 import ExtLink from 'components/ExtLink'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 const Informations = (v: ValidatorUI): ReactElement => {
   const { accountAddress, operatorAddress } = v
   const { maxRate, maxChangeRate, delegationReturn, updateTime } = v
 
   const link = (
-    <ExtLink href={accountAddress.link || ''}>
-      {accountAddress.address}
-    </ExtLink>
+    <ExtLink
+      url={accountAddress.link || ''}
+      title={accountAddress.address}
+    />
   )
 
   const list = [

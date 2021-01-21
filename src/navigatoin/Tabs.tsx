@@ -3,6 +3,7 @@ import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs'
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 
 import Dashboard from '../screens/homeTab/Dashboard'
 import Wallet from '../screens/walletTab/Wallet'
@@ -10,14 +11,13 @@ import Swap from '../screens/swapTab/Swap'
 import SwapConfirm from '../screens/swapTab/Swap/Confirm'
 
 // import Governance from '../screens/governance'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+
 import EStyleSheet from 'react-native-extended-stylesheet'
 
 import { RootStack } from 'types/navigation'
 import Staking from '../screens/stakingTab/Staking'
 import validatorDetail from '../screens/stakingTab/ValidatorDetail'
-import Text from 'components/Text'
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
+import { Text, Icon } from 'components'
 
 export const INITIAL = 'Dashboard'
 

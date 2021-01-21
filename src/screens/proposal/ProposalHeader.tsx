@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { ProposalUI } from 'use-station/src'
 import Badge from 'components/Badge'
 import Voter from './Voter'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 const ProposerHeader = ({
   title,

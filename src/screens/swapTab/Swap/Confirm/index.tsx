@@ -4,19 +4,28 @@ import _ from 'lodash'
 import { StackScreenProps } from '@react-navigation/stack'
 import { RawKey } from '@terra-money/terra.js'
 import { useRecoilValue } from 'recoil'
+import {
+  NavigationProp,
+  StackActions,
+  useNavigation,
+} from '@react-navigation/native'
 
 import { User, ConfirmProps, useConfirm } from 'use-station/src'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import Text from 'components/Text'
 import WithAuth from 'components/layout/WithAuth'
-import UseStationForm from 'components/UseStationForm'
-import Button from 'components/Button'
-import Select from 'components/Select'
-import FormLabel from 'components/FormLabel'
-import Number from 'components/Number'
+import {
+  Text,
+  UseStationForm,
+  Button,
+  Select,
+  FormLabel,
+  Number,
+  Input,
+  WarningBox,
+} from 'components'
 import SwapStore from 'stores/SwapStore'
 import { getDecyrptedKey } from 'utils/wallet'
 
@@ -26,13 +35,6 @@ import { RootStackParams } from 'types/navigation'
 import getSigner from 'utils/wallet-helper/signer'
 // @ts-ignore
 import signTx from 'utils/wallet-helper/api/signTx'
-import Input from 'components/Input'
-import {
-  NavigationProp,
-  StackActions,
-  useNavigation,
-} from '@react-navigation/native'
-import WarningBox from 'components/WarningBox'
 
 type Props = StackScreenProps<RootStackParams, 'SwapConfirm'>
 

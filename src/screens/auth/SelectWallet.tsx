@@ -9,15 +9,10 @@ import useOnAuth from './useOnAuth'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
-
-import Text from 'components/Text'
-import Button from 'components/Button'
-import Select from 'components/Select'
-import Input from 'components/Input'
+import { Text, Button, Select, Input, FormLabel } from 'components'
 
 import color from 'styles/color'
 import images from 'assets/images'
-import FormLabel from 'components/FormLabel'
 
 const BiometricButtonTitle = (): ReactElement => {
   return (

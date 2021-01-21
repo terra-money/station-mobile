@@ -8,7 +8,7 @@ import { User, useSend, RecentSentUI, FormUI } from 'use-station/src'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import Text from 'components/Text'
+import { Text } from 'components'
 import { SendStackParams } from 'types/navigation'
 import WithAuth from 'components/layout/WithAuth'
 import UseStationForm from 'components/UseStationForm'
@@ -69,14 +69,17 @@ const RenderForm = ({
       <SubHeader theme={'blue'} title={form.title} />
       <Body
         theme={'sky'}
-        scrollable
         containerStyle={{
           flex: 1,
-          marginBottom: -40,
+          marginBottom: 40,
+          justifyContent: 'space-between',
         }}
       >
-        <UseStationForm form={form} />
-        {ui && <RenderUi ui={ui} />}
+        <View>
+          <UseStationForm form={form} />
+          {ui && <RenderUi ui={ui} />}
+        </View>
+
         <Button
           theme={'blue'}
           disabled={form.disabled}
