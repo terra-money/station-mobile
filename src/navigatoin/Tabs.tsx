@@ -10,7 +10,7 @@ import Swap from '../screens/swapTab/Swap'
 import SwapConfirm from '../screens/swapTab/Swap/Confirm'
 
 // import Governance from '../screens/governance'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'components/Icon'
 import EStyleSheet from 'react-native-extended-stylesheet'
 
 import { RootStack } from 'types/navigation'

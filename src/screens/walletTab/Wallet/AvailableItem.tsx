@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import _ from 'lodash'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import { AvailableItem, useConfig } from 'use-station/src'
+import Icon from 'components/Icon'
 import AssetIcon, { AssetIconNameType } from 'components/AssetIcon'
 import Number from 'components/Number'
 import Text from 'components/Text'
@@ -58,7 +58,7 @@ const AssetItem = ({
           }}
         >
           <View style={styles.coinMenu}>
-            <MaterialIcons
+            <Icon
               style={{ color: color.sapphire }}
               name={'arrow-right-alt'}
             />

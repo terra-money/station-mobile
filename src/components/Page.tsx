@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { hasNotch } from 'react-native-device-info'
 import { API } from 'use-station/src'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'components/Icon'
 import EStyleSheet from 'react-native-extended-stylesheet'
 
 interface Props extends Partial<API<any>> {

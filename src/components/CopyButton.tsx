@@ -7,7 +7,7 @@ import {
   ViewStyle,
 } from 'react-native'
 import Clipboard from '@react-native-community/clipboard'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'components/Icon'
 import Text from 'components/Text'
 
 import color from 'styles/color'
@@ -42,7 +42,7 @@ const CopyButton = (props: CopyButtonProps): ReactElement => {
       }}
       style={[styles.copyButton, containerStyle]}
     >
-      <MaterialIcons
+      <Icon
         name={'description'}
         color={theme === 'blue' ? color.white : color.sapphire}
       />

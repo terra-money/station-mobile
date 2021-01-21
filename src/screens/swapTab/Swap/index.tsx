@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+
 import Tooltip from 'react-native-walkthrough-tooltip'
 import { useSetRecoilState } from 'recoil'
 
@@ -14,6 +14,7 @@ import {
   User,
   useSwap,
 } from 'use-station/src'
+import Icon from 'components/Icon'
 import ErrorComponent from 'components/ErrorComponent'
 import Loading from 'components/Loading'
 import UseStationFormField from 'components/UseStationFormField'
@@ -85,11 +86,7 @@ const Render = ({
           ))}
         </View>
         <View style={{ alignItems: 'center', marginBottom: 10 }}>
-          <MaterialIcons
-            size={24}
-            color={color.sapphire}
-            name={'swap-vert'}
-          />
+          <Icon size={24} color={color.sapphire} name={'swap-vert'} />
         </View>
         <View style={{ flexDirection: 'row' }}>
           {fields.slice(2, 4).map((field, i) => (
@@ -121,11 +118,7 @@ const Render = ({
               style={{ flexDirection: 'row', alignItems: 'center' }}
             >
               <Text>{spread.title}</Text>
-              <MaterialIcons
-                name={'info'}
-                color={color.sapphire}
-                size={14}
-              />
+              <Icon name={'info'} color={color.sapphire} size={14} />
             </TouchableOpacity>
           </Tooltip>
           <Text>{spread.value}</Text>

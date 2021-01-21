@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 
 import { Options } from 'use-station/src'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'components/Icon'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { useApp } from '../hooks'
 import Text from 'components/Text'

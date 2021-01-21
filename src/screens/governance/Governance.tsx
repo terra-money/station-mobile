@@ -5,13 +5,12 @@ import {
   ProposalItemUI,
 } from 'use-station/src'
 
-import Icon from 'react-native-vector-icons/MaterialIcons'
-
 import { View, StatusBar } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import EStyleSheet from 'react-native-extended-stylesheet'
 
 import ProposalItem from './ProposalItem'
+import Icon from 'components/Icon'
 import Text from 'components/Text'
 import Info from 'components/Info'
 import Page from 'components/Page'

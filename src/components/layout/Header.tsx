@@ -1,8 +1,12 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
-import { StyleSheet, StyleProp, ViewStyle } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import {
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  TouchableOpacity,
+} from 'react-native'
+import Icon from 'components/Icon'
 
 import color from 'styles/color'
 import {
@@ -33,7 +37,7 @@ const HeaderLeft = ({
 
   return (
     <TouchableOpacity onPress={goBack} style={{ paddingLeft: 20 }}>
-      <MaterialIcons
+      <Icon
         name={
           goBackIconType === 'close' ? 'clear' : 'keyboard-arrow-left'
         }

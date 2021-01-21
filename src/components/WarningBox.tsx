@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'components/Icon'
 
 import Text from 'components/Text'
 import color from 'styles/color'
@@ -13,7 +13,7 @@ const WarningBox = ({
   return (
     <View style={styles.container}>
       <View style={{ width: 25, paddingTop: 4 }}>
-        <MaterialIcons name={'info'} color={color.red} size={16} />
+        <Icon name={'info'} color={color.red} size={16} />
       </View>
 
       <View style={{ flex: 1 }}>
