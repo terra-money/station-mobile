@@ -45,7 +45,9 @@ const AssetItem = ({
             name={display.unit as AssetIconNameType}
           />
         </View>
-        <Text>{display.unit}</Text>
+        <Text style={styles.unit} fontType={'bold'}>
+          {display.unit}
+        </Text>
       </View>
       <TouchableOpacity
         onPress={(): void => {
@@ -62,6 +64,7 @@ const AssetItem = ({
             <Number
               numberFontStyle={{ fontSize: 15 }}
               decimalFontStyle={{ fontSize: 11 }}
+              fontType={'medium'}
             >
               {display.value}
             </Number>
@@ -115,5 +118,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 10,
+  },
+  unit: {
+    fontSize: 16,
+    lineHeight: 24,
+    letterSpacing: 0,
   },
 })

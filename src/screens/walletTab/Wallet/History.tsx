@@ -48,6 +48,7 @@ export default History
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 10,
     padding: 20,
     borderRadius: 20,
     backgroundColor: '#ffffff',

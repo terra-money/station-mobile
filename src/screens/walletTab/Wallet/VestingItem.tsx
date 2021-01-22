@@ -1,27 +1,88 @@
 import React, { ReactElement } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 
 import { VestingItemUI } from 'use-station/src'
 
-const AssetItem = ({
-  item: { display },
+import {
+  Text,
+  Icon,
+  Number,
+  AssetIcon,
+  AssetIconNameType,
+} from 'components'
+import color from 'styles/color'
+import { RootStackParams } from 'types'
+
+const VestingItem = ({
+  item,
+  title,
 }: {
   item: VestingItemUI
+  title: string
 }): ReactElement => {
+  const { navigate } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
+
+  const { icon, display } = item
   return (
     <View style={styles.container}>
-      <Text>{display.value}</Text>
-      <Text>{display.unit}</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={styles.iconBox}>
+          <AssetIcon
+            uri={icon}
+            name={display.unit as AssetIconNameType}
+          />
+        </View>
+        <View>
+          <Text style={styles.vesting}>VESTING</Text>
+          <Text style={styles.unit} fontType={'bold'}>
+            {display.unit}
+          </Text>
+        </View>
+      </View>
+      <TouchableOpacity
+        onPress={(): void => {
+          navigate('VestingSchedule', {
+            item,
+            title,
+          })
+        }}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ alignItems: 'flex-end' }}>
+            <Number
+              numberFontStyle={{ fontSize: 15 }}
+              decimalFontStyle={{ fontSize: 11 }}
+              fontType={'medium'}
+            >
+              {display.value}
+            </Number>
+          </View>
+
+          <View style={styles.coinMenu}>
+            <Icon
+              size={16}
+              style={{ color: color.sapphire }}
+              name={'chevron-right'}
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
     </View>
   )
 }
 
-export default AssetItem
+export default VestingItem
 
 const styles = StyleSheet.create({
   container: {
-    width: 335,
     height: 64,
+    marginBottom: 10,
     borderRadius: 20,
     backgroundColor: '#ffffff',
     shadowColor: 'rgba(0, 0, 0, 0.05)',
@@ -31,5 +92,30 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 35,
     shadowOpacity: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  iconBox: {
+    paddingRight: 6,
+  },
+  coinMenu: {
+    width: 14,
+    height: 14,
+    backgroundColor: color.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+  },
+  vesting: {
+    fontSize: 10,
+    lineHeight: 10,
+    letterSpacing: 0,
+  },
+  unit: {
+    fontSize: 16,
+    lineHeight: 24,
+    letterSpacing: 0,
   },
 })

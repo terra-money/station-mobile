@@ -9,8 +9,10 @@ import {
   AvailableUI,
   VestingUI,
 } from 'use-station/src'
-import AvailableItem from './AvailableItem'
 import { Text, Loading } from 'components'
+
+import AvailableItem from './AvailableItem'
+import VestingItem from './VestingItem'
 
 const AvailableList = ({ list }: AvailableUI): ReactElement => {
   return (
@@ -22,11 +24,15 @@ const AvailableList = ({ list }: AvailableUI): ReactElement => {
   )
 }
 
-const VestingList = ({ list }: VestingUI): ReactElement => {
+const VestingList = ({ list, title }: VestingUI): ReactElement => {
   return (
     <View>
       {_.map(list, (item, index) => (
-        <AvailableItem key={`AvailableList-${index}`} item={item} />
+        <VestingItem
+          key={`VestingList-${index}`}
+          item={item}
+          title={title}
+        />
       ))}
     </View>
   )

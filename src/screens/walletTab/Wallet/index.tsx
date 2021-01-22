@@ -24,7 +24,11 @@ const Screen = (): ReactElement => {
   return (
     <WithAuth>
       {(user): ReactElement => (
-        <Body theme={'sky'} scrollable>
+        <Body
+          theme={'sky'}
+          scrollable
+          containerStyle={{ paddingTop: 20 }}
+        >
           <WalletAddress user={user} />
           <AvailableAssets user={user} />
           <History user={user} />
