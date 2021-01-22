@@ -1,6 +1,6 @@
 import { NavigatorScreenParams } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { Card } from 'use-station/src'
+import { Card, VestingItemUI } from 'use-station/src'
 
 /* Root */
 export type RootStackParams = {
@@ -22,6 +22,7 @@ export type RootStackParams = {
   SendTxView: undefined
   Send: NavigatorScreenParams<SendStackParams>
   Complete: { result: Card; confirmNavigateTo: keyof RootStackParams }
+  VestingSchedule: { item: VestingItemUI; title: string }
 }
 
 export const RootStack = createStackNavigator<RootStackParams>()

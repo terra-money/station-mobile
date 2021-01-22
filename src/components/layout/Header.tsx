@@ -11,6 +11,7 @@ import { Icon } from 'components'
 import color from 'styles/color'
 import {
   StackHeaderLeftButtonProps,
+  StackHeaderTitleProps,
   StackNavigationOptions,
 } from '@react-navigation/stack'
 
@@ -21,6 +22,9 @@ export type HeaderProps = {
   goBackIconType?: 'arrow' | 'close'
   headerStyle?: StyleProp<ViewStyle>
   headerLeft?: (props: StackHeaderLeftButtonProps) => React.ReactNode
+  headerTitle?:
+    | string
+    | ((props: StackHeaderTitleProps) => React.ReactNode)
   headerRight?: (props: {
     tintColor?: string | undefined
   }) => React.ReactNode
@@ -55,6 +59,7 @@ export const navigationHeaderOptions = (
     theme,
     goBackIconType,
     headerLeft,
+    headerTitle,
     headerRight,
     headerStyle,
   } = props
@@ -84,7 +89,7 @@ export const navigationHeaderOptions = (
       ((): ReactElement => (
         <HeaderLeft {...{ theme, goBackIconType }} />
       )),
-    headerTitle: '',
+    headerTitle: headerTitle || '',
     headerRight,
   }
 }

@@ -12,7 +12,7 @@ const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
   const { History: title } = useMenu()
   const { list } = ui
 
-  return (
+  return list ? (
     <View style={styles.container}>
       <View style={styles.historyTitleBox}>
         <Text style={styles.historyTitle} fontType={'bold'}>
@@ -28,6 +28,8 @@ const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
 
       <HistoryModalButton />
     </View>
+  ) : (
+    <View />
   )
 }
 
