@@ -21,6 +21,7 @@ export default WalletAddress
 
 const styles = StyleSheet.create({
   container: {
+    marginBottom: 20,
     borderRadius: 20,
     backgroundColor: color.sapphire,
     shadowColor: 'rgba(0, 0, 0, 0.05)',

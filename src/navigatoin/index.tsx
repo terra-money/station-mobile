@@ -20,6 +20,7 @@ import SendTxView from '../screens/topup/SendTxView'
 import SendStack from './SendStack'
 
 import Complete from '../screens/Complete'
+import VestingSchedule from '../screens/VestingSchedule'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -114,6 +115,11 @@ const AppNavigator = ({
           name="Complete"
           component={Complete}
           options={{ headerShown: false }}
+        />
+        <RootStack.Screen
+          name="VestingSchedule"
+          component={VestingSchedule}
+          options={VestingSchedule.navigationOptions}
         />
       </RootStack.Navigator>
     </NavigationContainer>

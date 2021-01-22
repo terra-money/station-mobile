@@ -1,5 +1,11 @@
-import React, { ReactElement, ReactNode } from 'react'
-import { View, StyleProp, ViewStyle, ScrollView } from 'react-native'
+import React, { ReactElement, ReactNode, useState } from 'react'
+import {
+  View,
+  StyleProp,
+  ViewStyle,
+  ScrollView,
+  RefreshControl,
+} from 'react-native'
 import color from 'styles/color'
 
 export type BodyProps = {
@@ -7,10 +13,20 @@ export type BodyProps = {
   containerStyle?: StyleProp<ViewStyle>
   children: ReactNode
   scrollable?: boolean
+  onRefresh?: () => Promise<void>
 }
 
 const Body = (props: BodyProps): ReactElement => {
-  const { theme } = props
+  const { theme, onRefresh } = props
+  const [refreshing, setRefreshing] = useState(false)
+  const _onRefresh = (): void => {
+    if (onRefresh) {
+      setRefreshing(true)
+      onRefresh().then((): void => {
+        setRefreshing(false)
+      })
+    }
+  }
 
   const containerStyle: StyleProp<ViewStyle> = {
     paddingHorizontal: 20,
@@ -33,6 +49,14 @@ const Body = (props: BodyProps): ReactElement => {
     <>
       {props.scrollable ? (
         <ScrollView
+          refreshControl={
+            onRefresh && (
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={_onRefresh}
+              />
+            )
+          }
           contentContainerStyle={[
             containerStyle,
             props.containerStyle,
