@@ -9,6 +9,7 @@ export type RootStackParams = {
   Dashboard: undefined
   Wallet: undefined
   Staking: undefined
+  StakingPersonal: undefined
   ValidatorDetail: undefined
   Swap: undefined
   SwapConfirm: undefined

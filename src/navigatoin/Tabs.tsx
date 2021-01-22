@@ -16,6 +16,7 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 
 import { RootStack } from 'types/navigation'
 import Staking from '../screens/stakingTab/Staking'
+import StakingPersonal from '../screens/stakingTab/StakingPersonal'
 import validatorDetail from '../screens/stakingTab/ValidatorDetail'
 import { Text, Icon } from 'components'
 
@@ -49,6 +50,11 @@ const StakingStack = (): ReactElement => (
       options={Staking.navigationOptions}
     />
     <RootStack.Screen
+      name="StakingPersonal"
+      component={StakingPersonal}
+      options={StakingPersonal.navigationOptions}
+    />
+    <RootStack.Screen
       name="ValidatorDetail"
       component={validatorDetail}
       options={validatorDetail.navigationOptions}
@@ -73,7 +79,10 @@ const SwapStack = (): ReactElement => (
 
 const isTabBarVisible = (route: any): boolean => {
   const routeName = getFocusedRouteNameFromRoute(route)
-  if (routeName && ['SwapConfirm'].includes(routeName)) {
+  if (
+    routeName &&
+    ['SwapConfirm', 'StakingPersonal'].includes(routeName)
+  ) {
     return false
   }
 
@@ -139,7 +148,7 @@ const Tabs = (): ReactElement => (
     <Tab.Screen
       name="Staking"
       component={StakingStack}
-      options={{
+      options={({ route }): BottomTabNavigationOptions => ({
         tabBarLabel: ({ color }: any): ReactElement => (
           <Text style={[styles.tabbar_text, { color }]}>STAKING</Text>
         ),
@@ -151,7 +160,8 @@ const Tabs = (): ReactElement => (
             style={{ marginTop: 5 }}
           />
         ),
-      }}
+        tabBarVisible: isTabBarVisible(route),
+      })}
     />
 
     <Tab.Screen
