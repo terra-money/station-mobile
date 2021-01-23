@@ -1,11 +1,17 @@
 import React, { ReactElement } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 
 import { Text } from 'components'
 
-const Label = ({ text }: { text: string }): ReactElement => {
+const Label = ({
+  text,
+  containerStyle,
+}: {
+  text: string
+  containerStyle?: StyleProp<ViewStyle>
+}): ReactElement => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <Text style={styles.text} fontType={'medium'}>
         {text}
       </Text>

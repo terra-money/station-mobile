@@ -1,42 +1,41 @@
 import React, { ReactElement } from 'react'
-import { useRoute, RouteProp } from '@react-navigation/native'
 import { useAuth, useValidator } from 'use-station/src'
+import { StackScreenProps } from '@react-navigation/stack'
 
 import { navigationHeaderOptions } from 'components/layout/Header'
-import { Text } from 'components'
+import Body from 'components/layout/Body'
 
-import { StakingRouteParams } from '../../../types/navigation'
+import { RootStackParams } from '../../../types/navigation'
 
+import Top from './Top'
 import Actions from './Actions'
+import MonikerInfo from './MonikerInfo'
 import Informations from './Informations'
-import Claims from './Claims'
 
-type ValidatorRouteProp = RouteProp<
-  StakingRouteParams,
-  'ValidatorDetail'
->
+type Props = StackScreenProps<RootStackParams, 'ValidatorDetail'>
 
-const Staking = (): ReactElement => {
-  const { params } = useRoute<ValidatorRouteProp>()
-  const { address } = params
+const Screen = ({ route }: Props): ReactElement => {
+  const { address } = route.params
 
   const { user } = useAuth()
-  const { ui, delegations } = useValidator(address, user)
+  const { ui } = useValidator(address, user)
 
   return (
     <>
       {ui && (
-        <>
+        <Body scrollable containerStyle={{ paddingHorizontal: 0 }}>
+          <Top ui={ui} />
           <Actions {...ui} />
+          <MonikerInfo ui={ui} />
           <Informations {...ui} />
-          <Text>{delegations}</Text>
-          <Claims address={address} />
-        </>
+        </Body>
       )}
     </>
   )
 }
 
-Staking.navigationOptions = navigationHeaderOptions({})
+Screen.navigationOptions = navigationHeaderOptions({
+  theme: 'white',
+})
 
-export default Staking
+export default Screen

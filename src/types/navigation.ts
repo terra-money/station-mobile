@@ -10,7 +10,7 @@ export type RootStackParams = {
   Wallet: undefined
   Staking: undefined
   StakingPersonal: undefined
-  ValidatorDetail: undefined
+  ValidatorDetail: { address: string }
   Swap: undefined
   SwapConfirm: undefined
 

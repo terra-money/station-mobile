@@ -17,7 +17,7 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 import { RootStack } from 'types/navigation'
 import Staking from '../screens/stakingTab/Staking'
 import StakingPersonal from '../screens/stakingTab/StakingPersonal'
-import validatorDetail from '../screens/stakingTab/ValidatorDetail'
+import ValidatorDetail from '../screens/stakingTab/ValidatorDetail'
 import { Text, Icon } from 'components'
 
 export const INITIAL = 'Dashboard'
@@ -56,8 +56,8 @@ const StakingStack = (): ReactElement => (
     />
     <RootStack.Screen
       name="ValidatorDetail"
-      component={validatorDetail}
-      options={validatorDetail.navigationOptions}
+      component={ValidatorDetail}
+      options={ValidatorDetail.navigationOptions}
     />
   </RootStack.Navigator>
 )
