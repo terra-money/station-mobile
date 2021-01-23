@@ -110,6 +110,7 @@ export default PersonalSummary
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+    marginBottom: 20,
     backgroundColor: color.white,
     borderRadius: 20,
     shadowColor: 'rgba(0, 0, 0, 0.05)',
