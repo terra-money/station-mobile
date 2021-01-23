@@ -102,7 +102,7 @@ const WalletAddress = ({ user }: { user: User }): ReactElement => {
     )
   }
 
-  return <View>{loading ? <Loading /> : ui ? render(ui) : null}</View>
+  return <>{loading ? <Loading /> : ui ? render(ui) : null}</>
 }
 
 export default WalletAddress

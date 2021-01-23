@@ -8,7 +8,6 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 import Dashboard from '../screens/homeTab/Dashboard'
 import Wallet from '../screens/walletTab/Wallet'
 import Swap from '../screens/swapTab/Swap'
-import SwapConfirm from '../screens/swapTab/Swap/Confirm'
 
 // import Governance from '../screens/governance'
 
@@ -69,20 +68,12 @@ const SwapStack = (): ReactElement => (
       component={Swap}
       options={Swap.navigationOptions}
     />
-    <RootStack.Screen
-      name="SwapConfirm"
-      component={SwapConfirm}
-      options={SwapConfirm.navigationOptions}
-    />
   </RootStack.Navigator>
 )
 
 const isTabBarVisible = (route: any): boolean => {
   const routeName = getFocusedRouteNameFromRoute(route)
-  if (
-    routeName &&
-    ['SwapConfirm', 'StakingPersonal'].includes(routeName)
-  ) {
+  if (routeName && ['StakingPersonal'].includes(routeName)) {
     return false
   }
 

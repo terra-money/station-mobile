@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 
-import { StakingPersonal } from 'use-station/src'
+import { StakingPersonal, User } from 'use-station/src'
 
 import { Button, Icon, Number, Text } from 'components'
 import color from 'styles/color'
@@ -10,6 +10,7 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 import { RootStackParams } from 'types'
+import { useWithdraw } from 'hooks/useWithdraw'
 
 const NotStaked = (): ReactElement => {
   return (
@@ -29,8 +30,10 @@ const NotStaked = (): ReactElement => {
 }
 
 const PersonalSummary = ({
+  user,
   personal,
 }: {
+  user: User
   personal: StakingPersonal
 }): ReactElement => {
   const {
@@ -44,7 +47,10 @@ const PersonalSummary = ({
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
-
+  const { runWithdraw } = useWithdraw({
+    user,
+    amounts: withdrawAll.amounts,
+  })
   return (
     <View style={styles.container}>
       {myDelegations || myRewards ? (
@@ -96,7 +102,14 @@ const PersonalSummary = ({
             )}
           </View>
 
-          <Button title={withdrawAll.attrs.children} theme={'gray'} />
+          <Button
+            title={withdrawAll.attrs.children}
+            theme={'gray'}
+            disabled={withdrawAll.attrs.disabled}
+            onPress={(): void => {
+              runWithdraw({ confirmNavigateTo: 'Staking' })
+            }}
+          />
         </>
       ) : (
         <NotStaked />

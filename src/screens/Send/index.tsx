@@ -1,29 +1,30 @@
-import React, { ReactElement, useEffect } from 'react'
+import React, { ReactElement } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import _ from 'lodash'
 import { StackScreenProps } from '@react-navigation/stack'
 
-import { User, useSend, RecentSentUI, FormUI } from 'use-station/src'
+import {
+  User,
+  useSend,
+  RecentSentUI,
+  FormUI,
+  ConfirmProps,
+} from 'use-station/src'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 import { Text } from 'components'
-import { SendStackParams } from 'types/navigation'
+import { RootStackParams } from 'types/navigation'
 import WithAuth from 'components/layout/WithAuth'
 import UseStationForm from 'components/UseStationForm'
 import Button from 'components/Button'
 import Loading from 'components/Loading'
 
 import FormLabel from 'components/FormLabel'
-import SendStore from 'stores/SendStore'
-import { useSetRecoilState } from 'recoil'
-import {
-  NavigationProp,
-  useNavigation,
-} from '@react-navigation/native'
+import { useConfirm } from 'hooks/useConfirm'
 
-type Props = StackScreenProps<SendStackParams, 'Send'>
+type Props = StackScreenProps<RootStackParams, 'Send'>
 
 // this display recent transactions
 const RenderUi = ({ ui }: { ui: RecentSentUI }): ReactElement => {
@@ -56,13 +57,13 @@ const RenderUi = ({ ui }: { ui: RecentSentUI }): ReactElement => {
 const RenderForm = ({
   form,
   ui,
+  confirm,
 }: {
   form: FormUI
   ui?: RecentSentUI
+  confirm?: ConfirmProps
 }): ReactElement => {
-  const { navigate } = useNavigation<
-    NavigationProp<SendStackParams>
-  >()
+  const { navigateToConfirm } = useConfirm()
 
   return (
     <>
@@ -85,7 +86,11 @@ const RenderForm = ({
           disabled={form.disabled}
           title={form.submitLabel}
           onPress={(): void => {
-            navigate('Confirm')
+            confirm &&
+              navigateToConfirm({
+                confirm,
+                confirmNavigateTo: 'Send',
+              })
           }}
           containerStyle={{ marginTop: 20 }}
         />
@@ -99,27 +104,18 @@ const Render = ({
   route,
 }: { user: User } & Props): ReactElement => {
   const denom = route.params.denomOrToken
-  const setConfirm = useSetRecoilState(SendStore.confirm)
 
   const { loading, form, ui, submitted, confirm } = useSend(
     user,
     denom
   )
-  // console.log(
-  //   JSON.stringify({ loading, form, ui, submitted, confirm }, null, 2)
-  // )
-  useEffect(() => {
-    if (confirm) {
-      setConfirm(confirm)
-    }
-  }, [confirm])
 
   return (
     <>
       {loading ? (
         <Loading />
       ) : !submitted ? (
-        <>{form && <RenderForm {...{ form, ui }} />}</>
+        <>{form && <RenderForm {...{ form, ui, confirm }} />}</>
       ) : null}
     </>
   )

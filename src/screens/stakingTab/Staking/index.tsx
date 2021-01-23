@@ -13,11 +13,17 @@ import { RootStackParams } from 'types'
 type Props = StackScreenProps<RootStackParams, 'Staking'>
 
 const Render = ({ user }: { user?: User }): ReactElement => {
-  const { personal, ui } = useStaking(user)
+  const { personal, ui, loading } = useStaking(user)
   return (
     <>
-      {personal && <PersonalSummary personal={personal} />}
-      {ui && <ValidatorList {...ui} />}
+      {loading ? null : (
+        <>
+          {personal && user && (
+            <PersonalSummary personal={personal} user={user} />
+          )}
+          {ui && <ValidatorList {...ui} />}
+        </>
+      )}
     </>
   )
 }

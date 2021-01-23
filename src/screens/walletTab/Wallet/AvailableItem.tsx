@@ -52,10 +52,7 @@ const AssetItem = ({
       <TouchableOpacity
         onPress={(): void => {
           navigate('Send', {
-            screen: 'Send',
-            params: {
-              denomOrToken: item.denom || item.token || '',
-            },
+            denomOrToken: item.denom || item.token || '',
           })
         }}
       >

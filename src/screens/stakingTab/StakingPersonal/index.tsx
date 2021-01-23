@@ -31,7 +31,7 @@ const Render = ({ user }: { user?: User }): ReactElement => {
 
   return personal ? (
     <>
-      <Rewards personal={personal} />
+      {user && <Rewards personal={personal} user={user} />}
       <Delegated personal={personal} findMoniker={findMoniker} />
       <UnDelegated personal={personal} findMoniker={findMoniker} />
     </>

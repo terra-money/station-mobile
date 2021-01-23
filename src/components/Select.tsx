@@ -16,8 +16,8 @@ export type SelectProps = {
     itemValue: string | number,
     itemIndex: number
   ) => void
-  containerStyle: ViewStyle
-  textStyle: TextStyle
+  containerStyle?: ViewStyle
+  textStyle?: TextStyle
 } & PickerStyle
 
 const Select = (props: SelectProps): ReactElement => {

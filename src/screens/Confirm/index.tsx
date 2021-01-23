@@ -26,28 +26,31 @@ import {
   Input,
   WarningBox,
 } from 'components'
-import SendStore from 'stores/SendStore'
 import { getDecyrptedKey } from 'utils/wallet'
 
-import { RootStackParams, SendStackParams } from 'types/navigation'
+import { RootStackParams } from 'types/navigation'
 
 // @ts-ignore
 import getSigner from 'utils/wallet-helper/signer'
 // @ts-ignore
 import signTx from 'utils/wallet-helper/api/signTx'
+import ConfirmStore from 'stores/ConfirmStore'
 
-type Props = StackScreenProps<SendStackParams, 'Confirm'>
+type Props = StackScreenProps<RootStackParams, 'Confirm'>
 
 const Render = ({
   user,
   confirm,
+  route,
 }: {
   user: User
   confirm: ConfirmProps
 } & Props): ReactElement => {
-  const { dispatch } = useNavigation<
+  const { navigate, dispatch } = useNavigation<
     NavigationProp<RootStackParams>
   >()
+  const confirmNavigateTo = route.params.confirmNavigateTo
+
   const { contents, fee, form, result } = useConfirm(confirm, {
     user,
     password: '',
@@ -67,7 +70,8 @@ const Render = ({
   })
   useEffect(() => {
     if (result) {
-      dispatch(StackActions.replace('Complete', { result }))
+      dispatch(StackActions.popToTop())
+      navigate('Complete', { result, confirmNavigateTo })
     }
   }, [result])
 
@@ -149,7 +153,7 @@ const Render = ({
 }
 
 const Screen = (props: Props): ReactElement => {
-  const confirm = useRecoilValue(SendStore.confirm)
+  const confirm = useRecoilValue(ConfirmStore.confirm)
 
   return (
     <WithAuth>

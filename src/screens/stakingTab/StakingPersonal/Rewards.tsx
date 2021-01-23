@@ -2,18 +2,25 @@ import React, { ReactElement } from 'react'
 import { View, StyleSheet } from 'react-native'
 import _ from 'lodash'
 
-import { StakingPersonal } from 'use-station/src'
+import { StakingPersonal, User } from 'use-station/src'
 
 import { Button, Number, Text } from 'components'
 import color from 'styles/color'
+import { useWithdraw } from 'hooks/useWithdraw'
 
 const Rewards = ({
   personal,
+  user,
 }: {
   personal: StakingPersonal
+  user: User
 }): ReactElement => {
   const { rewards, withdrawAll } = personal
 
+  const { runWithdraw } = useWithdraw({
+    user,
+    amounts: withdrawAll.amounts,
+  })
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -47,7 +54,14 @@ const Rewards = ({
         })}
       </View>
       <View style={{ paddingHorizontal: 20 }}>
-        <Button title={withdrawAll.attrs.children} theme={'gray'} />
+        <Button
+          title={withdrawAll.attrs.children}
+          disabled={withdrawAll.attrs.disabled}
+          theme={'gray'}
+          onPress={(): void => {
+            runWithdraw({ confirmNavigateTo: 'Staking' })
+          }}
+        />
       </View>
     </View>
   )
