@@ -11,7 +11,7 @@ const WalletAddress = ({ user }: { user: User }): ReactElement => {
         {user.address}
       </Text>
       <View>
-        <CopyButton copyString={user.address} theme={'blue'} />
+        <CopyButton copyString={user.address} theme={'sapphire'} />
       </View>
     </View>
   )

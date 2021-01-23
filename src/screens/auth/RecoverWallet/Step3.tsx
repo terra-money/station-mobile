@@ -122,7 +122,10 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'blue'} title={'Select Address to Recover'} />
+      <SubHeader
+        theme={'sapphire'}
+        title={'Select Address to Recover'}
+      />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View style={{ flex: 1 }}>
           {mk118 && (
@@ -147,7 +150,7 @@ const Screen = (): ReactElement => {
 
         <Button
           title="Recover"
-          theme={'blue'}
+          theme={'sapphire'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
@@ -162,7 +165,7 @@ const HeaderRight = (): ReactElement => (
 )
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
   headerRight: HeaderRight,
 })
 

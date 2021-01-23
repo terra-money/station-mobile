@@ -15,7 +15,7 @@ import {
   StackNavigationOptions,
 } from '@react-navigation/stack'
 
-type HeaderTheme = 'white' | 'sky' | 'blue'
+type HeaderTheme = 'white' | 'sky' | 'sapphire'
 
 export type HeaderProps = {
   theme?: HeaderTheme
@@ -45,7 +45,7 @@ const HeaderLeft = ({
         name={
           goBackIconType === 'close' ? 'clear' : 'keyboard-arrow-left'
         }
-        color={theme === 'blue' ? color.white : color.sapphire}
+        color={theme === 'sapphire' ? color.white : color.sapphire}
         size={32}
       />
     </TouchableOpacity>
@@ -65,7 +65,7 @@ export const navigationHeaderOptions = (
   } = props
   const containerStyle: StyleProp<ViewStyle> = {}
   switch (theme) {
-    case 'blue':
+    case 'sapphire':
       containerStyle.backgroundColor = color.sapphire
       break
     case 'sky':

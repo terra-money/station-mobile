@@ -77,7 +77,7 @@ const Render = ({
 
   return (
     <>
-      <SubHeader theme={'blue'} title={form.title} />
+      <SubHeader theme={'sapphire'} title={form.title} />
       <Body
         theme={'sky'}
         scrollable
@@ -141,7 +141,7 @@ const Render = ({
         </View>
 
         <Button
-          theme={'blue'}
+          theme={'sapphire'}
           disabled={form.disabled}
           title={form.submitLabel}
           onPress={form.onSubmit}
@@ -169,7 +169,7 @@ const Screen = (props: Props): ReactElement => {
 }
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
 })
 
 export default Screen

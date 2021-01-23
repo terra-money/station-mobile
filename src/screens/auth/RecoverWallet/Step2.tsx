@@ -50,7 +50,7 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'blue'} title={'Enter Your Seed Phase'} />
+      <SubHeader theme={'sapphire'} title={'Enter Your Seed Phase'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={{ alignItems: 'flex-end', marginBottom: 20 }}>
@@ -117,7 +117,7 @@ const Screen = (): ReactElement => {
         </View>
         <Button
           title="Finish"
-          theme={'blue'}
+          theme={'sapphire'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
@@ -132,7 +132,7 @@ const HeaderRight = (): ReactElement => (
 )
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
   headerRight: HeaderRight,
 })
 

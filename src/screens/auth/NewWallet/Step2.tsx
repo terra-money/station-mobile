@@ -37,7 +37,7 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'blue'} title={'Write Down Your Seed'} />
+      <SubHeader theme={'sapphire'} title={'Write Down Your Seed'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={{ alignItems: 'flex-end', marginBottom: 20 }}>
@@ -88,7 +88,7 @@ const Screen = (): ReactElement => {
 
         <Button
           title="I Have Written Down My Seed."
-          theme={'blue'}
+          theme={'sapphire'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
@@ -103,7 +103,7 @@ const HeaderRight = (): ReactElement => (
 )
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
   headerRight: HeaderRight,
 })
 

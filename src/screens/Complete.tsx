@@ -33,7 +33,7 @@ const Complete = ({ route }: Props): ReactElement => {
         <Text style={{ fontSize: 16 }}>{card.content}</Text>
       </View>
       <Button
-        theme={'blue'}
+        theme={'sapphire'}
         title={card.button || 'OK'}
         onPress={goBack}
         containerStyle={{ marginBottom: 40 }}

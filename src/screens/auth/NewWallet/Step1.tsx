@@ -60,7 +60,7 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'blue'} title={'New Wallet'} />
+      <SubHeader theme={'sapphire'} title={'New Wallet'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={styles.section}>
@@ -99,7 +99,7 @@ const Screen = (): ReactElement => {
 
         <Button
           title="Next"
-          theme={'blue'}
+          theme={'sapphire'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
@@ -114,7 +114,7 @@ const HeaderRight = (): ReactElement => (
 )
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
   headerRight: HeaderRight,
 })
 

@@ -124,7 +124,7 @@ const Render = ({
           <Text>{spread.value}</Text>
         </View>
         <Button
-          theme={'blue'}
+          theme={'sapphire'}
           disabled={form.disabled}
           title={submitLabel}
           onPress={(): void => {

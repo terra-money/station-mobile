@@ -104,7 +104,7 @@ const Screen = (): ReactElement => {
           <View>
             <Button
               title="Next"
-              theme={'blue'}
+              theme={'sapphire'}
               onPress={submit}
               containerStyle={{ marginBottom: 10 }}
             />
@@ -123,7 +123,7 @@ const Screen = (): ReactElement => {
 }
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
 })
 
 export default Screen

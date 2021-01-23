@@ -33,7 +33,7 @@ const Screen = (): ReactElement => {
     <>
       {initPageComplete && (
         <Body
-          theme={'blue'}
+          theme={'sapphire'}
           containerStyle={{ paddingBottom: 50, paddingTop: 10 }}
         >
           <View style={{ flex: 1 }}>
@@ -130,7 +130,7 @@ const Screen = (): ReactElement => {
 }
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
   goBackIconType: 'close',
 })
 
