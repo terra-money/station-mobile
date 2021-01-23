@@ -22,6 +22,7 @@ import Send from '../screens/Send'
 import Complete from '../screens/Complete'
 import VestingSchedule from '../screens/VestingSchedule'
 import Confirm from '../screens/Confirm'
+import Delegate from '../screens/Delegate'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -126,6 +127,11 @@ const AppNavigator = ({
           name="Confirm"
           component={Confirm}
           options={Confirm.navigationOptions}
+        />
+        <RootStack.Screen
+          name="Delegate"
+          component={Delegate}
+          options={Delegate.navigationOptions}
         />
       </RootStack.Navigator>
     </NavigationContainer>

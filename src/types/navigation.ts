@@ -23,6 +23,7 @@ export type RootStackParams = {
   Complete: { result: Card }
   VestingSchedule: { item: VestingItemUI; title: string }
   Confirm: undefined
+  Delegate: { validatorAddress: string; isUndelegation: boolean }
 }
 
 export const RootStack = createStackNavigator<RootStackParams>()

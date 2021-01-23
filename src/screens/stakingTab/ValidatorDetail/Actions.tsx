@@ -4,6 +4,11 @@ import { StyleSheet, View } from 'react-native'
 import { User, ValidatorUI } from 'use-station/src'
 import { Text, Number, Button } from 'components'
 import { useWithdraw } from 'hooks/useWithdraw'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
+import { RootStackParams } from 'types'
 
 const Actions = ({
   user,
@@ -26,6 +31,11 @@ const Actions = ({
     amounts: myRewards.amounts || [],
     from: operatorAddress.address,
   })
+
+  const { navigate } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
+
   return (
     <View>
       <View style={styles.container}>
@@ -51,7 +61,10 @@ const Actions = ({
               disabled={delegate.disabled}
               title={delegate.children}
               onPress={(): void => {
-                //
+                navigate('Delegate', {
+                  validatorAddress: operatorAddress.address,
+                  isUndelegation: false,
+                })
               }}
               containerStyle={{ height: 40 }}
             />
@@ -62,7 +75,10 @@ const Actions = ({
               disabled={undelegate.disabled}
               title={undelegate.children}
               onPress={(): void => {
-                //
+                navigate('Delegate', {
+                  validatorAddress: operatorAddress.address,
+                  isUndelegation: true,
+                })
               }}
               containerStyle={{ height: 40 }}
             />
