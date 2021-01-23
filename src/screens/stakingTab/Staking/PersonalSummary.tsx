@@ -107,7 +107,7 @@ const PersonalSummary = ({
             theme={'gray'}
             disabled={withdrawAll.attrs.disabled}
             onPress={(): void => {
-              runWithdraw({ confirmNavigateTo: 'Staking' })
+              runWithdraw()
             }}
           />
         </>

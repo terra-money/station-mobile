@@ -124,11 +124,7 @@ const Render = ({
         title={submitLabel}
         onPress={(): void => {
           onSubmit && onSubmit()
-          confirm &&
-            navigateToConfirm({
-              confirm,
-              confirmNavigateTo: 'Swap',
-            })
+          confirm && navigateToConfirm({ confirm })
         }}
       />
     </View>

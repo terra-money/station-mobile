@@ -11,7 +11,6 @@ import { RootStackParams } from 'types'
 
 export type NavigateToConfirmProps = {
   confirm: ConfirmProps
-  confirmNavigateTo: keyof RootStackParams
 }
 
 export const useConfirm = (): {
@@ -26,10 +25,9 @@ export const useConfirm = (): {
 
   const navigateToConfirm = ({
     confirm,
-    confirmNavigateTo,
   }: NavigateToConfirmProps): void => {
     setConfirm(confirm)
-    navigate('Confirm', { confirmNavigateTo })
+    navigate('Confirm')
   }
 
   return { navigateToConfirm }

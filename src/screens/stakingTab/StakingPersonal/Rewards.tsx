@@ -59,7 +59,7 @@ const Rewards = ({
           disabled={withdrawAll.attrs.disabled}
           theme={'gray'}
           onPress={(): void => {
-            runWithdraw({ confirmNavigateTo: 'Staking' })
+            runWithdraw()
           }}
         />
       </View>

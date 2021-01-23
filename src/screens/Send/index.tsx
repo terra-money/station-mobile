@@ -89,7 +89,6 @@ const RenderForm = ({
             confirm &&
               navigateToConfirm({
                 confirm,
-                confirmNavigateTo: 'Send',
               })
           }}
           containerStyle={{ marginTop: 20 }}

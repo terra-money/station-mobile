@@ -41,7 +41,6 @@ type Props = StackScreenProps<RootStackParams, 'Confirm'>
 const Render = ({
   user,
   confirm,
-  route,
 }: {
   user: User
   confirm: ConfirmProps
@@ -49,7 +48,6 @@ const Render = ({
   const { navigate, dispatch } = useNavigation<
     NavigationProp<RootStackParams>
   >()
-  const confirmNavigateTo = route.params.confirmNavigateTo
 
   const { contents, fee, form, result } = useConfirm(confirm, {
     user,
@@ -71,7 +69,7 @@ const Render = ({
   useEffect(() => {
     if (result) {
       dispatch(StackActions.popToTop())
-      navigate('Complete', { result, confirmNavigateTo })
+      navigate('Complete', { result })
     }
   }, [result])
 

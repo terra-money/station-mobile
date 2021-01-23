@@ -20,9 +20,9 @@ export type RootStackParams = {
   ConnectView: undefined
   SendTxView: undefined
   Send: { denomOrToken: string }
-  Complete: { result: Card; confirmNavigateTo: keyof RootStackParams }
+  Complete: { result: Card }
   VestingSchedule: { item: VestingItemUI; title: string }
-  Confirm: { confirmNavigateTo: keyof RootStackParams }
+  Confirm: undefined
 }
 
 export const RootStack = createStackNavigator<RootStackParams>()

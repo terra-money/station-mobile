@@ -1,4 +1,3 @@
-import { RootStackParams } from 'types'
 import {
   User,
   useWithdraw as useStationWithdraw,
@@ -13,21 +12,13 @@ export const useWithdraw = ({
 }: {
   user: User
 } & WithdrawProps): {
-  runWithdraw: ({
-    confirmNavigateTo,
-  }: {
-    confirmNavigateTo: keyof RootStackParams
-  }) => void
+  runWithdraw: () => void
 } => {
   const { navigateToConfirm } = useConfirm()
   const { confirm } = useStationWithdraw(user, { amounts, from })
 
-  const runWithdraw = ({
-    confirmNavigateTo,
-  }: {
-    confirmNavigateTo: keyof RootStackParams
-  }): void => {
-    confirm && navigateToConfirm({ confirm, confirmNavigateTo })
+  const runWithdraw = (): void => {
+    confirm && navigateToConfirm({ confirm })
   }
 
   return {

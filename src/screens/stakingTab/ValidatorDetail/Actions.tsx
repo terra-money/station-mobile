@@ -1,18 +1,31 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import { ValidatorUI } from 'use-station/src'
+import { User, ValidatorUI } from 'use-station/src'
 import { Text, Number, Button } from 'components'
+import { useWithdraw } from 'hooks/useWithdraw'
 
-const Actions = (v: ValidatorUI): ReactElement => {
+const Actions = ({
+  user,
+  ui,
+}: {
+  user: User
+  ui: ValidatorUI
+}): ReactElement => {
   const {
     delegate,
     undelegate,
     myDelegations,
     myRewards,
     withdraw,
-  } = v
+    operatorAddress,
+  } = ui
 
+  const { runWithdraw } = useWithdraw({
+    user,
+    amounts: myRewards.amounts || [],
+    from: operatorAddress.address,
+  })
   return (
     <View>
       <View style={styles.container}>
@@ -71,7 +84,7 @@ const Actions = (v: ValidatorUI): ReactElement => {
             disabled={withdraw.disabled}
             title={withdraw.children}
             onPress={(): void => {
-              //
+              runWithdraw()
             }}
             containerStyle={{ height: 40 }}
           />

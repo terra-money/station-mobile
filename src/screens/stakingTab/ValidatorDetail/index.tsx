@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react'
-import { useAuth, useValidator } from 'use-station/src'
+import React, { ReactElement, useEffect, useState } from 'react'
+import { useAuth, User, useValidator } from 'use-station/src'
 import { StackScreenProps } from '@react-navigation/stack'
 
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -14,23 +14,62 @@ import Informations from './Informations'
 
 type Props = StackScreenProps<RootStackParams, 'ValidatorDetail'>
 
-const Screen = ({ route }: Props): ReactElement => {
-  const { address } = route.params
-
-  const { user } = useAuth()
-  const { ui } = useValidator(address, user)
-
+const Render = ({
+  user,
+  address,
+}: {
+  user?: User
+  address: string
+}): ReactElement => {
+  const { ui, loading } = useValidator(address, user)
   return (
     <>
-      {ui && (
-        <Body scrollable containerStyle={{ paddingHorizontal: 0 }}>
-          <Top ui={ui} />
-          <Actions {...ui} />
-          <MonikerInfo ui={ui} />
-          <Informations {...ui} />
-        </Body>
+      {loading ? null : (
+        <>
+          {ui && (
+            <Body
+              scrollable
+              containerStyle={{ paddingHorizontal: 0 }}
+            >
+              <Top ui={ui} />
+              {user && <Actions ui={ui} user={user} />}
+              <MonikerInfo ui={ui} />
+              <Informations {...ui} />
+            </Body>
+          )}
+        </>
       )}
     </>
+  )
+}
+
+const Screen = ({ navigation, route }: Props): ReactElement => {
+  const { user } = useAuth()
+
+  const { address } = route.params
+  const [refreshing, setRefreshing] = useState(false)
+  const refreshPage = async (): Promise<void> => {
+    setRefreshing(true)
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 100)
+  }
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      refreshPage()
+    })
+  }, [])
+
+  return (
+    <Body
+      theme={'sky'}
+      containerStyle={{ paddingTop: 20 }}
+      scrollable
+      onRefresh={refreshPage}
+    >
+      {refreshing ? null : <Render user={user} address={address} />}
+    </Body>
   )
 }
 
