@@ -46,6 +46,8 @@ const FormTextarea = ({ field }: { field: Field }): ReactElement => {
     <View style={{ height: 100 }}>
       <DefaultFormInput
         value={attrs.value}
+        defaultValue={attrs.defaultValue}
+        editable={!attrs.readOnly}
         multiline
         placeholder={attrs.placeholder}
         secureTextEntry={attrs.type === 'password'}
@@ -66,6 +68,8 @@ const FormInput = ({ field }: { field: Field }): ReactElement => {
       secureTextEntry={attrs.type === 'password'}
       errorMessage={error}
       value={attrs.value}
+      defaultValue={attrs.defaultValue}
+      editable={!attrs.readOnly}
       placeholder={attrs.placeholder}
       onChangeText={setValue}
     />

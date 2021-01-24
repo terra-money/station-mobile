@@ -1,30 +1,42 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { useStaking, useAuth, User } from 'use-station/src'
+import {
+  useStaking,
+  useAuth,
+  User,
+  ValidatorUI,
+} from 'use-station/src'
 import { StackScreenProps } from '@react-navigation/stack'
 
-import { navigationHeaderOptions } from 'components/layout/TabScreenHeader'
+import { navigationHeaderOptions } from 'components/layout/Header'
 import Body from 'components/layout/Body'
-
-import ValidatorList from './ValidatorList'
-import PersonalSummary from './PersonalSummary'
+import { View } from 'react-native'
 
 import { RootStackParams } from 'types'
+
+import Rewards from './Rewards'
+import Delegated from './Delegated'
+import UnDelegated from './UnDelegated'
 
 type Props = StackScreenProps<RootStackParams, 'Staking'>
 
 const Render = ({ user }: { user?: User }): ReactElement => {
-  const { personal, ui, loading } = useStaking(user)
-  return (
+  const { personal, ui } = useStaking(user)
+
+  const findMoniker = ({
+    name,
+  }: {
+    name: string
+  }): ValidatorUI | undefined =>
+    ui?.contents.find((x) => x.moniker === name)
+
+  return personal ? (
     <>
-      {loading ? null : (
-        <>
-          {personal && user && (
-            <PersonalSummary personal={personal} user={user} />
-          )}
-          {ui && <ValidatorList {...ui} />}
-        </>
-      )}
+      {user && <Rewards personal={personal} user={user} />}
+      <Delegated personal={personal} findMoniker={findMoniker} />
+      <UnDelegated personal={personal} findMoniker={findMoniker} />
     </>
+  ) : (
+    <View />
   )
 }
 
@@ -58,7 +70,7 @@ const Screen = ({ navigation }: Props): ReactElement => {
 }
 
 Screen.navigationOptions = navigationHeaderOptions({
-  title: 'Staking',
+  theme: 'white',
 })
 
 export default Screen

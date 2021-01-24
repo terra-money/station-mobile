@@ -8,7 +8,7 @@ const name = atom<string>({
 
 const password = atom<string>({
   key: StoreKeyEnum.newWalletPassword,
-  default: '1234567890',
+  default: '',
 })
 
 const seed = atom<string[]>({

@@ -2,42 +2,40 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 
 import Tooltip from 'react-native-walkthrough-tooltip'
-import { useSetRecoilState } from 'recoil'
 
 import { navigationHeaderOptions } from 'components/layout/TabScreenHeader'
 import Body from 'components/layout/Body'
 import WithAuth from 'components/layout/WithAuth'
 import {
+  ConfirmProps,
   FormUI,
   SwapUI,
   useMarket,
   User,
   useSwap,
 } from 'use-station/src'
-import Icon from 'components/Icon'
+import { StackScreenProps } from '@react-navigation/stack'
+
 import ErrorComponent from 'components/ErrorComponent'
-import Loading from 'components/Loading'
 import UseStationFormField from 'components/UseStationFormField'
-import { Text } from 'components'
-import Number from 'components/Number'
-import Button from 'components/Button'
-import SwapStore from 'stores/SwapStore'
-import { RootStackParams } from 'types/navigation'
+import { Text, Icon, Number, Button, Loading } from 'components'
 
 import color from 'styles/color'
-import {
-  NavigationProp,
-  useNavigation,
-} from '@react-navigation/native'
+import { useConfirm } from 'hooks/useConfirm'
+import { RootStackParams } from 'types'
+
+type Props = StackScreenProps<RootStackParams, 'Swap'>
 
 const Render = ({
   form,
   title,
   ui,
+  confirm,
 }: {
   form: FormUI
   title: string
   ui: SwapUI
+  confirm?: ConfirmProps
 }): ReactElement => {
   const { fields, submitLabel, onSubmit } = form
   const { max, spread } = ui
@@ -47,93 +45,89 @@ const Render = ({
     setisVisibleSpreadTooltip,
   ] = useState(false)
 
-  const { navigate } = useNavigation<
-    NavigationProp<RootStackParams>
-  >()
+  const { navigateToConfirm } = useConfirm()
 
   return (
-    <Body theme={'sky'}>
-      <View style={styles.swapForm}>
-        <Text style={styles.swapTitle} fontType={'bold'}>
-          {title}
-        </Text>
-        <View>
-          <TouchableOpacity
-            onPress={max.attrs.onClick}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              marginBottom: 5,
-            }}
-          >
-            <Text style={{ fontSize: 12, paddingRight: 5 }}>
-              {max.title}
-            </Text>
-            <Number numberFontStyle={{ fontSize: 12 }}>
-              {max.display.value}
-            </Number>
-          </TouchableOpacity>
-        </View>
-        <View style={{ flexDirection: 'row' }}>
-          {fields.slice(0, 2).map((field, i) => (
-            <View
-              key={field.attrs.id}
-              style={{ flex: i === 0 ? 1 : 2 }}
-            >
-              <UseStationFormField field={field} />
-            </View>
-          ))}
-        </View>
-        <View style={{ alignItems: 'center', marginBottom: 10 }}>
-          <Icon size={24} color={color.sapphire} name={'swap-vert'} />
-        </View>
-        <View style={{ flexDirection: 'row' }}>
-          {fields.slice(2, 4).map((field, i) => (
-            <View
-              key={field.attrs.id}
-              style={{ flex: i === 0 ? 1 : 2 }}
-            >
-              <UseStationFormField field={field} />
-            </View>
-          ))}
-        </View>
-
-        <View
+    <View style={styles.swapForm}>
+      <Text style={styles.swapTitle} fontType={'bold'}>
+        {title}
+      </Text>
+      <View>
+        <TouchableOpacity
+          onPress={max.attrs.onClick}
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-end',
             alignItems: 'center',
-            marginBottom: 30,
+            marginBottom: 5,
           }}
         >
-          <Tooltip
-            isVisible={isVisibleSpreadTooltip}
-            content={<Text>{spread.text}</Text>}
-            placement="top"
-            onClose={(): void => setisVisibleSpreadTooltip(false)}
-          >
-            <TouchableOpacity
-              onPress={(): void => setisVisibleSpreadTooltip(true)}
-              style={{ flexDirection: 'row', alignItems: 'center' }}
-            >
-              <Text>{spread.title}</Text>
-              <Icon name={'info'} color={color.sapphire} size={14} />
-            </TouchableOpacity>
-          </Tooltip>
-          <Text>{spread.value}</Text>
-        </View>
-        <Button
-          theme={'blue'}
-          disabled={form.disabled}
-          title={submitLabel}
-          onPress={(): void => {
-            onSubmit && onSubmit()
-            navigate('SwapConfirm')
-          }}
-        />
+          <Text style={{ fontSize: 12, paddingRight: 5 }}>
+            {max.title}
+          </Text>
+          <Number numberFontStyle={{ fontSize: 12 }}>
+            {max.display.value}
+          </Number>
+        </TouchableOpacity>
       </View>
-    </Body>
+      <View style={{ flexDirection: 'row' }}>
+        {fields.slice(0, 2).map((field, i) => (
+          <View
+            key={field.attrs.id}
+            style={{ flex: i === 0 ? 1 : 2 }}
+          >
+            <UseStationFormField field={field} />
+          </View>
+        ))}
+      </View>
+      <View style={{ alignItems: 'center', marginBottom: 10 }}>
+        <Icon size={24} color={color.sapphire} name={'swap-vert'} />
+      </View>
+      <View style={{ flexDirection: 'row' }}>
+        {fields.slice(2, 4).map((field, i) => (
+          <View
+            key={field.attrs.id}
+            style={{ flex: i === 0 ? 1 : 2 }}
+          >
+            <UseStationFormField field={field} />
+          </View>
+        ))}
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 30,
+        }}
+      >
+        <Tooltip
+          isVisible={isVisibleSpreadTooltip}
+          content={<Text>{spread.text}</Text>}
+          placement="top"
+          onClose={(): void => setisVisibleSpreadTooltip(false)}
+        >
+          <TouchableOpacity
+            onPress={(): void => setisVisibleSpreadTooltip(true)}
+            style={{ flexDirection: 'row', alignItems: 'center' }}
+          >
+            <Text>{spread.title}</Text>
+            <Icon name={'info'} color={color.sapphire} size={14} />
+          </TouchableOpacity>
+        </Tooltip>
+        <Text>{spread.value}</Text>
+      </View>
+      <Button
+        theme={'sapphire'}
+        disabled={form.disabled}
+        title={submitLabel}
+        onPress={(): void => {
+          onSubmit && onSubmit()
+          confirm && navigateToConfirm({ confirm })
+        }}
+      />
+    </View>
   )
 }
 
@@ -148,12 +142,6 @@ const RenderSwap = ({
 }): ReactElement => {
   const { error, loading, form, confirm, ui } = useSwap(user, actives)
 
-  const setConfirm = useSetRecoilState(SwapStore.confirm)
-
-  useEffect(() => {
-    setConfirm(confirm)
-  }, [confirm])
-
   return (
     <>
       {error ? (
@@ -161,7 +149,15 @@ const RenderSwap = ({
       ) : loading ? (
         <Loading />
       ) : (
-        ui && form && <Render form={form} title={title} ui={ui} />
+        ui &&
+        form && (
+          <Render
+            form={form}
+            title={title}
+            ui={ui}
+            confirm={confirm}
+          />
+        )
       )}
     </>
   )
@@ -187,10 +183,33 @@ const RenderMarket = ({ user }: { user: User }): ReactElement => {
   )
 }
 
-const Screen = (): ReactElement => {
+const Screen = ({ navigation }: Props): ReactElement => {
+  const [refreshing, setRefreshing] = useState(false)
+  const refreshPage = async (): Promise<void> => {
+    setRefreshing(true)
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 100)
+  }
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      refreshPage()
+    })
+  }, [])
+
   return (
     <WithAuth>
-      {(user): ReactElement => <RenderMarket user={user} />}
+      {(user): ReactElement => (
+        <Body
+          theme={'sky'}
+          scrollable
+          containerStyle={{ paddingTop: 20 }}
+          onRefresh={refreshPage}
+        >
+          {refreshing ? null : <RenderMarket user={user} />}
+        </Body>
+      )}
     </WithAuth>
   )
 }

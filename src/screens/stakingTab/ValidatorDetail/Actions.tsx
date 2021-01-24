@@ -1,66 +1,130 @@
 import React, { ReactElement } from 'react'
-import { ValidatorUI, format } from 'use-station/src'
-import Number from 'components/Number'
-import Icon from 'components/Icon'
-import ButtonWithAuth from 'components/ButtonWithAuth'
-import { Text } from 'components'
-import DelegationTooltip from './DelegationTooltip'
-// import Delegate from '../../post/Delegate'
-// import Withdraw from '../../post/Withdraw'
+import { StyleSheet, View } from 'react-native'
 
-const Actions = (v: ValidatorUI): ReactElement => {
-  const { delegate, undelegate, withdraw } = v
-  const { myDelegations, myActionsTable, myRewards } = v
+import { User, ValidatorUI } from 'use-station/src'
+import { Text, Number, Button } from 'components'
+import { useWithdraw } from 'hooks/useWithdraw'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
+import { RootStackParams } from 'types'
 
-  /* tx */
-  const open = {
-    delegate: ({}: { undelegate?: boolean }): void => {
-      // open(delegate)
-    },
-    withdraw: (): void => {
-      // myRewards.amounts && open(withdraw)
-    },
-  }
+const Actions = ({
+  user,
+  ui,
+}: {
+  user: User
+  ui: ValidatorUI
+}): ReactElement => {
+  const {
+    delegate,
+    undelegate,
+    myDelegations,
+    myRewards,
+    withdraw,
+    operatorAddress,
+  } = ui
 
-  /* render */
-  const content = myActionsTable && (
-    <DelegationTooltip {...myActionsTable} />
-  )
-  const myDelegation =
-    myDelegations.display ??
-    format.display({ amount: '0', denom: 'uluna' })
+  const { runWithdraw } = useWithdraw({
+    user,
+    amounts: myRewards.amounts || [],
+    from: operatorAddress.address,
+  })
+
+  const { navigate } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
 
   return (
-    <>
-      <Text>{myDelegations.title}</Text>
-      {content ? (
-        <>
-          <Number {...myDelegation} fontSize={18} />
-          <Icon name="arrow_drop_down" />
-          <Text>{content}</Text>
-        </>
-      ) : (
-        <Number {...myDelegation} fontSize={18} />
-      )}
+    <View>
+      <View style={styles.container}>
+        <Text style={styles.title} fontType={'bold'}>
+          {myDelegations.title}
+        </Text>
 
-      <ButtonWithAuth
-        {...delegate}
-        onPress={(): void => open.delegate({})}
-      />
-      <ButtonWithAuth
-        {...undelegate}
-        onPress={(): void => open.delegate({ undelegate: true })}
-      />
+        <View style={{ alignItems: 'flex-start' }}>
+          <Number {...myDelegations.display} />
+        </View>
 
-      <Text>{myRewards.title}</Text>
-      <Number {...myRewards.display} fontSize={18} estimated />
+        <View
+          style={[
+            styles.buttonBox,
+            {
+              flexDirection: 'row',
+            },
+          ]}
+        >
+          <View style={{ flex: 1 }}>
+            <Button
+              theme={'sapphire'}
+              disabled={delegate.disabled}
+              title={delegate.children}
+              onPress={(): void => {
+                navigate('Delegate', {
+                  validatorAddress: operatorAddress.address,
+                  isUndelegation: false,
+                })
+              }}
+              containerStyle={{ height: 40 }}
+            />
+          </View>
+          <View style={{ flex: 1, marginLeft: 5 }}>
+            <Button
+              theme={'dodgerBlue'}
+              disabled={undelegate.disabled}
+              title={undelegate.children}
+              onPress={(): void => {
+                navigate('Delegate', {
+                  validatorAddress: operatorAddress.address,
+                  isUndelegation: true,
+                })
+              }}
+              containerStyle={{ height: 40 }}
+            />
+          </View>
+        </View>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.title} fontType={'bold'}>
+          {myRewards.title}
+        </Text>
 
-      <ButtonWithAuth
-        {...withdraw}
-        onPress={(): void => open.withdraw()}
-      />
-    </>
+        <View style={{ alignItems: 'flex-start' }}>
+          <Number {...myRewards.display} />
+        </View>
+
+        <View style={styles.buttonBox}>
+          <Button
+            theme={'dodgerBlue'}
+            disabled={withdraw.disabled}
+            title={withdraw.children}
+            onPress={(): void => {
+              runWithdraw()
+            }}
+            containerStyle={{ height: 40 }}
+          />
+        </View>
+      </View>
+    </View>
   )
 }
 
 export default Actions
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    borderBottomColor: '#edf1f7',
+    borderBottomWidth: 1,
+  },
+  title: {
+    fontSize: 14,
+    lineHeight: 21,
+    letterSpacing: 0,
+  },
+  buttonBox: {
+    marginTop: 20,
+    marginBottom: 10,
+  },
+})

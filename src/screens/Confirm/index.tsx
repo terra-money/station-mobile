@@ -26,7 +26,6 @@ import {
   Input,
   WarningBox,
 } from 'components'
-import SwapStore from 'stores/SwapStore'
 import { getDecyrptedKey } from 'utils/wallet'
 
 import { RootStackParams } from 'types/navigation'
@@ -35,8 +34,9 @@ import { RootStackParams } from 'types/navigation'
 import getSigner from 'utils/wallet-helper/signer'
 // @ts-ignore
 import signTx from 'utils/wallet-helper/api/signTx'
+import ConfirmStore from 'stores/ConfirmStore'
 
-type Props = StackScreenProps<RootStackParams, 'SwapConfirm'>
+type Props = StackScreenProps<RootStackParams, 'Confirm'>
 
 const Render = ({
   user,
@@ -48,6 +48,7 @@ const Render = ({
   const { navigate, dispatch } = useNavigation<
     NavigationProp<RootStackParams>
   >()
+
   const { contents, fee, form, result } = useConfirm(confirm, {
     user,
     password: '',
@@ -68,23 +69,20 @@ const Render = ({
   useEffect(() => {
     if (result) {
       dispatch(StackActions.popToTop())
-      navigate('Complete', {
-        result,
-        confirmNavigateTo: 'Swap',
-      })
+      navigate('Complete', { result })
     }
   }, [result])
 
   return (
     <>
-      <SubHeader theme={'blue'} title={form.title} />
+      <SubHeader theme={'sapphire'} title={form.title} />
       <Body
         theme={'sky'}
         scrollable
         containerStyle={{
           paddingTop: 20,
           justifyContent: 'space-between',
-          paddingBottom: 40,
+          marginBottom: 40,
         }}
       >
         <View>
@@ -141,7 +139,7 @@ const Render = ({
         </View>
 
         <Button
-          theme={'blue'}
+          theme={'sapphire'}
           disabled={form.disabled}
           title={form.submitLabel}
           onPress={form.onSubmit}
@@ -153,7 +151,7 @@ const Render = ({
 }
 
 const Screen = (props: Props): ReactElement => {
-  const confirm = useRecoilValue(SwapStore.confirm)
+  const confirm = useRecoilValue(ConfirmStore.confirm)
 
   return (
     <WithAuth>
@@ -169,7 +167,7 @@ const Screen = (props: Props): ReactElement => {
 }
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
 })
 
 export default Screen

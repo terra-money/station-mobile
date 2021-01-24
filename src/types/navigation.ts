@@ -1,4 +1,3 @@
-import { NavigatorScreenParams } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { Card, VestingItemUI } from 'use-station/src'
 
@@ -9,9 +8,9 @@ export type RootStackParams = {
   Dashboard: undefined
   Wallet: undefined
   Staking: undefined
-  ValidatorDetail: undefined
+  StakingPersonal: undefined
+  ValidatorDetail: { address: string }
   Swap: undefined
-  SwapConfirm: undefined
 
   Setting: undefined
   AuthMenu: undefined
@@ -20,17 +19,11 @@ export type RootStackParams = {
   RecoverWallet: undefined
   ConnectView: undefined
   SendTxView: undefined
-  Send: NavigatorScreenParams<SendStackParams>
-  Complete: { result: Card; confirmNavigateTo: keyof RootStackParams }
+  Send: { denomOrToken: string }
+  Complete: { result: Card }
   VestingSchedule: { item: VestingItemUI; title: string }
+  Confirm: undefined
+  Delegate: { validatorAddress: string; isUndelegation: boolean }
 }
 
 export const RootStack = createStackNavigator<RootStackParams>()
-
-/* Send */
-export type SendStackParams = {
-  Send: { denomOrToken: string }
-  Confirm: undefined
-}
-
-export const SendStack = createStackNavigator<SendStackParams>()

@@ -13,7 +13,7 @@ import color from 'styles/color'
 
 export type CopyButtonProps = {
   copyString: string
-  theme?: 'blue' | 'white'
+  theme?: 'sapphire' | 'white'
 }
 
 const CopyButton = (props: CopyButtonProps): ReactElement => {
@@ -22,7 +22,7 @@ const CopyButton = (props: CopyButtonProps): ReactElement => {
   const textStyle: StyleProp<TextStyle> = {}
 
   switch (theme) {
-    case 'blue':
+    case 'sapphire':
       containerStyle.borderColor = color.white
       containerStyle.backgroundColor = color.sapphire
       textStyle.color = color.white
@@ -43,7 +43,7 @@ const CopyButton = (props: CopyButtonProps): ReactElement => {
     >
       <Icon
         name={'description'}
-        color={theme === 'blue' ? color.white : color.sapphire}
+        color={theme === 'sapphire' ? color.white : color.sapphire}
       />
       <Text style={[{ fontSize: 10 }, textStyle]}>COPY</Text>
     </TouchableOpacity>

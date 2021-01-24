@@ -26,7 +26,7 @@ const Screen = (): ReactElement => {
   )
   const [passwordErrMsg, setPasswordErrMsg] = useState('')
 
-  const [passwordConfirm, setPasswordConfirm] = useState('1234567890')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
   const [passwordConfirmErrMsg, setPasswordConfirmErrMsg] = useState(
     ''
   )
@@ -62,7 +62,10 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'blue'} title={'Recover Existing Wallet'} />
+      <SubHeader
+        theme={'sapphire'}
+        title={'Recover Existing Wallet'}
+      />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={styles.section}>
@@ -101,7 +104,7 @@ const Screen = (): ReactElement => {
 
         <Button
           title="Next"
-          theme={'blue'}
+          theme={'sapphire'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
@@ -116,7 +119,7 @@ const HeaderRight = (): ReactElement => (
 )
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
   headerRight: HeaderRight,
 })
 

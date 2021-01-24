@@ -34,7 +34,7 @@ const Screen = (): ReactElement => {
 
   const { signIn } = useAuth()
   const [name, setName] = useState('')
-  const [password, setPassword] = useState('1234567890')
+  const [password, setPassword] = useState('')
 
   const submit = async (): Promise<void> => {
     try {
@@ -104,7 +104,7 @@ const Screen = (): ReactElement => {
           <View>
             <Button
               title="Next"
-              theme={'blue'}
+              theme={'sapphire'}
               onPress={submit}
               containerStyle={{ marginBottom: 10 }}
             />
@@ -123,7 +123,7 @@ const Screen = (): ReactElement => {
 }
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
 })
 
 export default Screen

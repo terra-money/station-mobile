@@ -9,7 +9,7 @@ import {
 import color from 'styles/color'
 
 export type BodyProps = {
-  theme?: 'white' | 'sky' | 'blue'
+  theme?: 'white' | 'sky' | 'sapphire'
   containerStyle?: StyleProp<ViewStyle>
   children: ReactNode
   scrollable?: boolean
@@ -33,7 +33,7 @@ const Body = (props: BodyProps): ReactElement => {
   }
 
   switch (theme) {
-    case 'blue':
+    case 'sapphire':
       containerStyle.backgroundColor = color.sapphire
       break
     case 'sky':

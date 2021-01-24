@@ -8,7 +8,6 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 import Dashboard from '../screens/homeTab/Dashboard'
 import Wallet from '../screens/walletTab/Wallet'
 import Swap from '../screens/swapTab/Swap'
-import SwapConfirm from '../screens/swapTab/Swap/Confirm'
 
 // import Governance from '../screens/governance'
 
@@ -16,7 +15,8 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 
 import { RootStack } from 'types/navigation'
 import Staking from '../screens/stakingTab/Staking'
-import validatorDetail from '../screens/stakingTab/ValidatorDetail'
+import StakingPersonal from '../screens/stakingTab/StakingPersonal'
+import ValidatorDetail from '../screens/stakingTab/ValidatorDetail'
 import { Text, Icon } from 'components'
 
 export const INITIAL = 'Dashboard'
@@ -49,9 +49,14 @@ const StakingStack = (): ReactElement => (
       options={Staking.navigationOptions}
     />
     <RootStack.Screen
+      name="StakingPersonal"
+      component={StakingPersonal}
+      options={StakingPersonal.navigationOptions}
+    />
+    <RootStack.Screen
       name="ValidatorDetail"
-      component={validatorDetail}
-      options={validatorDetail.navigationOptions}
+      component={ValidatorDetail}
+      options={ValidatorDetail.navigationOptions}
     />
   </RootStack.Navigator>
 )
@@ -63,17 +68,12 @@ const SwapStack = (): ReactElement => (
       component={Swap}
       options={Swap.navigationOptions}
     />
-    <RootStack.Screen
-      name="SwapConfirm"
-      component={SwapConfirm}
-      options={SwapConfirm.navigationOptions}
-    />
   </RootStack.Navigator>
 )
 
 const isTabBarVisible = (route: any): boolean => {
   const routeName = getFocusedRouteNameFromRoute(route)
-  if (routeName && ['SwapConfirm'].includes(routeName)) {
+  if (routeName && ['StakingPersonal'].includes(routeName)) {
     return false
   }
 
@@ -139,7 +139,7 @@ const Tabs = (): ReactElement => (
     <Tab.Screen
       name="Staking"
       component={StakingStack}
-      options={{
+      options={({ route }): BottomTabNavigationOptions => ({
         tabBarLabel: ({ color }: any): ReactElement => (
           <Text style={[styles.tabbar_text, { color }]}>STAKING</Text>
         ),
@@ -151,7 +151,8 @@ const Tabs = (): ReactElement => (
             style={{ marginTop: 5 }}
           />
         ),
-      }}
+        tabBarVisible: isTabBarVisible(route),
+      })}
     />
 
     <Tab.Screen
