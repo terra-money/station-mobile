@@ -251,7 +251,6 @@ const styles = EStyleSheet.create({
     width: 150,
     height: 50,
     borderRadius: 25,
-    paddingHorizontal: 58,
     paddingVertical: 13,
     backgroundColor: '$primaryColorOp10',
     alignItems: 'center',
