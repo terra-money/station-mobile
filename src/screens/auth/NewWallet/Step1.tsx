@@ -24,7 +24,7 @@ const Screen = (): ReactElement => {
   )
   const [passwordErrMsg, setPasswordErrMsg] = useState('')
 
-  const [passwordConfirm, setPasswordConfirm] = useState('1234567890')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
   const [passwordConfirmErrMsg, setPasswordConfirmErrMsg] = useState(
     ''
   )

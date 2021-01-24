@@ -36,7 +36,7 @@ interface SchemeArgs {
 }
 
 const SendTxView = (props: Props): ReactElement => {
-  const [password, setPassword] = useState('1234567890')
+  const [password, setPassword] = useState('')
   const { user } = useAuth()
   if (user === undefined) {
     Alert.alert('Error', 'Wallet not connected!', [

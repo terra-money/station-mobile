@@ -34,7 +34,7 @@ const Screen = (): ReactElement => {
 
   const { signIn } = useAuth()
   const [name, setName] = useState('')
-  const [password, setPassword] = useState('1234567890')
+  const [password, setPassword] = useState('')
 
   const submit = async (): Promise<void> => {
     try {
