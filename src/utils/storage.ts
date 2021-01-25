@@ -1,53 +1,7 @@
-import { NativeModules } from 'react-native'
 import { mergeRight as merge, omit } from 'ramda'
+
 import { Settings } from '../types/settings'
 import preferences from 'nativeModules/preferences'
-import { decrypt } from '@terra-money/key-utils'
-
-const { Keystore } = NativeModules
-
-/* keys */
-const SEP = ','
-export const loadNames = async (): Promise<string[]> => {
-  const names = await preferences.getString('names')
-  return names ? JSON.parse(names) : []
-}
-
-export const loadKey = async (name: string): Promise<string> => {
-  const key = await Keystore.read(name)
-  return key
-}
-
-export const storeKeys = (keys: Key[]): void => {
-  const names = keys.map(({ name }) => name)
-  preferences.setString('names', JSON.stringify(names))
-  keys.forEach((key) =>
-    Keystore.write(key.name, JSON.stringify(keys))
-  )
-}
-
-export const clearKeys = async (): Promise<void> => {
-  const names = await preferences.getString('names')
-  await names
-    .split(SEP)
-    .forEach((name: string) => Keystore.remove(name))
-}
-
-export const testPassword = (
-  { name, password }: { name: string; password: string },
-  keys: Key[]
-): boolean => {
-  const key = keys.find((key) => key.name === name)
-
-  if (!key) throw new Error('Key with that name does not exist')
-
-  try {
-    decrypt(key.wallet, password)
-    return true
-  } catch (error) {
-    return false
-  }
-}
 
 // Settings
 const SETTINGS = 'settings'

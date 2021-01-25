@@ -1,9 +1,10 @@
+import { Alert } from 'react-native'
 import { MnemonicKey } from '@terra-money/terra.js'
-import { Alert, NativeModules } from 'react-native'
-import dev from './dev'
 import { encrypt, decrypt } from '@terra-money/key-utils'
 
-const { Preferences, Keystore } = NativeModules
+import dev from './dev'
+import preferences from 'nativeModules/preferences'
+import keystore from 'nativeModules/keystore'
 
 export const generateAddresses = (
   mnemonic: string
@@ -62,7 +63,7 @@ export const decryptKey = (
 
 export const getWallets = async (): Promise<LocalWallet[]> => {
   try {
-    const wallets = await Preferences.getString('wallets')
+    const wallets = await preferences.getString('wallets')
     return JSON.parse(wallets)
   } catch {
     return []
@@ -79,7 +80,7 @@ export const getWallet = async (
 export const getEncryptedKey = async (
   name: string
 ): Promise<string> => {
-  const encryptedKey = await Keystore.read(name)
+  const encryptedKey = await keystore.read(name)
   return encryptedKey
 }
 
@@ -95,11 +96,11 @@ const addWallet = async ({
   if (wallets.find((w) => w.name === wallet.name))
     throw new Error('Wallet with that name already exists')
 
-  await Preferences.setString(
+  await preferences.setString(
     'wallets',
     JSON.stringify([...wallets, wallet])
   )
-  await Keystore.write(wallet.name, key)
+  await keystore.write(wallet.name, key)
 }
 
 export const getDecyrptedKey = async (
@@ -124,7 +125,7 @@ export const testPassword = async ({
   if (!wallet) throw new Error('Wallet with that name does not exist')
 
   try {
-    const key = await Keystore.read(wallet.name)
+    const key = await keystore.read(wallet.name)
     const ret = decrypt(key, password)
     if (ret === '') return false
     return true

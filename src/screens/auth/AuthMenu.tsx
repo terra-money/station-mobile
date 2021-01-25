@@ -9,7 +9,6 @@ import { navigationHeaderOptions } from 'components/layout/Header'
 
 import { Text, Icon, Button, Dot } from 'components'
 
-import { settings, clearKeys } from 'utils/storage'
 import { getWallets } from 'utils/wallet'
 import color from 'styles/color'
 import images from 'assets/images'
@@ -61,32 +60,6 @@ const Screen = (): ReactElement => {
             </View>
           </View>
           <View>
-            {__DEV__ && (
-              <View
-                style={{ flexDirection: 'row', marginBottom: 10 }}
-              >
-                <View style={{ flex: 1 }}>
-                  <Button
-                    theme={'red'}
-                    title={'(DEV) Clear settings'}
-                    onPress={settings.clear}
-                    containerStyle={{
-                      height: 30,
-                    }}
-                  />
-                </View>
-                <View style={{ flex: 1 }}>
-                  <Button
-                    theme={'red'}
-                    title={'(DEV) Clear keys'}
-                    onPress={clearKeys}
-                    containerStyle={{
-                      height: 30,
-                    }}
-                  />
-                </View>
-              </View>
-            )}
             {_.isEmpty(user) ? (
               <>
                 {_.some(wallets) && (
