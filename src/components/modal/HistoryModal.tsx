@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  SafeAreaView,
 } from 'react-native'
 import _ from 'lodash'
 
@@ -25,6 +26,7 @@ import WithAuth from 'components/layout/WithAuth'
 import { Text, Icon, LoadingIcon, Button } from 'components'
 
 import color from 'styles/color'
+import layout from 'styles/layout'
 
 const RenderList = ({
   tsUiList,
@@ -145,11 +147,13 @@ export const HistoryModalButton = (): ReactElement => {
         onRequestClose={(): void => setShowModal(false)}
         transparent
       >
-        <WithAuth>
-          {(user): ReactElement => (
-            <History user={user} closeModal={closeModal} />
-          )}
-        </WithAuth>
+        <SafeAreaView>
+          <WithAuth>
+            {(user): ReactElement => (
+              <History user={user} closeModal={closeModal} />
+            )}
+          </WithAuth>
+        </SafeAreaView>
       </Modal>
     </>
   )
@@ -169,6 +173,7 @@ const styles = StyleSheet.create({
     shadowRadius: 35,
     shadowOpacity: 1,
     backgroundColor: 'white',
+    height: layout.windowHeight,
     borderColor: '#eeeeee',
     borderWidth: 1,
     marginBottom: 20,
