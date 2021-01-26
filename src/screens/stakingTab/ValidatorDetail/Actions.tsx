@@ -9,6 +9,7 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 import { RootStackParams } from 'types'
+import color from 'styles/color'
 
 const Actions = ({
   user,
@@ -117,6 +118,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomColor: '#edf1f7',
     borderBottomWidth: 1,
+    backgroundColor: color.white,
   },
   title: {
     fontSize: 14,

@@ -7,6 +7,7 @@ import Badge from 'components/Badge'
 import { ValidatorUI } from 'use-station/src'
 import images from 'assets/images'
 import { useValidator } from 'hooks/useValidator'
+import color from 'styles/color'
 
 const Top = ({ ui }: { ui: ValidatorUI }): ReactElement => {
   const { profile, moniker, status, operatorAddress } = ui
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomColor: '#edf1f7',
     borderBottomWidth: 1,
+    backgroundColor: color.white,
   },
   profileImage: {
     borderRadius: 12,

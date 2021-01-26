@@ -4,6 +4,7 @@ import _ from 'lodash'
 
 import { Text, Number } from 'components'
 import { ValidatorUI } from 'use-station/src'
+import color from 'styles/color'
 
 const Top = ({ ui }: { ui: ValidatorUI }): ReactElement => {
   const {
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomColor: '#edf1f7',
     borderBottomWidth: 1,
+    backgroundColor: color.white,
   },
   section: {
     flexDirection: 'row',

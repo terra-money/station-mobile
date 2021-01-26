@@ -11,6 +11,9 @@ import Top from './Top'
 import Actions from './Actions'
 import MonikerInfo from './MonikerInfo'
 import Informations from './Informations'
+import Delegations from './Delegations'
+import Delegators from './Delegators'
+import ClaimLog from './ClaimLog'
 
 type Props = StackScreenProps<RootStackParams, 'ValidatorDetail'>
 
@@ -27,15 +30,15 @@ const Render = ({
       {loading ? null : (
         <>
           {ui && (
-            <Body
-              scrollable
-              containerStyle={{ paddingHorizontal: 0 }}
-            >
+            <>
               <Top ui={ui} />
               {user && <Actions ui={ui} user={user} />}
               <MonikerInfo ui={ui} />
               <Informations {...ui} />
-            </Body>
+              <Delegations address={address} />
+              <Delegators address={address} />
+              <ClaimLog address={address} />
+            </>
           )}
         </>
       )}
@@ -64,7 +67,7 @@ const Screen = ({ navigation, route }: Props): ReactElement => {
   return (
     <Body
       theme={'sky'}
-      containerStyle={{ paddingTop: 20 }}
+      containerStyle={{ paddingHorizontal: 0 }}
       scrollable
       onRefresh={refreshPage}
     >
