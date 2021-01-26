@@ -22,6 +22,7 @@ import Send from '../screens/Send'
 import Complete from '../screens/Complete'
 import VestingSchedule from '../screens/VestingSchedule'
 import Confirm from '../screens/Confirm'
+import ConfirmPassword from '../screens/ConfirmPassword'
 import Delegate from '../screens/Delegate'
 
 const TerraTheme = {
@@ -127,6 +128,11 @@ const AppNavigator = ({
           name="Confirm"
           component={Confirm}
           options={Confirm.navigationOptions}
+        />
+        <RootStack.Screen
+          name="ConfirmPassword"
+          component={ConfirmPassword}
+          options={ConfirmPassword.navigationOptions}
         />
         <RootStack.Screen
           name="Delegate"

@@ -19,6 +19,7 @@ import { useBioAuth } from 'hooks/useBioAuth'
 import { isSupportedBiometricAuthentication } from 'utils/bio'
 import { recover, generateAddresses } from 'utils/wallet'
 import color from 'styles/color'
+import { getIsUseBioAuth } from 'utils/storage'
 
 const AddressBox = ({
   bip,
@@ -97,15 +98,18 @@ const Screen = (): ReactElement => {
   const [mk330, setMk330] = useState<MnemonicKey>()
   const [selectedMk, setSelectedMk] = useState<MnemonicKey>()
 
-  const { openBioAuth } = useBioAuth()
+  const { openIsUseBioAuth } = useBioAuth()
 
   const onPressNext = async (): Promise<void> => {
     if (
       selectedMk &&
       (await recover(selectedMk, { name, password }))
     ) {
-      if (await isSupportedBiometricAuthentication()) {
-        openBioAuth()
+      if (
+        false === (await getIsUseBioAuth()) &&
+        (await isSupportedBiometricAuthentication())
+      ) {
+        openIsUseBioAuth()
       }
       dispatch(StackActions.popToTop())
       dispatch(StackActions.replace('WalletRecovered'))

@@ -1,16 +1,14 @@
-import React, { ReactElement, useEffect } from 'react'
+import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { StackScreenProps } from '@react-navigation/stack'
-import { RawKey } from '@terra-money/terra.js'
 import { useRecoilValue } from 'recoil'
 import {
   NavigationProp,
-  StackActions,
   useNavigation,
 } from '@react-navigation/native'
 
-import { User, ConfirmProps, useConfirm } from 'use-station/src'
+import { User, ConfirmProps } from 'use-station/src'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -18,7 +16,6 @@ import SubHeader from 'components/layout/SubHeader'
 import WithAuth from 'components/layout/WithAuth'
 import {
   Text,
-  UseStationForm,
   Button,
   Select,
   FormLabel,
@@ -26,14 +23,9 @@ import {
   Input,
   WarningBox,
 } from 'components'
-import { getDecyrptedKey } from 'utils/wallet'
 
 import { RootStackParams } from 'types/navigation'
-
-// @ts-ignore
-import getSigner from 'utils/wallet-helper/signer'
-// @ts-ignore
-import signTx from 'utils/wallet-helper/api/signTx'
+import { useConfirm } from 'hooks/useConfirm'
 import ConfirmStore from 'stores/ConfirmStore'
 
 type Props = StackScreenProps<RootStackParams, 'Confirm'>
@@ -45,33 +37,12 @@ const Render = ({
   user: User
   confirm: ConfirmProps
 } & Props): ReactElement => {
-  const { navigate, dispatch } = useNavigation<
+  const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
 
-  const { contents, fee, form, result } = useConfirm(confirm, {
-    user,
-    password: '',
-    sign: async ({ tx, base, password }) => {
-      const decyrptedKey = await getDecyrptedKey(
-        user.name || '',
-        password
-      )
-      if (_.isEmpty(decyrptedKey)) {
-        throw new Error('Incorrect password')
-      }
-      const rk = new RawKey(Buffer.from(decyrptedKey, 'hex'))
-      const signer = await getSigner(rk.privateKey, rk.publicKey)
-      const signedTx = await signTx(tx, signer, base)
-      return signedTx
-    },
-  })
-  useEffect(() => {
-    if (result) {
-      dispatch(StackActions.popToTop())
-      navigate('Complete', { result })
-    }
-  }, [result])
+  const { getComfirmData } = useConfirm()
+  const { contents, fee, form } = getComfirmData({ confirm, user })
 
   return (
     <>
@@ -110,7 +81,7 @@ const Render = ({
           })}
 
           <FormLabel text={fee.label} />
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', paddingBottom: 20 }}>
             <View style={{ width: 100, marginRight: 10 }}>
               <Select
                 onValueChange={(value): void => {
@@ -131,8 +102,6 @@ const Render = ({
               <Input editable={false} value={fee.input.attrs.value} />
             </View>
           </View>
-
-          <UseStationForm form={form} />
           {_.map(form.errors, (error, i) => (
             <WarningBox key={`errors-${i}`} message={error} />
           ))}
@@ -140,9 +109,12 @@ const Render = ({
 
         <Button
           theme={'sapphire'}
-          disabled={form.disabled}
-          title={form.submitLabel}
-          onPress={form.onSubmit}
+          title={'next'}
+          onPress={(): void => {
+            navigate('ConfirmPassword', {
+              feeSelectValue: fee.select.attrs.value || '',
+            })
+          }}
           containerStyle={{ marginTop: 20 }}
         />
       </Body>

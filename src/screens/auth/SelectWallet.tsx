@@ -1,51 +1,67 @@
 import React, { useState, useEffect, ReactElement } from 'react'
-import { Alert, StyleSheet, View, Image } from 'react-native'
+import { Alert, StyleSheet, View } from 'react-native'
 import { useAuth } from 'use-station/src'
-import { useNavigation } from '@react-navigation/native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 import _ from 'lodash'
 
 import { getWallets, testPassword } from 'utils/wallet'
-import useOnAuth from './useOnAuth'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
-import { Text, Button, Select, Input, FormLabel } from 'components'
+import {
+  Button,
+  Select,
+  Input,
+  FormLabel,
+  BiometricButton,
+} from 'components'
 
-import color from 'styles/color'
-import images from 'assets/images'
-
-const BiometricButtonTitle = (): ReactElement => {
-  return (
-    <View style={{ flexDirection: 'row' }}>
-      <Image
-        source={images.bio_face}
-        style={{ width: 20, height: 20, marginRight: 10 }}
-      />
-      <Text style={{ color: color.sapphire }}>Biometric</Text>
-    </View>
-  )
-}
+import { getIsUseBioAuth } from 'utils/storage'
+import { RootStackParams } from 'types'
 
 const Screen = (): ReactElement => {
   const [initPageComplete, setInitPageComplete] = useState(false)
   const [wallets, setWallets] = useState<LocalWallet[]>([])
-  useOnAuth()
-  const { goBack } = useNavigation()
+  const [isUseBioAuth, setIsUseBioAuth] = useState(false)
+
+  const { goBack } = useNavigation<NavigationProp<RootStackParams>>()
 
   const { signIn } = useAuth()
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
 
-  const submit = async (): Promise<void> => {
+  const onPressBiometricButton = ({
+    isSuccess,
+    password,
+  }: {
+    isSuccess: boolean
+    password: string
+  }): void => {
+    if (isSuccess) {
+      setPassword(password)
+      submit({ password })
+    }
+  }
+
+  const submit = async ({
+    password,
+  }: {
+    password: string
+  }): Promise<void> => {
     try {
       if ((await testPassword({ name, password })) === false)
         throw new Error('Wrong Password!')
       const wallet = wallets.find((w) => w.name === name)
       wallet && signIn(wallet)
+      goBack()
     } catch (e) {
       Alert.alert(e.toString())
     }
   }
+
   const initPage = async (): Promise<void> => {
     const wallets = await getWallets()
     if (_.some(wallets)) {
@@ -56,6 +72,10 @@ const Screen = (): ReactElement => {
       Alert.alert('No Wallets')
       goBack()
     }
+
+    getIsUseBioAuth().then((isUse) => {
+      setIsUseBioAuth(isUse)
+    })
   }
 
   useEffect(() => {
@@ -105,16 +125,17 @@ const Screen = (): ReactElement => {
             <Button
               title="Next"
               theme={'sapphire'}
-              onPress={submit}
+              onPress={(): Promise<void> => submit({ password })}
               containerStyle={{ marginBottom: 10 }}
             />
-            <Button
-              title={<BiometricButtonTitle />}
-              theme={'gray'}
-              onPress={(): void => {
-                Alert.alert('Comming Soon')
-              }}
-            />
+            {isUseBioAuth && (
+              <View style={{ marginTop: 10 }}>
+                <BiometricButton
+                  walletName={name}
+                  onPress={onPressBiometricButton}
+                />
+              </View>
+            )}
           </View>
         </Body>
       )}
