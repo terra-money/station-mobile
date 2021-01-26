@@ -23,6 +23,7 @@ export type RootStackParams = {
   Complete: { result: Card }
   VestingSchedule: { item: VestingItemUI; title: string }
   Confirm: undefined
+  ConfirmPassword: { feeSelectValue: string }
   Delegate: { validatorAddress: string; isUndelegation: boolean }
 }
 

@@ -3,8 +3,11 @@ import { MnemonicKey } from '@terra-money/terra.js'
 import { encrypt, decrypt } from '@terra-money/key-utils'
 
 import dev from './dev'
-import preferences from 'nativeModules/preferences'
+import preferences, {
+  PreferencesEnum,
+} from 'nativeModules/preferences'
 import keystore from 'nativeModules/keystore'
+import { upsertBioAuthPassord } from './storage'
 
 export const generateAddresses = (
   mnemonic: string
@@ -42,7 +45,7 @@ export const recover = async (
       throw new Error('Encryption error occurred')
     }
     const wallet = { name, address: mk.accAddress }
-    await addWallet({ wallet, key })
+    await addWallet({ wallet, key, password })
     return true
   } catch (e) {
     Alert.alert(e.toString())
@@ -63,7 +66,9 @@ export const decryptKey = (
 
 export const getWallets = async (): Promise<LocalWallet[]> => {
   try {
-    const wallets = await preferences.getString('wallets')
+    const wallets = await preferences.getString(
+      PreferencesEnum.wallets
+    )
     return JSON.parse(wallets)
   } catch {
     return []
@@ -87,20 +92,24 @@ export const getEncryptedKey = async (
 const addWallet = async ({
   wallet,
   key,
+  password,
 }: {
   wallet: LocalWallet
   key: string
+  password: string
 }): Promise<void> => {
   const wallets = await getWallets()
 
   if (wallets.find((w) => w.name === wallet.name))
     throw new Error('Wallet with that name already exists')
 
-  await preferences.setString(
-    'wallets',
+  preferences.setString(
+    PreferencesEnum.wallets,
     JSON.stringify([...wallets, wallet])
   )
-  await keystore.write(wallet.name, key)
+  keystore.write(wallet.name, key)
+
+  await upsertBioAuthPassord({ walletName: wallet.name, password })
 }
 
 export const getDecyrptedKey = async (

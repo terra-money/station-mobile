@@ -1,13 +1,16 @@
 import { mergeRight as merge, omit } from 'ramda'
+import _ from 'lodash'
 
 import { Settings } from '../types/settings'
-import preferences from 'nativeModules/preferences'
-
-// Settings
-const SETTINGS = 'settings'
+import preferences, {
+  PreferencesEnum,
+} from 'nativeModules/preferences'
+import keystore, { KeystoreEnum } from 'nativeModules/keystore'
 
 const getSettings = async (): Promise<Settings> => {
-  const settings = await preferences.getString(SETTINGS)
+  const settings = await preferences.getString(
+    PreferencesEnum.settings
+  )
   return settings ? JSON.parse(settings) : {}
 }
 
@@ -16,7 +19,7 @@ const setSettings = async (
 ): Promise<void> => {
   const settings = await getSettings()
   preferences.setString(
-    SETTINGS,
+    PreferencesEnum.settings,
     JSON.stringify(merge(settings, next))
   )
 }
@@ -26,7 +29,7 @@ const deleteSettings = async (
 ): Promise<void> => {
   const settings = await getSettings()
   preferences.setString(
-    SETTINGS,
+    PreferencesEnum.settings,
     JSON.stringify(omit(keys, settings))
   )
 }
@@ -42,25 +45,59 @@ export const settings = {
   clear: clearSettings,
 }
 
-// Onboarding
-const ONBOARDING = 'skip_onboarding'
-
 export const getSkipOnboarding = async (): Promise<boolean> => {
-  const onboarding = await preferences.getBool(ONBOARDING)
+  const onboarding = await preferences.getBool(
+    PreferencesEnum.onboarding
+  )
   return onboarding ? onboarding : false
 }
 
 export const setSkipOnboarding = async (
   skip: boolean
 ): Promise<void> => {
-  preferences.setBool(ONBOARDING, skip)
+  preferences.setBool(PreferencesEnum.onboarding, skip)
 }
 
-const USE_BIO_AUTH = 'use_bio_auth'
+export const upsertBioAuthPassord = async ({
+  password,
+  walletName,
+}: {
+  password: string
+  walletName: string
+}): Promise<void> => {
+  const bioAuthData = await keystore.read(KeystoreEnum.bioAuthData)
+  let jsonData: Record<string, string> = {}
 
-export const setUseBioAuth = async (use: boolean): Promise<void> => {
-  preferences.setBool(USE_BIO_AUTH, use)
+  if (_.some(bioAuthData)) {
+    jsonData = JSON.parse(bioAuthData)
+  }
+
+  jsonData[walletName] = password
+  keystore.write(KeystoreEnum.bioAuthData, JSON.stringify(jsonData))
 }
 
-export const getUseBioAuth = async (): Promise<boolean> =>
-  preferences.getBool(USE_BIO_AUTH)
+export const setUseBioAuth = async ({
+  isUse,
+}: {
+  isUse: boolean
+}): Promise<void> => {
+  preferences.setBool(PreferencesEnum.useBioAuth, isUse)
+}
+
+export const getIsUseBioAuth = async (): Promise<boolean> =>
+  preferences.getBool(PreferencesEnum.useBioAuth)
+
+export const getBioAuthPassword = async ({
+  walletName,
+}: {
+  walletName: string
+}): Promise<string> => {
+  const bioAuthData = await keystore.read(KeystoreEnum.bioAuthData)
+
+  if (_.some(bioAuthData)) {
+    const jsonData = JSON.parse(bioAuthData)
+    return jsonData[walletName]
+  }
+
+  return ''
+}

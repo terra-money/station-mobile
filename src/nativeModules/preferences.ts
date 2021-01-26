@@ -1,5 +1,12 @@
 import { NativeModules } from 'react-native'
 
+export enum PreferencesEnum {
+  settings = 'settings',
+  onboarding = 'skipOnboarding',
+  useBioAuth = 'useBioAuth',
+  wallets = 'wallets',
+}
+
 export type Preferences = {
   setString(key: string, val: string): void
   getString(key: string): Promise<string>

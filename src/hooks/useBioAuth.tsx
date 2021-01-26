@@ -53,7 +53,7 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
           theme={'sapphire'}
           title={'Enable'}
           onPress={(): void => {
-            setUseBioAuth(true)
+            setUseBioAuth({ isUse: true })
             close()
           }}
           containerStyle={{ marginBottom: 10 }}
@@ -65,7 +65,7 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
 }
 
 export const useBioAuth = (): {
-  openBioAuth: () => void
+  openIsUseBioAuth: () => void
 } => {
   const { modal } = useApp()
 
@@ -81,12 +81,12 @@ export const useBioAuth = (): {
     initModal()
   }, [])
 
-  const openBioAuth = (): void => {
+  const openIsUseBioAuth = (): void => {
     modal.open(BioAuth({ ...modal, bioType }))
   }
 
   return {
-    openBioAuth,
+    openIsUseBioAuth,
   }
 }
 
