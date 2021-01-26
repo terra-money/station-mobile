@@ -41,12 +41,12 @@ const PagerContents = [
     description:
       'Delegate your coins to Terra Validators to earn even more coins.',
   },
-  {
-    image: images.on_boarding_3,
-    title: 'Get Involved',
-    description:
-      'Vote and participate in proposals to develop the Terra Ecosystem.',
-  },
+  // {
+  //   image: images.on_boarding_3,
+  //   title: 'Get Involved',
+  //   description:
+  //     'Vote and participate in proposals to develop the Terra Ecosystem.',
+  // },
   {
     image: images.on_boarding_4,
     title: 'Start Exploring',
