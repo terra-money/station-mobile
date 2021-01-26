@@ -5,6 +5,7 @@ import _ from 'lodash'
 import { format, useDelegators } from 'use-station/src'
 import { ExtLink, Icon, Number, Text } from 'components'
 import color from 'styles/color'
+import { DelegatorsModalButton } from 'components/modal/DelegatorsModalContents'
 
 const Delegations = ({
   address,
@@ -18,40 +19,65 @@ const Delegations = ({
       <Text style={styles.title} fontType={'bold'}>
         {title}
       </Text>
-      {_.map(ui.table?.contents, (content, index) => {
-        return (
-          <View key={`contents-${index}`} style={styles.content}>
-            <Text style={styles.contentAddress} fontType={'medium'}>
-              {format.truncate(content.address, [5, 5])}
-            </Text>
-            <View style={styles.contentRight}>
-              <Number
-                value={content.display.value}
-                numberFontStyle={styles.contentNumber}
-              />
-              <Text style={styles.contentWeight}>
-                {content.weight}
-              </Text>
-
-              <View style={styles.contentLink}>
+      {ui.table ? (
+        <>
+          {_.map(ui.table.contents, (item, index) => {
+            return (
+              <View key={`contents-${index}`} style={styles.content}>
                 <ExtLink
-                  url={content.link}
+                  url={item.link}
                   title={
-                    <Icon
-                      size={24}
-                      color={'#d8d8d8'}
-                      name={'open-in-new'}
-                    />
+                    <Text
+                      style={styles.contentAddress}
+                      fontType={'medium'}
+                    >
+                      {format.truncate(item.address, [5, 5])}
+                    </Text>
                   }
                   textStyle={{
                     fontSize: 10,
                   }}
                 />
+                <View style={styles.contentRight}>
+                  <Number
+                    value={item.display.value}
+                    numberFontStyle={styles.contentNumber}
+                  />
+                  <Text style={styles.contentWeight}>
+                    {item.weight}
+                  </Text>
+
+                  <View style={styles.contentLink}>
+                    <ExtLink
+                      url={item.link}
+                      title={
+                        <Icon
+                          size={24}
+                          color={'#d8d8d8'}
+                          name={'open-in-new'}
+                        />
+                      }
+                      textStyle={{
+                        fontSize: 10,
+                      }}
+                    />
+                  </View>
+                </View>
               </View>
-            </View>
-          </View>
-        )
-      })}
+            )
+          })}
+          <DelegatorsModalButton address={address} />
+        </>
+      ) : (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Icon
+            name={'info-outline'}
+            color={color.sapphire}
+            size={16}
+          />
+          <Text>{ui.card?.content}</Text>
+        </View>
+      )}
     </View>
   ) : (
     <View />
@@ -85,6 +111,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     letterSpacing: 0,
+    color: color.dodgerBlue,
   },
   contentNumber: {
     fontSize: 14,

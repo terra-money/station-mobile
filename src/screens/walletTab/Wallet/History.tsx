@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { TxsUI, TxType, useMenu, User, useTxs } from 'use-station/src'
 
 import HistoryItem from 'components/history/HistoryItem'
-import { HistoryModalButton } from 'components/modal/HistoryModal'
+import { HistoryModalButton } from 'components/modal/HistoryModalContents'
 import { Text, ErrorComponent } from 'components'
 
 const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
