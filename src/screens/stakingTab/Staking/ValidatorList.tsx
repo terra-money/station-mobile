@@ -4,19 +4,17 @@ import { useNavigation } from '@react-navigation/native'
 import { Options, StakingUI, ValidatorUI } from 'use-station/src'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
 import EStyleSheet from 'react-native-extended-stylesheet'
+import _ from 'lodash'
 
-import Icon from 'components/Icon'
 import Picker from 'components/Picker'
 import Card from 'components/Card'
 import { Text } from 'components'
 
 import images from 'assets/images'
-import dev from 'utils/dev'
+import { useValidator } from 'hooks/useValidator'
 
 // H. REQ i18n
 const validatorTitle = 'Validators'
-
-const VALIDATOR_LIST = 'https://terra.money/station/validators.json'
 
 const validatorFilter: Options = [
   { value: 'Delegation Return', children: 'Delegation Return' },
@@ -32,22 +30,16 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
     validatorFilter[0].value
   )
   const [reverseContents, setReverseContents] = useState(false)
-  const [contactableValidators, setContactableValidators] = useState()
 
-  /**
-   * email이 있는 validator 얻어오기
-   */
-  const getContactableValidators = async (): Promise<void> => {
-    try {
-      const response = await fetch(VALIDATOR_LIST)
-      setContactableValidators(await response.json())
-    } catch (e) {
-      dev.log(e)
-    }
-  }
+  const [validatorList, setValidatorList] = useState<
+    Record<string, string>
+  >({})
 
+  const { getValidatorList } = useValidator()
   useEffect(() => {
-    getContactableValidators() // 이거 밖으로 빼서 Props로 받아오도록 함. 2번 렌더링 됨..
+    getValidatorList().then((list) => {
+      setValidatorList(list)
+    })
   }, [])
 
   /**
@@ -113,31 +105,14 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
         >
           {validatorTitle}
         </Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Picker
-            value={currentFilter}
-            options={validatorFilter}
-            onChange={setCurrentFilter}
-            style={[styles.textColor, styles.textFilter]}
-            showBox={false}
-          >
-            <Text>{currentFilter}</Text>
-          </Picker>
-          <TouchableOpacity
-            onPress={(): void => {
-              contents.reverse()
-              contents.sort(sortContents)
-              setReverseContents(!reverseContents)
-            }}
-          >
-            <Icon
-              style={{ marginLeft: 9 }}
-              name="swap-vert"
-              size={18}
-              color="rgb(32, 67, 181)"
-            />
-          </TouchableOpacity>
-        </View>
+        <Picker
+          value={currentFilter}
+          options={validatorFilter}
+          onChange={setCurrentFilter}
+          style={[styles.textColor, styles.textFilter]}
+          showBox={false}
+          rightIcon={'swap-vert'}
+        />
       </View>
       {contents.map((content, index) => (
         <TouchableOpacity
@@ -200,17 +175,16 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
               <Text style={[styles.textColor, styles.textMoniker]}>
                 {content.moniker}
               </Text>
-              {!!contactableValidators &&
-                !!contactableValidators[
-                  content?.operatorAddress?.address
-                ] && (
-                  <EntypoIcon
-                    style={{ marginLeft: 6 }}
-                    name="check"
-                    size={14}
-                    color="rgb(118, 169, 244)"
-                  />
-                )}
+              {_.some(
+                validatorList[content.operatorAddress.address]
+              ) && (
+                <EntypoIcon
+                  style={{ marginLeft: 6 }}
+                  name="check"
+                  size={14}
+                  color="rgb(118, 169, 244)"
+                />
+              )}
             </View>
             <Text style={[styles.textColor, styles.textPercent]}>
               {currentFilter === 'Delegation Return'
