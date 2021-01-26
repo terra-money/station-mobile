@@ -1,14 +1,20 @@
 import { useEffect } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 import { useAuth } from 'use-station/src'
 import { settings } from 'utils/storage'
+import { RootStackParams } from 'types'
 
 export default (): void => {
-  const { goBack } = useNavigation()
+  const { navigate } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
   const { user } = useAuth()
 
   useEffect(() => {
     user ? settings.set({ user }) : settings.delete(['user'])
-    user && goBack()
+    user && navigate('Tabs')
   }, [user])
 }
