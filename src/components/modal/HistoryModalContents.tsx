@@ -1,11 +1,9 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import {
-  Modal,
   StyleSheet,
   TouchableOpacity,
   View,
   FlatList,
-  SafeAreaView,
 } from 'react-native'
 import _ from 'lodash'
 
@@ -23,10 +21,11 @@ import {
 import ErrorComponent from 'components/ErrorComponent'
 import HistoryItem from 'components/history/HistoryItem'
 import WithAuth from 'components/layout/WithAuth'
-import { Text, Icon, LoadingIcon, Button } from 'components'
+import { Text, Icon, LoadingIcon } from 'components'
 
 import color from 'styles/color'
 import layout from 'styles/layout'
+import { BaseModalButton } from './BaseModal'
 
 const RenderList = ({
   tsUiList,
@@ -117,6 +116,13 @@ const History = ({
     }
   }, [loading])
 
+  useEffect(() => {
+    return (): void => {
+      setIsLastPage(true)
+      setTsUiList([])
+    }
+  }, [])
+
   return error ? (
     <ErrorComponent />
   ) : ui ? (
@@ -127,44 +133,24 @@ const History = ({
 }
 
 export const HistoryModalButton = (): ReactElement => {
-  const [showModal, setShowModal] = useState(false)
-
-  const closeModal = (): void => {
-    setShowModal(false)
-  }
-
   return (
-    <>
-      <Button
-        theme={'gray'}
-        title={'More'}
-        onPress={(): void => {
-          setShowModal(true)
-        }}
-      />
-      <Modal
-        visible={showModal}
-        onRequestClose={(): void => setShowModal(false)}
-        transparent
-      >
-        <SafeAreaView>
-          <WithAuth>
-            {(user): ReactElement => (
-              <History user={user} closeModal={closeModal} />
-            )}
-          </WithAuth>
-        </SafeAreaView>
-      </Modal>
-    </>
+    <BaseModalButton
+      contents={({ closeModal }): ReactElement => (
+        <WithAuth>
+          {(user): ReactElement => (
+            <History user={user} closeModal={closeModal} />
+          )}
+        </WithAuth>
+      )}
+    />
   )
 }
 
-export default History
-
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 20,
-    borderRadius: 20,
+    paddingTop: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     shadowColor: 'rgba(0, 0, 0, 0.05)',
     shadowOffset: {
       width: 0,

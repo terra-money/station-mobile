@@ -5,6 +5,8 @@ import _ from 'lodash'
 import { useDelegations } from 'use-station/src'
 import { ExtLink, Icon, Number, Text } from 'components'
 import color from 'styles/color'
+import { getDateYMD } from 'utils/date'
+import { DelegationsModalButton } from 'components/modal/DelegationsModalContents'
 
 const Delegations = ({
   address,
@@ -12,54 +14,65 @@ const Delegations = ({
   address: string
 }): ReactElement => {
   const { title, ui } = useDelegations(address, { page: 1 })
-  const getContentDateFormat = (date: string): string => {
-    const match = date.match(/^(\d){4}\.(\d){2}\.(\d){2}/g)
-    return match ? match[0] : ''
-  }
+
   return ui ? (
     <View style={styles.container}>
       <Text style={styles.title} fontType={'bold'}>
         {title}
       </Text>
-      {_.map(ui.table?.contents, (content, index) => {
-        return (
-          <View key={`contents-${index}`} style={styles.content}>
-            <Text style={styles.contentType} fontType={'medium'}>
-              {content.type}
-            </Text>
-            <View style={styles.contentRight}>
-              <Number
-                value={content.display.value}
-                numberFontStyle={[
-                  styles.contentNumber,
-                  content.display.value.startsWith('-')
-                    ? { color: '#e64c57' }
-                    : { color: color.dodgerBlue },
-                ]}
-              />
-              <Text style={styles.contentDate}>
-                {getContentDateFormat(content.date)}
-              </Text>
+      {ui.table ? (
+        <>
+          {_.map(ui.table?.contents, (item, index) => {
+            return (
+              <View key={`contents-${index}`} style={styles.content}>
+                <Text style={styles.contentType} fontType={'medium'}>
+                  {item.type}
+                </Text>
+                <View style={styles.contentRight}>
+                  <Number
+                    value={item.display.value}
+                    numberFontStyle={[
+                      styles.contentNumber,
+                      item.display.value.startsWith('-')
+                        ? { color: '#e64c57' }
+                        : { color: color.dodgerBlue },
+                    ]}
+                  />
+                  <Text style={styles.contentDate}>
+                    {getDateYMD(item.date)}
+                  </Text>
 
-              <View style={styles.contentLink}>
-                <ExtLink
-                  url={content.link}
-                  title={
-                    <Icon
-                      size={24}
-                      color={'#d8d8d8'}
-                      name={'open-in-new'}
+                  <View style={styles.contentLink}>
+                    <ExtLink
+                      url={item.link}
+                      title={
+                        <Icon
+                          size={24}
+                          color={'#d8d8d8'}
+                          name={'open-in-new'}
+                        />
+                      }
+                      textStyle={{
+                        fontSize: 10,
+                      }}
                     />
-                  }
-                  textStyle={{
-                    fontSize: 10,
-                  }}
-                />
+                  </View>
+                </View>
               </View>
-            </View>
-          </View>
-        )
-      })}
+            )
+          })}
+          <DelegationsModalButton address={address} />
+        </>
+      ) : (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Icon
+            name={'info-outline'}
+            color={color.sapphire}
+            size={16}
+          />
+          <Text>{ui.card?.content}</Text>
+        </View>
+      )}
     </View>
   ) : (
     <View />
