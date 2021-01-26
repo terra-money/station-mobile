@@ -1,17 +1,28 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 import _ from 'lodash'
-import validators from '../../../../validators'
 
 import { Text, Icon } from 'components'
 import Badge from 'components/Badge'
 import { ValidatorUI } from 'use-station/src'
 import images from 'assets/images'
+import { useValidator } from 'hooks/useValidator'
 
 const Top = ({ ui }: { ui: ValidatorUI }): ReactElement => {
   const { profile, moniker, status, operatorAddress } = ui
+  const [validatorList, setValidatorList] = useState<
+    Record<string, string>
+  >({})
 
-  const isValidator = _.some(validators[operatorAddress.address])
+  const { getValidatorList } = useValidator()
+  useEffect(() => {
+    getValidatorList().then((list) => {
+      setValidatorList(list)
+    })
+  }, [])
+
+  const isValidator = _.some(validatorList[operatorAddress.address])
+
   return (
     <View style={styles.container}>
       <View>

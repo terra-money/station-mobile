@@ -18,7 +18,7 @@ interface Props {
   options?: Options
   style?: StyleProp<TextStyle>
   showBox: boolean
-  children: ReactElement
+  rightIcon?: string
 }
 
 const Picker = ({
@@ -27,6 +27,7 @@ const Picker = ({
   options,
   style,
   showBox,
+  rightIcon,
 }: Props): ReactElement => {
   const { drawer } = useApp()
 
@@ -79,7 +80,17 @@ const Picker = ({
         </View>
       ) : (
         // DASHBOARD 이외 Text만 출력되어야 할 곳에서 사용
-        <Text style={style}>{children}</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={style}>{children}</Text>
+          {rightIcon && (
+            <Icon
+              name={rightIcon}
+              size={18}
+              color="rgb(32, 67, 181)"
+              style={{ marginLeft: 5 }}
+            />
+          )}
+        </View>
       )}
     </TouchableOpacity>
   )

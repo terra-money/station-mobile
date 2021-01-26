@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { StackScreenProps } from '@react-navigation/stack'
@@ -43,6 +43,20 @@ const Render = ({
 
   const { getComfirmData } = useConfirm()
   const { contents, fee, form } = getComfirmData({ confirm, user })
+
+  // To ignore password validation.
+  // form.fields must have password
+  useEffect(() => {
+    if (form) {
+      const formPassword = _.find(
+        form.fields,
+        (x) => x.attrs.id === 'password'
+      )
+      if (formPassword?.setValue) {
+        formPassword.setValue('1')
+      }
+    }
+  }, [form])
 
   return (
     <>
@@ -109,6 +123,7 @@ const Render = ({
 
         <Button
           theme={'sapphire'}
+          disabled={form.disabled}
           title={'next'}
           onPress={(): void => {
             navigate('ConfirmPassword', {

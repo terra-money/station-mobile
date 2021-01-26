@@ -79,7 +79,7 @@ const FormInput = ({ field }: { field: Field }): ReactElement => {
 const FormSelect = ({ field }: { field: Field }): ReactElement => {
   const { attrs, setValue } = field
   const options: SelectOptionProps[] = _.map(
-    field.options,
+    field.options?.filter((x) => !x.disabled),
     (option) => {
       return {
         label: option.children,

@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native'
 import React, { ReactElement, useRef, useState } from 'react'
 import {
   Image,
@@ -85,53 +84,60 @@ const RenderSwiper = ({
 
 const RenderButton = ({
   refSwipe,
-  navigation,
+  setshowOnBoarding,
   isLastPage,
 }: {
   refSwipe: React.RefObject<Swiper>
-  navigation: any
+  setshowOnBoarding: React.Dispatch<React.SetStateAction<boolean>>
   isLastPage: boolean
-}): ReactElement => (
-  <View style={styles.SwiperButtonContainer}>
-    {!isLastPage ? (
-      <>
-        <TouchableOpacity
-          style={styles.SwiperButtonSkip}
-          onPress={(): void => enterTabs({ navigation })}
-        >
-          <Text style={styles.SwiperButtonSkipText}>Skip</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.SwiperButtonNext}
-          onPress={(): void => refSwipe.current?.scrollBy(1)}
-        >
-          <Icon
-            name="arrow-right"
-            size={20}
-            color="rgb(255,255,255)"
-          />
-        </TouchableOpacity>
-      </>
-    ) : (
-      <>
-        <TouchableOpacity
-          style={styles.SwiperButtonStart}
-          onPress={(): void => enterTabs({ navigation })}
-        >
-          <Text
-            style={{
-              fontSize: 16,
-              lineHeight: 24,
-              color: 'rgb(255,255,255)',
-            }}
+}): ReactElement => {
+  const enterTabs = (): void => {
+    setSkipOnboarding(true)
+    setshowOnBoarding(false)
+  }
+
+  return (
+    <View style={styles.SwiperButtonContainer}>
+      {!isLastPage ? (
+        <>
+          <TouchableOpacity
+            style={styles.SwiperButtonSkip}
+            onPress={enterTabs}
           >
-            Get Started
-          </Text>
-        </TouchableOpacity>
-      </>
-    )}
-  </View>
-)
+            <Text style={styles.SwiperButtonSkipText}>Skip</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.SwiperButtonNext}
+            onPress={(): void => refSwipe.current?.scrollBy(1)}
+          >
+            <Icon
+              name="arrow-right"
+              size={20}
+              color="rgb(255,255,255)"
+            />
+          </TouchableOpacity>
+        </>
+      ) : (
+        <>
+          <TouchableOpacity
+            style={styles.SwiperButtonStart}
+            onPress={enterTabs}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                lineHeight: 24,
+                color: 'rgb(255,255,255)',
+              }}
+            >
+              Get Started
+            </Text>
+          </TouchableOpacity>
+        </>
+      )}
+    </View>
+  )
+}
 
 const RenderLanguageButton = (): ReactElement => (
   <View style={styles.SelectLanguageContainer}>
@@ -147,15 +153,13 @@ const RenderLanguageButton = (): ReactElement => (
   </View>
 )
 
-const enterTabs = ({ navigation }: { navigation: any }): void => {
-  setSkipOnboarding(true)
-  navigation.navigate('Tabs')
-}
-
-const OnBoarding = (): ReactElement => {
+const OnBoarding = ({
+  setshowOnBoarding,
+}: {
+  setshowOnBoarding: React.Dispatch<React.SetStateAction<boolean>>
+}): ReactElement => {
   const [lastPage, setLastPage] = useState(false)
   const refSwipe = useRef<Swiper>(null)
-  const navigation = useNavigation()
 
   return (
     <>
@@ -163,7 +167,7 @@ const OnBoarding = (): ReactElement => {
       <RenderSwiper refSwipe={refSwipe} setLastPage={setLastPage} />
       <RenderButton
         refSwipe={refSwipe}
-        navigation={navigation}
+        setshowOnBoarding={setshowOnBoarding}
         isLastPage={lastPage}
       />
     </>

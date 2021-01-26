@@ -31,6 +31,7 @@ import { AppProvider } from './src/hooks'
 
 import AppNavigator from './src/navigatoin'
 import CodePush from 'react-native-code-push'
+import OnBoarding from './src/screens/OnBoarding'
 
 EStyleSheet.build({
   $primaryColor: 'rgb(32,67,181)', //"#2043B5",
@@ -89,7 +90,8 @@ let App = ({
   const { name: currentChain = '' } = currentChainOptions
 
   /* onboarding */
-  const [skipOnboarding, setSkipOnboarding] = useState<boolean>()
+
+  const [showOnBoarding, setshowOnBoarding] = useState<boolean>(false)
 
   /* auth */
   const auth = useAuthState(user)
@@ -99,7 +101,7 @@ let App = ({
 
   useEffect(() => {
     const checkShowOnboarding = async (): Promise<void> => {
-      setSkipOnboarding(await getSkipOnboarding())
+      setshowOnBoarding(false === (await getSkipOnboarding()))
       SplashScreen.hide()
     }
     checkShowOnboarding()
@@ -107,59 +109,65 @@ let App = ({
 
   return (
     <>
-      {ready && (
-        <AppProvider value={{ drawer, modal }}>
-          <ConfigProvider value={config}>
-            <AuthProvider value={auth}>
-              <SafeAreaProvider>
-                <StatusBar
-                  barStyle="dark-content"
-                  backgroundColor="transparent"
-                  translucent={false}
-                />
-                <RecoilRoot>
-                  <AppNavigator skipOnboarding={skipOnboarding} />
-                  <Modal
-                    visible={modal.isOpen}
-                    onRequestClose={modal.close}
-                    transparent
+      {showOnBoarding ? (
+        <OnBoarding setshowOnBoarding={setshowOnBoarding} />
+      ) : (
+        ready && (
+          <AppProvider value={{ drawer, modal }}>
+            <ConfigProvider value={config}>
+              <AuthProvider value={auth}>
+                <SafeAreaProvider>
+                  <StatusBar
+                    barStyle="dark-content"
+                    backgroundColor="transparent"
+                    translucent={false}
+                  />
+                  <RecoilRoot>
+                    <AppNavigator />
+                    <Modal
+                      visible={modal.isOpen}
+                      onRequestClose={modal.close}
+                      transparent
+                    >
+                      <TouchableOpacity
+                        style={{
+                          flex: 1,
+                          backgroundColor: 'rgba(0,0,0,.5)',
+                        }}
+                        onPress={modal.close}
+                      >
+                        <SafeAreaView style={{ flex: 1 }}>
+                          {modal.content}
+                        </SafeAreaView>
+                      </TouchableOpacity>
+                    </Modal>
+                  </RecoilRoot>
+                </SafeAreaProvider>
+
+                <Modal
+                  visible={drawer.isOpen}
+                  animationType="fade"
+                  transparent
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: 'rgba(0,0,0,.5)',
+                    }}
                   >
                     <TouchableOpacity
-                      style={{
-                        flex: 1,
-                        backgroundColor: 'rgba(0,0,0,.5)',
-                      }}
-                      onPress={modal.close}
-                    >
-                      <SafeAreaView style={{ flex: 1 }}>
-                        {modal.content}
-                      </SafeAreaView>
-                    </TouchableOpacity>
-                  </Modal>
-                </RecoilRoot>
-              </SafeAreaProvider>
-
-              <Modal
-                visible={drawer.isOpen}
-                animationType="fade"
-                transparent
-              >
-                <View
-                  style={{
-                    flex: 1,
-                    backgroundColor: 'rgba(0,0,0,.5)',
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={drawer.close}
-                    style={styles.top}
-                  />
-                  <View style={styles.bottom}>{drawer.content}</View>
-                </View>
-              </Modal>
-            </AuthProvider>
-          </ConfigProvider>
-        </AppProvider>
+                      onPress={drawer.close}
+                      style={styles.top}
+                    />
+                    <View style={styles.bottom}>
+                      {drawer.content}
+                    </View>
+                  </View>
+                </Modal>
+              </AuthProvider>
+            </ConfigProvider>
+          </AppProvider>
+        )
       )}
     </>
   )

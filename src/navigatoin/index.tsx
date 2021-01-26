@@ -33,11 +33,7 @@ const TerraTheme = {
   },
 }
 
-const AppNavigator = ({
-  skipOnboarding,
-}: {
-  skipOnboarding?: boolean
-}): ReactElement => {
+const AppNavigator = (): ReactElement => {
   /* linking */
   const linking: LinkingOptions = {
     prefixes: ['terrastation://'],
@@ -55,9 +51,7 @@ const AppNavigator = ({
 
   return (
     <NavigationContainer theme={TerraTheme} linking={linking}>
-      <RootStack.Navigator
-        initialRouteName={skipOnboarding ? 'Tabs' : 'OnBoarding'}
-      >
+      <RootStack.Navigator initialRouteName={'Tabs'}>
         <RootStack.Screen
           name="OnBoarding"
           component={OnBoarding}
