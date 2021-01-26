@@ -37,9 +37,7 @@ const Message = ({
         }}
       >
         <View style={{ flex: 1 }}>
-          <Text style={{ color: '#5493f7', fontSize: 14 }}>
-            {message.text}
-          </Text>
+          <Text style={{ fontSize: 14 }}>{message.text}</Text>
         </View>
 
         <View style={{ paddingLeft: 30 }}>
