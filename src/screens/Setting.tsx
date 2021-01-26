@@ -1,12 +1,13 @@
 import React, { ReactElement } from 'react'
-import { View } from 'react-native'
-import EStyleSheet from 'react-native-extended-stylesheet'
+import { View, StyleSheet } from 'react-native'
+
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import SubPageHeader from '../components/SubPageHeader'
 
 import { Text } from 'components'
+import color from 'styles/color'
 
 interface SettingItemProps {
   k: string // key
@@ -80,7 +81,7 @@ const Setting = (): ReactElement => {
   )
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   settingContainer: {
     backgroundColor: 'white',
     flexDirection: 'row',
@@ -90,7 +91,7 @@ const styles = EStyleSheet.create({
   settingKey: {
     fontSize: 16,
     lineHeight: 24,
-    color: '$primaryColor',
+    color: color.sapphire,
   },
   settingValue: {
     fontSize: 16,
@@ -100,7 +101,7 @@ const styles = EStyleSheet.create({
   buttonText: {
     fontSize: 16,
     lineHeight: 24,
-    color: '$primaryColor',
+    color: color.sapphire,
   },
 })
 

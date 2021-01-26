@@ -1,11 +1,15 @@
 import React, { ReactElement } from 'react'
-import { TouchableWithoutFeedback, View } from 'react-native'
+import {
+  TouchableWithoutFeedback,
+  View,
+  StyleSheet,
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useInfo, Trans } from 'use-station/src'
-// import Info from './Info'
-import EStyleSheet from 'react-native-extended-stylesheet'
+
 import Card from './Card'
 import { Text } from 'components'
+import color from 'styles/color'
 
 const PleaseSignIn = (): ReactElement => {
   const { navigate } = useNavigation()
@@ -31,20 +35,20 @@ const PleaseSignIn = (): ReactElement => {
   )
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   title: {
-    color: '$primaryColor',
+    color: color.sapphire,
     fontSize: 18,
     lineHeight: 27,
     marginBottom: 5,
   },
   content: {
-    color: '$primaryColor',
+    color: color.sapphire,
     fontSize: 14,
     lineHeight: 21,
   },
   button: {
-    backgroundColor: '$primaryColor',
+    backgroundColor: color.sapphire,
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',

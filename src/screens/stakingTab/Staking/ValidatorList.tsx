@@ -1,9 +1,14 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { View, Image, TouchableOpacity } from 'react-native'
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Options, StakingUI, ValidatorUI } from 'use-station/src'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
-import EStyleSheet from 'react-native-extended-stylesheet'
+
 import _ from 'lodash'
 
 import Picker from 'components/Picker'
@@ -12,6 +17,7 @@ import { Text } from 'components'
 
 import images from 'assets/images'
 import { useValidator } from 'hooks/useValidator'
+import color from 'styles/color'
 
 // H. REQ i18n
 const validatorTitle = 'Validators'
@@ -207,9 +213,9 @@ ValidatorList.option = {}
 
 export default ValidatorList
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   textColor: {
-    color: '$primaryColor',
+    color: color.sapphire,
   },
   textValidators: {
     fontSize: 16,

@@ -4,10 +4,8 @@ import {
   useGovernance,
   ProposalItemUI,
 } from 'use-station/src'
-
-import { View, StatusBar } from 'react-native'
+import { View, StatusBar, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import EStyleSheet from 'react-native-extended-stylesheet'
 
 import ProposalItem from './ProposalItem'
 import Icon from 'components/Icon'
@@ -15,6 +13,7 @@ import { Text } from 'components'
 import Info from 'components/Info'
 import Page from 'components/Page'
 import dev from 'utils/dev'
+import color from 'styles/color'
 
 const Governance = (): ReactElement => {
   const { Governance: title } = useMenu()
@@ -169,10 +168,10 @@ const Governance = (): ReactElement => {
   )
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   ParametersItemText: {
     fontSize: 13,
-    color: '$primaryColor',
+    color: color.sapphire,
   },
 })
 

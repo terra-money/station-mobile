@@ -1,13 +1,18 @@
 import React, { ReactElement, ReactNode } from 'react'
-import { View, TouchableOpacity, ViewStyle } from 'react-native'
+import {
+  View,
+  TouchableOpacity,
+  ViewStyle,
+  StyleSheet,
+} from 'react-native'
 import _ from 'lodash'
-import { API } from 'use-station/src'
-
-import EStyleSheet from 'react-native-extended-stylesheet'
 import { AreaChart, Path } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 
+import { API } from 'use-station/src'
+
 import { Text, Icon } from 'components'
+import color from 'styles/color'
 
 interface Props extends Partial<API<any>> {
   style?: ViewStyle
@@ -116,9 +121,9 @@ const Card = ({
 export default Card
 
 /* styles */
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   text: {
-    color: '$primaryColor',
+    color: color.sapphire,
   },
 
   card: {
@@ -179,7 +184,7 @@ const styles = EStyleSheet.create({
   },
 })
 
-const lightStyles = EStyleSheet.create({
+const lightStyles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
     shadowColor: 'black',
@@ -189,10 +194,10 @@ const lightStyles = EStyleSheet.create({
   },
 })
 
-const darkStyles = EStyleSheet.create({
+const darkStyles = StyleSheet.create({
   text: { color: 'white' },
   card: {
-    backgroundColor: '$primaryColor',
+    backgroundColor: color.sapphire,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 20 },
     shadowRadius: 20,

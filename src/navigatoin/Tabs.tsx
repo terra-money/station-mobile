@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react'
+import { StyleSheet } from 'react-native'
 import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
@@ -10,8 +11,6 @@ import Wallet from '../screens/walletTab/Wallet'
 import Swap from '../screens/swapTab/Swap'
 
 // import Governance from '../screens/governance'
-
-import EStyleSheet from 'react-native-extended-stylesheet'
 
 import { RootStack } from 'types/navigation'
 import Staking from '../screens/stakingTab/Staking'
@@ -80,10 +79,9 @@ const isTabBarVisible = (route: any): boolean => {
   return true
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   tabbar_text: {
     fontSize: 8,
-    fontFamily: '$fontGothamBold',
     marginBottom: 3,
   },
 })

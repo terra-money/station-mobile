@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { ChartKey } from 'use-station/src'
-import { View } from 'react-native'
-import EStyleSheet from 'react-native-extended-stylesheet'
+import { View, StyleSheet } from 'react-native'
+
 import ChartItem from './ChartItem'
 
 const List: ChartKey[] = [
@@ -13,18 +13,15 @@ const List: ChartKey[] = [
 
 const Charts = (): ReactElement => (
   <View style={styles.charts}>
-    {List.map((chartKey, index) => (
-      <View
-        key={chartKey}
-        style={EStyleSheet.child(styles, 'row', index, List.length)}
-      >
+    {List.map((chartKey) => (
+      <View key={chartKey} style={styles.row}>
         <ChartItem chartKey={chartKey} />
       </View>
     ))}
   </View>
 )
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   charts: {
     marginVertical: 10,
     backgroundColor: '#fff',
@@ -34,11 +31,8 @@ const styles = EStyleSheet.create({
     shadowOpacity: 0.05,
   },
   row: {
-    borderBottomColor: '$dividerColor',
+    borderBottomColor: '#EDF1F7',
     borderBottomWidth: 1,
-  },
-  'row:last-child': {
-    borderBottomWidth: 0,
   },
 })
 

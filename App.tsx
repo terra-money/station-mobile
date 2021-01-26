@@ -11,9 +11,9 @@ import {
   StatusBar,
   Platform,
   SafeAreaView,
+  StyleSheet,
 } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import EStyleSheet from 'react-native-extended-stylesheet'
 import SplashScreen from 'react-native-splash-screen'
 import { hasNotch } from 'react-native-device-info'
 import { RecoilRoot } from 'recoil'
@@ -32,30 +32,6 @@ import { AppProvider } from './src/hooks'
 import AppNavigator from './src/navigatoin'
 import CodePush from 'react-native-code-push'
 import OnBoarding from './src/screens/OnBoarding'
-
-EStyleSheet.build({
-  $primaryColor: 'rgb(32,67,181)', //"#2043B5",
-  $primaryColorOp20: 'rgba(32,67,181,.2)', //"#2043B5",
-  $primaryColorOp10: 'rgba(32,67,181,.1)', //"#2043B5",
-
-  $dividerColor: '#EDF1F7',
-
-  /**
-   * iOS는 PostScriptName, Android는 FileName으로 Font를 구별
-   */
-  '@media ios': {
-    $fontGothamBold: 'Gotham Bold',
-    $fontGothamBook: 'Gotham Book',
-    $fontGothamMedium: 'Gotham Medium',
-    $fontGothamLight: 'Gotham Light',
-  },
-  '@media android': {
-    $fontGothamBold: 'Gotham-Bold',
-    $fontGothamBook: 'Gotham-Book',
-    $fontGothamMedium: 'Gotham-Medium',
-    $fontGothamLight: 'Gotham-Light',
-  },
-})
 
 /* config */
 // const chain = {
@@ -232,15 +208,13 @@ const useModalState = (): Drawer => {
 }
 
 /* styles */
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   top: {
     flex: 1,
   },
 
   bottom: {
-    // height: 215,
     marginHorizontal: 20,
     marginBottom: Platform.OS === 'ios' && hasNotch() ? 54 : 32,
-    // backgroundColor: 'rgba(0,0,0,.5)',
   },
 })

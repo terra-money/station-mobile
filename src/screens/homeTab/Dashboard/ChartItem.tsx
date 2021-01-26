@@ -1,15 +1,15 @@
 import React, { ReactElement, useEffect } from 'react'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import _ from 'lodash'
 import { ChartKey, useChart } from 'use-station/src'
 
-import EStyleSheet from 'react-native-extended-stylesheet'
 import { AreaChart } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 
 import ErrorBoundary from 'components/ErrorBoundary'
 import ErrorComponent from 'components/ErrorComponent'
 import { Text, Number, LoadingIcon } from 'components'
+import color from 'styles/color'
 
 interface Props {
   chartKey: ChartKey
@@ -61,19 +61,19 @@ const ChartItem = (props: Props): ReactElement => (
   </ErrorBoundary>
 )
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   chart_item: {
     padding: 20,
   },
   chart_item_title: {
-    color: '$primaryColor',
+    color: color.sapphire,
     fontSize: 14,
     lineHeight: 21,
     textTransform: 'capitalize',
     marginBottom: 4,
   },
   chart_item_value: {
-    color: '$primaryColor',
+    color: color.sapphire,
     fontSize: 24,
     lineHeight: 36,
     letterSpacing: -0.5,
