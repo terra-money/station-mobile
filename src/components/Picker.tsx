@@ -4,13 +4,14 @@ import {
   StyleProp,
   TextStyle,
   TouchableOpacity,
+  StyleSheet,
 } from 'react-native'
 
 import { Options } from 'use-station/src'
 
-import EStyleSheet from 'react-native-extended-stylesheet'
 import { useApp } from '../hooks'
 import { Text, Icon } from 'components'
+import color from 'styles/color'
 
 interface Props {
   value?: string
@@ -54,9 +55,7 @@ const Picker = ({
 
           {
             // 마지막 index는 separator를 출력하지 않음
-            options?.length !== index + 1 ? (
-              <View style={styles.pickerSeparator} />
-            ) : null
+            options?.length !== index + 1 ? <View /> : null
           }
         </View>
       ))}
@@ -97,7 +96,7 @@ const Picker = ({
 }
 
 /* styles */
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   /**
    * BADGE
    */
@@ -135,16 +134,15 @@ const styles = EStyleSheet.create({
     justifyContent: 'space-between',
   },
   pickerItemText: {
-    fontFamily: '$fontGothamMedium',
     fontSize: 16,
     lineHeight: 24,
-    color: '$primaryColor',
+    color: color.sapphire,
   },
   pickerItemRadio: {
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '$primaryColorOp20',
+    backgroundColor: 'rgba(32, 67, 181, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -152,12 +150,7 @@ const styles = EStyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: '$primaryColor',
-  },
-  pickerDivider: {
-    width: '100%',
-    height: 1,
-    backgroundColor: '$dividerColor',
+    backgroundColor: color.sapphire,
   },
 })
 

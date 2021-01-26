@@ -8,11 +8,11 @@ import {
   Alert,
   Keyboard,
   ActivityIndicator,
+  StyleSheet,
 } from 'react-native'
 import { Buffer } from 'buffer'
 import { useAuth } from 'use-station/src'
 import { TextInput } from 'react-native-gesture-handler'
-import EStyleSheet from 'react-native-extended-stylesheet'
 
 interface Props {
   navigation: any
@@ -165,7 +165,7 @@ const ConnectView = (props: Props): ReactElement => {
   )
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   textInput: {
     marginLeft: 16,
     marginRight: 16,

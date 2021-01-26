@@ -5,13 +5,15 @@ import {
   Text,
   TouchableOpacity,
   View,
+  StyleSheet,
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { hasNotch } from 'react-native-device-info'
+
 import { API } from 'use-station/src'
 import { Icon } from 'components'
-import EStyleSheet from 'react-native-extended-stylesheet'
+import color from 'styles/color'
 
 interface Props extends Partial<API<any>> {
   title: string
@@ -47,7 +49,6 @@ const Page: FC<Props> = ({ loading, error, title, children }) => {
             isAuth ? null : (
               <TouchableOpacity
                 onPress={(): void => navigate('AuthMenu')}
-                style={styles.user}
               >
                 <View
                   style={{
@@ -74,10 +75,7 @@ const Page: FC<Props> = ({ loading, error, title, children }) => {
             )
           }
 
-          <TouchableOpacity
-            onPress={(): void => navigate('Setting')}
-            style={styles.user}
-          >
+          <TouchableOpacity onPress={(): void => navigate('Setting')}>
             {
               /** 인증이 되지 않았으면 CONNECT와 SETTINGS버튼, 인증 되어 있으면 WALLET버튼 */
               // !auth
@@ -105,7 +103,6 @@ const Page: FC<Props> = ({ loading, error, title, children }) => {
             alignItems: 'center',
           }}
         >
-          {/* <Text>Loading</Text> */}
           <ActivityIndicator animating size="large" color="#aaa" />
         </View>
       ) : (
@@ -121,7 +118,7 @@ const Page: FC<Props> = ({ loading, error, title, children }) => {
 
 export default Page
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -130,32 +127,15 @@ const styles = EStyleSheet.create({
     marginHorizontal: 20,
   },
   title: {
-    color: '$primaryColor',
+    color: color.sapphire,
     fontSize: 24,
-    // paddingTop: 20,
-    // paddingBottom: 10,
     lineHeight: 36,
-    fontFamily: '$fontGothamBold',
-
     alignSelf: 'center',
-    // backgroundColor: '#ccc',
-  },
-  connect: {
-    // backgroundColor: '#ccc',
-    // margin: 10,
-    // paddingHorizontal: 20,
-    // paddingTop: 20,
   },
   connectText: {
-    color: '$primaryColor',
-    fontFamily: '$fontGothamMedium',
+    color: color.sapphire,
     fontSize: 10,
     lineHeight: 15,
     letterSpacing: -0.4,
-  },
-  user: {
-    // backgroundColor: '#bbb',
-    // paddingHorizontal: 20,
-    // paddingTop: 20,
   },
 })

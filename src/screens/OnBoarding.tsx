@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   Platform,
   LogBox,
+  StyleSheet,
 } from 'react-native'
-import EStyleSheet from 'react-native-extended-stylesheet'
+
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/FontAwesome5'
@@ -14,6 +15,7 @@ import { setSkipOnboarding } from '../utils/storage'
 
 import { Text } from 'components'
 import images from 'assets/images'
+import color from 'styles/color'
 
 LogBox.ignoreLogs([
   // https://reactjs.org/blog/2020/02/26/react-v16.13.0.html#warnings-for-some-updates-during-render
@@ -174,7 +176,7 @@ const OnBoarding = ({
   )
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   SelectLanguageContainer: {
     alignItems: 'flex-end',
     marginTop: Platform.OS === 'ios' ? getStatusBarHeight() : 0,
@@ -185,21 +187,21 @@ const styles = EStyleSheet.create({
     flexDirection: 'row',
   },
   SelectLanguageButtonText: {
-    color: '$primaryColor',
+    color: color.sapphire,
   },
   SelectLanguageButtonCaret: {
     margin: 5,
   },
 
   SwiperDot: {
-    backgroundColor: '$primaryColorOp20',
+    backgroundColor: 'rgba(32, 67, 181, 0.2)',
     width: 6,
     height: 6,
     borderRadius: 3,
     margin: 7,
   },
   SwiperDotActive: {
-    backgroundColor: '$primaryColor',
+    backgroundColor: color.sapphire,
     width: 10,
     height: 10,
     borderRadius: 5,
@@ -218,7 +220,7 @@ const styles = EStyleSheet.create({
   SwiperContentTitle: {
     fontSize: 24,
     lineHeight: 36,
-    color: '$primaryColor',
+    color: color.sapphire,
     textAlign: 'center',
     marginBottom: 5,
     marginHorizontal: 30,
@@ -226,7 +228,7 @@ const styles = EStyleSheet.create({
   SwiperContentDesc: {
     fontSize: 16,
     lineHeight: 24,
-    color: '$primaryColor',
+    color: color.sapphire,
     textAlign: 'center',
     marginHorizontal: 30,
   },
@@ -242,11 +244,11 @@ const styles = EStyleSheet.create({
     height: 50,
     borderRadius: 25,
     paddingVertical: 13,
-    backgroundColor: '$primaryColorOp10',
+    backgroundColor: 'rgba(32, 67, 181, 0.2)',
     alignItems: 'center',
   },
   SwiperButtonSkipText: {
-    color: '$primaryColor',
+    color: color.sapphire,
     fontSize: 16,
     lineHeight: 24,
   },
@@ -256,7 +258,7 @@ const styles = EStyleSheet.create({
     borderRadius: 25,
     paddingHorizontal: 58,
     paddingVertical: 13,
-    backgroundColor: '$primaryColor',
+    backgroundColor: color.sapphire,
     alignItems: 'center',
   },
   SwiperButtonStart: {
@@ -265,7 +267,7 @@ const styles = EStyleSheet.create({
     borderRadius: 25,
     paddingHorizontal: 58,
     paddingVertical: 13,
-    backgroundColor: '$primaryColor',
+    backgroundColor: color.sapphire,
     alignItems: 'center',
   },
 })

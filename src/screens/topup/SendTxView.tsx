@@ -8,11 +8,12 @@ import {
   Alert,
   Keyboard,
   ActivityIndicator,
+  StyleSheet,
 } from 'react-native'
 import { Buffer } from 'buffer'
 import { useAuth } from 'use-station/src'
 import { TextInput } from 'react-native-gesture-handler'
-import EStyleSheet from 'react-native-extended-stylesheet'
+
 import { LCDClient, RawKey, StdSignMsg } from '@terra-money/terra.js'
 import { getDecyrptedKey } from 'utils/wallet'
 
@@ -206,7 +207,7 @@ const SendTxView = (props: Props): ReactElement => {
   )
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   textInput: {
     marginLeft: 16,
     marginRight: 16,

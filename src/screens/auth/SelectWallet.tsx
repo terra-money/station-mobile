@@ -21,11 +21,13 @@ import {
 
 import { getIsUseBioAuth } from 'utils/storage'
 import { RootStackParams } from 'types'
+import useOnAuth from './useOnAuth'
 
 const Screen = (): ReactElement => {
   const [initPageComplete, setInitPageComplete] = useState(false)
   const [wallets, setWallets] = useState<LocalWallet[]>([])
   const [isUseBioAuth, setIsUseBioAuth] = useState(false)
+  useOnAuth()
 
   const { goBack } = useNavigation<NavigationProp<RootStackParams>>()
 
@@ -56,7 +58,6 @@ const Screen = (): ReactElement => {
         throw new Error('Wrong Password!')
       const wallet = wallets.find((w) => w.name === name)
       wallet && signIn(wallet)
-      goBack()
     } catch (e) {
       Alert.alert(e.toString())
     }

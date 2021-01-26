@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import _ from 'lodash'
 import {
@@ -9,7 +9,6 @@ import {
   useDashboard,
 } from 'use-station/src'
 
-import EStyleSheet from 'react-native-extended-stylesheet'
 import Swiper from 'react-native-swiper'
 import Card from 'components/Card'
 import { Text } from 'components'
@@ -109,28 +108,13 @@ const Columns = (): ReactElement => {
 }
 
 /* styles */
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   carousel: {
     flexDirection: 'row',
     flexWrap: 'nowrap',
   },
   carousel_item: {
     width: '100%',
-  },
-  carousel_paging: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 10,
-  },
-  carousel_paging_indicator: {
-    backgroundColor: '$primaryColor',
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    opacity: 0.2,
-  },
-  active: {
-    opacity: 1,
   },
   value: {
     fontSize: 28,
