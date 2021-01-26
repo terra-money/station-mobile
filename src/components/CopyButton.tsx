@@ -42,10 +42,12 @@ const CopyButton = (props: CopyButtonProps): ReactElement => {
       style={[styles.copyButton, containerStyle]}
     >
       <Icon
-        name={'description'}
+        name={'content-paste'}
         color={theme === 'sapphire' ? color.white : color.sapphire}
       />
-      <Text style={[{ fontSize: 10 }, textStyle]}>COPY</Text>
+      <Text style={[{ fontSize: 10, marginLeft: 4 }, textStyle]}>
+        COPY
+      </Text>
     </TouchableOpacity>
   )
 }
