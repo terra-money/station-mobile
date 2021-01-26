@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
-import _ from 'lodash'
 import { useRecoilState } from 'recoil'
 import { useNavigation } from '@react-navigation/native'
 
@@ -44,34 +43,7 @@ const Screen = (): ReactElement => {
             <CopyButton copyString={seed.join(' ')} />
           </View>
           <View style={styles.seedBox}>
-            <View style={{ flex: 1 }}>
-              {_.map(seed.slice(0, 12), (item, index) => {
-                return (
-                  <View
-                    key={`seedWord-${index}`}
-                    style={styles.seedWordBox}
-                  >
-                    <Text style={styles.seedWordNo}>{index + 1}</Text>
-                    <Text style={styles.seedWord}>{item}</Text>
-                  </View>
-                )
-              })}
-            </View>
-            <View style={{ flex: 1 }}>
-              {_.map(seed.slice(12, 25), (item, index) => {
-                return (
-                  <View
-                    key={`seedWord-${index + 13}`}
-                    style={styles.seedWordBox}
-                  >
-                    <Text style={styles.seedWordNo}>
-                      {index + 13}
-                    </Text>
-                    <Text style={styles.seedWord}>{item}</Text>
-                  </View>
-                )
-              })}
-            </View>
+            <Text>{seed.join(' ')}</Text>
           </View>
           <WarningBox
             message={
@@ -128,16 +100,5 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 25,
     shadowOpacity: 1,
-  },
-  seedWordBox: {
-    flexDirection: 'row',
-    paddingBottom: 5,
-  },
-  seedWordNo: {
-    width: 25,
-    color: color.sapphire,
-  },
-  seedWord: {
-    color: color.sapphire,
   },
 })
