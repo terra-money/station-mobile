@@ -3,7 +3,7 @@ import { View, Image, StyleSheet } from 'react-native'
 
 import Button from 'components/Button'
 import Body from 'components/layout/Body'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 import { useApp } from './useApp'
 
@@ -50,22 +50,22 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
       </View>
       <View>
         <Button
-          type={'blue'}
+          theme={'sapphire'}
           title={'Enable'}
           onPress={(): void => {
-            setUseBioAuth(true)
+            setUseBioAuth({ isUse: true })
             close()
           }}
           containerStyle={{ marginBottom: 10 }}
         />
-        <Button type={'gray'} title={'Later'} onPress={close} />
+        <Button theme={'gray'} title={'Later'} onPress={close} />
       </View>
     </Body>
   )
 }
 
 export const useBioAuth = (): {
-  openBioAuth: () => void
+  openIsUseBioAuth: () => void
 } => {
   const { modal } = useApp()
 
@@ -81,12 +81,12 @@ export const useBioAuth = (): {
     initModal()
   }, [])
 
-  const openBioAuth = (): void => {
+  const openIsUseBioAuth = (): void => {
     modal.open(BioAuth({ ...modal, bioType }))
   }
 
   return {
-    openBioAuth,
+    openIsUseBioAuth,
   }
 }
 

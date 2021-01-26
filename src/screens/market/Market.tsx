@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { useMenu, useMarket } from '@terra-money/use-native-station'
+import { useMenu, useMarket } from 'use-station/src'
 import { StatusBar } from 'react-native'
 import Page from 'components/Page'
 import Price from './Price'

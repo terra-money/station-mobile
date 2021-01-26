@@ -7,14 +7,10 @@ import { useNavigation } from '@react-navigation/native'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import Button from 'components/Button'
-import FormInput from 'components/FormInput'
-import Text from 'components/Text'
+import { Button, FormInput, NumberStep, FormLabel } from 'components'
 
-import color from 'styles/color'
 import { useValueValidator } from 'hooks/useValueValidator'
 import NewWalletStore from 'stores/NewWalletStore'
-import NumberStep from 'components/NumberStep'
 
 const Screen = (): ReactElement => {
   const [name, setName] = useRecoilState(NewWalletStore.name)
@@ -28,7 +24,7 @@ const Screen = (): ReactElement => {
   )
   const [passwordErrMsg, setPasswordErrMsg] = useState('')
 
-  const [passwordConfirm, setPasswordConfirm] = useState('1234567890')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
   const [passwordConfirmErrMsg, setPasswordConfirmErrMsg] = useState(
     ''
   )
@@ -64,11 +60,11 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'blue'} title={'New Wallet'} />
+      <SubHeader theme={'sapphire'} title={'New Wallet'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={styles.section}>
-            <Text style={styles.title}>Wallet Name</Text>
+            <FormLabel text={'Wallet Name'} />
             <FormInput
               underlineColorAndroid="#ccc"
               value={name}
@@ -78,7 +74,7 @@ const Screen = (): ReactElement => {
             />
           </View>
           <View style={styles.section}>
-            <Text style={styles.title}>Password</Text>
+            <FormLabel text={'Password'} />
             <FormInput
               underlineColorAndroid="#ccc"
               value={password}
@@ -89,7 +85,7 @@ const Screen = (): ReactElement => {
             />
           </View>
           <View style={styles.section}>
-            <Text style={styles.title}>Confirm Password</Text>
+            <FormLabel text={'Confirm Password'} />
             <FormInput
               underlineColorAndroid="#ccc"
               value={passwordConfirm}
@@ -103,7 +99,7 @@ const Screen = (): ReactElement => {
 
         <Button
           title="Next"
-          type={'blue'}
+          theme={'sapphire'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
@@ -118,7 +114,7 @@ const HeaderRight = (): ReactElement => (
 )
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
   headerRight: HeaderRight,
 })
 
@@ -129,12 +125,6 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     paddingTop: 20,
     justifyContent: 'space-between',
-  },
-  title: {
-    color: color.sapphire,
-    fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 5,
   },
   section: {
     marginBottom: 20,

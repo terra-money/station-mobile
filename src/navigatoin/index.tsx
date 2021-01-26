@@ -17,6 +17,13 @@ import OnBoarding from '../screens/OnBoarding'
 import Setting from '../screens/Setting'
 import ConnectView from '../screens/topup/ConnectView'
 import SendTxView from '../screens/topup/SendTxView'
+import Send from '../screens/Send'
+
+import Complete from '../screens/Complete'
+import VestingSchedule from '../screens/VestingSchedule'
+import Confirm from '../screens/Confirm'
+import ConfirmPassword from '../screens/ConfirmPassword'
+import Delegate from '../screens/Delegate'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -101,6 +108,36 @@ const AppNavigator = ({
           name="SendTxView"
           component={SendTxView}
           options={{ animationEnabled: false }}
+        />
+        <RootStack.Screen
+          name="Send"
+          component={Send}
+          options={Send.navigationOptions}
+        />
+        <RootStack.Screen
+          name="Complete"
+          component={Complete}
+          options={{ headerShown: false }}
+        />
+        <RootStack.Screen
+          name="VestingSchedule"
+          component={VestingSchedule}
+          options={VestingSchedule.navigationOptions}
+        />
+        <RootStack.Screen
+          name="Confirm"
+          component={Confirm}
+          options={Confirm.navigationOptions}
+        />
+        <RootStack.Screen
+          name="ConfirmPassword"
+          component={ConfirmPassword}
+          options={ConfirmPassword.navigationOptions}
+        />
+        <RootStack.Screen
+          name="Delegate"
+          component={Delegate}
+          options={Delegate.navigationOptions}
         />
       </RootStack.Navigator>
     </NavigationContainer>

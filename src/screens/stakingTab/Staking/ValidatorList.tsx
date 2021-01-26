@@ -1,17 +1,14 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { View, Image, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import {
-  Options,
-  StakingUI,
-  ValidatorUI,
-} from '@terra-money/use-native-station'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import { Options, StakingUI, ValidatorUI } from 'use-station/src'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
 import EStyleSheet from 'react-native-extended-stylesheet'
+
+import Icon from 'components/Icon'
 import Picker from 'components/Picker'
 import Card from 'components/Card'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 import images from 'assets/images'
 import dev from 'utils/dev'
@@ -35,11 +32,7 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
     validatorFilter[0].value
   )
   const [reverseContents, setReverseContents] = useState(false)
-  const [contactableValidators, setContactableValidators] = useState(
-    undefined
-  )
-
-  // console.log('newValidators', newValidators)
+  const [contactableValidators, setContactableValidators] = useState()
 
   /**
    * email이 있는 validator 얻어오기
@@ -99,139 +92,141 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
   }, [currentFilter])
 
   return (
-    <>
-      <Card style={{ padding: 0, paddingVertical: 0 }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginHorizontal: 20,
-            marginVertical: 20,
-          }}
+    <Card
+      style={{
+        padding: 20,
+        marginHorizontal: 0,
+        marginBottom: 30,
+      }}
+    >
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingBottom: 20,
+        }}
+      >
+        <Text
+          style={[styles.textColor, styles.textValidators]}
+          fontType="bold"
         >
-          <Text style={[styles.textColor, styles.textValidators]}>
-            {validatorTitle}
-          </Text>
-          <View
-            style={{ flexDirection: 'row', alignItems: 'center' }}
+          {validatorTitle}
+        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Picker
+            value={currentFilter}
+            options={validatorFilter}
+            onChange={setCurrentFilter}
+            style={[styles.textColor, styles.textFilter]}
+            showBox={false}
           >
-            <Picker
-              value={currentFilter}
-              options={validatorFilter}
-              onChange={setCurrentFilter}
-              style={[styles.textColor, styles.textFilter]}
-              showBox={false}
-            >
-              <Text>{currentFilter}</Text>
-            </Picker>
-            <TouchableOpacity
-              onPress={(): void => {
-                contents.reverse()
-                contents.sort(sortContents)
-                setReverseContents(!reverseContents)
-              }}
-            >
-              <Icon
-                style={{ marginLeft: 9 }}
-                name="swap-vert"
-                size={18}
-                color="rgb(32, 67, 181)"
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-        {contents.map((content, index) => (
+            <Text>{currentFilter}</Text>
+          </Picker>
           <TouchableOpacity
-            onPress={(): void =>
-              navigate('ValidatorDetail', {
-                address: content.operatorAddress.address,
-              })
-            }
-            key={index}
+            onPress={(): void => {
+              contents.reverse()
+              contents.sort(sortContents)
+              setReverseContents(!reverseContents)
+            }}
+          >
+            <Icon
+              style={{ marginLeft: 9 }}
+              name="swap-vert"
+              size={18}
+              color="rgb(32, 67, 181)"
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+      {contents.map((content, index) => (
+        <TouchableOpacity
+          onPress={(): void =>
+            navigate('ValidatorDetail', {
+              address: content.operatorAddress.address,
+            })
+          }
+          key={index}
+        >
+          <View
+            style={{
+              backgroundColor: 'rgb(237, 241, 247)',
+              height: 1,
+              width: '100%',
+            }}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginVertical: 12,
+            }}
           >
             <View
-              style={{
-                backgroundColor: 'rgb(237, 241, 247)',
-                height: 1,
-                width: '100%',
-              }}
-            />
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginVertical: 12,
-                marginHorizontal: 20,
-              }}
+              style={{ flexDirection: 'row', alignItems: 'center' }}
             >
               <View
-                style={{ flexDirection: 'row', alignItems: 'center' }}
+                style={{
+                  width: 18,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
               >
-                <View
-                  style={{
-                    width: 18,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  {index === 0 ? (
-                    <Text style={[styles.rank, styles.rank1st]}>
-                      {index + 1}
-                    </Text>
-                  ) : index === 1 ? (
-                    <Text style={[styles.rank, styles.rank2nd]}>
-                      {index + 1}
-                    </Text>
-                  ) : index === 2 ? (
-                    <Text style={[styles.rank, styles.rank3rd]}>
-                      {index + 1}
-                    </Text>
-                  ) : (
-                    <Text style={styles.rank}>{index + 1}</Text>
-                  )}
-                </View>
-                <Image
-                  source={
-                    content.profile
-                      ? { uri: content.profile }
-                      : images.terra
-                  }
-                  style={styles.profileImage}
-                />
-                <Text style={[styles.textColor, styles.textMoniker]}>
-                  {content.moniker}
-                </Text>
-                {!!contactableValidators &&
-                  !!contactableValidators[
-                    content?.operatorAddress?.address
-                  ] && (
-                    <EntypoIcon
-                      style={{ marginLeft: 6 }}
-                      name="check"
-                      size={14}
-                      color="rgb(118, 169, 244)"
-                    />
-                  )}
+                {index === 0 ? (
+                  <Text style={[styles.rank, styles.rank1st]}>
+                    {index + 1}
+                  </Text>
+                ) : index === 1 ? (
+                  <Text style={[styles.rank, styles.rank2nd]}>
+                    {index + 1}
+                  </Text>
+                ) : index === 2 ? (
+                  <Text style={[styles.rank, styles.rank3rd]}>
+                    {index + 1}
+                  </Text>
+                ) : (
+                  <Text style={styles.rank}>{index + 1}</Text>
+                )}
               </View>
-              <Text style={[styles.textColor, styles.textPercent]}>
-                {currentFilter === 'Delegation Return'
-                  ? content.delegationReturn.percent
-                  : currentFilter === 'Commission'
-                  ? content.commission.percent
-                  : currentFilter === 'Voting Power'
-                  ? content.votingPower.percent
-                  : currentFilter === 'Uptime'
-                  ? content.uptime.percent
-                  : ''}
+              <Image
+                source={
+                  content.profile
+                    ? { uri: content.profile }
+                    : images.terra
+                }
+                style={styles.profileImage}
+              />
+              <Text style={[styles.textColor, styles.textMoniker]}>
+                {content.moniker}
               </Text>
+              {!!contactableValidators &&
+                !!contactableValidators[
+                  content?.operatorAddress?.address
+                ] && (
+                  <EntypoIcon
+                    style={{ marginLeft: 6 }}
+                    name="check"
+                    size={14}
+                    color="rgb(118, 169, 244)"
+                  />
+                )}
             </View>
-          </TouchableOpacity>
-        ))}
-      </Card>
-      <View style={{ height: 36 }} />
-    </>
+            <Text style={[styles.textColor, styles.textPercent]}>
+              {currentFilter === 'Delegation Return'
+                ? content.delegationReturn.percent
+                : currentFilter === 'Commission'
+                ? content.commission.percent
+                : currentFilter === 'Voting Power'
+                ? content.votingPower.percent
+                : currentFilter === 'Uptime'
+                ? content.uptime.percent
+                : ''}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </Card>
   )
 }
 ValidatorList.option = {}

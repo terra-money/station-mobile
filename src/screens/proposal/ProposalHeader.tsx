@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import { ProposalUI } from '@terra-money/use-native-station'
+import { ProposalUI } from 'use-station/src'
 import Badge from 'components/Badge'
 import Voter from './Voter'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 const ProposerHeader = ({
   title,
@@ -19,7 +19,7 @@ const ProposerHeader = ({
 
   return (
     <>
-      <Badge>{statusTranslation}</Badge>
+      <Badge text={statusTranslation} />
 
       <Text>{title}</Text>
       <Text>{meta}</Text>

@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
 } from 'react-native'
 
-import { Options } from '@terra-money/use-native-station'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import { Options } from 'use-station/src'
+
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { useApp } from '../hooks'
-import Text from 'components/Text'
+import { Text, Icon } from 'components'
 
 interface Props {
   value?: string
@@ -107,7 +107,6 @@ const styles = EStyleSheet.create({
     fontSize: 12,
     lineHeight: 22,
     color: 'rgba(255,255,255,1)',
-    // fontFamily: "TerraCompact-Regular",
   },
 
   /**

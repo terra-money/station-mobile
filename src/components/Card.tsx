@@ -1,12 +1,13 @@
 import React, { ReactElement, ReactNode } from 'react'
 import { View, TouchableOpacity, ViewStyle } from 'react-native'
 import _ from 'lodash'
-import { API } from '@terra-money/use-native-station'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import { API } from 'use-station/src'
+
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { AreaChart, Path } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
-import Text from 'components/Text'
+
+import { Text, Icon } from 'components'
 
 interface Props extends Partial<API<any>> {
   style?: ViewStyle
@@ -152,18 +153,15 @@ const styles = EStyleSheet.create({
     fontSize: 12,
     lineHeight: 22,
     color: 'rgba(255,255,255,0.75)',
-    fontFamily: 'TerraCompact-Regular',
   },
 
   title: {
-    fontFamily: 'TerraCompact-Bold',
     fontSize: 14,
     lineHeight: 21,
     textTransform: 'capitalize',
   },
 
   value: {
-    fontFamily: 'TerraCompact-Regular',
     fontSize: 28,
     letterSpacing: -0.5,
     lineHeight: 36,

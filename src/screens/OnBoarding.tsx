@@ -13,7 +13,7 @@ import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { setSkipOnboarding } from '../utils/storage'
 
-import Text from 'components/Text'
+import { Text } from 'components'
 import images from 'assets/images'
 
 LogBox.ignoreLogs([
@@ -237,7 +237,6 @@ const styles = EStyleSheet.create({
     width: 150,
     height: 50,
     borderRadius: 25,
-    paddingHorizontal: 58,
     paddingVertical: 13,
     backgroundColor: '$primaryColorOp10',
     alignItems: 'center',

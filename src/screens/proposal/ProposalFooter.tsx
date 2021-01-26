@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import { TallyingUI } from '@terra-money/use-native-station'
-import Text from 'components/Text'
+import { TallyingUI } from 'use-station/src'
+import { Text } from 'components'
 
 const ProposalFooter = ({ contents }: TallyingUI): ReactElement => (
   <>

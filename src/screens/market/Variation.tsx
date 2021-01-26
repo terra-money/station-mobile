@@ -1,12 +1,8 @@
 import React, { ReactElement } from 'react'
 
-import {
-  Variation as VariationProps,
-  gt,
-  lt,
-} from '@terra-money/use-native-station'
+import { Variation as VariationProps, gt, lt } from 'use-station/src'
 
-import Text from 'components/Text'
+import { Text } from 'components'
 import Number from 'components/Number'
 
 interface Props {

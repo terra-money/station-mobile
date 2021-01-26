@@ -7,15 +7,17 @@ import { useNavigation } from '@react-navigation/native'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import Button from 'components/Button'
-import Text from 'components/Text'
-import CopyButton from 'components/CopyButton'
-import WarningBox from 'components/WarningBox'
+import {
+  Text,
+  Button,
+  CopyButton,
+  WarningBox,
+  NumberStep,
+} from 'components'
 
 import color from 'styles/color'
 import { modules } from 'utils'
 import NewWalletStore from 'stores/NewWalletStore'
-import NumberStep from 'components/NumberStep'
 
 const Screen = (): ReactElement => {
   const [seed, setSeed] = useRecoilState(NewWalletStore.seed)
@@ -35,7 +37,7 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'blue'} title={'Write Down Your Seed'} />
+      <SubHeader theme={'sapphire'} title={'Write Down Your Seed'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={{ alignItems: 'flex-end', marginBottom: 20 }}>
@@ -86,7 +88,7 @@ const Screen = (): ReactElement => {
 
         <Button
           title="I Have Written Down My Seed."
-          type={'blue'}
+          theme={'sapphire'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
@@ -101,7 +103,7 @@ const HeaderRight = (): ReactElement => (
 )
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
   headerRight: HeaderRight,
 })
 

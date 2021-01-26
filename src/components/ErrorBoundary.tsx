@@ -1,8 +1,5 @@
 import React, { FC, ReactNode } from 'react'
-import {
-  ErrorBoundary as Component,
-  useText,
-} from '@terra-money/use-native-station'
+import { ErrorBoundary as Component, useText } from 'use-station/src'
 
 interface Props {
   fallback?: ReactNode

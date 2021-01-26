@@ -1,21 +1,30 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
-import { StyleSheet, StyleProp, ViewStyle } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import {
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  TouchableOpacity,
+} from 'react-native'
+import { Icon } from 'components'
 
 import color from 'styles/color'
 import {
   StackHeaderLeftButtonProps,
+  StackHeaderTitleProps,
   StackNavigationOptions,
 } from '@react-navigation/stack'
 
-type HeaderTheme = 'white' | 'sky' | 'blue'
+type HeaderTheme = 'white' | 'sky' | 'sapphire'
 
 export type HeaderProps = {
   theme?: HeaderTheme
   goBackIconType?: 'arrow' | 'close'
+  headerStyle?: StyleProp<ViewStyle>
   headerLeft?: (props: StackHeaderLeftButtonProps) => React.ReactNode
+  headerTitle?:
+    | string
+    | ((props: StackHeaderTitleProps) => React.ReactNode)
   headerRight?: (props: {
     tintColor?: string | undefined
   }) => React.ReactNode
@@ -32,11 +41,11 @@ const HeaderLeft = ({
 
   return (
     <TouchableOpacity onPress={goBack} style={{ paddingLeft: 20 }}>
-      <MaterialIcons
+      <Icon
         name={
           goBackIconType === 'close' ? 'clear' : 'keyboard-arrow-left'
         }
-        color={theme === 'blue' ? color.white : color.sapphire}
+        color={theme === 'sapphire' ? color.white : color.sapphire}
         size={32}
       />
     </TouchableOpacity>
@@ -46,10 +55,17 @@ const HeaderLeft = ({
 export const navigationHeaderOptions = (
   props: HeaderProps
 ): StackNavigationOptions => {
-  const { theme, goBackIconType, headerLeft, headerRight } = props
+  const {
+    theme,
+    goBackIconType,
+    headerLeft,
+    headerTitle,
+    headerRight,
+    headerStyle,
+  } = props
   const containerStyle: StyleProp<ViewStyle> = {}
   switch (theme) {
-    case 'blue':
+    case 'sapphire':
       containerStyle.backgroundColor = color.sapphire
       break
     case 'sky':
@@ -61,13 +77,19 @@ export const navigationHeaderOptions = (
       break
   }
   return {
-    headerStyle: { ...styles.container, ...containerStyle },
+    headerStyle: [
+      {
+        ...styles.container,
+        ...containerStyle,
+      },
+      headerStyle,
+    ],
     headerLeft:
       headerLeft ||
       ((): ReactElement => (
         <HeaderLeft {...{ theme, goBackIconType }} />
       )),
-    headerTitle: '',
+    headerTitle: headerTitle || '',
     headerRight,
   }
 }

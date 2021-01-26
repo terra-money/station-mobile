@@ -2,7 +2,7 @@ import React, { useState, ReactElement, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useRecoilValue } from 'recoil'
 import { StackActions, useNavigation } from '@react-navigation/native'
-import { useBank } from '@terra-money/use-native-station'
+import { useBank } from 'use-station/src'
 import { MnemonicKey } from '@terra-money/terra.js'
 import _ from 'lodash'
 
@@ -11,14 +11,15 @@ import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 import Button from 'components/Button'
 import NumberStep from 'components/NumberStep'
-import Label from 'components/Label'
-import Text from 'components/Text'
+import Badge from 'components/Badge'
+import { Text } from 'components'
 
 import RecoverWalletStore from 'stores/RecoverWalletStore'
 import { useBioAuth } from 'hooks/useBioAuth'
 import { isSupportedBiometricAuthentication } from 'utils/bio'
 import { recover, generateAddresses } from 'utils/wallet'
 import color from 'styles/color'
+import { getIsUseBioAuth } from 'utils/storage'
 
 const AddressBox = ({
   bip,
@@ -68,11 +69,11 @@ const AddressBox = ({
       }}
     >
       <View style={[styles.addressBox, selectedStyle]}>
-        <View style={styles.addressLabelBox}>
-          <Label text={`BIP ${bip}`} />
-          {isVested && <Label text={'Vested'} />}
-          {isDelegated && <Label text={'Delegated'} />}
-          {isUndelegated && <Label text={'Undelegated'} />}
+        <View style={styles.addressBadgeBox}>
+          <Badge text={`BIP ${bip}`} />
+          {isVested && <Badge text={'Vested'} />}
+          {isDelegated && <Badge text={'Delegated'} />}
+          {isUndelegated && <Badge text={'Undelegated'} />}
         </View>
         <View style={styles.addressBoxAddress}>
           <Text>{mk.accAddress}</Text>
@@ -97,15 +98,18 @@ const Screen = (): ReactElement => {
   const [mk330, setMk330] = useState<MnemonicKey>()
   const [selectedMk, setSelectedMk] = useState<MnemonicKey>()
 
-  const { openBioAuth } = useBioAuth()
+  const { openIsUseBioAuth } = useBioAuth()
 
   const onPressNext = async (): Promise<void> => {
     if (
       selectedMk &&
       (await recover(selectedMk, { name, password }))
     ) {
-      if (await isSupportedBiometricAuthentication()) {
-        openBioAuth()
+      if (
+        false === (await getIsUseBioAuth()) &&
+        (await isSupportedBiometricAuthentication())
+      ) {
+        openIsUseBioAuth()
       }
       dispatch(StackActions.popToTop())
       dispatch(StackActions.replace('WalletRecovered'))
@@ -122,7 +126,10 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'blue'} title={'Select Address to Recover'} />
+      <SubHeader
+        theme={'sapphire'}
+        title={'Select Address to Recover'}
+      />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View style={{ flex: 1 }}>
           {mk118 && (
@@ -147,7 +154,7 @@ const Screen = (): ReactElement => {
 
         <Button
           title="Recover"
-          type={'blue'}
+          theme={'sapphire'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
@@ -162,7 +169,7 @@ const HeaderRight = (): ReactElement => (
 )
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
   headerRight: HeaderRight,
 })
 
@@ -186,7 +193,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e9edf8',
     marginBottom: 20,
   },
-  addressLabelBox: {
+  addressBadgeBox: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },

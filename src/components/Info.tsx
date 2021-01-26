@@ -1,10 +1,10 @@
 import React, { FC, ReactNode } from 'react'
 
 import _ from 'lodash'
-import { Card as CardProps } from '@terra-money/use-native-station'
+import { Card as CardProps } from 'use-station/src'
 import Icon from './Icon'
 import Card from './Card'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 interface Props extends CardProps {
   icon?: string | ReactNode
@@ -21,8 +21,12 @@ const Info: FC<Props> = ({
   const inner = (
     <>
       {typeof icon === 'string' ? <Icon name={icon} /> : icon}
-      {_.some(title) && <Text>{title}</Text>}
-      <Text>{content ?? children}</Text>
+      {_.some(title) && (
+        <Text style={{ textAlign: 'center' }}>{title}</Text>
+      )}
+      <Text style={{ textAlign: 'center' }}>
+        {content ?? children}
+      </Text>
     </>
   )
 

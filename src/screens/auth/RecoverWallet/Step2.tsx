@@ -8,7 +8,7 @@ import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 import Button from 'components/Button'
-import Text from 'components/Text'
+import { Text } from 'components'
 import PasteButton from 'components/PasteButton'
 import Input from 'components/Input'
 
@@ -50,7 +50,7 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'blue'} title={'Enter Your Seed Phase'} />
+      <SubHeader theme={'sapphire'} title={'Enter Your Seed Phase'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={{ alignItems: 'flex-end', marginBottom: 20 }}>
@@ -117,7 +117,7 @@ const Screen = (): ReactElement => {
         </View>
         <Button
           title="Finish"
-          type={'blue'}
+          theme={'sapphire'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
@@ -132,7 +132,7 @@ const HeaderRight = (): ReactElement => (
 )
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
   headerRight: HeaderRight,
 })
 

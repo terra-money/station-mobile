@@ -14,16 +14,20 @@ import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 
-import Text from 'components/Text'
-import Button from 'components/Button'
-import Input from 'components/Input'
+import {
+  FormLabel,
+  NumberStep,
+  Text,
+  Button,
+  Input,
+} from 'components'
 
 import color from 'styles/color'
 import NewWalletStore from 'stores/NewWalletStore'
 import { useBioAuth } from 'hooks/useBioAuth'
 import { isSupportedBiometricAuthentication } from 'utils/bio'
 import { createWallet } from 'utils/wallet'
-import NumberStep from 'components/NumberStep'
+import { getIsUseBioAuth } from 'utils/storage'
 
 const Screen = (): ReactElement => {
   const { dispatch } = useNavigation()
@@ -37,7 +41,7 @@ const Screen = (): ReactElement => {
   const [quiz, setQuiz] = useState<number[]>([])
   const [hint, setHint] = useState<number[]>([])
 
-  const { openBioAuth } = useBioAuth()
+  const { openIsUseBioAuth } = useBioAuth()
 
   const stepConfirmed =
     firstSeedWord === seed[quiz[0]] &&
@@ -55,8 +59,11 @@ const Screen = (): ReactElement => {
     if (
       await createWallet({ name, password, seed: seed.join(' ') })
     ) {
-      if (await isSupportedBiometricAuthentication()) {
-        openBioAuth()
+      if (
+        false === (await getIsUseBioAuth()) &&
+        (await isSupportedBiometricAuthentication())
+      ) {
+        openIsUseBioAuth()
       }
       dispatch(StackActions.popToTop())
       dispatch(StackActions.replace('WalletCreated'))
@@ -74,14 +81,14 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'blue'} title={'Confirm Your Seed'} />
+      <SubHeader theme={'sapphire'} title={'Confirm Your Seed'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View style={{ flex: 1 }}>
           <View style={styles.sectionGroup}>
             <View style={styles.section}>
-              <Text style={styles.title}>
-                {numeral(quiz[0] + 1).format('0o')} Word
-              </Text>
+              <FormLabel
+                text={`${numeral(quiz[0] + 1).format('0o')} Word`}
+              />
               <Input
                 onFocus={(): void => setFocusInputIndex(0)}
                 underlineColorAndroid="#ccc"
@@ -93,9 +100,9 @@ const Screen = (): ReactElement => {
             </View>
             <View style={{ width: 15 }} />
             <View style={styles.section}>
-              <Text style={styles.title}>
-                {numeral(quiz[1] + 1).format('0o')} Word
-              </Text>
+              <FormLabel
+                text={`${numeral(quiz[1] + 1).format('0o')} Word`}
+              />
               <Input
                 onFocus={(): void => setFocusInputIndex(1)}
                 underlineColorAndroid="#ccc"
@@ -126,7 +133,7 @@ const Screen = (): ReactElement => {
 
         <Button
           title="Confirm And Finish"
-          type={'blue'}
+          theme={'sapphire'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
@@ -141,7 +148,7 @@ const HeaderRight = (): ReactElement => (
 )
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
   headerRight: HeaderRight,
 })
 
@@ -152,12 +159,6 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     paddingTop: 20,
     justifyContent: 'space-between',
-  },
-  title: {
-    color: color.sapphire,
-    fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 5,
   },
   sectionGroup: {
     flexDirection: 'row',

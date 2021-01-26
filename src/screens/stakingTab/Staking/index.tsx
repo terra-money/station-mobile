@@ -1,15 +1,60 @@
-import React, { ReactElement } from 'react'
-import { useStaking, useAuth } from '@terra-money/use-native-station'
+import React, { ReactElement, useEffect, useState } from 'react'
+import { useStaking, useAuth, User } from 'use-station/src'
+import { StackScreenProps } from '@react-navigation/stack'
 
 import { navigationHeaderOptions } from 'components/layout/TabScreenHeader'
-import ValidatorList from './ValidatorList'
 import Body from 'components/layout/Body'
 
-const Screen = (): ReactElement => {
-  const { user } = useAuth()
-  const { ui } = useStaking(user)
+import ValidatorList from './ValidatorList'
+import PersonalSummary from './PersonalSummary'
 
-  return <Body theme={'sky'}>{ui && <ValidatorList {...ui} />}</Body>
+import { RootStackParams } from 'types'
+
+type Props = StackScreenProps<RootStackParams, 'Staking'>
+
+const Render = ({ user }: { user?: User }): ReactElement => {
+  const { personal, ui, loading } = useStaking(user)
+  return (
+    <>
+      {loading ? null : (
+        <>
+          {personal && user && (
+            <PersonalSummary personal={personal} user={user} />
+          )}
+          {ui && <ValidatorList {...ui} />}
+        </>
+      )}
+    </>
+  )
+}
+
+const Screen = ({ navigation }: Props): ReactElement => {
+  const { user } = useAuth()
+
+  const [refreshing, setRefreshing] = useState(false)
+  const refreshPage = async (): Promise<void> => {
+    setRefreshing(true)
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 100)
+  }
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      refreshPage()
+    })
+  }, [])
+
+  return (
+    <Body
+      theme={'sky'}
+      containerStyle={{ paddingTop: 20 }}
+      scrollable
+      onRefresh={refreshPage}
+    >
+      {refreshing ? null : <Render user={user} />}
+    </Body>
+  )
 }
 
 Screen.navigationOptions = navigationHeaderOptions({

@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import Clipboard from '@react-native-community/clipboard'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import Text from 'components/Text'
+
+import { Text, Icon } from 'components'
 
 import color from 'styles/color'
 
@@ -17,7 +17,7 @@ const PasteButton = (props: PasteButtonProps): ReactElement => {
   }
   return (
     <TouchableOpacity onPress={onPress} style={styles.copyButton}>
-      <MaterialIcons name={'description'} color={color.sapphire} />
+      <Icon name={'description'} color={color.sapphire} />
       <Text style={{ color: color.sapphire, fontSize: 10 }}>
         PASTE
       </Text>

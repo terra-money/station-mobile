@@ -7,12 +7,14 @@ module.exports = function (api) {
       root: './src',
       alias: {
         components: './src/components',
+        types: './src/types',
         styles: './src/styles',
         utils: './src/utils',
         assets: './src/assets',
         hooks: './src/hooks',
         stores: './src/stores',
         nativeModules: './src/nativeModules',
+        'use-station': './src/use-station',
       },
     },
   ]

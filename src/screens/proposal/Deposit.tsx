@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import { DepositUI } from '@terra-money/use-native-station'
+import { DepositUI } from 'use-station/src'
 
 import Orb from 'components/Orb'
 import Displays from 'components/Displays'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 const Deposit = ({ contents, ...rest }: DepositUI): ReactElement => {
   const { ratio, completed, percent, total } = rest

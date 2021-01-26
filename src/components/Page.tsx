@@ -9,8 +9,8 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { hasNotch } from 'react-native-device-info'
-import { API } from '@terra-money/use-native-station'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import { API } from 'use-station/src'
+import { Icon } from 'components'
 import EStyleSheet from 'react-native-extended-stylesheet'
 
 interface Props extends Partial<API<any>> {
@@ -135,7 +135,6 @@ const styles = EStyleSheet.create({
     // paddingTop: 20,
     // paddingBottom: 10,
     lineHeight: 36,
-    // fontFamily: "TerraCompact-Bold"
     fontFamily: '$fontGothamBold',
 
     alignSelf: 'center',

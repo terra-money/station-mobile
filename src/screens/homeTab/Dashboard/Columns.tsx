@@ -7,12 +7,12 @@ import {
   TaxRateUI,
   StakingRatioUI,
   useDashboard,
-} from '@terra-money/use-native-station'
+} from 'use-station/src'
 
 import EStyleSheet from 'react-native-extended-stylesheet'
 import Swiper from 'react-native-swiper'
 import Card from 'components/Card'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 import DisplaySelector from './DisplaySelector'
 
@@ -133,7 +133,6 @@ const styles = EStyleSheet.create({
     opacity: 1,
   },
   value: {
-    fontFamily: 'TerraCompact-Regular',
     fontSize: 28,
     letterSpacing: -0.5,
     lineHeight: 36,

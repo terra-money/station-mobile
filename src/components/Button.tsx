@@ -9,27 +9,38 @@ import {
 } from 'react-native'
 
 import color from 'styles/color'
-import Text from 'components/Text'
+import { Text } from 'components'
 
 export type ButtonProps = {
   onPress?: (event: GestureResponderEvent) => void
   containerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
   title: string | ReactElement
-  type?: 'blue' | 'red' | 'gray' | 'white' | 'transparent'
+  theme?:
+    | 'sapphire'
+    | 'dodgerBlue'
+    | 'red'
+    | 'gray'
+    | 'white'
+    | 'transparent'
   disabled?: boolean
 }
 
 const Button = (props: ButtonProps): ReactElement => {
-  const { type, disabled } = props
+  const { theme, disabled } = props
   const titleStyle: StyleProp<TextStyle> = {}
   const containerStyle: StyleProp<ViewStyle> = {}
 
-  switch (type) {
-    case 'blue':
+  switch (theme) {
+    case 'sapphire':
       titleStyle.color = color.white
       containerStyle.backgroundColor = color.sapphire
       containerStyle.borderColor = color.sapphire
+      break
+    case 'dodgerBlue':
+      titleStyle.color = color.white
+      containerStyle.backgroundColor = color.dodgerBlue
+      containerStyle.borderColor = color.dodgerBlue
       break
     case 'red':
       titleStyle.color = color.white

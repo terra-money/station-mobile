@@ -6,7 +6,7 @@ import {
   TableUI,
   useClaims,
   format,
-} from '@terra-money/use-native-station'
+} from 'use-station/src'
 
 import ErrorComponent from 'components/ErrorComponent'
 import Loading from 'components/Loading'
@@ -39,10 +39,7 @@ const Claims = ({ address }: { address: string }): ReactElement => {
     const { type, displays, date } = rest
     return (
       <View key={index}>
-        <ExtLink href={link}>
-          {format.truncate(hash, [14, 13])}
-        </ExtLink>
-
+        <ExtLink url={link} title={format.truncate(hash, [14, 13])} />
         <Text>{type}</Text>
         {displays.map((display, index) => (
           <Number {...display} key={index} />

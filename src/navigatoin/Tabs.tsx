@@ -1,165 +1,84 @@
 import React, { ReactElement } from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createStackNavigator } from '@react-navigation/stack'
+import {
+  BottomTabNavigationOptions,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs'
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 
 import Dashboard from '../screens/homeTab/Dashboard'
 import Wallet from '../screens/walletTab/Wallet'
 import Swap from '../screens/swapTab/Swap'
 
 // import Governance from '../screens/governance'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+
 import EStyleSheet from 'react-native-extended-stylesheet'
 
+import { RootStack } from 'types/navigation'
 import Staking from '../screens/stakingTab/Staking'
-import validatorDetail from '../screens/stakingTab/ValidatorDetail'
-import Text from 'components/Text'
+import StakingPersonal from '../screens/stakingTab/StakingPersonal'
+import ValidatorDetail from '../screens/stakingTab/ValidatorDetail'
+import { Text, Icon } from 'components'
 
 export const INITIAL = 'Dashboard'
 
-const Stack = createStackNavigator()
-
 const DashboardStack = (): ReactElement => (
-  <Stack.Navigator initialRouteName={INITIAL}>
-    <Stack.Screen
+  <RootStack.Navigator initialRouteName={INITIAL}>
+    <RootStack.Screen
       name={INITIAL}
       component={Dashboard}
       options={Dashboard.navigationOptions}
     />
-  </Stack.Navigator>
+  </RootStack.Navigator>
 )
 
 const WalletStack = (): ReactElement => (
-  <Stack.Navigator initialRouteName="Wallet">
-    <Stack.Screen
+  <RootStack.Navigator initialRouteName="Wallet">
+    <RootStack.Screen
       name="Wallet"
       component={Wallet}
       options={Wallet.navigationOptions}
     />
-  </Stack.Navigator>
+  </RootStack.Navigator>
 )
 
 const StakingStack = (): ReactElement => (
-  <Stack.Navigator initialRouteName="Staking">
-    <Stack.Screen
+  <RootStack.Navigator initialRouteName="Staking">
+    <RootStack.Screen
       name="Staking"
       component={Staking}
       options={Staking.navigationOptions}
     />
-    <Stack.Screen
-      name="ValidatorDetail"
-      component={validatorDetail}
-      options={validatorDetail.navigationOptions}
+    <RootStack.Screen
+      name="StakingPersonal"
+      component={StakingPersonal}
+      options={StakingPersonal.navigationOptions}
     />
-  </Stack.Navigator>
+    <RootStack.Screen
+      name="ValidatorDetail"
+      component={ValidatorDetail}
+      options={ValidatorDetail.navigationOptions}
+    />
+  </RootStack.Navigator>
 )
 
 const SwapStack = (): ReactElement => (
-  <Stack.Navigator initialRouteName="Swap">
-    <Stack.Screen
+  <RootStack.Navigator initialRouteName="Swap">
+    <RootStack.Screen
       name="Swap"
       component={Swap}
       options={Swap.navigationOptions}
     />
-  </Stack.Navigator>
+  </RootStack.Navigator>
 )
 
-const tabScreenList = [
-  {
-    name: 'Dashboard',
-    component: DashboardStack,
-    options: {
-      tabBarLabel: ({ color }: any): ReactElement => (
-        <Text style={[styles.tabbar_text, { color: color }]}>
-          DASHBOARD
-        </Text>
-      ),
-      tabBarIcon: ({ color }: any): ReactElement => (
-        <Icon
-          name="dashboard"
-          color={color}
-          size={26}
-          style={{ marginTop: 5 }}
-        />
-      ),
-    },
-  },
-  {
-    name: 'Wallet',
-    component: WalletStack,
-    options: {
-      tabBarLabel: ({ color }: any): ReactElement => (
-        <Text style={[styles.tabbar_text, { color: color }]}>
-          WALLET
-        </Text>
-      ),
-      tabBarIcon: ({ color }: any): ReactElement => (
-        <Icon
-          name="account-balance-wallet"
-          color={color}
-          size={28}
-          style={{ marginTop: 5 }}
-        />
-      ),
-    },
-  },
-  {
-    name: 'Staking',
-    component: StakingStack,
-    options: {
-      tabBarLabel: ({ color }: any): ReactElement => (
-        <Text style={[styles.tabbar_text, { color: color }]}>
-          STAKING
-        </Text>
-      ),
-      tabBarIcon: ({ color }: any): ReactElement => (
-        <Icon
-          name="layers"
-          color={color}
-          size={28}
-          style={{ marginTop: 5 }}
-        />
-      ),
-    },
-  },
-  {
-    name: 'Swap',
-    component: SwapStack,
-    options: {
-      tabBarLabel: ({ color }: any): ReactElement => (
-        <Text style={[styles.tabbar_text, { color: color }]}>
-          Swap
-        </Text>
-      ),
-      tabBarIcon: ({ color }: any): ReactElement => (
-        <Icon
-          name="swap-horiz"
-          color={color}
-          size={28}
-          style={{ marginTop: 5 }}
-        />
-      ),
-    },
-  },
-  // {
-  //   name: 'Governance',
-  //   component: Governance,
-  //   options: {
-  //     tabBarLabel: ({ color }: any): ReactElement => (
-  //       <Text style={[styles.tabbar_text, { color: color }]}>
-  //         GOVERNANCE
-  //       </Text>
-  //     ),
-  //     tabBarIcon: ({ color }: any): ReactElement => (
-  //       <Icon
-  //         name="how-to-vote"
-  //         color={color}
-  //         size={28}
-  //         style={{ marginTop: 5 }}
-  //       />
-  //     ),
-  //   },
-  // },
-]
+const isTabBarVisible = (route: any): boolean => {
+  const routeName = getFocusedRouteNameFromRoute(route)
+  if (routeName && ['StakingPersonal'].includes(routeName)) {
+    return false
+  }
+
+  return true
+}
 
 const styles = EStyleSheet.create({
   tabbar_text: {
@@ -180,9 +99,80 @@ const Tabs = (): ReactElement => (
       inactiveTintColor: '#C1C7D0',
     }}
   >
-    {tabScreenList.map((route) => (
-      <Tab.Screen {...route} key={route.name} />
-    ))}
+    <Tab.Screen
+      name="Dashboard"
+      component={DashboardStack}
+      options={{
+        tabBarLabel: ({ color }: any): ReactElement => (
+          <Text style={[styles.tabbar_text, { color }]}>
+            DASHBOARD
+          </Text>
+        ),
+        tabBarIcon: ({ color }: any): ReactElement => (
+          <Icon
+            name="dashboard"
+            color={color}
+            size={26}
+            style={{ marginTop: 5 }}
+          />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Wallet"
+      component={WalletStack}
+      options={{
+        tabBarLabel: ({ color }: any): ReactElement => (
+          <Text style={[styles.tabbar_text, { color }]}>WALLET</Text>
+        ),
+        tabBarIcon: ({ color }: any): ReactElement => (
+          <Icon
+            name="account-balance-wallet"
+            color={color}
+            size={28}
+            style={{ marginTop: 5 }}
+          />
+        ),
+      }}
+    />
+
+    <Tab.Screen
+      name="Staking"
+      component={StakingStack}
+      options={({ route }): BottomTabNavigationOptions => ({
+        tabBarLabel: ({ color }: any): ReactElement => (
+          <Text style={[styles.tabbar_text, { color }]}>STAKING</Text>
+        ),
+        tabBarIcon: ({ color }: any): ReactElement => (
+          <Icon
+            name="layers"
+            color={color}
+            size={28}
+            style={{ marginTop: 5 }}
+          />
+        ),
+        tabBarVisible: isTabBarVisible(route),
+      })}
+    />
+
+    <Tab.Screen
+      name="Swap"
+      component={SwapStack}
+      options={({ route }): BottomTabNavigationOptions => ({
+        tabBarLabel: ({ color }: any): ReactElement => (
+          <Text style={[styles.tabbar_text, { color }]}>Swap</Text>
+        ),
+        tabBarIcon: ({ color }: any): ReactElement => (
+          <Icon
+            name="swap-horiz"
+            color={color}
+            size={28}
+            style={{ marginTop: 5 }}
+          />
+        ),
+        tabBarVisible: isTabBarVisible(route),
+      })}
+    />
   </Tab.Navigator>
 )
 

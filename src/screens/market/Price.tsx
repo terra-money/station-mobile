@@ -1,10 +1,5 @@
 import React, { ReactElement } from 'react'
-import {
-  PriceUI,
-  Filter,
-  usePrice,
-  format,
-} from '@terra-money/use-native-station'
+import { PriceUI, Filter, usePrice, format } from 'use-station/src'
 
 import Card from 'components/Card'
 import Number from 'components/Number'

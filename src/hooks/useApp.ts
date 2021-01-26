@@ -1,3 +1,3 @@
-import { createContext } from '@terra-money/use-native-station'
+import { createContext } from 'use-station/src'
 
 export const [useApp, AppProvider] = createContext<App>()

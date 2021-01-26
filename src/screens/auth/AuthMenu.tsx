@@ -2,17 +2,13 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import _ from 'lodash'
 import { View, StyleSheet, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { useAuth } from '@terra-money/use-native-station'
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import { useAuth } from 'use-station/src'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 
-import Text from 'components/Text'
-import Button from 'components/Button'
-import Dot from 'components/Dot'
+import { Text, Icon, Button, Dot } from 'components'
 
-import { settings, clearKeys } from 'utils/storage'
 import { getWallets } from 'utils/wallet'
 import color from 'styles/color'
 import images from 'assets/images'
@@ -36,7 +32,7 @@ const Screen = (): ReactElement => {
     <>
       {initPageComplete && (
         <Body
-          theme={'blue'}
+          theme={'sapphire'}
           containerStyle={{ paddingBottom: 50, paddingTop: 10 }}
         >
           <View style={{ flex: 1 }}>
@@ -49,7 +45,7 @@ const Screen = (): ReactElement => {
                 : 'Create a new wallet or recover an existing wallet using a seed phrase'}
             </Text>
             <View style={styles.imageBox}>
-              <MaterialIcon
+              <Icon
                 name={'account-balance-wallet'}
                 size={45}
                 color={color.white}
@@ -64,37 +60,11 @@ const Screen = (): ReactElement => {
             </View>
           </View>
           <View>
-            {__DEV__ && (
-              <View
-                style={{ flexDirection: 'row', marginBottom: 10 }}
-              >
-                <View style={{ flex: 1 }}>
-                  <Button
-                    type={'red'}
-                    title={'(DEV) Clear settings'}
-                    onPress={settings.clear}
-                    containerStyle={{
-                      height: 30,
-                    }}
-                  />
-                </View>
-                <View style={{ flex: 1 }}>
-                  <Button
-                    type={'red'}
-                    title={'(DEV) Clear keys'}
-                    onPress={clearKeys}
-                    containerStyle={{
-                      height: 30,
-                    }}
-                  />
-                </View>
-              </View>
-            )}
             {_.isEmpty(user) ? (
               <>
                 {_.some(wallets) && (
                   <Button
-                    type={'white'}
+                    theme={'white'}
                     title={'Select Wallet'}
                     onPress={(): void => navigate('SelectWallet')}
                     containerStyle={{ marginBottom: 10 }}
@@ -102,7 +72,7 @@ const Screen = (): ReactElement => {
                 )}
 
                 <Button
-                  type={_.some(wallets) ? 'transparent' : 'white'}
+                  theme={_.some(wallets) ? 'transparent' : 'white'}
                   title={'New Wallet'}
                   onPress={(): void => navigate('NewWallet')}
                 />
@@ -111,7 +81,7 @@ const Screen = (): ReactElement => {
                   <Text style={styles.orText}>OR</Text>
                 </View>
                 <Button
-                  type={'transparent'}
+                  theme={'transparent'}
                   title={'Recover Existing Wallet'}
                   onPress={(): void => navigate('RecoverWallet')}
                 />
@@ -119,7 +89,7 @@ const Screen = (): ReactElement => {
             ) : (
               <>
                 <Button
-                  type={'white'}
+                  theme={'white'}
                   title={'Sign Out'}
                   onPress={signOut}
                 />
@@ -133,7 +103,7 @@ const Screen = (): ReactElement => {
 }
 
 Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'blue',
+  theme: 'sapphire',
   goBackIconType: 'close',
 })
 

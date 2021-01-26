@@ -9,4 +9,11 @@ export default {
   satelite: require('../../assets/satelite.png'),
   bio_face: require('../../assets/bio_face.png'),
   finger_print: require('../../assets/finger_print.png'),
+
+  // assets
+  EUT: require('../../assets/EUT.png'),
+  KRT: require('../../assets/KRT.png'),
+  MNT: require('../../assets/MNT.png'),
+  SDT: require('../../assets/SDT.png'),
+  UST: require('../../assets/UST.png'),
 }

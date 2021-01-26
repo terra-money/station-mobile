@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+
 import { useNavigation } from '@react-navigation/native'
 
 import Body from 'components/layout/Body'
-import Text from 'components/Text'
-import Button from 'components/Button'
+import { Text, Icon, Button } from 'components'
 import color from 'styles/color'
 
 const Screen = (): ReactElement => {
@@ -13,7 +12,7 @@ const Screen = (): ReactElement => {
   return (
     <Body containerStyle={styles.container}>
       <View style={styles.infoSection}>
-        <MaterialIcons
+        <Icon
           name={'account-balance-wallet'}
           size={60}
           color={color.sapphire}
@@ -24,7 +23,7 @@ const Screen = (): ReactElement => {
         </Text>
       </View>
       <Button
-        type={'blue'}
+        theme={'sapphire'}
         title={'Explore The Terra Network'}
         onPress={(): void => navigate('Tabs')}
       />

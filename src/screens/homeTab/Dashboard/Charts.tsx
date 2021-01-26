@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { ChartKey } from '@terra-money/use-native-station'
+import { ChartKey } from 'use-station/src'
 import { View } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import ChartItem from './ChartItem'
