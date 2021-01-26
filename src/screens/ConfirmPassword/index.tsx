@@ -7,6 +7,7 @@ import {
   StackActions,
   useNavigation,
 } from '@react-navigation/native'
+import _ from 'lodash'
 
 import { ConfirmProps, User } from 'use-station/src'
 
@@ -50,8 +51,13 @@ const Render = ({
     password: string
   }): void => {
     if (isSuccess) {
-      if (form.fields[0]?.setValue) {
-        form.fields[0]?.setValue(password)
+      // form.fields must have password
+      const formPassword = _.find(
+        form.fields,
+        (x) => x.attrs.id === 'password'
+      )
+      if (formPassword?.setValue) {
+        formPassword.setValue(password)
         setBioAuthTrigger((ori) => ori + 1)
       }
     }
