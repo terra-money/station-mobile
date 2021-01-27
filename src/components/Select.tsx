@@ -18,6 +18,7 @@ export type SelectProps = {
   ) => void
   containerStyle?: ViewStyle
   textStyle?: TextStyle
+  disabled?: boolean
 } & PickerStyle
 
 const Select = (props: SelectProps): ReactElement => {

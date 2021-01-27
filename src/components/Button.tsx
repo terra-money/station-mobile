@@ -15,6 +15,7 @@ export type ButtonProps = {
   onPress?: (event: GestureResponderEvent) => void
   containerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
+  titleFontType?: 'light' | 'book' | 'medium' | 'bold'
   title: string | ReactElement
   theme?:
     | 'sapphire'
@@ -74,7 +75,10 @@ const Button = (props: ButtonProps): ReactElement => {
       disabled={disabled}
     >
       {typeof props.title === 'string' ? (
-        <Text style={[titleStyle, props.titleStyle]}>
+        <Text
+          style={[titleStyle, props.titleStyle]}
+          fontType={props.titleFontType}
+        >
           {props.title}
         </Text>
       ) : (
