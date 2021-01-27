@@ -57,15 +57,11 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
-android/app/release/app-release.apk
-android/app/release/output.json
 .vscode/launch.json
-android/java_pid75047.hprof
-android/java_pid76688.hprof
-android/java_pid80379.hprof
-android/java_pid81186.hprof
-android/java_pid25501.hprof
-android/app/release/app-release.apk.zip
+
+# Android build
+android/app/release/
+android/*.hprof
 
 # Auto generated expo
 android/app/src/main/java/money/terra/station/generated/BasePackageList.java
