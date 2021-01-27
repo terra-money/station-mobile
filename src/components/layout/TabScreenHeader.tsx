@@ -1,5 +1,10 @@
 import React, { ReactElement } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Image,
+} from 'react-native'
 
 import { StackNavigationOptions } from '@react-navigation/stack'
 
@@ -9,6 +14,7 @@ import { Text, Icon } from 'components'
 import color from 'styles/color'
 import { useAuth } from 'use-station/src'
 import { useNavigation } from '@react-navigation/native'
+import images from 'assets/images'
 
 const HeaderLeft = ({ title }: { title: string }): ReactElement => {
   return (
@@ -26,11 +32,10 @@ const HeaderRight = (): ReactElement => {
   return (
     <View style={styles.headerRight}>
       {user ? (
-        <TouchableOpacity onPress={(): void => navigate('AuthMenu')}>
-          <Icon
-            name="account-balance-wallet"
-            size={28}
-            color="#2043b5"
+        <TouchableOpacity onPress={(): void => navigate('Setting')}>
+          <Image
+            source={images.wallet_settings}
+            style={{ width: 28, height: 28 }}
           />
         </TouchableOpacity>
       ) : (

@@ -45,6 +45,7 @@ export default NumberStep
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    paddingRight: 20,
   },
   defaultStepIcon: {
     borderRadius: 50,

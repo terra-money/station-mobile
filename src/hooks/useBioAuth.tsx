@@ -14,7 +14,7 @@ import color from 'styles/color'
 
 type BioAuthType = {
   bioType: BiometricType
-} & Modal
+} & AppModal
 
 const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
   return (
@@ -82,7 +82,13 @@ export const useBioAuth = (): {
   }, [])
 
   const openIsUseBioAuth = (): void => {
-    modal.open(BioAuth({ ...modal, bioType }))
+    if (bioType === BiometricType.NONE) {
+      getSupportedType().then((bioType) => {
+        modal.open(BioAuth({ ...modal, bioType }))
+      })
+    } else {
+      modal.open(BioAuth({ ...modal, bioType }))
+    }
   }
 
   return {
