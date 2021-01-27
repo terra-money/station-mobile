@@ -102,20 +102,12 @@ let App = ({
                     <AppNavigator />
                     <Modal
                       visible={modal.isOpen}
-                      onRequestClose={modal.close}
+                      onRequestClose={modal.onRequestClose}
                       transparent
                     >
-                      <TouchableOpacity
-                        style={{
-                          flex: 1,
-                          backgroundColor: 'rgba(0,0,0,.5)',
-                        }}
-                        onPress={modal.close}
-                      >
-                        <SafeAreaView style={{ flex: 1 }}>
-                          {modal.content}
-                        </SafeAreaView>
-                      </TouchableOpacity>
+                      <SafeAreaView style={{ flex: 1 }}>
+                        {modal.content}
+                      </SafeAreaView>
                     </Modal>
                   </RecoilRoot>
                 </SafeAreaProvider>
@@ -190,13 +182,18 @@ const useDrawerState = (): Drawer => {
   return { isOpen, open, close, content }
 }
 
-const useModalState = (): Drawer => {
+const useModalState = (): AppModal => {
   const [isOpen, setIsOpen] = useState(false)
   const [content, setContent] = useState<ReactNode>(null)
+  const [config, setConfig] = useState<AppModalConfig>()
 
-  const open = (content: ReactNode): void => {
+  const open = (
+    content: ReactNode,
+    config?: AppModalConfig
+  ): void => {
     setContent(content)
     setIsOpen(true)
+    setConfig(config)
   }
 
   const close = (): void => {
@@ -204,7 +201,11 @@ const useModalState = (): Drawer => {
     setContent(null)
   }
 
-  return { isOpen, open, close, content }
+  const onRequestClose = (): void => {
+    config?.onRequestClose ? config.onRequestClose() : close()
+  }
+
+  return { isOpen, open, close, content, onRequestClose }
 }
 
 /* styles */
