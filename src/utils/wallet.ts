@@ -1,6 +1,6 @@
 import { Alert } from 'react-native'
 import { MnemonicKey } from '@terra-money/terra.js'
-import { encrypt, decrypt } from '@terra-money/key-utils'
+import { encrypt, decrypt } from './crypto'
 
 import dev from './dev'
 import preferences, {
