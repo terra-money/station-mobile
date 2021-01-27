@@ -126,6 +126,16 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false)
 
+def renameArtifact()
+{
+    def project = 'station'
+    //def version = defaultConfig.versionName
+    def date = new Date().format("yyyyMMdd")
+    def hash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
+
+    return project + '-' + date + '-' + hash
+}
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -141,6 +151,7 @@ android {
         versionCode 1
         versionName "0.0.1"
         multiDexEnabled true
+        setProperty('archivesBaseName', renameArtifact())
     }
     splits {
         abi {
