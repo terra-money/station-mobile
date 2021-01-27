@@ -19,6 +19,8 @@ export type RootStackParams = {
   RecoverWallet: undefined
   ConnectView: undefined
   SendTxView: undefined
+  SendTxPasswordView: undefined
+  SendTxCompleteView: undefined
   Send: { denomOrToken: string }
   Complete: { result: Card }
   VestingSchedule: { item: VestingItemUI; title: string }

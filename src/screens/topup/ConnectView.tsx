@@ -13,6 +13,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Button, Icon, Text } from 'components'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import color from 'styles/color'
+import { gotoDashboard, gotoWallet, restoreApp } from './TopupUtils'
 
 interface Props {
   navigation: any
@@ -35,7 +36,10 @@ const ConnectView = (props: Props): ReactElement => {
   useEffect(() => {
     if (user === undefined) {
       Alert.alert('Error', 'Wallet not connected!', [
-        { text: 'OK', onPress: (): void => gotoWallet() },
+        {
+          text: 'OK',
+          onPress: (): void => gotoWallet(props.navigation),
+        },
       ])
     }
   }, [])
@@ -66,7 +70,7 @@ const ConnectView = (props: Props): ReactElement => {
       Alert.alert('Parameter error', 'Argument is null', [
         {
           text: 'OK',
-          onPress: (): void => gotoDashboard(),
+          onPress: (): void => gotoDashboard(props.navigation),
         },
       ])
     }
@@ -88,27 +92,6 @@ const ConnectView = (props: Props): ReactElement => {
     return await fetch(url, init)
   }
 
-  const gotoDashboard = (): void => {
-    props.navigation.dispatch(
-      CommonActions.reset({
-        index: 1,
-        routes: [{ name: 'Tabs' }],
-      })
-    )
-  }
-
-  const gotoWallet = (): void => {
-    props.navigation.replace('AuthMenu')
-  }
-
-  const restoreApp = (): void => {
-    Linking.openURL(returnScheme)
-      .then(() => gotoDashboard())
-      .catch(() => {
-        Alert.alert('Cannot return!')
-      })
-  }
-
   const processConnect = async (): Promise<void> => {
     try {
       setLoading(true)
@@ -120,7 +103,7 @@ const ConnectView = (props: Props): ReactElement => {
           JSON.stringify(await ret.json())
         )
       } else {
-        restoreApp()
+        restoreApp(props.navigation, returnScheme)
       }
     } catch (e) {
       Alert.alert('Unexpected Error', e.toString())
@@ -140,7 +123,9 @@ const ConnectView = (props: Props): ReactElement => {
       ]}
     >
       <View style={style.closeView}>
-        <TouchableOpacity onPress={() => gotoDashboard()}>
+        <TouchableOpacity
+          onPress={(): void => gotoDashboard(props.navigation)}
+        >
           <Icon name="close" color={color.sapphire} size={24} />
         </TouchableOpacity>
       </View>
@@ -175,7 +160,7 @@ const ConnectView = (props: Props): ReactElement => {
           containerStyle={{ flex: 1, height: 60 }}
           titleStyle={style.buttonTitle}
           titleFontType={'medium'}
-          onPress={() => {
+          onPress={(): void => {
             processConnect()
           }}
         />
@@ -186,8 +171,8 @@ const ConnectView = (props: Props): ReactElement => {
           containerStyle={{ flex: 1, height: 60 }}
           titleStyle={style.buttonTitle}
           titleFontType={'medium'}
-          onPress={() => {
-            restoreApp()
+          onPress={(): void => {
+            restoreApp(props.navigation, returnScheme)
           }}
         />
       </View>

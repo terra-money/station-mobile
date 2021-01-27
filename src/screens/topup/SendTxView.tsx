@@ -8,11 +8,13 @@ import {
   ActivityIndicator,
   StyleSheet,
   ViewProps,
+  StatusBar,
+  TouchableOpacity,
+  ScrollView,
 } from 'react-native'
 import { Buffer } from 'buffer'
-import { useAuth } from 'use-station/src'
-
-import { Text, Button } from 'components'
+import { useAuth, format } from 'use-station/src'
+import { Text, Button, Select, Input, Icon } from 'components'
 
 import {
   Coin,
@@ -21,12 +23,16 @@ import {
   RawKey,
   StdFee,
   StdSignMsg,
+  SyncTxBroadcastResult,
 } from '@terra-money/terra.js'
 import { getDecyrptedKey } from 'utils/wallet'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import color from 'styles/color'
 import { amount } from 'use-station/src/utils/format'
+import BigNumber from 'bignumber.js'
+import SubHeader from 'components/layout/SubHeader'
+import { DEBUG_TOPUP, gotoDashboard, gotoWallet } from './TopupUtils'
 
 interface Props {
   navigation: any
@@ -37,40 +43,32 @@ interface Props {
   }
 }
 
-const lcdClient = new LCDClient({
-  chainID: 'tequila-0004',
-  URL: 'https://tequila-lcd.terra.dev',
-  gasPrices: {
-    uluna: '0.15',
-    uusd: '0.15',
-    usdr: '0.1018',
-    ukrw: '178.05',
-    umnt: '431.6259',
-  },
-})
-
 interface SchemeArgs {
   return_scheme: string
   endpoint_address: string
 }
 
 const SendTxView = (props: Props): ReactElement => {
-  const [password, setPassword] = useState('')
   const { user } = useAuth()
   const insets = useSafeAreaInsets()
 
   if (user === undefined) {
     Alert.alert('Error', 'Wallet not connected!', [
-      { text: 'OK', onPress: (): void => gotoWallet() },
+      {
+        text: 'OK',
+        onPress: (): void => gotoWallet(props.navigation),
+      },
     ])
   }
 
   const [returnScheme, setReturnScheme] = useState('')
   const [endpointAddress, setEndpointAddress] = useState('')
 
-  const [stdSignMsg, setStdSignMsg] = useState<StdSignMsg>(undefined)
+  const [stdSignMsg, setStdSignMsg] = useState<StdSignMsg>()
 
-  const [loading, setLoading] = useState<boolean>(false)
+  const [feeDenom, setFeeDenom] = useState('')
+  const [feeAmount, setFeeAmount] = useState('')
+
   const [arg, setArg] = useState<SchemeArgs | undefined>(undefined)
   try {
     if (props.route.params.arg !== undefined) {
@@ -87,23 +85,29 @@ const SendTxView = (props: Props): ReactElement => {
 
   useEffect(() => {
     const getUnsignedMessage = async (): Promise<void> => {
-      setLoading(true)
       const unsignedTx = await getUnsignedTx(endpointAddress)
       setStdSignMsg(StdSignMsg.fromData(unsignedTx.stdSignMsg))
-      setLoading(false)
     }
     endpointAddress !== '' && getUnsignedMessage()
   }, [endpointAddress])
 
   useEffect(() => {
     try {
-      console.log('stdSignMsg', stdSignMsg)
-      stdSignMsg !== undefined &&
-        lcdClient.tx
-          .estimateFee(stdSignMsg)
-          .then((stdFee: StdFee) => {
-            console.log('stdFee', stdFee)
-          })
+      setFeeAmount(
+        new BigNumber(stdSignMsg.fee.amount.get('ukrw')?.amount)
+          .dividedBy(1e6)
+          .toString()
+      )
+      setFeeDenom(
+        format.denom(stdSignMsg.fee.amount.get('ukrw')?.denom)
+      )
+      // setFeeAmount(stdSignMsg.fee)
+      // setFeeDenom(stdSignMsg.fee.amount.denom)
+      // stdSignMsg !== undefined &&
+      //   lcdClient.tx
+      //     .estimateFee(stdSignMsg)
+      //     .then((stdFee: StdFee) => {
+      //     })
     } catch (e) {}
   }, [stdSignMsg])
 
@@ -124,41 +128,42 @@ const SendTxView = (props: Props): ReactElement => {
     return await response.json()
   }
 
-  const putTxResult = async (
-    url: string,
-    txResult: any
-  ): Promise<Response> => {
-    for (const k in txResult) {
-      if (txResult.hasOwnProperty(k) && txResult[k] !== undefined) {
-        txResult[k] = String(txResult[k])
-      }
-    }
+  // const putTxResult = async (
+  //   url: string,
+  //   txResult: any
+  // ): Promise<Response> => {
+  //   for (const k in txResult) {
+  //     if (txResult.hasOwnProperty(k) && txResult[k] !== undefined) {
+  //       txResult[k] = String(txResult[k])
+  //     }
+  //   }
 
-    const init = {
-      method: 'PUT',
-      headers: {
-        Origin: 'https://topup.terra.dev',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(txResult),
-    }
+  //   const init = {
+  //     method: 'PUT',
+  //     headers: {
+  //       Origin: 'https://topup.terra.dev',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(txResult),
+  //   }
 
-    return await fetch(url, init)
-  }
+  //   return await fetch(url, init)
+  // }
 
-  const BroadcastSignedTx = async (data: any): Promise<any> => {
-    const decyrptedKey = await getDecyrptedKey(
-      user?.name || '',
-      password
-    )
+  // const BroadcastSignedTx = async (
+  //   stdSignMsg: StdSignMsg
+  // ): Promise<SyncTxBroadcastResult> => {
+  //   const decyrptedKey = await getDecyrptedKey(
+  //     user?.name || '',
+  //     password
+  //   )
 
-    const rk = new RawKey(Buffer.from(decyrptedKey, 'hex'))
-    const stdSignMsg = StdSignMsg.fromData(data.stdSignMsg)
-    const signedTx = await rk.signTx(stdSignMsg)
+  //   const rk = new RawKey(Buffer.from(decyrptedKey, 'hex'))
+  //   const signedTx = await rk.signTx(stdSignMsg)
 
-    const result = await lcdClient.tx.broadcastSync(signedTx)
-    return result
-  }
+  //   const result = await lcdClient.tx.broadcastSync(signedTx)
+  //   return result
+  // }
 
   /**
    * {
@@ -200,52 +205,35 @@ const SendTxView = (props: Props): ReactElement => {
    }
 }
    */
-  const processSignedTx = async (): Promise<void> => {
-    try {
-      setLoading(true)
+  // const processSignedTx = async (): Promise<void> => {
+  //   try {
+  //     setLoading(true)
 
-      const broadcastResult = await BroadcastSignedTx(unsignedTx)
-      const putResult = await putTxResult(
-        endpointAddress,
-        broadcastResult
-      )
+  //     const broadcastResult = await BroadcastSignedTx(stdSignMsg)
+  //     const putResult = await putTxResult(
+  //       endpointAddress,
+  //       broadcastResult
+  //     )
 
-      if (putResult.status !== 200) {
-        Alert.alert(
-          `${putResult.status} error`,
-          JSON.stringify(await putResult.json())
-        )
-      } else {
-        Alert.alert('', 'SUCCESS', [
-          {
-            text: 'OK',
-            onPress: (): void => returnApp(returnScheme),
-          },
-        ])
-      }
-    } catch (e) {
-      Alert.alert('Unexpected Error', e.toString())
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const returnApp = (scheme: string): void => {
-    Linking.openURL(scheme)
-  }
-
-  const gotoDashboard = (): void => {
-    props.navigation.dispatch(
-      CommonActions.reset({
-        index: 1,
-        routes: [{ name: 'Tabs' }],
-      })
-    )
-  }
-
-  const gotoWallet = (): void => {
-    props.navigation.navigate('AuthMenu')
-  }
+  //     if (putResult.status !== 200) {
+  //       Alert.alert(
+  //         `${putResult.status} error`,
+  //         JSON.stringify(await putResult.json())
+  //       )
+  //     } else {
+  //       Alert.alert('', 'SUCCESS', [
+  //         {
+  //           text: 'OK',
+  //           onPress: (): void => returnApp(returnScheme),
+  //         },
+  //       ])
+  //     }
+  //   } catch (e) {
+  //     Alert.alert('Unexpected Error', e.toString())
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
   const TitleIcon = (props?: ViewProps): ReactElement => (
     <View style={[{ flexDirection: 'row' }, props?.style]}>
@@ -284,7 +272,26 @@ const SendTxView = (props: Props): ReactElement => {
         },
       ]}
     >
-      <View></View>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={color.sapphire}
+        translucent={false}
+      />
+      <View
+        style={{
+          backgroundColor: color.sapphire,
+          height: 60,
+          paddingLeft: 20,
+          justifyContent: 'center',
+        }}
+      >
+        <TouchableOpacity
+          onPress={(): void => gotoDashboard(props.navigation)}
+        >
+          <Icon name={'clear'} color={color.white} size={24} />
+        </TouchableOpacity>
+      </View>
+      <SubHeader theme={'sapphire'} title={'Confirm'} />
       <View
         style={{
           flex: 1,
@@ -293,7 +300,7 @@ const SendTxView = (props: Props): ReactElement => {
           marginTop: 60,
         }}
       >
-        <TitleIcon style={{ marginBottom: 5 }} />
+        <TitleIcon style={{ marginBottom: 15 }} />
         <Text
           fontType="book"
           style={{
@@ -305,7 +312,7 @@ const SendTxView = (props: Props): ReactElement => {
         >
           {'Would you like to allow charging in CHAI?'}
         </Text>
-        <View style={{ alignSelf: 'flex-start' }}>
+        <View style={{ alignSelf: 'flex-start', marginBottom: 5 }}>
           <Text
             fontType="medium"
             style={{ fontSize: 14, lineHeight: 21 }}
@@ -314,9 +321,41 @@ const SendTxView = (props: Props): ReactElement => {
           </Text>
         </View>
         <View style={{ flexDirection: 'row' }}>
-          <Text>{'KRT'}</Text>
-          <Text>{'0.123456'}</Text>
+          <Select
+            disabled={true}
+            selectedValue={feeDenom}
+            optionList={[{ label: feeDenom, value: feeDenom }]}
+            onValueChange={(): void => {}}
+            textStyle={{
+              fontSize: 14,
+              lineHeight: 21,
+              color: color.sapphire,
+            }}
+            containerStyle={{
+              flex: 1,
+              backgroundColor: color.disabled,
+            }}
+          />
+          <View style={{ width: 10 }} />
+          <Input
+            style={{ flex: 2 }}
+            value={feeAmount}
+            editable={false}
+          />
         </View>
+        {DEBUG_TOPUP && (
+          <ScrollView style={{ alignSelf: 'flex-start' }}>
+            <Text
+              style={{ marginBottom: 4 }}
+            >{`returnScheme: ${returnScheme}`}</Text>
+            <Text
+              style={{ marginBottom: 4 }}
+            >{`endpointAddress: ${endpointAddress}`}</Text>
+            <Text
+              style={{ marginBottom: 4 }}
+            >{`stdSignMsg: ${stdSignMsg?.toJSON()}`}</Text>
+          </ScrollView>
+        )}
       </View>
       <View
         style={{
@@ -329,7 +368,14 @@ const SendTxView = (props: Props): ReactElement => {
           title="Next"
           titleStyle={{ fontSize: 16, lineHeight: 24 }}
           titleFontType="medium"
-          onPress={() => processSignedTx()}
+          onPress={(): void => {
+            props.navigation.replace('SendTxPasswordView', {
+              stdSignMsg,
+              returnScheme,
+              endpointAddress,
+            })
+            stdSignMsg
+          }}
         />
       </View>
     </View>
