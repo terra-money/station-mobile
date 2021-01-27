@@ -4,6 +4,7 @@ import {
   View,
   TouchableOpacity,
   Switch,
+  Alert,
 } from 'react-native'
 
 import Body from 'components/layout/Body'
@@ -88,7 +89,18 @@ const Screen = (): ReactElement => {
                 onValueChange={onChangeIsUseBioAuth}
               />
             </View>
-            <TouchableOpacity style={styles.itemBox}>
+            <TouchableOpacity
+              style={styles.itemBox}
+              onPress={(): void => {
+                if (user.name) {
+                  navigate('ChangePassword', {
+                    walletName: user.name,
+                  })
+                } else {
+                  Alert.alert('No wallet Name')
+                }
+              }}
+            >
               <Text style={styles.itemName} fontType={'medium'}>
                 Change password
               </Text>
