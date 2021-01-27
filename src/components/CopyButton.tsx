@@ -14,6 +14,7 @@ import color from 'styles/color'
 export type CopyButtonProps = {
   copyString: string
   theme?: 'sapphire' | 'white'
+  containerStyle?: StyleProp<ViewStyle>
 }
 
 const CopyButton = (props: CopyButtonProps): ReactElement => {
@@ -39,7 +40,11 @@ const CopyButton = (props: CopyButtonProps): ReactElement => {
       onPress={(): void => {
         Clipboard.setString(props.copyString)
       }}
-      style={[styles.copyButton, containerStyle]}
+      style={[
+        styles.copyButton,
+        containerStyle,
+        props.containerStyle,
+      ]}
     >
       <Icon
         name={'content-paste'}

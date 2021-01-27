@@ -25,6 +25,7 @@ export type RootStackParams = {
   Confirm: undefined
   ConfirmPassword: { feeSelectValue: string }
   Delegate: { validatorAddress: string; isUndelegation: boolean }
+  ChangePassword: { walletName: string }
 }
 
 export const RootStack = createStackNavigator<RootStackParams>()

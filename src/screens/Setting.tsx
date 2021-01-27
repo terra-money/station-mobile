@@ -1,108 +1,235 @@
-import React, { ReactElement } from 'react'
-import { View, StyleSheet } from 'react-native'
+import React, { ReactElement, useEffect, useState } from 'react'
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Switch,
+  Alert,
+} from 'react-native'
 
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Body from 'components/layout/Body'
+import { navigationHeaderOptions } from 'components/layout/Header'
+import SubHeader from 'components/layout/SubHeader'
+import { CopyButton, Icon, Text } from 'components'
 
-import SubPageHeader from '../components/SubPageHeader'
-
-import { Text } from 'components'
+import { RootStackParams } from 'types/navigation'
+import { useAuth } from 'use-station/src'
+import useCurrency from 'use-station/src/contexts/useCurrency'
 import color from 'styles/color'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
+import { useBioAuth } from 'hooks/useBioAuth'
+import { setUseBioAuth, getIsUseBioAuth } from 'utils/storage'
 
-interface SettingItemProps {
-  k: string // key
-  v: string // value
-}
+const Screen = (): ReactElement => {
+  const { user, signOut } = useAuth()
+  const { current } = useCurrency()
+  const { navigate } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
+  const {} = useBioAuth()
 
-interface ButtonItemProps {
-  name: string
-  icon: string
-}
+  const [isUseBioAuth, setIsUseBioAuth] = useState(false)
 
-interface SeparatorProps {
-  height: number | string
-}
+  const onChangeIsUseBioAuth = (value: boolean): void => {
+    setUseBioAuth({ isUse: value })
+    setIsUseBioAuth(value)
+  }
 
-const Setting = (): ReactElement => {
-  const SettingItem = ({ k, v }: SettingItemProps): ReactElement => (
-    <>
-      <TouchableOpacity style={styles.settingContainer}>
-        <Text style={styles.settingKey}>{k}</Text>
-        <Text style={styles.settingValue}>{v}</Text>
-      </TouchableOpacity>
-    </>
-  )
-  const ButtonItem = ({}: ButtonItemProps): ReactElement => (
-    <>
-      <TouchableOpacity
-        style={[
-          styles.settingContainer,
-          { justifyContent: 'center' },
-        ]}
-      >
-        <Icon
-          name="wallet"
-          color="rgb(32,67,181)"
-          size={24}
-          style={{ marginRight: 5 }}
-        />
-        <Text style={styles.buttonText}>Connect</Text>
-      </TouchableOpacity>
-    </>
-  )
+  const initPage = async (): Promise<void> => {
+    setIsUseBioAuth(await getIsUseBioAuth())
+  }
 
-  const Separator = ({ height }: SeparatorProps): ReactElement => (
-    <View
-      style={{
-        height,
-        width: '100%',
-        backgroundColor: 'transparent',
-      }}
-    />
-  )
+  useEffect(() => {
+    initPage()
+  }, [])
 
   return (
-    <View style={{ backgroundColor: 'rgb(249, 250, 255)' }}>
-      <SubPageHeader title="settings" />
-      {
-        // 로그인 이후 나올 설정
-      }
-      <>
-        <SettingItem k="Lauguage" v="English" />
-        <Separator height={1} />
-        <SettingItem k="Currency" v="UST" />
-        <Separator height={1} />
-        <SettingItem k="Network" v="Columbus-4" />
-        <Separator height={20} />
-        <ButtonItem name="Connect" icon="wallet" />
-      </>
-      {}
-    </View>
+    <>
+      {user ? (
+        <View
+          style={{
+            backgroundColor: color.sapphire,
+            height: 100,
+            alignItems: 'center',
+          }}
+        >
+          <Text style={styles.userName} fontType={'bold'}>
+            {user.name}
+          </Text>
+          <Text style={styles.userAddress}>{user.address}</Text>
+          <CopyButton
+            copyString={user.address}
+            theme={'sapphire'}
+            containerStyle={{
+              backgroundColor: '#2a52c1',
+              borderColor: '#2a52c1',
+            }}
+          />
+        </View>
+      ) : (
+        <SubHeader theme={'sapphire'} title={'settings'} />
+      )}
+
+      <Body
+        theme={'sky'}
+        scrollable
+        containerStyle={{ paddingHorizontal: 0 }}
+      >
+        {user && (
+          <View style={styles.section}>
+            <View style={styles.itemBox}>
+              <Text style={styles.itemName} fontType={'medium'}>
+                Use Bio Auth
+              </Text>
+              <Switch
+                value={isUseBioAuth}
+                onValueChange={onChangeIsUseBioAuth}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.itemBox}
+              onPress={(): void => {
+                if (user.name) {
+                  navigate('ChangePassword', {
+                    walletName: user.name,
+                  })
+                } else {
+                  Alert.alert('No wallet Name')
+                }
+              }}
+            >
+              <Text style={styles.itemName} fontType={'medium'}>
+                Change password
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        <View style={styles.section}>
+          <TouchableOpacity style={styles.itemBox}>
+            <Text style={styles.itemName} fontType={'medium'}>
+              Currency
+            </Text>
+            <Text style={styles.itemValue} fontType={'medium'}>
+              {current?.value}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.itemBox}>
+            <Text style={styles.itemName} fontType={'medium'}>
+              Network
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {user ? (
+          <View style={styles.section}>
+            <TouchableOpacity
+              style={styles.authItemBox}
+              onPress={signOut}
+            >
+              <Text style={styles.authItemName} fontType={'bold'}>
+                Disconnect
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.authItemBox}>
+              <Text
+                style={[styles.authItemName, { color: '#ff5561' }]}
+                fontType={'bold'}
+              >
+                Delete wallet
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.section}>
+            <TouchableOpacity
+              style={styles.authItemBox}
+              onPress={(): void => navigate('AuthMenu')}
+            >
+              <Icon
+                name="account-balance-wallet"
+                size={24}
+                color="#2043b5"
+                style={{ marginRight: 8 }}
+              />
+              <Text style={styles.authItemName} fontType={'bold'}>
+                Connect
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </Body>
+    </>
   )
 }
 
-const styles = StyleSheet.create({
-  settingContainer: {
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 20,
-  },
-  settingKey: {
-    fontSize: 16,
-    lineHeight: 24,
-    color: color.sapphire,
-  },
-  settingValue: {
-    fontSize: 16,
-    lineHeight: 24,
-    color: 'rgb(84, 147, 247)',
-  },
-  buttonText: {
-    fontSize: 16,
-    lineHeight: 24,
-    color: color.sapphire,
-  },
+Screen.navigationOptions = navigationHeaderOptions({
+  theme: 'sapphire',
 })
 
-export default Setting
+export default Screen
+
+const styles = StyleSheet.create({
+  userName: {
+    fontSize: 18,
+    lineHeight: 24,
+    letterSpacing: 0,
+    textAlign: 'center',
+    color: '#ffffff',
+  },
+  userAddress: {
+    fontSize: 10,
+    lineHeight: 15,
+    letterSpacing: 0,
+    textAlign: 'center',
+    color: '#ffffff',
+    marginBottom: 8,
+  },
+  section: {
+    shadowColor: 'rgba(0, 0, 0, 0.05)',
+    shadowOffset: {
+      width: 0,
+      height: 20,
+    },
+    shadowRadius: 35,
+    shadowOpacity: 1,
+    marginBottom: 20,
+    backgroundColor: 'white',
+  },
+  itemBox: {
+    borderBottomColor: '#edf1f7',
+    borderBottomWidth: 1,
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  itemName: {
+    fontSize: 16,
+    lineHeight: 24,
+    letterSpacing: 0,
+  },
+  itemValue: {
+    fontSize: 16,
+    lineHeight: 24,
+    letterSpacing: 0,
+    color: color.dodgerBlue,
+  },
+  authItemBox: {
+    borderBottomColor: '#edf1f7',
+    borderBottomWidth: 1,
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  authItemName: {
+    textAlign: 'center',
+    fontSize: 16,
+    lineHeight: 24,
+    letterSpacing: 0,
+  },
+})

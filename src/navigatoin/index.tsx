@@ -24,6 +24,7 @@ import VestingSchedule from '../screens/VestingSchedule'
 import Confirm from '../screens/Confirm'
 import ConfirmPassword from '../screens/ConfirmPassword'
 import Delegate from '../screens/Delegate'
+import ChangePassword from '../screens/ChangePassword'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -71,7 +72,7 @@ const AppNavigator = (): ReactElement => {
         <RootStack.Screen
           name="Setting"
           component={Setting}
-          options={{ headerShown: false }}
+          options={Setting.navigationOptions}
         />
         <RootStack.Screen
           name="AuthMenu"
@@ -132,6 +133,11 @@ const AppNavigator = (): ReactElement => {
           name="Delegate"
           component={Delegate}
           options={Delegate.navigationOptions}
+        />
+        <RootStack.Screen
+          name="ChangePassword"
+          component={ChangePassword}
+          options={ChangePassword.navigationOptions}
         />
       </RootStack.Navigator>
     </NavigationContainer>

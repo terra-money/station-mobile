@@ -141,6 +141,25 @@ export const getDecyrptedKey = async (
   return decrypted
 }
 
+export const changePassword = async (
+  name: string,
+  ondPassword: string,
+  newPassword: string
+): Promise<boolean> => {
+  try {
+    const decryptedKey = await getDecyrptedKey(name, ondPassword)
+    const encryptedKey = encrypt(decryptedKey, newPassword)
+    keystore.write(name, encryptedKey)
+    await upsertBioAuthPassord({
+      walletName: name,
+      password: newPassword,
+    })
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
 export const testPassword = async ({
   name,
   password,

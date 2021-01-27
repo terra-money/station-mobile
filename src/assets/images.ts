@@ -10,6 +10,7 @@ export default {
   bio_face: require('../../assets/bio_face.png'),
   finger_print: require('../../assets/finger_print.png'),
   loading_image: require('../../assets/loading_image.gif'),
+  wallet_settings: require('../../assets/wallet_settings.png'),
 
   // assets as money
   EUT: require('../../assets/EUT.png'),
