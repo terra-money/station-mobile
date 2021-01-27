@@ -1,5 +1,10 @@
 import React, { ReactElement } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Image,
+} from 'react-native'
 
 import { StackNavigationOptions } from '@react-navigation/stack'
 
@@ -9,6 +14,7 @@ import { Text, Icon } from 'components'
 import color from 'styles/color'
 import { useAuth } from 'use-station/src'
 import { useNavigation } from '@react-navigation/native'
+import images from 'assets/images'
 
 const HeaderLeft = ({ title }: { title: string }): ReactElement => {
   return (
@@ -26,34 +32,32 @@ const HeaderRight = (): ReactElement => {
   return (
     <View style={styles.headerRight}>
       {user ? (
-        <TouchableOpacity
-          onPress={(): void => navigate('AuthMenu')}
-          style={styles.connectButton}
-        >
-          <Icon
-            name="account-balance-wallet"
-            size={16}
-            color="#2043b5"
-            style={{ marginRight: 8 }}
+        <TouchableOpacity onPress={(): void => navigate('Setting')}>
+          <Image
+            source={images.wallet_settings}
+            style={{ width: 28, height: 28 }}
           />
-          <Text style={styles.connectText}>{user.name}</Text>
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity onPress={(): void => navigate('AuthMenu')}>
-          <View style={styles.connectButton}>
-            <Icon
-              name="account-balance-wallet"
-              size={14}
-              color="#2043b5"
-              style={{ marginRight: 8 }}
-            />
-            <Text style={styles.connectText}>CONNECT</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={styles.unSignedMenu}>
+          <TouchableOpacity
+            onPress={(): void => navigate('AuthMenu')}
+          >
+            <View style={styles.connectButton}>
+              <Icon
+                name="account-balance-wallet"
+                size={14}
+                color="#2043b5"
+                style={{ marginRight: 8 }}
+              />
+              <Text style={styles.connectText}>CONNECT</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={(): void => navigate('Setting')}>
+            <Icon name="settings" size={24} color="#2043b5" />
+          </TouchableOpacity>
+        </View>
       )}
-      <TouchableOpacity onPress={(): void => navigate('Setting')}>
-        <Icon name="settings" size={24} color="#2043b5" />
-      </TouchableOpacity>
     </View>
   )
 }
@@ -85,6 +89,8 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     paddingRight: 20,
+  },
+  unSignedMenu: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

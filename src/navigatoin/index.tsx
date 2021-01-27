@@ -71,7 +71,7 @@ const AppNavigator = (): ReactElement => {
         <RootStack.Screen
           name="Setting"
           component={Setting}
-          options={{ headerShown: false }}
+          options={Setting.navigationOptions}
         />
         <RootStack.Screen
           name="AuthMenu"
