@@ -1,5 +1,10 @@
-import React, { ReactElement } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import React, { ReactElement, useEffect, useState } from 'react'
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Switch,
+} from 'react-native'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -14,6 +19,8 @@ import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native'
+import { useBioAuth } from 'hooks/useBioAuth'
+import { setUseBioAuth, getIsUseBioAuth } from 'utils/storage'
 
 const Screen = (): ReactElement => {
   const { user, signOut } = useAuth()
@@ -21,6 +28,23 @@ const Screen = (): ReactElement => {
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
+  const {} = useBioAuth()
+
+  const [isUseBioAuth, setIsUseBioAuth] = useState(false)
+
+  const onChangeIsUseBioAuth = (value: boolean): void => {
+    setUseBioAuth({ isUse: value })
+    setIsUseBioAuth(value)
+  }
+
+  const initPage = async (): Promise<void> => {
+    setIsUseBioAuth(await getIsUseBioAuth())
+  }
+
+  useEffect(() => {
+    initPage()
+  }, [])
+
   return (
     <>
       {user ? (
@@ -55,11 +79,15 @@ const Screen = (): ReactElement => {
       >
         {user && (
           <View style={styles.section}>
-            <TouchableOpacity style={styles.itemBox}>
+            <View style={styles.itemBox}>
               <Text style={styles.itemName} fontType={'medium'}>
                 Use Bio Auth
               </Text>
-            </TouchableOpacity>
+              <Switch
+                value={isUseBioAuth}
+                onValueChange={onChangeIsUseBioAuth}
+              />
+            </View>
             <TouchableOpacity style={styles.itemBox}>
               <Text style={styles.itemName} fontType={'medium'}>
                 Change password

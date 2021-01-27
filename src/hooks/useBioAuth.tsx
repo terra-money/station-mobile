@@ -14,7 +14,7 @@ import color from 'styles/color'
 
 type BioAuthType = {
   bioType: BiometricType
-} & Modal
+} & AppModal
 
 const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
   return (
