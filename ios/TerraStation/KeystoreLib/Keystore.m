@@ -82,11 +82,7 @@ RCT_EXPORT_METHOD(read:(NSString *)key
             value = [[NSString alloc] initWithData:found encoding:NSUTF8StringEncoding];
         }
 
-        if (value == nil) {
-            reject(@"1", @"key does not present", nil);
-        } else {
-            resolve(value);
-        }
+        resolve(value);
     }
     @catch (NSException *exception) {
         reject(@"1", @"key does not present", nil);
