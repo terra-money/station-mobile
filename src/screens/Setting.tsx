@@ -20,8 +20,8 @@ import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native'
-import { useBioAuth } from 'hooks/useBioAuth'
 import { setUseBioAuth, getIsUseBioAuth } from 'utils/storage'
+import { deleteWallet } from 'utils/wallet'
 
 const Screen = (): ReactElement => {
   const { user, signOut } = useAuth()
@@ -29,9 +29,21 @@ const Screen = (): ReactElement => {
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
-  const {} = useBioAuth()
 
   const [isUseBioAuth, setIsUseBioAuth] = useState(false)
+
+  const onPressDeleteWallet = async (): Promise<void> => {
+    if (user?.name) {
+      const deleteResult = await deleteWallet({
+        walletName: user.name,
+      })
+      if (deleteResult) {
+        signOut()
+        return
+      }
+    }
+    Alert.alert('Delete wallet error')
+  }
 
   const onChangeIsUseBioAuth = (value: boolean): void => {
     setUseBioAuth({ isUse: value })
@@ -134,7 +146,10 @@ const Screen = (): ReactElement => {
                 Disconnect
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.authItemBox}>
+            <TouchableOpacity
+              style={styles.authItemBox}
+              onPress={onPressDeleteWallet}
+            >
               <Text
                 style={[styles.authItemName, { color: '#ff5561' }]}
                 fontType={'bold'}
