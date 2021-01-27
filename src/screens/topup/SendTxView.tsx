@@ -129,7 +129,7 @@ const SendTxView = (props: Props): ReactElement => {
       if (putResult.status !== 200) {
         Alert.alert(
           `${putResult.status} error`,
-          await putResult.json()
+          JSON.stringify(await putResult.json())
         )
       } else {
         Alert.alert('', 'SUCCESS', [

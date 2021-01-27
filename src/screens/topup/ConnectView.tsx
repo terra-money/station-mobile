@@ -103,7 +103,10 @@ const ConnectView = (props: Props): ReactElement => {
       const ret = await putConnect(endpointAddress, user?.address)
 
       if (ret.status !== 200) {
-        Alert.alert(`${ret.status} error`, await ret.json())
+        Alert.alert(
+          `${ret.status} error`,
+          JSON.stringify(await ret.json())
+        )
       } else {
         Alert.alert('', 'SUCCESS', [
           {
