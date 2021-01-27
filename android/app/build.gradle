@@ -204,6 +204,10 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
+    // for gif
+    implementation 'com.facebook.fresco:fresco:1.+'
+    implementation 'com.facebook.fresco:animated-gif:1.+'
+
     addUnimodulesDependencies()
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {

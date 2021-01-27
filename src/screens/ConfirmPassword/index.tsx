@@ -22,6 +22,7 @@ import { RootStackParams } from 'types/navigation'
 import ConfirmStore from 'stores/ConfirmStore'
 import { getIsUseBioAuth } from 'utils/storage'
 import { useConfirm } from 'hooks/useConfirm'
+import { useLoading } from 'hooks/useLoading'
 
 type Props = StackScreenProps<RootStackParams, 'ConfirmPassword'>
 
@@ -35,6 +36,7 @@ const Render = ({
 } & Props): ReactElement => {
   const feeSelectValue = route.params.feeSelectValue
   const { getComfirmData } = useConfirm()
+  const { showLoading, hideLoading } = useLoading()
   const { result, form, fee } = getComfirmData({ confirm, user })
 
   const { navigate, dispatch } = useNavigation<
@@ -62,6 +64,10 @@ const Render = ({
       }
     }
   }
+
+  useEffect(() => {
+    form.submitting ? showLoading() : hideLoading()
+  }, [form.submitting])
 
   // for Bio Auth, bioauthTrigger or form will change after bio auth
   useEffect(() => {

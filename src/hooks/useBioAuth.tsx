@@ -82,7 +82,13 @@ export const useBioAuth = (): {
   }, [])
 
   const openIsUseBioAuth = (): void => {
-    modal.open(BioAuth({ ...modal, bioType }))
+    if (bioType === BiometricType.NONE) {
+      getSupportedType().then((bioType) => {
+        modal.open(BioAuth({ ...modal, bioType }))
+      })
+    } else {
+      modal.open(BioAuth({ ...modal, bioType }))
+    }
   }
 
   return {

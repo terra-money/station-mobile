@@ -1,6 +1,6 @@
 interface App {
   drawer: Drawer
-  modal: Modal
+  modal: AppModal
 }
 
 interface Drawer {
@@ -10,9 +10,13 @@ interface Drawer {
   content: ReactNode
 }
 
-interface Modal {
+type AppModalConfig = {
+  onRequestClose?: () => void
+}
+interface AppModal {
   isOpen: boolean
-  open: (content: ReactNode) => void
+  open: (content: ReactNode, config?: AppModalConfig) => void
   close: () => void
   content: ReactNode
+  onRequestClose: () => void
 }
