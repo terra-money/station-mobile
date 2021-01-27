@@ -96,12 +96,12 @@ const AppNavigator = (): ReactElement => {
         <RootStack.Screen
           name="ConnectView"
           component={ConnectView}
-          options={{ animationEnabled: false }}
+          options={{ headerShown: false, animationEnabled: false }}
         />
         <RootStack.Screen
           name="SendTxView"
           component={SendTxView}
-          options={{ animationEnabled: false }}
+          options={{ headerShown: false, animationEnabled: false }}
         />
         <RootStack.Screen
           name="Send"
