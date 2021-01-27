@@ -9,14 +9,33 @@ import preferences, {
 import keystore from 'nativeModules/keystore'
 import { upsertBioAuthPassord } from './storage'
 
+const sanitize = (s = ''): string =>
+  s.toLowerCase().replace(/[^a-z]/g, '')
+
+export const formatSeedStringToArray = (seed: string): string[] => {
+  return seed
+    .trim()
+    .replace(/[\n\r]/g, ' ')
+    .replace(/\s\s+/g, ' ')
+    .split(' ')
+    .map(sanitize)
+}
+
 export const generateAddresses = (
   mnemonic: string
 ): {
   mk118: MnemonicKey
   mk330: MnemonicKey
 } => {
-  const mk118 = new MnemonicKey({ mnemonic, coinType: 118 })
-  const mk330 = new MnemonicKey({ mnemonic, coinType: 330 })
+  const formatted = formatSeedStringToArray(mnemonic).join(' ')
+  const mk118 = new MnemonicKey({
+    mnemonic: formatted,
+    coinType: 118,
+  })
+  const mk330 = new MnemonicKey({
+    mnemonic: formatted,
+    coinType: 330,
+  })
 
   return { mk118, mk330 }
 }

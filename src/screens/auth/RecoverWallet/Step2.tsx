@@ -12,6 +12,8 @@ import { Input, Button } from 'components'
 
 import RecoverWalletStore from 'stores/RecoverWalletStore'
 import NumberStep from 'components/NumberStep'
+import { useSignUp } from 'use-station/src'
+import { formatSeedStringToArray } from 'utils/wallet'
 
 const Screen = (): ReactElement => {
   const [seed, setSeed] = useRecoilState(RecoverWalletStore.seed)
@@ -29,8 +31,10 @@ const Screen = (): ReactElement => {
   const onPressPasteButton = async (
     copiedString: string
   ): Promise<void> => {
+    useSignUp
     if (_.some(copiedString)) {
-      const stringArr = copiedString.trim().split(' ')
+      const stringArr = formatSeedStringToArray(copiedString)
+
       if (stringArr.length > 0) {
         setSeed(stringArr)
       }

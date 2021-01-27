@@ -26,33 +26,34 @@ const HeaderRight = (): ReactElement => {
   return (
     <View style={styles.headerRight}>
       {user ? (
-        <TouchableOpacity onPress={(): void => navigate('AuthMenu')}>
+        <TouchableOpacity
+          onPress={(): void => navigate('AuthMenu')}
+          style={styles.connectButton}
+        >
           <Icon
             name="account-balance-wallet"
-            size={28}
+            size={16}
             color="#2043b5"
+            style={{ marginRight: 8 }}
           />
+          <Text style={styles.connectText}>{user.name}</Text>
         </TouchableOpacity>
       ) : (
-        <View style={styles.unSignedMenu}>
-          <TouchableOpacity
-            onPress={(): void => navigate('AuthMenu')}
-          >
-            <View style={styles.connectButton}>
-              <Icon
-                name="account-balance-wallet"
-                size={14}
-                color="#2043b5"
-                style={{ marginRight: 8 }}
-              />
-              <Text style={styles.connectText}>CONNECT</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={(): void => navigate('Setting')}>
-            <Icon name="settings" size={24} color="#2043b5" />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={(): void => navigate('AuthMenu')}>
+          <View style={styles.connectButton}>
+            <Icon
+              name="account-balance-wallet"
+              size={14}
+              color="#2043b5"
+              style={{ marginRight: 8 }}
+            />
+            <Text style={styles.connectText}>CONNECT</Text>
+          </View>
+        </TouchableOpacity>
       )}
+      <TouchableOpacity onPress={(): void => navigate('Setting')}>
+        <Icon name="settings" size={24} color="#2043b5" />
+      </TouchableOpacity>
     </View>
   )
 }
@@ -84,8 +85,6 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     paddingRight: 20,
-  },
-  unSignedMenu: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
