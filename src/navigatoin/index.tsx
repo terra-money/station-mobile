@@ -25,6 +25,8 @@ import Confirm from '../screens/Confirm'
 import ConfirmPassword from '../screens/ConfirmPassword'
 import Delegate from '../screens/Delegate'
 import ChangePassword from '../screens/ChangePassword'
+import SendTxPasswordView from '../screens/topup/SendTxPasswordView'
+import SendTxCompleteView from '../screens/topup/SendTxCompleteView'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -97,12 +99,22 @@ const AppNavigator = (): ReactElement => {
         <RootStack.Screen
           name="ConnectView"
           component={ConnectView}
-          options={{ animationEnabled: false }}
+          options={{ headerShown: false, animationEnabled: false }}
         />
         <RootStack.Screen
           name="SendTxView"
           component={SendTxView}
-          options={{ animationEnabled: false }}
+          options={{ headerShown: false, animationEnabled: false }}
+        />
+        <RootStack.Screen
+          name="SendTxPasswordView"
+          component={SendTxPasswordView}
+          options={{ headerShown: false, animationEnabled: false }}
+        />
+        <RootStack.Screen
+          name="SendTxCompleteView"
+          component={SendTxCompleteView}
+          options={{ headerShown: false, animationEnabled: false }}
         />
         <RootStack.Screen
           name="Send"

@@ -2,17 +2,18 @@ import { CommonActions } from '@react-navigation/native'
 import React, { ReactElement, useEffect, useState } from 'react'
 import {
   View,
-  Text,
-  Button,
   Linking,
   Alert,
-  Keyboard,
   ActivityIndicator,
   StyleSheet,
 } from 'react-native'
 import { Buffer } from 'buffer'
 import { useAuth } from 'use-station/src'
-import { TextInput } from 'react-native-gesture-handler'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Button, Icon, Text } from 'components'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import color from 'styles/color'
+import { gotoDashboard, gotoWallet, restoreApp } from './TopupUtils'
 
 interface Props {
   navigation: any
@@ -29,13 +30,19 @@ interface SchemeArgs {
 }
 
 const ConnectView = (props: Props): ReactElement => {
-  const [password, setPassword] = useState('')
   const { user } = useAuth()
-  if (user === undefined) {
-    Alert.alert('Error', 'Wallet not connected!', [
-      { text: 'OK', onPress: (): void => gotoWallet() },
-    ])
-  }
+  const insets = useSafeAreaInsets()
+
+  useEffect(() => {
+    if (user === undefined) {
+      Alert.alert('Error', 'Wallet not connected!', [
+        {
+          text: 'OK',
+          onPress: (): void => gotoWallet(props.navigation),
+        },
+      ])
+    }
+  }, [])
 
   const [returnScheme, setReturnScheme] = useState('')
   const [endpointAddress, setEndpointAddress] = useState('')
@@ -60,7 +67,12 @@ const ConnectView = (props: Props): ReactElement => {
       setEndpointAddress(arg.endpoint_address)
       setReturnScheme(arg.return_scheme)
     } else {
-      // exception case!
+      Alert.alert('Parameter error', 'Argument is null', [
+        {
+          text: 'OK',
+          onPress: (): void => gotoDashboard(props.navigation),
+        },
+      ])
     }
   }, [arg])
 
@@ -80,37 +92,18 @@ const ConnectView = (props: Props): ReactElement => {
     return await fetch(url, init)
   }
 
-  const returnApp = (scheme: string): void => {
-    Linking.openURL(scheme)
-  }
-
-  const gotoDashboard = (): void => {
-    props.navigation.dispatch(
-      CommonActions.reset({
-        index: 1,
-        routes: [{ name: 'Tabs' }],
-      })
-    )
-  }
-
-  const gotoWallet = (): void => {
-    props.navigation.navigate('AuthMenu')
-  }
-
   const processConnect = async (): Promise<void> => {
     try {
       setLoading(true)
       const ret = await putConnect(endpointAddress, user?.address)
 
       if (ret.status !== 200) {
-        Alert.alert(`${ret.status} error`, await ret.json())
+        Alert.alert(
+          `${ret.status} error`,
+          JSON.stringify(await ret.json())
+        )
       } else {
-        Alert.alert('', 'SUCCESS', [
-          {
-            text: 'OK',
-            onPress: (): void => returnApp(returnScheme),
-          },
-        ])
+        restoreApp(props.navigation, returnScheme)
       }
     } catch (e) {
       Alert.alert('Unexpected Error', e.toString())
@@ -120,55 +113,109 @@ const ConnectView = (props: Props): ReactElement => {
   }
 
   return (
-    <>
-      <View style={{ flex: 1 }}>
-        <Text>{`user: ${JSON.stringify(user)}`}</Text>
-        <Text>{`arg: ${arg && JSON.stringify(arg)}`}</Text>
-        <Text>{'Password: '}</Text>
-        <TextInput
-          style={styles.textInput}
-          underlineColorAndroid="#ccc"
-          value={password}
-          secureTextEntry
-          onChangeText={setPassword}
-          onSubmitEditing={Keyboard.dismiss}
-        />
-        <Button title="CONNECT" onPress={processConnect} />
-        <View style={{ margin: 4 }} />
-        <Button
-          title="RETURN APP"
-          onPress={(): void => {
-            Linking.openURL(returnScheme)
-          }}
-        />
-        <View style={{ margin: 4 }} />
-        <Button title="RETURN DASHBOARD" onPress={gotoDashboard} />
-      </View>
-
-      {/* LOADING INDICATOR */}
-      {loading && (
-        <View
-          style={{
-            position: 'absolute',
-            flex: 1,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            alignContent: 'center',
-            justifyContent: 'center',
-          }}
+    <View
+      style={[
+        style.container,
+        {
+          marginTop: insets.top,
+          marginBottom: insets.bottom,
+        },
+      ]}
+    >
+      <View style={style.closeView}>
+        <TouchableOpacity
+          onPress={(): void => gotoDashboard(props.navigation)}
         >
+          <Icon name="close" color={color.sapphire} size={24} />
+        </TouchableOpacity>
+      </View>
+      <View style={style.contentView}>
+        <Icon
+          name="account-balance-wallet"
+          color={color.sapphire}
+          size={60}
+        />
+        <Text
+          fontType="bold"
+          style={{ fontSize: 24, lineHeight: 36 }}
+        >
+          {'Allow Access to wallet'}
+        </Text>
+        <Text
+          fontType="book"
+          style={{ fontSize: 16, lineHeight: 24 }}
+        >
+          {`CHAI wants to access “${
+            user?.name
+          } - ${user?.address.substring(
+            0,
+            6
+          )}...${user?.address.substr(user?.address.length - 5)}”`}
+        </Text>
+      </View>
+      <View style={style.buttonView}>
+        <Button
+          title={'Allow'}
+          theme={'sapphire'}
+          containerStyle={{ flex: 1, height: 60 }}
+          titleStyle={style.buttonTitle}
+          titleFontType={'medium'}
+          onPress={(): void => {
+            processConnect()
+          }}
+        />
+        <View style={{ marginHorizontal: 5 }} />
+        <Button
+          title={'Deny'}
+          theme={'red'}
+          containerStyle={{ flex: 1, height: 60 }}
+          titleStyle={style.buttonTitle}
+          titleFontType={'medium'}
+          onPress={(): void => {
+            restoreApp(props.navigation, returnScheme)
+          }}
+        />
+      </View>
+      {loading && (
+        <View style={style.loadingView}>
           <ActivityIndicator size="large" color="#000" />
         </View>
       )}
-    </>
+    </View>
   )
 }
 
-const styles = StyleSheet.create({
-  textInput: {
-    marginLeft: 16,
-    marginRight: 16,
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  closeView: {
+    marginVertical: 18,
+    marginLeft: 20,
+  },
+  contentView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonView: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginHorizontal: 20,
+    marginBottom: 20,
+  },
+  buttonTitle: {
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  loadingView: {
+    position: 'absolute',
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
 })
 
