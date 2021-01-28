@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import _ from 'lodash'
 
 import {
@@ -80,19 +80,86 @@ const WalletAddress = ({ user }: { user: User }): ReactElement => {
       <>
         <View style={styles.section}>
           {(available || vesting) && (
-            <Text style={styles.assetListTitle} fontType="medium">
-              AVAILABLE
-            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 10,
+              }}
+            >
+              <Text style={styles.assetListTitle} fontType="medium">
+                AVAILABLE
+              </Text>
+              {available && (
+                <TouchableOpacity
+                  onPress={(): void => {
+                    available.hideSmall.toggle()
+                  }}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={styles.hideSmallLabel}>
+                    {available.hideSmall.label}
+                  </Text>
+                  <View style={styles.hideSmallCheckBox}>
+                    {available.hideSmall.checked && (
+                      <View
+                        style={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: 1,
+                          backgroundColor: '#0c3694',
+                        }}
+                      />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              )}
+            </View>
           )}
           {available && <AvailableList {...available} />}
           {vesting && <VestingList {...vesting} />}
         </View>
         {tokens && (
           <View style={styles.section}>
-            <Text style={styles.assetListTitle} fontType="medium">
-              TOKENS
-            </Text>
-
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 10,
+              }}
+            >
+              <Text style={styles.assetListTitle} fontType="medium">
+                TOKENS
+              </Text>
+              <TouchableOpacity
+                onPress={(): void => {
+                  tokens.hideSmall.toggle()
+                }}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={styles.hideSmallLabel}>
+                  {tokens.hideSmall.label}
+                </Text>
+                <View style={styles.hideSmallCheckBox}>
+                  {tokens.hideSmall.checked && (
+                    <View
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: 1,
+                        backgroundColor: '#0c3694',
+                      }}
+                    />
+                  )}
+                </View>
+              </TouchableOpacity>
+            </View>
             <AvailableList {...tokens} />
           </View>
         )}
@@ -110,7 +177,9 @@ export default WalletAddress
 const styles = StyleSheet.create({
   section: { marginBottom: 20 },
   assetListTitle: {
-    marginBottom: 10,
+    fontSize: 10,
+    lineHeight: 15,
+    letterSpacing: 0,
   },
   emptyWalletCard: {
     padding: 20,
@@ -130,5 +199,22 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     letterSpacing: 0,
     color: color.sapphire,
+  },
+  hideSmallLabel: {
+    fontSize: 10,
+    lineHeight: 15,
+    letterSpacing: 0,
+  },
+  hideSmallCheckBox: {
+    marginHorizontal: 5,
+    width: 16,
+    height: 16,
+    borderRadius: 2,
+    backgroundColor: '#ffffff',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#cfd8ea',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
