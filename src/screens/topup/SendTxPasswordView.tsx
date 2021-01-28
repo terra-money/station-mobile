@@ -8,7 +8,6 @@ import {
   StyleSheet,
 } from 'react-native'
 import {
-  LCDClient,
   RawKey,
   StdTx,
   SyncTxBroadcastResult,
@@ -27,25 +26,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useAuth } from 'use-station/src'
 import { getDecyrptedKey } from 'utils/wallet'
 import { useLoading } from 'hooks/useLoading'
-import { DEBUG_TOPUP, gotoDashboard, restoreApp } from './TopupUtils'
+import {
+  DEBUG_TOPUP,
+  gotoDashboard,
+  lcdClient,
+  onPressComplete,
+} from './TopupUtils'
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
 import { isSupportedBiometricAuthentication } from 'utils/bio'
 import { getIsUseBioAuth } from 'utils/storage'
 
 type Props = StackScreenProps<RootStackParams, 'SendTxPasswordView'>
-
-const lcdClient = new LCDClient({
-  chainID: 'tequila-0004',
-  URL: 'https://tequila-lcd.terra.dev',
-  gasPrices: {
-    uluna: '0.15',
-    uusd: '0.15',
-    usdr: '0.1018',
-    ukrw: '178.05',
-    umnt: '431.6259',
-  },
-})
 
 const SendTxPasswordView = (props: Props): ReactElement => {
   const insets = useSafeAreaInsets()
@@ -121,10 +113,6 @@ const SendTxPasswordView = (props: Props): ReactElement => {
     return await fetch(url, init)
   }
 
-  const onPressComplete = (): void => {
-    restoreApp(props.navigation, props.route.params.returnScheme)
-  }
-
   const processTransaction = async (): Promise<void> => {
     try {
       showLoading()
@@ -141,11 +129,19 @@ const SendTxPasswordView = (props: Props): ReactElement => {
           success: false,
           title: `${putResult.status} error`,
           content: JSON.stringify(await putResult.json()),
-          onPress: onPressComplete,
+          onPress: () =>
+            onPressComplete(
+              props.navigation,
+              props.route.params.returnScheme
+            ),
         })
       } else {
         props.navigation.replace('SendTxCompleteView', {
-          onPress: onPressComplete,
+          onPress: () =>
+            onPressComplete(
+              props.navigation,
+              props.route.params.returnScheme
+            ),
         })
       }
     } catch (e) {
@@ -153,7 +149,11 @@ const SendTxPasswordView = (props: Props): ReactElement => {
         success: false,
         title: `Unexpected error`,
         content: e.toString(),
-        onPress: onPressComplete,
+        onPress: () =>
+          onPressComplete(
+            props.navigation,
+            props.route.params.returnScheme
+          ),
       })
     } finally {
       setTimeout(() => {
@@ -223,25 +223,27 @@ const SendTxPasswordView = (props: Props): ReactElement => {
           title="Send"
           titleStyle={style.buttonTitle}
           titleFontType="medium"
-          onPress={() => {
+          onPress={(): void => {
             createSignedTx()
           }}
         />
         {
           <>
             <View style={{ height: 10 }} />
-            <BiometricButton
-              disabled={disableBioAuth}
-              walletName={user?.name}
-              onPress={({ isSuccess, password }): void => {
-                if (isSuccess) {
-                  setPassword(password)
-                  setTimeout(() => {
-                    createSignedTx(password)
-                  }, 300)
-                }
-              }}
-            />
+            {user?.name && (
+              <BiometricButton
+                disabled={disableBioAuth}
+                walletName={user?.name}
+                onPress={({ isSuccess, password }): void => {
+                  if (isSuccess) {
+                    setPassword(password)
+                    setTimeout(() => {
+                      createSignedTx(password)
+                    }, 300)
+                  }
+                }}
+              />
+            )}
           </>
         }
       </View>

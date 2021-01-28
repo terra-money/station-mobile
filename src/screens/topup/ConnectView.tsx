@@ -1,10 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import {
-  View,
-  Alert,
-  ActivityIndicator,
-  StyleSheet,
-} from 'react-native'
+import { View, Alert, StyleSheet } from 'react-native'
 import { Buffer } from 'buffer'
 import { useAuth } from 'use-station/src'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -15,6 +10,7 @@ import {
   DEBUG_TOPUP,
   gotoDashboard,
   gotoWallet,
+  LoadingIndicator,
   restoreApp,
 } from './TopupUtils'
 import { StackScreenProps } from '@react-navigation/stack'
@@ -183,11 +179,7 @@ const ConnectView = (props: Props): ReactElement => {
           }}
         />
       </View>
-      {loading && (
-        <View style={style.loadingView}>
-          <ActivityIndicator size="large" color="#000" />
-        </View>
-      )}
+      {loading && <LoadingIndicator />}
     </View>
   )
 }
@@ -215,14 +207,6 @@ const style = StyleSheet.create({
   buttonTitle: {
     fontSize: 16,
     lineHeight: 24,
-  },
-  loadingView: {
-    position: 'absolute',
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    alignContent: 'center',
-    justifyContent: 'center',
   },
 
   titleText: { fontSize: 24, lineHeight: 36 },
