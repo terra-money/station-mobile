@@ -1,40 +1,39 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import {
-  Alert,
   KeyboardAvoidingView,
-  Linking,
   ScrollView,
   StatusBar,
   TouchableOpacity,
   View,
+  StyleSheet,
 } from 'react-native'
 import {
   LCDClient,
   RawKey,
-  StdSignMsg,
   StdTx,
   SyncTxBroadcastResult,
 } from '@terra-money/terra.js'
 import SubHeader from 'components/layout/SubHeader'
 import color from 'styles/color'
-import { Button, FormInput, Icon, Input, Text } from 'components'
+import font from 'styles/font'
+import {
+  BiometricButton,
+  Button,
+  FormInput,
+  Icon,
+  Text,
+} from 'components'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useAuth } from 'use-station/src'
 import { getDecyrptedKey } from 'utils/wallet'
-import { CommonActions } from '@react-navigation/native'
 import { useLoading } from 'hooks/useLoading'
 import { DEBUG_TOPUP, gotoDashboard, restoreApp } from './TopupUtils'
+import { StackScreenProps } from '@react-navigation/stack'
+import { RootStackParams } from 'types'
+import { isSupportedBiometricAuthentication } from 'utils/bio'
+import { getIsUseBioAuth } from 'utils/storage'
 
-interface Props {
-  navigation: any
-  route: {
-    params: {
-      stdSignMsg: StdSignMsg
-      returnScheme: string
-      endpointAddress: string
-    }
-  }
-}
+type Props = StackScreenProps<RootStackParams, 'SendTxPasswordView'>
 
 const lcdClient = new LCDClient({
   chainID: 'tequila-0004',
@@ -55,20 +54,29 @@ const SendTxPasswordView = (props: Props): ReactElement => {
   const [password, setPassword] = useState<string>('')
   const [signedTx, setSignedTx] = useState<StdTx>()
   const [error, setError] = useState<string>('')
+  const [disableBioAuth, setDisableBioAuth] = useState(false)
 
   useEffect(() => {
-    console.log('password', password)
-  }, [password])
+    const checkBioAuth = async (): Promise<void> => {
+      const support = await isSupportedBiometricAuthentication()
+      const enable = await getIsUseBioAuth()
+
+      setDisableBioAuth(!(support || enable))
+    }
+    checkBioAuth()
+  }, [])
 
   useEffect(() => {
     signedTx !== undefined && processTransaction()
   }, [signedTx])
 
-  const createSignedTx = async (): Promise<void> => {
+  const createSignedTx = async (
+    bioPassword?: string
+  ): Promise<void> => {
     try {
       const decyrptedKey = await getDecyrptedKey(
         user?.name || '',
-        password
+        bioPassword ?? password
       )
 
       const rk = new RawKey(Buffer.from(decyrptedKey, 'hex'))
@@ -77,6 +85,7 @@ const SendTxPasswordView = (props: Props): ReactElement => {
       setError(e.toString())
     }
   }
+
   const broadcastSignedTx = async (): Promise<SyncTxBroadcastResult> => {
     const result = await lcdClient.tx.broadcastSync(signedTx!)
     return result
@@ -94,19 +103,17 @@ const SendTxPasswordView = (props: Props): ReactElement => {
     url: string,
     txResult: any
   ): Promise<Response> => {
-    console.log('url', url)
     for (const k in txResult) {
       if (txResult.hasOwnProperty(k) && txResult[k] !== undefined) {
         txResult[k] = String(txResult[k])
       }
     }
-    console.log('txResult', txResult)
 
     const init = {
       method: 'PUT',
       headers: {
-        // Origin: 'https://topup.terra.dev',
-        // 'Content-Type': 'application/json',
+        Origin: 'https://topup.terra.dev',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(txResult),
     }
@@ -123,13 +130,11 @@ const SendTxPasswordView = (props: Props): ReactElement => {
       showLoading()
 
       const broadcastResult = await broadcastSignedTx()
-      console.log('broadcastResult', broadcastResult)
 
       const putResult = await putTxResult(
         props.route.params.endpointAddress,
         broadcastResult
       )
-      console.log('putResult', putResult)
 
       if (putResult.status !== 200) {
         props.navigation.replace('SendTxCompleteView', {
@@ -160,29 +165,24 @@ const SendTxPasswordView = (props: Props): ReactElement => {
   return (
     <KeyboardAvoidingView
       style={[
+        style.container,
         {
-          flex: 1,
-          flexDirection: 'column',
-        },
-        {
-          marginTop: insets.top,
           marginBottom: insets.bottom,
         },
       ]}
     >
+      <View
+        style={{
+          height: insets.top,
+          backgroundColor: color.sapphire,
+        }}
+      />
       <StatusBar
         barStyle="light-content"
         backgroundColor={color.sapphire}
         translucent={false}
       />
-      <View
-        style={{
-          backgroundColor: color.sapphire,
-          height: 60,
-          paddingLeft: 20,
-          justifyContent: 'center',
-        }}
-      >
+      <View style={style.headerContainer}>
         <TouchableOpacity
           onPress={(): void => gotoDashboard(props.navigation)}
         >
@@ -190,56 +190,98 @@ const SendTxPasswordView = (props: Props): ReactElement => {
         </TouchableOpacity>
       </View>
       <SubHeader theme="sapphire" title="Enter your password" />
-      <View style={{ flex: 1, marginHorizontal: 20 }}>
-        <Text
-          fontType="medium"
-          style={{
-            fontSize: 14,
-            lineHeight: 21,
-            color: color.sapphire,
-            marginTop: 20,
-            marginBottom: 5,
-          }}
-        >
+      <View style={style.contentContainer}>
+        <Text fontType="medium" style={style.passwordText}>
           {'Password'}
         </Text>
         <FormInput
-          style={{
-            fontFamily: 'Gotham-Book',
-          }}
+          style={style.formInputText}
           placeholderTextColor={color.sapphire_op50}
           placeholder={'Must be at least 10 characters'}
           secureTextEntry={true}
           onChangeText={(text): void => setPassword(text)}
           errorMessage={error}
+          value={password}
         />
         {DEBUG_TOPUP && (
-          <ScrollView style={{ alignSelf: 'flex-start' }}>
-            <Text style={{ marginBottom: 4 }}>
+          <ScrollView style={style.debugContainer}>
+            <Text style={style.debugText}>
               {`returnScheme: ${props.route.params.returnScheme}`}
             </Text>
-            <Text style={{ marginBottom: 4 }}>
+            <Text style={style.debugText}>
               {`endpointAddress: ${props.route.params.endpointAddress}`}
             </Text>
-            <Text style={{ marginBottom: 4 }}>
+            <Text style={style.debugText}>
               {`stdSignMsg: ${props.route.params.stdSignMsg.toJSON()}`}
             </Text>
           </ScrollView>
         )}
       </View>
-      <View style={{ marginHorizontal: 20, marginBottom: 20 }}>
+      <View style={style.buttonContainer}>
         <Button
           theme="sapphire"
           title="Send"
-          titleStyle={{ fontSize: 16, lineHeight: 24 }}
+          titleStyle={style.buttonTitle}
           titleFontType="medium"
           onPress={() => {
             createSignedTx()
           }}
         />
+        {
+          <>
+            <View style={{ height: 10 }} />
+            <BiometricButton
+              disabled={disableBioAuth}
+              walletName={user?.name}
+              onPress={({ isSuccess, password }): void => {
+                if (isSuccess) {
+                  setPassword(password)
+                  setTimeout(() => {
+                    createSignedTx(password)
+                  }, 300)
+                }
+              }}
+            />
+          </>
+        }
       </View>
     </KeyboardAvoidingView>
   )
 }
+
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  headerContainer: {
+    backgroundColor: color.sapphire,
+    height: 60,
+    paddingLeft: 20,
+    justifyContent: 'center',
+  },
+  contentContainer: { flex: 1, marginHorizontal: 20 },
+
+  passwordText: {
+    fontSize: 14,
+    lineHeight: 21,
+    color: color.sapphire,
+    marginTop: 20,
+    marginBottom: 5,
+  },
+  formInputText: {
+    fontFamily: font.gotham.book,
+  },
+
+  debugContainer: { alignSelf: 'flex-start' },
+  debugText: { marginBottom: 4 },
+
+  buttonContainer: {
+    flexDirection: 'column',
+    marginHorizontal: 20,
+    marginBottom: 20,
+  },
+  buttonTitle: { fontSize: 16, lineHeight: 24 },
+})
 
 export default SendTxPasswordView

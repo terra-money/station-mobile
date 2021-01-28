@@ -1,8 +1,6 @@
-import { CommonActions } from '@react-navigation/native'
 import React, { ReactElement, useEffect, useState } from 'react'
 import {
   View,
-  Linking,
   Alert,
   ActivityIndicator,
   StyleSheet,
@@ -13,16 +11,16 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Button, Icon, Text } from 'components'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import color from 'styles/color'
-import { gotoDashboard, gotoWallet, restoreApp } from './TopupUtils'
+import {
+  DEBUG_TOPUP,
+  gotoDashboard,
+  gotoWallet,
+  restoreApp,
+} from './TopupUtils'
+import { StackScreenProps } from '@react-navigation/stack'
+import { RootStackParams } from 'types'
 
-interface Props {
-  navigation: any
-  route: {
-    params: {
-      arg?: string
-    }
-  }
-}
+type Props = StackScreenProps<RootStackParams, 'ConnectView'>
 
 interface SchemeArgs {
   return_scheme: string
@@ -135,29 +133,38 @@ const ConnectView = (props: Props): ReactElement => {
           color={color.sapphire}
           size={60}
         />
-        <Text
-          fontType="bold"
-          style={{ fontSize: 24, lineHeight: 36 }}
-        >
+        <Text fontType="bold" style={style.titleText}>
           {'Allow Access to wallet'}
         </Text>
-        <Text
-          fontType="book"
-          style={{ fontSize: 16, lineHeight: 24 }}
-        >
-          {`CHAI wants to access “${
-            user?.name
-          } - ${user?.address.substring(
-            0,
-            6
-          )}...${user?.address.substr(user?.address.length - 5)}”`}
-        </Text>
+        {user?.address && (
+          <Text fontType="book" style={style.contentText}>
+            {`CHAI wants to access “${
+              user?.name
+            } - ${user?.address.substring(
+              0,
+              6
+            )}...${user?.address.substr(user?.address.length - 5)}”`}
+          </Text>
+        )}
+        {DEBUG_TOPUP && (
+          <View style={style.debugContainer}>
+            <Text
+              style={style.debugText}
+            >{`address: ${user?.address}`}</Text>
+            <Text
+              style={style.debugText}
+            >{`returnScheme: ${returnScheme}`}</Text>
+            <Text
+              style={style.debugText}
+            >{`endpointAddress: ${endpointAddress}`}</Text>
+          </View>
+        )}
       </View>
       <View style={style.buttonView}>
         <Button
           title={'Allow'}
           theme={'sapphire'}
-          containerStyle={{ flex: 1, height: 60 }}
+          containerStyle={style.buttonContainer}
           titleStyle={style.buttonTitle}
           titleFontType={'medium'}
           onPress={(): void => {
@@ -168,7 +175,7 @@ const ConnectView = (props: Props): ReactElement => {
         <Button
           title={'Deny'}
           theme={'red'}
-          containerStyle={{ flex: 1, height: 60 }}
+          containerStyle={style.buttonContainer}
           titleStyle={style.buttonTitle}
           titleFontType={'medium'}
           onPress={(): void => {
@@ -217,6 +224,14 @@ const style = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
   },
+
+  titleText: { fontSize: 24, lineHeight: 36 },
+  contentText: { fontSize: 16, lineHeight: 24 },
+
+  debugContainer: { alignSelf: 'flex-start' },
+  debugText: { marginBottom: 4 },
+
+  buttonContainer: { flex: 1, height: 60 },
 })
 
 export default ConnectView

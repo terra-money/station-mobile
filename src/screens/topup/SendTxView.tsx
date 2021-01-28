@@ -1,47 +1,29 @@
-import { CommonActions } from '@react-navigation/native'
 import React, { ReactElement, useEffect, useState } from 'react'
 import {
   View,
-  Linking,
   Alert,
-  Keyboard,
-  ActivityIndicator,
-  StyleSheet,
   ViewProps,
   StatusBar,
   TouchableOpacity,
   ScrollView,
+  StyleSheet,
 } from 'react-native'
 import { Buffer } from 'buffer'
 import { useAuth, format } from 'use-station/src'
 import { Text, Button, Select, Input, Icon } from 'components'
 
-import {
-  Coin,
-  Coins,
-  LCDClient,
-  RawKey,
-  StdFee,
-  StdSignMsg,
-  SyncTxBroadcastResult,
-} from '@terra-money/terra.js'
-import { getDecyrptedKey } from 'utils/wallet'
+import { StdSignMsg } from '@terra-money/terra.js'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import color from 'styles/color'
-import { amount } from 'use-station/src/utils/format'
+import font from 'styles/font'
 import BigNumber from 'bignumber.js'
 import SubHeader from 'components/layout/SubHeader'
 import { DEBUG_TOPUP, gotoDashboard, gotoWallet } from './TopupUtils'
+import { StackScreenProps } from '@react-navigation/stack'
+import { RootStackParams } from 'types'
 
-interface Props {
-  navigation: any
-  route: {
-    params: {
-      arg?: string
-    }
-  }
-}
+type Props = StackScreenProps<RootStackParams, 'SendTxView'>
 
 interface SchemeArgs {
   return_scheme: string
@@ -101,13 +83,6 @@ const SendTxView = (props: Props): ReactElement => {
       setFeeDenom(
         format.denom(stdSignMsg.fee.amount.get('ukrw')?.denom)
       )
-      // setFeeAmount(stdSignMsg.fee)
-      // setFeeDenom(stdSignMsg.fee.amount.denom)
-      // stdSignMsg !== undefined &&
-      //   lcdClient.tx
-      //     .estimateFee(stdSignMsg)
-      //     .then((stdFee: StdFee) => {
-      //     })
     } catch (e) {}
   }, [stdSignMsg])
 
@@ -127,113 +102,6 @@ const SendTxView = (props: Props): ReactElement => {
 
     return await response.json()
   }
-
-  // const putTxResult = async (
-  //   url: string,
-  //   txResult: any
-  // ): Promise<Response> => {
-  //   for (const k in txResult) {
-  //     if (txResult.hasOwnProperty(k) && txResult[k] !== undefined) {
-  //       txResult[k] = String(txResult[k])
-  //     }
-  //   }
-
-  //   const init = {
-  //     method: 'PUT',
-  //     headers: {
-  //       Origin: 'https://topup.terra.dev',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(txResult),
-  //   }
-
-  //   return await fetch(url, init)
-  // }
-
-  // const BroadcastSignedTx = async (
-  //   stdSignMsg: StdSignMsg
-  // ): Promise<SyncTxBroadcastResult> => {
-  //   const decyrptedKey = await getDecyrptedKey(
-  //     user?.name || '',
-  //     password
-  //   )
-
-  //   const rk = new RawKey(Buffer.from(decyrptedKey, 'hex'))
-  //   const signedTx = await rk.signTx(stdSignMsg)
-
-  //   const result = await lcdClient.tx.broadcastSync(signedTx)
-  //   return result
-  // }
-
-  /**
-   * {
-   "stdSignMsg":{
-      "account_number":"25917",
-      "chain_id":"tequila-0004",
-      "fee":{
-         "amount":[
-            {
-               "amount":"16019515",
-               "denom":"ukrw"
-            }
-         ],
-         "gas":"89972"
-      },
-      "memo":"",
-      "msgs":[
-         {
-            "type":"msgauth/MsgGrantAuthorization",
-            "value":{
-               "authorization":{
-                  "type":"msgauth/SendAuthorization",
-                  "value":{
-                     "spend_limit":[
-                        {
-                           "amount":"1000000000000000",
-                           "denom":"ukrw"
-                        }
-                     ]
-                  }
-               },
-               "grantee":"terra1na2r5d5ele6hh2fz44avgzw5cxvem2j0aaz0nk",
-               "granter":"terra1rmmkd4f5f9u7z48gly57x6tj4prqdju5n77544",
-               "period":"3153600000000000000"
-            }
-         }
-      ],
-      "sequence":"0"
-   }
-}
-   */
-  // const processSignedTx = async (): Promise<void> => {
-  //   try {
-  //     setLoading(true)
-
-  //     const broadcastResult = await BroadcastSignedTx(stdSignMsg)
-  //     const putResult = await putTxResult(
-  //       endpointAddress,
-  //       broadcastResult
-  //     )
-
-  //     if (putResult.status !== 200) {
-  //       Alert.alert(
-  //         `${putResult.status} error`,
-  //         JSON.stringify(await putResult.json())
-  //       )
-  //     } else {
-  //       Alert.alert('', 'SUCCESS', [
-  //         {
-  //           text: 'OK',
-  //           onPress: (): void => returnApp(returnScheme),
-  //         },
-  //       ])
-  //     }
-  //   } catch (e) {
-  //     Alert.alert('Unexpected Error', e.toString())
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
 
   const TitleIcon = (props?: ViewProps): ReactElement => (
     <View style={[{ flexDirection: 'row' }, props?.style]}>
@@ -265,26 +133,24 @@ const SendTxView = (props: Props): ReactElement => {
   return (
     <View
       style={[
-        { flex: 1, flexDirection: 'column' },
+        style.container,
         {
-          marginTop: insets.top,
           marginBottom: insets.bottom,
         },
       ]}
     >
+      <View
+        style={{
+          height: insets.top,
+          backgroundColor: color.sapphire,
+        }}
+      />
       <StatusBar
         barStyle="light-content"
         backgroundColor={color.sapphire}
         translucent={false}
       />
-      <View
-        style={{
-          backgroundColor: color.sapphire,
-          height: 60,
-          paddingLeft: 20,
-          justifyContent: 'center',
-        }}
-      >
+      <View style={style.headerContainer}>
         <TouchableOpacity
           onPress={(): void => gotoDashboard(props.navigation)}
         >
@@ -292,81 +158,51 @@ const SendTxView = (props: Props): ReactElement => {
         </TouchableOpacity>
       </View>
       <SubHeader theme={'sapphire'} title={'Confirm'} />
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          marginHorizontal: 20,
-          marginTop: 60,
-        }}
-      >
-        <TitleIcon style={{ marginBottom: 15 }} />
-        <Text
-          fontType="book"
-          style={{
-            fontSize: 16,
-            lineHeight: 24,
-            color: color.sapphire,
-            marginBottom: 60,
-          }}
-        >
+      <View style={style.contentContainer}>
+        <TitleIcon style={style.titleIcon} />
+        <Text fontType="book" style={style.titleText}>
           {'Would you like to allow charging in CHAI?'}
         </Text>
-        <View style={{ alignSelf: 'flex-start', marginBottom: 5 }}>
-          <Text
-            fontType="medium"
-            style={{ fontSize: 14, lineHeight: 21 }}
-          >
+        <View style={style.feeTextContainer}>
+          <Text fontType="medium" style={style.feeText}>
             {'Fees'}
           </Text>
         </View>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={style.feeContainer}>
           <Select
             disabled={true}
             selectedValue={feeDenom}
             optionList={[{ label: feeDenom, value: feeDenom }]}
             onValueChange={(): void => {}}
-            textStyle={{
-              fontSize: 14,
-              lineHeight: 21,
-              color: color.sapphire,
-            }}
-            containerStyle={{
-              flex: 1,
-              backgroundColor: color.disabled,
-            }}
+            textStyle={style.denomText}
+            containerStyle={style.denomContainer}
           />
           <View style={{ width: 10 }} />
           <Input
-            style={{ flex: 2 }}
+            style={style.amountContainer}
             value={feeAmount}
             editable={false}
           />
         </View>
         {DEBUG_TOPUP && (
-          <ScrollView style={{ alignSelf: 'flex-start' }}>
+          <ScrollView style={style.debugContainer}>
             <Text
-              style={{ marginBottom: 4 }}
+              style={style.debugText}
             >{`returnScheme: ${returnScheme}`}</Text>
             <Text
-              style={{ marginBottom: 4 }}
+              style={style.debugText}
             >{`endpointAddress: ${endpointAddress}`}</Text>
             <Text
-              style={{ marginBottom: 4 }}
+              style={style.debugText}
             >{`stdSignMsg: ${stdSignMsg?.toJSON()}`}</Text>
           </ScrollView>
         )}
       </View>
-      <View
-        style={{
-          marginHorizontal: 20,
-          marginBottom: 20,
-        }}
-      >
+      <View style={style.buttonContainer}>
         <Button
           theme="sapphire"
           title="Next"
-          titleStyle={{ fontSize: 16, lineHeight: 24 }}
+          titleStyle={style.buttonText}
           titleFontType="medium"
           onPress={(): void => {
             props.navigation.replace('SendTxPasswordView', {
@@ -379,47 +215,60 @@ const SendTxView = (props: Props): ReactElement => {
         />
       </View>
     </View>
-    // <View style={{ flex: 1 }}>
-    //   <Text>{`user: ${JSON.stringify(user)}`}</Text>
-    //   <Text>{`arg: ${arg && JSON.stringify(arg)}`}</Text>
-    //   <Text>{'Password: '}</Text>
-    //   <TextInput
-    //     style={styles.textInput}
-    //     underlineColorAndroid="#ccc"
-    //     value={password}
-    //     secureTextEntry
-    //     onChangeText={setPassword}
-    //     onSubmitEditing={Keyboard.dismiss}
-    //   />
-    //   <Button title="SIGN" onPress={processSignedTx} />
-    //   <View style={{ margin: 4 }} />
-    //   <Button
-    //     title="RETURN APP"
-    //     onPress={(): void => {
-    //       Linking.openURL(returnScheme)
-    //     }}
-    //   />
-    //   <View style={{ margin: 4 }} />
-    //   <Button title="RETURN DASHBOARD" onPress={gotoDashboard} />
-
-    //   {/* LOADING INDICATOR */}
-    //   {loading && (
-    //     <View
-    //       style={{
-    //         position: 'absolute',
-    //         flex: 1,
-    //         width: '100%',
-    //         height: '100%',
-    //         backgroundColor: 'rgba(0,0,0,0.5)',
-    //         alignContent: 'center',
-    //         justifyContent: 'center',
-    //       }}
-    //     >
-    //       <ActivityIndicator size="large" color="#000" />
-    //     </View>
-    //   )}
-    // </View>
   )
 }
+
+const style = StyleSheet.create({
+  container: { flex: 1, flexDirection: 'column' },
+  headerContainer: {
+    backgroundColor: color.sapphire,
+    height: 60,
+    paddingLeft: 20,
+    justifyContent: 'center',
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: 20,
+    marginTop: 60,
+  },
+
+  titleIcon: { marginBottom: 15 },
+  titleText: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: color.sapphire,
+    marginBottom: 60,
+  },
+
+  feeTextContainer: { alignSelf: 'flex-start', marginBottom: 5 },
+  feeText: { fontSize: 14, lineHeight: 21 },
+
+  feeContainer: { flexDirection: 'row' },
+  denomText: {
+    fontSize: 14,
+    color: color.sapphire,
+    paddingLeft: 15,
+  },
+  denomContainer: {
+    flex: 1,
+    backgroundColor: color.disabled,
+  },
+  amountContainer: {
+    flex: 2,
+    color: color.sapphire,
+    fontFamily: font.gotham.book,
+    fontVariant: ['tabular-nums'],
+  },
+
+  debugContainer: { alignSelf: 'flex-start' },
+  debugText: { marginBottom: 4 },
+
+  buttonContainer: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+  },
+  buttonText: { fontSize: 16, lineHeight: 24 },
+})
 
 export default SendTxView
