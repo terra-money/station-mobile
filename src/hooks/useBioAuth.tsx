@@ -8,7 +8,11 @@ import { Text } from 'components'
 import { useApp } from './useApp'
 
 import { setUseBioAuth } from 'utils/storage'
-import { getSupportedType, BiometricType } from 'utils/bio'
+import {
+  getSupportedType,
+  BiometricType,
+  authenticateBiometric,
+} from 'utils/bio'
 import images from 'assets/images'
 import color from 'styles/color'
 
@@ -52,9 +56,12 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
         <Button
           theme={'sapphire'}
           title={'Enable'}
-          onPress={(): void => {
-            setUseBioAuth({ isUse: true })
-            close()
+          onPress={async (): Promise<void> => {
+            const isSuccess = await authenticateBiometric()
+            if (isSuccess) {
+              setUseBioAuth({ isUse: true })
+              close()
+            }
           }}
           containerStyle={{ marginBottom: 10 }}
         />
