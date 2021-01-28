@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   Switch,
-  Alert,
 } from 'react-native'
 
 import Body from 'components/layout/Body'
@@ -26,6 +25,7 @@ import { useAlert } from 'hooks/useAlert'
 
 const Screen = (): ReactElement => {
   const { user, signOut } = useAuth()
+  const { alert } = useAlert()
   const { current } = useCurrency()
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
@@ -119,7 +119,7 @@ const Screen = (): ReactElement => {
                     walletName: user.name,
                   })
                 } else {
-                  Alert.alert('No wallet Name')
+                  alert({ desc: 'No wallet Name' })
                 }
               }}
             >

@@ -8,7 +8,7 @@ type AlertProps = {
   title?: string
   desc: string
   onPressConfirmText?: string
-  onPressConfirm: () => void
+  onPressConfirm?: () => void
 }
 type ConfirmProps = {
   onPressCancelText?: string
@@ -31,7 +31,7 @@ const AlertScreen = (
   const { alertModal, alertProps } = props
   const onPressConfirm = (): void => {
     alertModal.close()
-    alertProps.onPressConfirm()
+    alertProps.onPressConfirm && alertProps.onPressConfirm()
   }
 
   return (
@@ -78,7 +78,7 @@ const AlertScreen = (
 
 const styles = StyleSheet.create({
   container: {
-    margin: 40,
+    width: '100%',
     paddingTop: 20,
     borderRadius: 20,
     backgroundColor: 'white',

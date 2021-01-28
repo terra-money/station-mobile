@@ -1,4 +1,3 @@
-import { Alert } from 'react-native'
 import { MnemonicKey } from '@terra-money/terra.js'
 import { encrypt, decrypt } from './crypto'
 
@@ -69,10 +68,9 @@ export const recover = async (
     const wallet = { name, address: mk.accAddress }
     await addWallet({ wallet, key, password })
     return true
-  } catch (e) {
-    Alert.alert(e.toString())
+  } catch {
+    return false
   }
-  return false
 }
 
 export const decryptKey = (
