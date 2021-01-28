@@ -13,6 +13,7 @@ import { Text, Icon, Number, AssetIcon } from 'components'
 import SwapRateStore from 'stores/SwapRateStore'
 import color from 'styles/color'
 import { RootStackParams } from 'types'
+import { setComma } from 'utils/math'
 
 const AssetItem = ({
   item,
@@ -57,9 +58,11 @@ const AssetItem = ({
               {display.value}
             </Number>
             {_.some(swapValue) && (
-              <Text style={{ opacity: 0.5, fontSize: 10 }}>
-                {swapValue} {currency.current?.value}
-              </Text>
+              <Number
+                numberFontStyle={{ opacity: 0.5, fontSize: 10 }}
+                value={setComma(swapValue)}
+                unit={currency.current?.value}
+              />
             )}
           </View>
 

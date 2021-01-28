@@ -4,4 +4,5 @@ export interface Settings {
   lang?: LangKey
   chain?: ChainOptions
   user?: User
+  currency?: string
 }

@@ -6,6 +6,7 @@ import { Text } from 'components'
 import color from 'styles/color'
 import { ChainConfig } from 'use-station/src'
 import networks from '../../../networks'
+import { settings } from 'utils/storage'
 
 const NetworkOptionDrawer = ({
   chain,
@@ -22,6 +23,7 @@ const NetworkOptionDrawer = ({
             key={`networks-${index}`}
             onPress={(): void => {
               chain.set(network)
+              settings.set({ chain: network })
               drawer.close()
             }}
             style={[
