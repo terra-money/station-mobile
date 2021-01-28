@@ -15,9 +15,10 @@ import NumberStep from 'components/NumberStep'
 import FormLabel from 'components/FormLabel'
 
 const Screen = (): ReactElement => {
-  const [name, setName] = useRecoilState(RecoverWalletStore.name)
-
   const { navigate } = useNavigation()
+
+  const [name, setName] = useRecoilState(RecoverWalletStore.name)
+  const [inputName, setinputName] = useState('')
 
   const { valueValidate } = useValueValidator()
   const [nameErrMsg, setNameErrMsg] = useState('')
@@ -38,6 +39,7 @@ const Screen = (): ReactElement => {
 
   const onChangeName = (text: string): void => {
     setName(text)
+    setinputName(text)
     setNameErrMsg(valueValidate.name(text))
   }
 
@@ -72,7 +74,7 @@ const Screen = (): ReactElement => {
             <FormLabel text={'Wallet Name'} />
             <FormInput
               underlineColorAndroid="#ccc"
-              value={name}
+              value={inputName}
               onChangeText={onChangeName}
               placeholder={'Enter 5-20 alphanumeric characters'}
               errorMessage={nameErrMsg}
