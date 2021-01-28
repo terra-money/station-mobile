@@ -1,21 +1,7 @@
-import React, {
-  ReactNode,
-  useState,
-  useEffect,
-  ReactElement,
-} from 'react'
-import {
-  Modal,
-  View,
-  TouchableOpacity,
-  StatusBar,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-} from 'react-native'
+import React, { useState, useEffect, ReactElement } from 'react'
+import { StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import SplashScreen from 'react-native-splash-screen'
-import { hasNotch } from 'react-native-device-info'
 import { RecoilRoot } from 'recoil'
 
 import {
@@ -32,6 +18,15 @@ import { AppProvider } from './src/hooks'
 import AppNavigator from './src/navigatoin'
 import CodePush from 'react-native-code-push'
 import OnBoarding from './src/screens/OnBoarding'
+import AppModal, {
+  useModalState,
+} from 'components/onlyForApp.tsx/AppModal'
+import AlertModal, {
+  useAlertModalState,
+} from 'components/onlyForApp.tsx/AlertModal'
+import Drawer, {
+  useDrawerState,
+} from 'components/onlyForApp.tsx/Drawer'
 
 /* config */
 // const chain = {
@@ -58,6 +53,7 @@ let App = ({
   /* drawer */
   const drawer = useDrawerState()
   const modal = useModalState()
+  const alertModal = useAlertModalState()
 
   /* provider */
   const config = useConfigState({ lang, chain })
@@ -89,7 +85,7 @@ let App = ({
         <OnBoarding setshowOnBoarding={setshowOnBoarding} />
       ) : (
         ready && (
-          <AppProvider value={{ drawer, modal }}>
+          <AppProvider value={{ drawer, modal, alertModal }}>
             <ConfigProvider value={config}>
               <AuthProvider value={auth}>
                 <SafeAreaProvider>
@@ -100,38 +96,11 @@ let App = ({
                   />
                   <RecoilRoot>
                     <AppNavigator />
-                    <Modal
-                      visible={modal.isOpen}
-                      onRequestClose={modal.onRequestClose}
-                      transparent
-                    >
-                      <SafeAreaView style={{ flex: 1 }}>
-                        {modal.content}
-                      </SafeAreaView>
-                    </Modal>
+                    <AppModal modal={modal} />
+                    <AlertModal modal={alertModal} />
                   </RecoilRoot>
                 </SafeAreaProvider>
-
-                <Modal
-                  visible={drawer.isOpen}
-                  animationType="fade"
-                  transparent
-                >
-                  <View
-                    style={{
-                      flex: 1,
-                      backgroundColor: 'rgba(0,0,0,.5)',
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={drawer.close}
-                      style={styles.top}
-                    />
-                    <View style={styles.bottom}>
-                      {drawer.content}
-                    </View>
-                  </View>
-                </Modal>
+                <Drawer drawer={drawer} />
               </AuthProvider>
             </ConfigProvider>
           </AppProvider>
@@ -163,59 +132,3 @@ export default (): ReactElement => {
 
   return <>{local ? <App settings={local} /> : null}</>
 }
-
-/* hooks */
-const useDrawerState = (): Drawer => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [content, setContent] = useState<ReactNode>(null)
-
-  const open = (content: ReactNode): void => {
-    setContent(content)
-    setIsOpen(true)
-  }
-
-  const close = (): void => {
-    setIsOpen(false)
-    setContent(null)
-  }
-
-  return { isOpen, open, close, content }
-}
-
-const useModalState = (): AppModal => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [content, setContent] = useState<ReactNode>(null)
-  const [config, setConfig] = useState<AppModalConfig>()
-
-  const open = (
-    content: ReactNode,
-    config?: AppModalConfig
-  ): void => {
-    setContent(content)
-    setIsOpen(true)
-    setConfig(config)
-  }
-
-  const close = (): void => {
-    setIsOpen(false)
-    setContent(null)
-  }
-
-  const onRequestClose = (): void => {
-    config?.onRequestClose ? config.onRequestClose() : close()
-  }
-
-  return { isOpen, open, close, content, onRequestClose }
-}
-
-/* styles */
-const styles = StyleSheet.create({
-  top: {
-    flex: 1,
-  },
-
-  bottom: {
-    marginHorizontal: 20,
-    marginBottom: Platform.OS === 'ios' && hasNotch() ? 54 : 32,
-  },
-})

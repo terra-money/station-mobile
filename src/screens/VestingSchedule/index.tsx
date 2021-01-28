@@ -8,13 +8,7 @@ import _ from 'lodash'
 import { RootStackParams } from 'types'
 
 import { navigationHeaderOptions } from 'components/layout/Header'
-import {
-  AssetIcon,
-  AssetIconNameType,
-  Icon,
-  Number,
-  Text,
-} from 'components'
+import { AssetIcon, Icon, Number, Text } from 'components'
 import Body from 'components/layout/Body'
 import color from 'styles/color'
 
@@ -40,7 +34,7 @@ const ProgressBar = ({
 }
 
 const Screen = (props: Props): ReactElement => {
-  const { schedule, display, icon } = props.route.params.item
+  const { schedule, display } = props.route.params.item
   return (
     <Body theme={'sky'} containerStyle={styles.container} scrollable>
       <View style={styles.scheduleCard}>
@@ -48,10 +42,7 @@ const Screen = (props: Props): ReactElement => {
           <View
             style={{ flexDirection: 'row', alignItems: 'center' }}
           >
-            <AssetIcon
-              uri={icon}
-              name={display.unit as AssetIconNameType}
-            />
+            <AssetIcon name={display.unit} />
             <Text
               style={{
                 color: color.white,

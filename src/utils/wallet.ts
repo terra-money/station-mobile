@@ -1,13 +1,15 @@
-import { Alert } from 'react-native'
 import { MnemonicKey } from '@terra-money/terra.js'
-import { encrypt, decrypt } from '@terra-money/key-utils'
+import { encrypt, decrypt } from './crypto'
 
 import dev from './dev'
 import preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 import keystore from 'nativeModules/keystore'
-import { upsertBioAuthPassord } from './storage'
+import {
+  removeBioAuthPassword,
+  upsertBioAuthPassword,
+} from './storage'
 
 const sanitize = (s = ''): string =>
   s.toLowerCase().replace(/[^a-z]/g, '')
@@ -66,10 +68,9 @@ export const recover = async (
     const wallet = { name, address: mk.accAddress }
     await addWallet({ wallet, key, password })
     return true
-  } catch (e) {
-    Alert.alert(e.toString())
+  } catch {
+    return false
   }
-  return false
 }
 
 export const decryptKey = (
@@ -128,7 +129,7 @@ const addWallet = async ({
   )
   keystore.write(wallet.name, key)
 
-  await upsertBioAuthPassord({ walletName: wallet.name, password })
+  await upsertBioAuthPassword({ walletName: wallet.name, password })
 }
 
 export const getDecyrptedKey = async (
@@ -141,6 +142,29 @@ export const getDecyrptedKey = async (
   return decrypted
 }
 
+export const deleteWallet = async ({
+  walletName,
+}: {
+  walletName: string
+}): Promise<boolean> => {
+  try {
+    const wallets = await getWallets()
+
+    const removedWallets = wallets.filter(
+      (x) => x.name !== walletName
+    )
+    preferences.setString(
+      PreferencesEnum.wallets,
+      JSON.stringify(removedWallets)
+    )
+    keystore.remove(walletName)
+    await removeBioAuthPassword({ walletName })
+    return true
+  } catch {
+    return false
+  }
+}
+
 export const changePassword = async (
   name: string,
   ondPassword: string,
@@ -150,12 +174,12 @@ export const changePassword = async (
     const decryptedKey = await getDecyrptedKey(name, ondPassword)
     const encryptedKey = encrypt(decryptedKey, newPassword)
     keystore.write(name, encryptedKey)
-    await upsertBioAuthPassord({
+    await upsertBioAuthPassword({
       walletName: name,
       password: newPassword,
     })
     return true
-  } catch (error) {
+  } catch {
     return false
   }
 }

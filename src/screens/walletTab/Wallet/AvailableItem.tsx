@@ -9,13 +9,7 @@ import {
 
 import { AvailableItem, useConfig } from 'use-station/src'
 
-import {
-  Text,
-  Icon,
-  Number,
-  AssetIcon,
-  AssetIconNameType,
-} from 'components'
+import { Text, Icon, Number, AssetIcon } from 'components'
 import SwapRateStore from 'stores/SwapRateStore'
 import color from 'styles/color'
 import { RootStackParams } from 'types'
@@ -40,10 +34,7 @@ const AssetItem = ({
     <View style={styles.container}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <View style={styles.iconBox}>
-          <AssetIcon
-            uri={icon}
-            name={display.unit as AssetIconNameType}
-          />
+          <AssetIcon uri={icon} name={display.unit} />
         </View>
         <Text style={styles.unit} fontType={'bold'}>
           {display.unit}
