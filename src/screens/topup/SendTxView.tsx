@@ -19,7 +19,13 @@ import color from 'styles/color'
 import font from 'styles/font'
 import BigNumber from 'bignumber.js'
 import SubHeader from 'components/layout/SubHeader'
-import { DEBUG_TOPUP, gotoDashboard, gotoWallet } from './TopupUtils'
+import {
+  DEBUG_TOPUP,
+  gotoDashboard,
+  gotoWallet,
+  LoadingIndicator,
+  onPressComplete,
+} from './TopupUtils'
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
 
@@ -51,6 +57,8 @@ const SendTxView = (props: Props): ReactElement => {
   const [feeDenom, setFeeDenom] = useState('')
   const [feeAmount, setFeeAmount] = useState('')
 
+  const [loading, setLoading] = useState(false)
+
   const [arg, setArg] = useState<SchemeArgs | undefined>(undefined)
   try {
     if (props.route.params.arg !== undefined) {
@@ -67,23 +75,33 @@ const SendTxView = (props: Props): ReactElement => {
 
   useEffect(() => {
     const getUnsignedMessage = async (): Promise<void> => {
-      const unsignedTx = await getUnsignedTx(endpointAddress)
-      setStdSignMsg(StdSignMsg.fromData(unsignedTx.stdSignMsg))
+      try {
+        setLoading(true)
+        const unsignedTx = await getUnsignedTx(endpointAddress)
+        setStdSignMsg(StdSignMsg.fromData(unsignedTx.stdSignMsg))
+      } catch (e) {
+        somethingWrong(e.toString())
+      } finally {
+        setLoading(false)
+      }
     }
-    endpointAddress !== '' && getUnsignedMessage()
-  }, [endpointAddress])
+
+    endpointAddress !== '' &&
+      returnScheme !== '' &&
+      getUnsignedMessage()
+  }, [endpointAddress, returnScheme])
 
   useEffect(() => {
-    try {
-      setFeeAmount(
-        new BigNumber(stdSignMsg.fee.amount.get('ukrw')?.amount)
-          .dividedBy(1e6)
-          .toString()
-      )
-      setFeeDenom(
-        format.denom(stdSignMsg.fee.amount.get('ukrw')?.denom)
-      )
-    } catch (e) {}
+    if (stdSignMsg) {
+      const amount = stdSignMsg.fee.amount
+        .get('ukrw')
+        ?.amount.toString()
+      amount &&
+        setFeeAmount(new BigNumber(amount).dividedBy(1e6).toString())
+
+      const denom = stdSignMsg.fee.amount.get('ukrw')?.denom
+      denom && setFeeDenom(format.denom(denom))
+    }
   }, [stdSignMsg])
 
   useEffect(() => {
@@ -101,6 +119,16 @@ const SendTxView = (props: Props): ReactElement => {
     }
 
     return await response.json()
+  }
+
+  const somethingWrong = (content: string): void => {
+    props.navigation.replace('SendTxCompleteView', {
+      success: false,
+      title: 'Something wrong',
+      content,
+      onPress: (): void =>
+        onPressComplete(props.navigation, returnScheme),
+    })
   }
 
   const TitleIcon = (props?: ViewProps): ReactElement => (
@@ -173,7 +201,9 @@ const SendTxView = (props: Props): ReactElement => {
             disabled={true}
             selectedValue={feeDenom}
             optionList={[{ label: feeDenom, value: feeDenom }]}
-            onValueChange={(): void => {}}
+            onValueChange={(): void => {
+              // Do nothing
+            }}
             textStyle={style.denomText}
             containerStyle={style.denomContainer}
           />
@@ -205,15 +235,20 @@ const SendTxView = (props: Props): ReactElement => {
           titleStyle={style.buttonText}
           titleFontType="medium"
           onPress={(): void => {
-            props.navigation.replace('SendTxPasswordView', {
-              stdSignMsg,
-              returnScheme,
-              endpointAddress,
-            })
-            stdSignMsg
+            if (stdSignMsg === undefined) {
+              somethingWrong('undefined StdSignMsg')
+            } else {
+              props.navigation.replace('SendTxPasswordView', {
+                stdSignMsg,
+                returnScheme,
+                endpointAddress,
+              })
+            }
           }}
+          disabled={stdSignMsg ? false : true}
         />
       </View>
+      {loading && <LoadingIndicator />}
     </View>
   )
 }
