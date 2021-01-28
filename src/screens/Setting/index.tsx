@@ -199,13 +199,13 @@ const Screen = (): ReactElement => {
                   Network
                 </Text>
                 <Text style={styles.itemValue} fontType={'medium'}>
-                  {chain.current.name}
+                  {chain.current.name.toUpperCase()}
                 </Text>
               </>
             }
             selectedValue={chain.current}
             list={_.map(_.toArray(networks), (item) => ({
-              label: item.name,
+              label: item.name.toUpperCase(),
               value: item,
             }))}
             compareKey={'name'}
