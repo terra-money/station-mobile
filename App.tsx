@@ -28,22 +28,7 @@ import Drawer, {
   useDrawerState,
 } from 'components/onlyForApp.tsx/Drawer'
 
-/* config */
-// const chain = {
-//   key: 'columbus',
-//   name: 'columbus-3',
-//   hostname: 'fcd.terra.dev',
-//   port: 443,
-//   secure: true,
-// }
-
-const chain = {
-  name: 'testnet',
-  chainID: 'tequila-0004',
-  lcd: 'https://tequila-lcd.terra.dev',
-  fcd: 'https://tequila-fcd.terra.dev',
-  ws: 'wss://tequila-fcd.terra.dev',
-}
+import networks from './networks'
 
 let App = ({
   settings: { lang, user },
@@ -56,7 +41,7 @@ let App = ({
   const alertModal = useAlertModalState()
 
   /* provider */
-  const config = useConfigState({ lang, chain })
+  const config = useConfigState({ lang, chain: networks.mainnet })
   const { current: currentLang = '' } = config.lang
   const { current: currentChainOptions } = config.chain
   const { name: currentChain = '' } = currentChainOptions
@@ -97,10 +82,10 @@ let App = ({
                   <RecoilRoot>
                     <AppNavigator />
                     <AppModal modal={modal} />
+                    <Drawer drawer={drawer} />
                     <AlertModal modal={alertModal} />
                   </RecoilRoot>
                 </SafeAreaProvider>
-                <Drawer drawer={drawer} />
               </AuthProvider>
             </ConfigProvider>
           </AppProvider>
