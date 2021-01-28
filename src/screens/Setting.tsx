@@ -13,7 +13,7 @@ import SubHeader from 'components/layout/SubHeader'
 import { CopyButton, Icon, Text } from 'components'
 
 import { RootStackParams } from 'types/navigation'
-import { useAuth } from 'use-station/src'
+import { useAuth, useManageAccounts } from 'use-station/src'
 import useCurrency from 'use-station/src/contexts/useCurrency'
 import color from 'styles/color'
 import {
@@ -22,6 +22,7 @@ import {
 } from '@react-navigation/native'
 import { setUseBioAuth, getIsUseBioAuth } from 'utils/storage'
 import { deleteWallet } from 'utils/wallet'
+import { useAlert } from 'hooks/useAlert'
 
 const Screen = (): ReactElement => {
   const { user, signOut } = useAuth()
@@ -29,20 +30,29 @@ const Screen = (): ReactElement => {
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
+  const { confirm } = useAlert()
+  const { delete: deleteText } = useManageAccounts()
 
   const [isUseBioAuth, setIsUseBioAuth] = useState(false)
 
   const onPressDeleteWallet = async (): Promise<void> => {
-    if (user?.name) {
-      const deleteResult = await deleteWallet({
-        walletName: user.name,
-      })
-      if (deleteResult) {
-        signOut()
-        return
-      }
-    }
-    Alert.alert('Delete wallet error')
+    confirm({
+      title: deleteText.title,
+      desc: deleteText.content || '',
+      onPressConfirmText: deleteText.button || '',
+      onPressCancelText: deleteText.cancel || '',
+      onPressConfirm: async (): Promise<void> => {
+        if (user?.name) {
+          const deleteResult = await deleteWallet({
+            walletName: user.name,
+          })
+          if (deleteResult) {
+            signOut()
+            return
+          }
+        }
+      },
+    })
   }
 
   const onChangeIsUseBioAuth = (value: boolean): void => {
