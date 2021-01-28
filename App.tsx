@@ -31,7 +31,7 @@ import Drawer, {
 import networks from './networks'
 
 let App = ({
-  settings: { lang, user, chain },
+  settings: { lang, user, chain, currency },
 }: {
   settings: Settings
 }): ReactElement => {
@@ -44,6 +44,7 @@ let App = ({
   const config = useConfigState({
     lang,
     chain: chain || networks.mainnet,
+    currency,
   })
   const { current: currentLang = '' } = config.lang
   const { current: currentChainOptions } = config.chain

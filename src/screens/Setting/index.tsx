@@ -17,7 +17,6 @@ import {
   useConfig,
   useManageAccounts,
 } from 'use-station/src'
-import useCurrency from 'use-station/src/contexts/useCurrency'
 import color from 'styles/color'
 import {
   NavigationProp,
@@ -33,12 +32,12 @@ import {
 import { useApp } from 'hooks'
 
 import NetworkOptionDrawer from './NetworkOptionDrawer'
+import CurrencyOptionDrawer from './CurrencyOptionDrawer'
 
 const Screen = (): ReactElement => {
   const { user, signOut } = useAuth()
   const { alert } = useAlert()
-  const { current } = useCurrency()
-  const { chain } = useConfig()
+  const { chain, currency } = useConfig()
   const { drawer } = useApp()
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
@@ -88,6 +87,11 @@ const Screen = (): ReactElement => {
     drawer.open(NetworkOptionDrawer({ chain, drawer }))
   }
 
+  const onPressCurrency = async (): Promise<void> => {
+    drawer.open(
+      CurrencyOptionDrawer({ currencyConfig: currency, drawer })
+    )
+  }
   const initPage = async (): Promise<void> => {
     setIsUseBioAuth(await getIsUseBioAuth())
     setSupportBioAuth(await isSupportedBiometricAuthentication())
@@ -163,12 +167,15 @@ const Screen = (): ReactElement => {
         )}
 
         <View style={styles.section}>
-          <TouchableOpacity style={styles.itemBox}>
+          <TouchableOpacity
+            style={styles.itemBox}
+            onPress={onPressCurrency}
+          >
             <Text style={styles.itemName} fontType={'medium'}>
               Currency
             </Text>
             <Text style={styles.itemValue} fontType={'medium'}>
-              {current?.value}
+              {currency.current?.value}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
