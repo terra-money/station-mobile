@@ -10,7 +10,12 @@ import { hasNotch } from 'react-native-device-info'
 
 const AppModal = ({ drawer }: { drawer: Drawer }): ReactElement => {
   return (
-    <Modal visible={drawer.isOpen} animationType="fade" transparent>
+    <Modal
+      visible={drawer.isOpen}
+      animationType="fade"
+      transparent
+      onRequestClose={drawer.close}
+    >
       <View
         style={{
           flex: 1,

@@ -12,7 +12,11 @@ import SubHeader from 'components/layout/SubHeader'
 import { CopyButton, Icon, Text } from 'components'
 
 import { RootStackParams } from 'types/navigation'
-import { useAuth, useManageAccounts } from 'use-station/src'
+import {
+  useAuth,
+  useConfig,
+  useManageAccounts,
+} from 'use-station/src'
 import useCurrency from 'use-station/src/contexts/useCurrency'
 import color from 'styles/color'
 import {
@@ -26,11 +30,16 @@ import {
   authenticateBiometric,
   isSupportedBiometricAuthentication,
 } from 'utils/bio'
+import { useApp } from 'hooks'
+
+import NetworkOptionDrawer from './NetworkOptionDrawer'
 
 const Screen = (): ReactElement => {
   const { user, signOut } = useAuth()
   const { alert } = useAlert()
   const { current } = useCurrency()
+  const { chain } = useConfig()
+  const { drawer } = useApp()
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
@@ -73,6 +82,10 @@ const Screen = (): ReactElement => {
       setUseBioAuth({ isUse: value })
       setIsUseBioAuth(value)
     }
+  }
+
+  const onPressNetwork = async (): Promise<void> => {
+    drawer.open(NetworkOptionDrawer({ chain, drawer }))
   }
 
   const initPage = async (): Promise<void> => {
@@ -158,9 +171,15 @@ const Screen = (): ReactElement => {
               {current?.value}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.itemBox}>
+          <TouchableOpacity
+            style={styles.itemBox}
+            onPress={onPressNetwork}
+          >
             <Text style={styles.itemName} fontType={'medium'}>
               Network
+            </Text>
+            <Text style={styles.itemValue} fontType={'medium'}>
+              {chain.current.name}
             </Text>
           </TouchableOpacity>
         </View>
