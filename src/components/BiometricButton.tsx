@@ -15,7 +15,14 @@ const BiometricButtonTitle = (): ReactElement => {
         source={images.bio_face}
         style={{ width: 20, height: 20, marginRight: 10 }}
       />
-      <Text style={{ color: color.sapphire }}>Biometric</Text>
+      <Text
+        style={{
+          color: color.sapphire,
+        }}
+        fontType="medium"
+      >
+        Biometric
+      </Text>
     </View>
   )
 }
