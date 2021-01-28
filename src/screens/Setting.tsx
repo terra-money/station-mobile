@@ -22,6 +22,10 @@ import {
 import { setUseBioAuth, getIsUseBioAuth } from 'utils/storage'
 import { deleteWallet } from 'utils/wallet'
 import { useAlert } from 'hooks/useAlert'
+import {
+  authenticateBiometric,
+  isSupportedBiometricAuthentication,
+} from 'utils/bio'
 
 const Screen = (): ReactElement => {
   const { user, signOut } = useAuth()
@@ -33,6 +37,7 @@ const Screen = (): ReactElement => {
   const { confirm } = useAlert()
   const { delete: deleteText } = useManageAccounts()
 
+  const [supportBioAuth, setSupportBioAuth] = useState(false)
   const [isUseBioAuth, setIsUseBioAuth] = useState(false)
 
   const onPressDeleteWallet = async (): Promise<void> => {
@@ -55,13 +60,24 @@ const Screen = (): ReactElement => {
     })
   }
 
-  const onChangeIsUseBioAuth = (value: boolean): void => {
-    setUseBioAuth({ isUse: value })
-    setIsUseBioAuth(value)
+  const onChangeIsUseBioAuth = async (
+    value: boolean
+  ): Promise<void> => {
+    if (value) {
+      const isSuccess = await authenticateBiometric()
+      if (isSuccess) {
+        setUseBioAuth({ isUse: value })
+        setIsUseBioAuth(value)
+      }
+    } else {
+      setUseBioAuth({ isUse: value })
+      setIsUseBioAuth(value)
+    }
   }
 
   const initPage = async (): Promise<void> => {
     setIsUseBioAuth(await getIsUseBioAuth())
+    setSupportBioAuth(await isSupportedBiometricAuthentication())
   }
 
   useEffect(() => {
@@ -102,15 +118,18 @@ const Screen = (): ReactElement => {
       >
         {user && (
           <View style={styles.section}>
-            <View style={styles.itemBox}>
-              <Text style={styles.itemName} fontType={'medium'}>
-                Use Bio Auth
-              </Text>
-              <Switch
-                value={isUseBioAuth}
-                onValueChange={onChangeIsUseBioAuth}
-              />
-            </View>
+            {supportBioAuth && (
+              <View style={styles.itemBox}>
+                <Text style={styles.itemName} fontType={'medium'}>
+                  Use Bio Auth
+                </Text>
+                <Switch
+                  value={isUseBioAuth}
+                  onValueChange={onChangeIsUseBioAuth}
+                />
+              </View>
+            )}
+
             <TouchableOpacity
               style={styles.itemBox}
               onPress={(): void => {

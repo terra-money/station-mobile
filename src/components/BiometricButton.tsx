@@ -39,10 +39,7 @@ const BiometricButton = (props: {
   }) => void
 }): ReactElement => {
   const onPress = async (): Promise<void> => {
-    const isSuccess = await authenticateBiometric({
-      promptMessage: ' ',
-      cancelLabel: 'CANCEL',
-    })
+    const isSuccess = await authenticateBiometric()
     if (isSuccess) {
       const password = await getBioAuthPassword({
         walletName: props.walletName,

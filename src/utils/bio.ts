@@ -43,16 +43,10 @@ export const getSupportedType = async (): Promise<BiometricType> => {
   return BiometricType.NONE
 }
 
-export const authenticateBiometric = async ({
-  promptMessage,
-  cancelLabel,
-}: {
-  promptMessage: string
-  cancelLabel: string
-}): Promise<boolean> => {
+export const authenticateBiometric = async (): Promise<boolean> => {
   const ret = await LocalAuthentication.authenticateAsync({
-    promptMessage,
-    cancelLabel,
+    promptMessage: ' ',
+    cancelLabel: 'CANCEL',
     disableDeviceFallback: true,
     fallbackLabel: '',
   })
