@@ -1,48 +1,54 @@
 import React, { ReactElement } from 'react'
 import {
+  TouchableOpacity,
   StyleSheet,
   View,
-  TouchableOpacity,
   ScrollView,
+  StyleProp,
+  ViewStyle,
 } from 'react-native'
 import _ from 'lodash'
 
-import { Text } from 'components'
+import { useApp } from 'hooks'
 import color from 'styles/color'
-import { CurrencyConfig } from 'use-station/src'
-import { settings } from 'utils/storage'
+import { Text } from 'components'
 
-const CurrencyOptionDrawer = ({
-  currencyConfig,
+const SelectItemList = <T,>({
+  list,
+  onSelect,
   drawer,
-}: {
-  currencyConfig: CurrencyConfig
-  drawer: Drawer
-}): ReactElement => {
+  selectedValue,
+  compareKey,
+}: { drawer: Drawer } & SelectorProps<T>): ReactElement => {
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {_.map(currencyConfig.list, (currency, index) => {
+      <ScrollView scrollEnabled={list.length > 6}>
+        {_.map(list, (item, index) => {
           return (
             <TouchableOpacity
-              key={`currencys-${index}`}
+              key={`items-${index}`}
               onPress={(): void => {
-                currencyConfig.set(currency.key)
-                settings.set({ currency: currency.key })
+                onSelect(item.value)
                 drawer.close()
               }}
               style={[
-                styles.currencyItem,
+                styles.item,
                 index === 0
                   ? { marginTop: -18 }
+                  : index === list.length - 1
+                  ? {
+                      marginBottom: -18,
+                      borderTopWidth: 1,
+                      borderTopColor: '#edf1f7',
+                    }
                   : {
                       borderTopWidth: 1,
                       borderTopColor: '#edf1f7',
                     },
               ]}
             >
-              <Text style={styles.currencyName} fontType={'medium'}>
-                {currency.value}
+              <Text style={styles.label} fontType={'medium'}>
+                {item.label}
               </Text>
               <View
                 style={{
@@ -54,7 +60,10 @@ const CurrencyOptionDrawer = ({
                   alignItems: 'center',
                 }}
               >
-                {currencyConfig.current?.key === currency.key && (
+                {(compareKey
+                  ? selectedValue[compareKey] ===
+                    item.value[compareKey]
+                  : selectedValue === item.value) && (
                   <View
                     style={{
                       backgroundColor: color.sapphire,
@@ -73,7 +82,35 @@ const CurrencyOptionDrawer = ({
   )
 }
 
-export default CurrencyOptionDrawer
+type SelectorProps<T> = {
+  containerStyle?: StyleProp<ViewStyle>
+  display: string | ReactElement
+  selectedValue: T
+  list: {
+    label: string
+    value: T
+  }[]
+  onSelect: (value: T) => void
+  compareKey?: keyof T
+}
+
+const Selector = <T,>(props: SelectorProps<T>): ReactElement => {
+  const { drawer } = useApp()
+  const onPress = (): void => {
+    drawer.open(SelectItemList({ ...props, drawer }))
+  }
+  return (
+    <TouchableOpacity style={props.containerStyle} onPress={onPress}>
+      {typeof props.display === 'string' ? (
+        <Text>{props.display}</Text>
+      ) : (
+        props.display
+      )}
+    </TouchableOpacity>
+  )
+}
+
+export default Selector
 
 const styles = StyleSheet.create({
   container: {
@@ -83,14 +120,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
     maxHeight: 400,
   },
-  currencyItem: {
+  item: {
     paddingHorizontal: 30,
     height: 60,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  currencyName: {
+  label: {
     fontSize: 16,
     lineHeight: 24,
     letterSpacing: 0,
