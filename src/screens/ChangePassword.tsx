@@ -1,5 +1,4 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { Alert } from 'react-native'
 import _ from 'lodash'
 import { useNavigation } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
@@ -17,12 +16,14 @@ import {
 } from 'utils/wallet'
 import { Button, UseStationForm } from 'components'
 import { RootStackParams } from 'types'
+import { useAlert } from 'hooks/useAlert'
 
 type Props = StackScreenProps<RootStackParams, 'ChangePassword'>
 
 const Screen = ({ route }: Props): ReactElement => {
   const walletName = route.params?.walletName
   const { goBack } = useNavigation()
+  const { alert } = useAlert()
   const [walletKey, setWalletKey] = useState('')
   const { password: passwordText } = useManageAccounts()
 
@@ -34,10 +35,10 @@ const Screen = ({ route }: Props): ReactElement => {
     password: string
   }): Promise<void> => {
     if (await changePassword(walletName, current, password)) {
-      Alert.alert(passwordText.title)
+      alert({ desc: passwordText.title })
       goBack()
     } else {
-      Alert.alert('Password Change error')
+      alert({ desc: 'Password Change error' })
     }
   }
 

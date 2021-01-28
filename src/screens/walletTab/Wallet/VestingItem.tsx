@@ -7,13 +7,7 @@ import {
 
 import { VestingItemUI } from 'use-station/src'
 
-import {
-  Text,
-  Icon,
-  Number,
-  AssetIcon,
-  AssetIconNameType,
-} from 'components'
+import { Text, Icon, Number, AssetIcon } from 'components'
 import color from 'styles/color'
 import { RootStackParams } from 'types'
 
@@ -28,15 +22,12 @@ const VestingItem = ({
     NavigationProp<RootStackParams>
   >()
 
-  const { icon, display } = item
+  const { display } = item
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <View style={styles.iconBox}>
-          <AssetIcon
-            uri={icon}
-            name={display.unit as AssetIconNameType}
-          />
+          <AssetIcon name={display.unit} />
         </View>
         <View>
           <Text style={styles.vesting}>VESTING</Text>

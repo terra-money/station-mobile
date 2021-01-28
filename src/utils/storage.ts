@@ -58,7 +58,7 @@ export const setSkipOnboarding = async (
   preferences.setBool(PreferencesEnum.onboarding, skip)
 }
 
-export const upsertBioAuthPassord = async ({
+export const upsertBioAuthPassword = async ({
   password,
   walletName,
 }: {
@@ -74,6 +74,30 @@ export const upsertBioAuthPassord = async ({
 
   jsonData[walletName] = password
   keystore.write(KeystoreEnum.bioAuthData, JSON.stringify(jsonData))
+}
+
+export const removeBioAuthPassword = async ({
+  walletName,
+}: {
+  walletName: string
+}): Promise<boolean> => {
+  try {
+    const bioAuthData = await keystore.read(KeystoreEnum.bioAuthData)
+    let jsonData: Record<string, string> = {}
+
+    if (_.some(bioAuthData)) {
+      jsonData = JSON.parse(bioAuthData)
+    }
+
+    keystore.write(
+      KeystoreEnum.bioAuthData,
+      JSON.stringify(_.omit(jsonData, walletName))
+    )
+
+    return true
+  } catch {
+    return false
+  }
 }
 
 export const setUseBioAuth = async ({

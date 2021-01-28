@@ -20,8 +20,4 @@ export { default as WarningBox } from './WarningBox'
 export { default as NumberStep } from './NumberStep'
 export { default as UseStationForm } from './UseStationForm'
 export { default as FormLabel } from './FormLabel'
-export {
-  default as AssetIcon,
-  AssetIconNameType,
-  AssetIconProps,
-} from './AssetIcon'
+export { default as AssetIcon, AssetIconProps } from './AssetIcon'

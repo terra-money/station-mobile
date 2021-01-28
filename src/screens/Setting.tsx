@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   Switch,
-  Alert,
 } from 'react-native'
 
 import Body from 'components/layout/Body'
@@ -13,25 +12,48 @@ import SubHeader from 'components/layout/SubHeader'
 import { CopyButton, Icon, Text } from 'components'
 
 import { RootStackParams } from 'types/navigation'
-import { useAuth } from 'use-station/src'
+import { useAuth, useManageAccounts } from 'use-station/src'
 import useCurrency from 'use-station/src/contexts/useCurrency'
 import color from 'styles/color'
 import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native'
-import { useBioAuth } from 'hooks/useBioAuth'
 import { setUseBioAuth, getIsUseBioAuth } from 'utils/storage'
+import { deleteWallet } from 'utils/wallet'
+import { useAlert } from 'hooks/useAlert'
 
 const Screen = (): ReactElement => {
   const { user, signOut } = useAuth()
+  const { alert } = useAlert()
   const { current } = useCurrency()
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
-  const {} = useBioAuth()
+  const { confirm } = useAlert()
+  const { delete: deleteText } = useManageAccounts()
 
   const [isUseBioAuth, setIsUseBioAuth] = useState(false)
+
+  const onPressDeleteWallet = async (): Promise<void> => {
+    confirm({
+      title: deleteText.title,
+      desc: deleteText.content || '',
+      onPressConfirmText: deleteText.button || '',
+      onPressCancelText: deleteText.cancel || '',
+      onPressConfirm: async (): Promise<void> => {
+        if (user?.name) {
+          const deleteResult = await deleteWallet({
+            walletName: user.name,
+          })
+          if (deleteResult) {
+            signOut()
+            return
+          }
+        }
+      },
+    })
+  }
 
   const onChangeIsUseBioAuth = (value: boolean): void => {
     setUseBioAuth({ isUse: value })
@@ -97,7 +119,7 @@ const Screen = (): ReactElement => {
                     walletName: user.name,
                   })
                 } else {
-                  Alert.alert('No wallet Name')
+                  alert({ desc: 'No wallet Name' })
                 }
               }}
             >
@@ -134,7 +156,10 @@ const Screen = (): ReactElement => {
                 Disconnect
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.authItemBox}>
+            <TouchableOpacity
+              style={styles.authItemBox}
+              onPress={onPressDeleteWallet}
+            >
               <Text
                 style={[styles.authItemName, { color: '#ff5561' }]}
                 fontType={'bold'}

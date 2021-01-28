@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactElement } from 'react'
-import { Alert, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useAuth } from 'use-station/src'
 import {
   NavigationProp,
@@ -22,8 +22,10 @@ import {
 import { getIsUseBioAuth } from 'utils/storage'
 import { RootStackParams } from 'types'
 import useOnAuth from './useOnAuth'
+import { useAlert } from 'hooks/useAlert'
 
 const Screen = (): ReactElement => {
+  const { alert } = useAlert()
   const [initPageComplete, setInitPageComplete] = useState(false)
   const [wallets, setWallets] = useState<LocalWallet[]>([])
   const [isUseBioAuth, setIsUseBioAuth] = useState(false)
@@ -59,7 +61,7 @@ const Screen = (): ReactElement => {
       const wallet = wallets.find((w) => w.name === name)
       wallet && signIn(wallet)
     } catch (e) {
-      Alert.alert(e.toString())
+      alert({ desc: e.toString() })
     }
   }
 
@@ -70,7 +72,7 @@ const Screen = (): ReactElement => {
       setName(wallets[0].name)
       setInitPageComplete(true)
     } else {
-      Alert.alert('No Wallets')
+      alert({ desc: 'No Wallets' })
       goBack()
     }
 
