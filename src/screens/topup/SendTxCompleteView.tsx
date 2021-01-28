@@ -1,32 +1,18 @@
 import { Text, Button } from 'components'
 import Body from 'components/layout/Body'
 import React, { ReactElement } from 'react'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import color from 'styles/color'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { StackScreenProps } from '@react-navigation/stack'
+import { RootStackParams } from 'types'
 
-interface Props {
-  navigation: any
-  route: {
-    params: {
-      success?: boolean
-      title?: string
-      content?: string
-      button?: string
-      onPress: () => void
-    }
-  }
-}
+type Props = StackScreenProps<RootStackParams, 'SendTxCompleteView'>
+
 const SendTxCompleteView = (props: Props): ReactElement => {
   return (
     <Body>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <View style={style.container}>
         {props.route.params.success === undefined ||
         props.route.params.success === true ? (
           <MaterialCommunityIcon
@@ -41,19 +27,10 @@ const SendTxCompleteView = (props: Props): ReactElement => {
             name={'alert-circle-outline'}
           />
         )}
-        <Text
-          style={{ fontSize: 24, lineHeight: 36 }}
-          fontType={'bold'}
-        >
+        <Text style={style.titleText} fontType={'bold'}>
           {props.route.params.title ?? 'Success!'}
         </Text>
-        <Text
-          style={{
-            fontSize: 16,
-            lineHeight: 24,
-            textAlign: 'center',
-          }}
-        >
+        <Text style={style.contentText}>
           {props.route.params.content ??
             'Your transaction has been successfully processed.'}
         </Text>
@@ -62,10 +39,26 @@ const SendTxCompleteView = (props: Props): ReactElement => {
         theme={'sapphire'}
         title={props.route.params.button ?? 'Continue'}
         onPress={props.route.params.onPress}
-        containerStyle={{ marginBottom: 40 }}
+        containerStyle={style.buttonContainer}
       />
     </Body>
   )
 }
+
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  titleText: { fontSize: 24, lineHeight: 36 },
+  contentText: {
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'center',
+  },
+  buttonContainer: { marginBottom: 40 },
+})
 
 export default SendTxCompleteView

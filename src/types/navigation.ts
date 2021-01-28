@@ -1,4 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack'
+import { StdSignMsg } from '@terra-money/terra.js'
 import { Card, VestingItemUI } from 'use-station/src'
 
 /* Root */
@@ -17,10 +18,20 @@ export type RootStackParams = {
   SelectWallet: undefined
   NewWallet: undefined
   RecoverWallet: undefined
-  ConnectView: undefined
-  SendTxView: undefined
-  SendTxPasswordView: undefined
-  SendTxCompleteView: undefined
+  ConnectView: { arg?: string }
+  SendTxView: { arg?: string }
+  SendTxPasswordView: {
+    stdSignMsg: StdSignMsg
+    returnScheme: string
+    endpointAddress: string
+  }
+  SendTxCompleteView: {
+    success?: boolean
+    title?: string
+    content?: string
+    button?: string
+    onPress: () => void
+  }
   Send: { denomOrToken: string }
   Complete: { result: Card }
   VestingSchedule: { item: VestingItemUI; title: string }
