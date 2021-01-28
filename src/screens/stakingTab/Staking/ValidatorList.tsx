@@ -6,34 +6,43 @@ import {
   StyleSheet,
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Options, StakingUI, ValidatorUI } from 'use-station/src'
+import { StakingUI, ValidatorUI } from 'use-station/src'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
 
 import _ from 'lodash'
 
-import Picker from 'components/Picker'
 import Card from 'components/Card'
-import { Text } from 'components'
+import { Icon, Text } from 'components'
 
 import images from 'assets/images'
 import { useValidator } from 'hooks/useValidator'
 import color from 'styles/color'
+import Selector from 'components/Selector'
 
 // H. REQ i18n
 const validatorTitle = 'Validators'
 
-const validatorFilter: Options = [
-  { value: 'Delegation Return', children: 'Delegation Return' },
-  { value: 'Commission', children: 'Commission' },
-  { value: 'Voting Power', children: 'Voting Power' },
-  { value: 'Uptime', children: 'Uptime' },
+enum FilterEnum {
+  delegationReturn = 'delegationReturn',
+  commission = 'commission',
+  votingPower = 'votingPower',
+  uptime = 'uptime',
+}
+
+const validatorFilter = [
+  {
+    value: FilterEnum.delegationReturn,
+    label: 'Delegation Return',
+  },
+  { value: FilterEnum.commission, label: 'Commission' },
+  { value: FilterEnum.votingPower, label: 'Voting Power' },
+  { value: FilterEnum.uptime, label: 'Uptime' },
 ]
 
 const ValidatorList = ({ contents }: StakingUI): ReactElement => {
   const { navigate } = useNavigation()
-
   const [currentFilter, setCurrentFilter] = useState(
-    validatorFilter[0].value
+    FilterEnum.delegationReturn
   )
   const [reverseContents, setReverseContents] = useState(false)
 
@@ -56,13 +65,13 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
    */
   const sortContents = (a: ValidatorUI, b: ValidatorUI): number => {
     const [_a, _b] =
-      currentFilter === 'Delegation Return'
+      currentFilter === FilterEnum.delegationReturn
         ? [a.delegationReturn.percent, b.delegationReturn.percent]
-        : currentFilter === 'Commission'
+        : currentFilter === FilterEnum.commission
         ? [a.commission.percent, b.commission.percent]
-        : currentFilter === 'Voting Power'
+        : currentFilter === FilterEnum.votingPower
         ? [a.votingPower.percent, b.votingPower.percent]
-        : currentFilter === 'Uptime'
+        : currentFilter === FilterEnum.uptime
         ? [a.uptime.percent, b.uptime.percent]
         : ['', '']
 
@@ -111,13 +120,28 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
         >
           {validatorTitle}
         </Text>
-        <Picker
-          value={currentFilter}
-          options={validatorFilter}
-          onChange={setCurrentFilter}
-          style={[styles.textColor, styles.textFilter]}
-          showBox={false}
-          rightIcon={'swap-vert'}
+
+        <Selector
+          display={
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.textFilter}>
+                {
+                  validatorFilter.find(
+                    (x) => x.value === currentFilter
+                  )?.label
+                }
+              </Text>
+              <Icon
+                name={'swap-vert'}
+                size={18}
+                color="rgb(32, 67, 181)"
+                style={{ marginLeft: 5 }}
+              />
+            </View>
+          }
+          selectedValue={currentFilter}
+          list={validatorFilter}
+          onSelect={setCurrentFilter}
         />
       </View>
       {contents.map((content, index) => (
@@ -193,13 +217,13 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
               )}
             </View>
             <Text style={[styles.textColor, styles.textPercent]}>
-              {currentFilter === 'Delegation Return'
+              {currentFilter === FilterEnum.delegationReturn
                 ? content.delegationReturn.percent
-                : currentFilter === 'Commission'
+                : currentFilter === FilterEnum.commission
                 ? content.commission.percent
-                : currentFilter === 'Voting Power'
+                : currentFilter === FilterEnum.votingPower
                 ? content.votingPower.percent
-                : currentFilter === 'Uptime'
+                : currentFilter === FilterEnum.uptime
                 ? content.uptime.percent
                 : ''}
             </Text>

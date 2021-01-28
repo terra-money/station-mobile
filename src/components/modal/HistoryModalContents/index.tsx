@@ -16,6 +16,7 @@ import {
   ceil,
   div,
   Pagination,
+  useTxTypes,
 } from 'use-station/src'
 
 import ErrorComponent from 'components/ErrorComponent'
@@ -25,26 +26,77 @@ import { Text, Icon, LoadingIcon } from 'components'
 
 import color from 'styles/color'
 import layout from 'styles/layout'
-import { BaseModalButton } from './BaseModal'
+import { BaseModalButton } from '../BaseModal'
+import Selector from 'components/Selector'
 
 const RenderList = ({
   tsUiList,
   isLastPage,
-  setPage,
+  params,
+  setParams,
   closeModal,
 }: {
   tsUiList: TxUI[]
   isLastPage: boolean
-  setPage: React.Dispatch<React.SetStateAction<number>>
+  params: {
+    type: TxType
+    page: number
+  }
+  setParams: React.Dispatch<
+    React.SetStateAction<{
+      type: TxType
+      page: number
+    }>
+  >
   closeModal: () => void
 }): ReactElement => {
+  const tabs = useTxTypes()
   const { History: title } = useMenu()
+  const selectedTab = tabs.find((x) => x.key === params.type)
+
+  const onSelectTab = (value: TxType): void => {
+    setParams({
+      type: value,
+      page: 1,
+    })
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.historyTitleBox}>
-        <Text style={styles.historyTitle} fontType={'bold'}>
-          {title}
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={styles.historyTitle} fontType={'bold'}>
+            {title}
+          </Text>
+          <Selector
+            containerStyle={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+            display={
+              <>
+                <Text
+                  style={styles.selectedTabLabel}
+                  fontType={'medium'}
+                >
+                  {selectedTab?.label.toUpperCase()}
+                </Text>
+                <Icon
+                  name={'tune'}
+                  size={15}
+                  color={color.sapphire}
+                />
+              </>
+            }
+            selectedValue={selectedTab?.key || ''}
+            list={_.map(tabs, (item) => ({
+              label: item.label,
+              value: item.key,
+            }))}
+            onSelect={onSelectTab}
+          />
+        </View>
+
         <TouchableOpacity onPress={closeModal}>
           <Icon name={'clear'} color={color.sapphire} size={32} />
         </TouchableOpacity>
@@ -55,7 +107,11 @@ const RenderList = ({
             return
           }
 
-          setPage((ori) => ori + 1)
+          setParams((ori) => {
+            const newParam = _.clone(ori)
+            newParam.page += 1
+            return newParam
+          })
         }}
         contentContainerStyle={{ paddingHorizontal: 20 }}
         data={tsUiList}
@@ -89,12 +145,13 @@ const History = ({
   user: User
   closeModal: () => void
 }): ReactElement => {
-  const [page, setPage] = useState(1)
-  const params = { type: '' as TxType, page }
+  const [params, setParams] = useState({
+    type: '' as TxType,
+    page: 1,
+  })
   const { error, ui, loading } = useTxs(user, params)
   const [isLastPage, setIsLastPage] = useState(false)
   const [tsUiList, setTsUiList] = useState<TxUI[]>([])
-
   const checkIsLastPage = ({
     pagination,
   }: {
@@ -103,7 +160,7 @@ const History = ({
     const total = _.toNumber(
       ceil(div(pagination.totalCnt, pagination.limit))
     )
-    setIsLastPage(page >= total)
+    setIsLastPage(params.page >= total)
   }
 
   useEffect(() => {
@@ -112,7 +169,11 @@ const History = ({
     }
     if (ui) {
       checkIsLastPage({ pagination: ui.pagination })
-      setTsUiList((ori) => ori.concat(ui.list || []))
+      setTsUiList((ori) =>
+        ui.pagination.page === 1
+          ? ui.list || []
+          : ori.concat(ui.list || [])
+      )
     }
   }, [loading])
 
@@ -126,7 +187,9 @@ const History = ({
   return error ? (
     <ErrorComponent />
   ) : ui ? (
-    <RenderList {...{ tsUiList, isLastPage, setPage, closeModal }} />
+    <RenderList
+      {...{ tsUiList, isLastPage, params, setParams, closeModal }}
+    />
   ) : (
     <View />
   )
@@ -178,5 +241,12 @@ const styles = StyleSheet.create({
   },
   historyItemBox: {
     paddingVertical: 15,
+  },
+  selectedTabLabel: {
+    fontSize: 10,
+    lineHeight: 15,
+    letterSpacing: 0,
+    paddingLeft: 10,
+    paddingRight: 7,
   },
 })

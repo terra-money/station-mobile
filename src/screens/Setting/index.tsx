@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Switch,
 } from 'react-native'
+import _ from 'lodash'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -13,6 +14,7 @@ import { CopyButton, Icon, Text } from 'components'
 
 import { RootStackParams } from 'types/navigation'
 import {
+  ChainOptions,
   useAuth,
   useConfig,
   useManageAccounts,
@@ -22,23 +24,25 @@ import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native'
-import { setUseBioAuth, getIsUseBioAuth } from 'utils/storage'
+import {
+  setUseBioAuth,
+  getIsUseBioAuth,
+  settings,
+} from 'utils/storage'
 import { deleteWallet } from 'utils/wallet'
 import { useAlert } from 'hooks/useAlert'
 import {
   authenticateBiometric,
   isSupportedBiometricAuthentication,
 } from 'utils/bio'
-import { useApp } from 'hooks'
+import networks from '../../../networks'
 
-import NetworkOptionDrawer from './NetworkOptionDrawer'
-import CurrencyOptionDrawer from './CurrencyOptionDrawer'
+import Selector from 'components/Selector'
 
 const Screen = (): ReactElement => {
   const { user, signOut } = useAuth()
   const { alert } = useAlert()
   const { chain, currency } = useConfig()
-  const { drawer } = useApp()
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
@@ -83,15 +87,16 @@ const Screen = (): ReactElement => {
     }
   }
 
-  const onPressNetwork = async (): Promise<void> => {
-    drawer.open(NetworkOptionDrawer({ chain, drawer }))
+  const onSelectCurrency = (value: string): void => {
+    settings.set({ currency: value })
+    currency.set(value)
   }
 
-  const onPressCurrency = async (): Promise<void> => {
-    drawer.open(
-      CurrencyOptionDrawer({ currencyConfig: currency, drawer })
-    )
+  const onSelectNetwork = (value: ChainOptions): void => {
+    settings.set({ chain: value })
+    chain.set(value)
   }
+
   const initPage = async (): Promise<void> => {
     setIsUseBioAuth(await getIsUseBioAuth())
     setSupportBioAuth(await isSupportedBiometricAuthentication())
@@ -167,18 +172,47 @@ const Screen = (): ReactElement => {
         )}
 
         <View style={styles.section}>
-          <TouchableOpacity
-            style={styles.itemBox}
-            onPress={onPressCurrency}
-          >
-            <Text style={styles.itemName} fontType={'medium'}>
-              Currency
-            </Text>
-            <Text style={styles.itemValue} fontType={'medium'}>
-              {currency.current?.value}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+          <Selector
+            containerStyle={styles.itemBox}
+            display={
+              <>
+                <Text style={styles.itemName} fontType={'medium'}>
+                  Currency
+                </Text>
+                <Text style={styles.itemValue} fontType={'medium'}>
+                  {currency.current?.value}
+                </Text>
+              </>
+            }
+            selectedValue={currency.current?.key || ''}
+            list={_.map(currency.list, (item) => ({
+              label: item.value,
+              value: item.key,
+            }))}
+            onSelect={onSelectCurrency}
+          />
+          <Selector
+            containerStyle={styles.itemBox}
+            display={
+              <>
+                <Text style={styles.itemName} fontType={'medium'}>
+                  Network
+                </Text>
+                <Text style={styles.itemValue} fontType={'medium'}>
+                  {chain.current.name}
+                </Text>
+              </>
+            }
+            selectedValue={chain.current}
+            list={_.map(_.toArray(networks), (item) => ({
+              label: item.name,
+              value: item,
+            }))}
+            compareKey={'name'}
+            onSelect={onSelectNetwork}
+          />
+        </View>
+        {/* <TouchableOpacity
             style={styles.itemBox}
             onPress={onPressNetwork}
           >
@@ -188,8 +222,7 @@ const Screen = (): ReactElement => {
             <Text style={styles.itemValue} fontType={'medium'}>
               {chain.current.name}
             </Text>
-          </TouchableOpacity>
-        </View>
+          </TouchableOpacity> */}
 
         {user ? (
           <View style={styles.section}>
