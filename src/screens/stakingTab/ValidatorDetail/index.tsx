@@ -33,7 +33,7 @@ const Render = ({
             <>
               <Top ui={ui} />
               {user && <Actions ui={ui} user={user} />}
-              <MonikerInfo ui={ui} />
+              <MonikerInfo ui={ui} user={user} />
               <Informations {...ui} />
               <Delegations address={address} />
               <Delegators address={address} />

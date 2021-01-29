@@ -37,7 +37,7 @@ const Actions = ({
     NavigationProp<RootStackParams>
   >()
 
-  return (
+  return myDelegations.display ? (
     <View>
       <View style={styles.container}>
         <Text style={styles.title} fontType={'bold'}>
@@ -108,6 +108,8 @@ const Actions = ({
         </View>
       </View>
     </View>
+  ) : (
+    <View />
   )
 }
 

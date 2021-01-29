@@ -2,19 +2,36 @@ import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 
-import { Text, Number } from 'components'
-import { ValidatorUI } from 'use-station/src'
+import { Text, Number, Button } from 'components'
+import { User, ValidatorUI } from 'use-station/src'
 import color from 'styles/color'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
+import { RootStackParams } from 'types'
 
-const Top = ({ ui }: { ui: ValidatorUI }): ReactElement => {
+const Top = ({
+  ui,
+  user,
+}: {
+  ui: ValidatorUI
+  user?: User
+}): ReactElement => {
   const {
     details,
     uptime,
     votingPower,
     selfDelegation,
     commission,
+    delegate,
+    myDelegations,
+    operatorAddress,
   } = ui
 
+  const { navigate } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
   return (
     <View style={styles.container}>
       <View>
@@ -70,6 +87,41 @@ const Top = ({ ui }: { ui: ValidatorUI }): ReactElement => {
             </Text>
           </View>
         </View>
+        {user ? (
+          myDelegations.display ? (
+            <View />
+          ) : (
+            <View style={styles.section}>
+              <View style={styles.infoItem}>
+                <Button
+                  theme={'sapphire'}
+                  disabled={delegate.disabled}
+                  title={delegate.children}
+                  onPress={(): void => {
+                    navigate('Delegate', {
+                      validatorAddress: operatorAddress.address,
+                      isUndelegation: false,
+                    })
+                  }}
+                  containerStyle={{ width: '100%' }}
+                />
+              </View>
+            </View>
+          )
+        ) : (
+          <View style={styles.section}>
+            <View style={styles.infoItem}>
+              <Button
+                theme={'sapphire'}
+                title={'Connect wallet to delegate'}
+                onPress={(): void => {
+                  navigate('AuthMenu')
+                }}
+                containerStyle={{ width: '100%' }}
+              />
+            </View>
+          </View>
+        )}
       </View>
     </View>
   )
