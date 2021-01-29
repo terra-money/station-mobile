@@ -23,7 +23,7 @@ const Charts = (): ReactElement => (
 
 const styles = StyleSheet.create({
   charts: {
-    marginVertical: 10,
+    marginTop: -5,
     backgroundColor: '#fff',
     borderRadius: 20,
     shadowOffset: { width: 0, height: 20 },

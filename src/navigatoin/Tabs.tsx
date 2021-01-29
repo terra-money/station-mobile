@@ -102,7 +102,10 @@ const Tabs = (): ReactElement => (
       component={DashboardStack}
       options={{
         tabBarLabel: ({ color }: any): ReactElement => (
-          <Text style={[styles.tabbar_text, { color }]}>
+          <Text
+            style={[styles.tabbar_text, { color }]}
+            fontType={'bold'}
+          >
             DASHBOARD
           </Text>
         ),
@@ -121,7 +124,12 @@ const Tabs = (): ReactElement => (
       component={WalletStack}
       options={{
         tabBarLabel: ({ color }: any): ReactElement => (
-          <Text style={[styles.tabbar_text, { color }]}>WALLET</Text>
+          <Text
+            style={[styles.tabbar_text, { color }]}
+            fontType={'bold'}
+          >
+            WALLET
+          </Text>
         ),
         tabBarIcon: ({ color }: any): ReactElement => (
           <Icon
@@ -139,7 +147,12 @@ const Tabs = (): ReactElement => (
       component={StakingStack}
       options={({ route }): BottomTabNavigationOptions => ({
         tabBarLabel: ({ color }: any): ReactElement => (
-          <Text style={[styles.tabbar_text, { color }]}>STAKING</Text>
+          <Text
+            style={[styles.tabbar_text, { color }]}
+            fontType={'bold'}
+          >
+            STAKING
+          </Text>
         ),
         tabBarIcon: ({ color }: any): ReactElement => (
           <Icon
@@ -158,7 +171,12 @@ const Tabs = (): ReactElement => (
       component={SwapStack}
       options={({ route }): BottomTabNavigationOptions => ({
         tabBarLabel: ({ color }: any): ReactElement => (
-          <Text style={[styles.tabbar_text, { color }]}>Swap</Text>
+          <Text
+            style={[styles.tabbar_text, { color }]}
+            fontType={'bold'}
+          >
+            Swap
+          </Text>
         ),
         tabBarIcon: ({ color }: any): ReactElement => (
           <Icon

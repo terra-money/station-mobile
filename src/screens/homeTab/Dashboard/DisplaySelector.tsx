@@ -5,6 +5,7 @@ import Card from 'components/Card'
 import Number from 'components/Number'
 import { Select } from 'components'
 import color from 'styles/color'
+import { View } from 'react-native'
 
 const DisplaySelector = (props: Props): ReactElement => {
   const { title, select, displays } = props
@@ -36,10 +37,12 @@ const DisplaySelector = (props: Props): ReactElement => {
 
   return (
     <Card title={title} action={picker} dark>
-      <Number
-        {...displays[current]}
-        numberFontStyle={{ color: color.white }}
-      />
+      <View style={{ marginTop: 10 }}>
+        <Number
+          {...displays[current]}
+          numberFontStyle={{ color: color.white }}
+        />
+      </View>
     </Card>
   )
 }

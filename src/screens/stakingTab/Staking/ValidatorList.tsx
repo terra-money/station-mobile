@@ -100,9 +100,9 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
   return (
     <Card
       style={{
-        padding: 20,
         marginHorizontal: 0,
         marginBottom: 30,
+        paddingHorizontal: 0,
       }}
     >
       <View
@@ -111,6 +111,7 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
           justifyContent: 'space-between',
           alignItems: 'center',
           paddingBottom: 20,
+          paddingHorizontal: 20,
         }}
       >
         <Text
@@ -123,12 +124,10 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
         <Selector
           display={
             <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.textFilter}>
-                {
-                  validatorFilter.find(
-                    (x) => x.value === currentFilter
-                  )?.label
-                }
+              <Text style={styles.textFilter} fontType={'bold'}>
+                {validatorFilter
+                  .find((x) => x.value === currentFilter)
+                  ?.label.toUpperCase()}
               </Text>
               <Icon
                 name={'swap-vert'}
@@ -165,6 +164,7 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
               alignItems: 'center',
               justifyContent: 'space-between',
               marginVertical: 12,
+              paddingHorizontal: 20,
             }}
           >
             <View
@@ -201,7 +201,10 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
                 }
                 style={styles.profileImage}
               />
-              <Text style={[styles.textColor, styles.textMoniker]}>
+              <Text
+                style={[styles.textColor, styles.textMoniker]}
+                fontType={'medium'}
+              >
                 {content.moniker}
               </Text>
               {_.some(

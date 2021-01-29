@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 
 import { StackNavigationOptions } from '@react-navigation/stack'
+import { getStatusBarHeight } from 'react-native-status-bar-height'
 
 import { navigationHeaderOptions as defaultNHO } from 'components/layout/Header'
 import { Text, Icon } from 'components'
@@ -50,7 +51,9 @@ const HeaderRight = (): ReactElement => {
                 color="#2043b5"
                 style={{ marginRight: 8 }}
               />
-              <Text style={styles.connectText}>CONNECT</Text>
+              <Text style={styles.connectText} fontType={'medium'}>
+                CONNECT
+              </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={(): void => navigate('Setting')}>
@@ -69,7 +72,9 @@ export const navigationHeaderOptions = ({
 }): StackNavigationOptions => {
   return defaultNHO({
     theme: 'sky',
-    headerStyle: { height: 80 },
+    headerStyle: {
+      height: 80 + getStatusBarHeight(),
+    },
     headerLeft: () => <HeaderLeft {...{ title }} />,
     headerRight: () => <HeaderRight />,
   })
@@ -99,7 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     margin: 10,
-    borderColor: '#2043b5',
+    borderColor: color.sapphire,
     borderWidth: 2,
     borderRadius: 14,
     paddingHorizontal: 10,

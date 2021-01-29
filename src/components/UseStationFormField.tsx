@@ -89,6 +89,7 @@ const FormSelect = ({ field }: { field: Field }): ReactElement => {
   )
   return (
     <Select
+      disabled={options.length < 1}
       selectedValue={attrs.value}
       onValueChange={(value): void => {
         setValue && setValue(`${value}`)

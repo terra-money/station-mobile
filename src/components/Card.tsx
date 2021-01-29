@@ -44,6 +44,7 @@ const Card = ({
   const Line = ({ line }: any): ReactElement => (
     <Path
       key="line "
+      // @ts-ignore
       d={line}
       stroke="rgba(255, 255, 255,.6)"
       fill="none"
@@ -60,7 +61,9 @@ const Card = ({
     >
       {_.some(title) && (
         <View style={styles.header}>
-          <Text style={[textStyle, styles.title]}>{title}</Text>
+          <Text style={[textStyle, styles.title]} fontType={'bold'}>
+            {title}
+          </Text>
           {action ??
             (badge ? (
               <View style={styles.badge}>
@@ -167,7 +170,7 @@ const styles = StyleSheet.create({
   },
 
   value: {
-    fontSize: 28,
+    fontSize: 24,
     letterSpacing: -0.5,
     lineHeight: 36,
     marginTop: 10,

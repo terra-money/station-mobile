@@ -85,6 +85,11 @@ const Columns = (): ReactElement => {
           autoplayTimeout={10} // seconds
           dot={SwiperDotView()}
           activeDot={SwiperActiveDotView()}
+          containerStyle={{
+            marginTop: -10,
+            marginHorizontal: -20,
+            marginBottom: 5,
+          }}
         >
           <View style={styles.carousel_item}>
             {renderPrice(ui.prices)}
