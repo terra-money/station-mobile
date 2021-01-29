@@ -3,13 +3,9 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Field, DisplayCoin } from 'use-station/src'
 import _ from 'lodash'
 
-import {
-  Text,
-  Select,
-  SelectOptionProps,
-  FormInput as DefaultFormInput,
-} from 'components'
-
+import Text from './Text'
+import Select, { SelectOptionProps } from './Select'
+import DefaultFormInput from './FormInput'
 import Number from './Number'
 import FormLabel from './FormLabel'
 

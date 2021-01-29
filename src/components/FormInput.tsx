@@ -2,7 +2,8 @@ import React, { ReactElement } from 'react'
 import { StyleSheet, TextInputProps, View } from 'react-native'
 import _ from 'lodash'
 
-import { Text, Icon } from 'components'
+import Text from './Text'
+import Icon from './Icon'
 import Input from './Input'
 import color from 'styles/color'
 
