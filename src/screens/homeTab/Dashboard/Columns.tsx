@@ -14,6 +14,8 @@ import Card from 'components/Card'
 import { Text } from 'components'
 
 import DisplaySelector from './DisplaySelector'
+import color from 'styles/color'
+import layout from 'styles/layout'
 
 const Columns = (): ReactElement => {
   const { navigate } = useNavigation()
@@ -45,8 +47,19 @@ const Columns = (): ReactElement => {
     const { small, desc } = rest
     return (
       <Card title={title} badge={desc} dark>
-        <Text style={styles.value}>
-          {content} <Text style={styles.small}>({small})</Text>
+        <Text
+          style={[
+            styles.value,
+            {
+              fontSize:
+                layout.getScreenWideType() === 'narrow' ? 20 : 24,
+            },
+          ]}
+        >
+          {content}
+          {layout.getScreenWideType() !== 'narrow' && (
+            <Text style={styles.small}>{` (${small})`}</Text>
+          )}
         </Text>
       </Card>
     )
@@ -122,14 +135,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   value: {
-    fontSize: 28,
     letterSpacing: -0.5,
     lineHeight: 36,
-    color: '#fff',
+    color: color.white,
     marginTop: 10,
   },
-
   small: {
+    color: color.white,
     fontSize: 12,
     letterSpacing: 0,
   },

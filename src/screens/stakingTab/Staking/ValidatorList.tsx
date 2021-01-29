@@ -16,7 +16,7 @@ import { Icon, Text, Selector } from 'components'
 
 import images from 'assets/images'
 import { useValidator } from 'hooks/useValidator'
-import color from 'styles/color'
+import layout from 'styles/layout'
 
 // H. REQ i18n
 const validatorTitle = 'Validators'
@@ -114,10 +114,7 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
           paddingHorizontal: 20,
         }}
       >
-        <Text
-          style={[styles.textColor, styles.textValidators]}
-          fontType="bold"
-        >
+        <Text style={styles.textValidators} fontType="bold">
           {validatorTitle}
         </Text>
 
@@ -202,8 +199,14 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
                 style={styles.profileImage}
               />
               <Text
-                style={[styles.textColor, styles.textMoniker]}
+                style={[
+                  styles.textMoniker,
+                  layout.getScreenWideType() === 'narrow' && {
+                    maxWidth: '50%',
+                  },
+                ]}
                 fontType={'medium'}
+                numberOfLines={1}
               >
                 {content.moniker}
               </Text>
@@ -218,7 +221,7 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
                 />
               )}
             </View>
-            <Text style={[styles.textColor, styles.textPercent]}>
+            <Text style={styles.textPercent}>
               {currentFilter === FilterEnum.delegationReturn
                 ? content.delegationReturn.percent
                 : currentFilter === FilterEnum.commission
@@ -240,9 +243,6 @@ ValidatorList.option = {}
 export default ValidatorList
 
 const styles = StyleSheet.create({
-  textColor: {
-    color: color.sapphire,
-  },
   textValidators: {
     fontSize: 16,
     lineHeight: 24,
