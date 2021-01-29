@@ -2478,11 +2478,6 @@
     merge-deep "^3.0.2"
     svgo "^1.2.2"
 
-"@terra-money/key-utils@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@terra-money/key-utils/-/key-utils-1.0.1.tgz#bc6647ee7d835864ea882aa95f0f7f370b745fa4"
-  integrity sha512-kHCHO3kzPLJwT0dMvaUJ9tTOyEaguvwnH6k98orYQBpiubEl4RWxeh+47qzkopNQ98l7zaez/tKV1LfEnVVMyA==
-
 "@terra-money/terra.js@^1.3.1":
   version "1.3.6"
   resolved "https://registry.yarnpkg.com/@terra-money/terra.js/-/terra.js-1.3.6.tgz#e41e68d6cd9106c92634aa91753b3976c37e61f6"

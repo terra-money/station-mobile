@@ -14,6 +14,8 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.microsoft.codepush.react.CodePush;
+
 import money.terra.station.KeystoreLib.KeystorePackage;
 import money.terra.station.PreferencesLib.PreferencesPackage;
 import money.terra.station.TerraWalletLib.TerraWalletPackage;
@@ -63,7 +65,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         @Nullable
         @Override
         protected String getJSBundleFile() {
-          return super.getJSBundleFile();
+          return CodePush.getJSBundleFile();
         }
       };
 
