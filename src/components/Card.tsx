@@ -11,7 +11,8 @@ import * as shape from 'd3-shape'
 
 import { API } from 'use-station/src'
 
-import { Text, Icon } from 'components'
+import Icon from './Icon'
+import Text from './Text'
 import color from 'styles/color'
 
 interface Props extends Partial<API<any>> {

@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { StyleProp, StyleSheet, TextStyle } from 'react-native'
 import { format, DisplayCoin } from 'use-station/src'
 
-import { Text } from 'components'
+import Text from './Text'
 import color from 'styles/color'
 
 interface Props extends Partial<DisplayCoin> {
