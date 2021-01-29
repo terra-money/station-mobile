@@ -6,6 +6,7 @@ export { default as Input } from './Input'
 export { default as FormInput } from './FormInput'
 export { default as Number } from './Number'
 export { default as ExtLink } from './ExtLink'
+export { default as Selector } from './Selector'
 export {
   default as Select,
   SelectProps,

@@ -22,12 +22,11 @@ import {
 import ErrorComponent from 'components/ErrorComponent'
 import HistoryItem from 'components/history/HistoryItem'
 import WithAuth from 'components/layout/WithAuth'
-import { Text, Icon, LoadingIcon } from 'components'
+import { Text, Icon, LoadingIcon, Selector } from 'components'
 
 import color from 'styles/color'
 import layout from 'styles/layout'
 import { BaseModalButton } from '../BaseModal'
-import Selector from 'components/Selector'
 
 const RenderList = ({
   tsUiList,

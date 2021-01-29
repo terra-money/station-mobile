@@ -12,12 +12,11 @@ import EntypoIcon from 'react-native-vector-icons/Entypo'
 import _ from 'lodash'
 
 import Card from 'components/Card'
-import { Icon, Text } from 'components'
+import { Icon, Text, Selector } from 'components'
 
 import images from 'assets/images'
 import { useValidator } from 'hooks/useValidator'
 import color from 'styles/color'
-import Selector from 'components/Selector'
 
 // H. REQ i18n
 const validatorTitle = 'Validators'
