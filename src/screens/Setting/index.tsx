@@ -10,7 +10,7 @@ import _ from 'lodash'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import { CopyButton, Icon, Text } from 'components'
+import { CopyButton, Icon, Text, Selector } from 'components'
 
 import { RootStackParams } from 'types/navigation'
 import {
@@ -36,8 +36,6 @@ import {
   isSupportedBiometricAuthentication,
 } from 'utils/bio'
 import networks from '../../../networks'
-
-import Selector from 'components/Selector'
 
 const Screen = (): ReactElement => {
   const { user, signOut } = useAuth()
@@ -212,18 +210,6 @@ const Screen = (): ReactElement => {
             onSelect={onSelectNetwork}
           />
         </View>
-        {/* <TouchableOpacity
-            style={styles.itemBox}
-            onPress={onPressNetwork}
-          >
-            <Text style={styles.itemName} fontType={'medium'}>
-              Network
-            </Text>
-            <Text style={styles.itemValue} fontType={'medium'}>
-              {chain.current.name}
-            </Text>
-          </TouchableOpacity> */}
-
         {user ? (
           <View style={styles.section}>
             <TouchableOpacity
