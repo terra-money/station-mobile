@@ -30,7 +30,9 @@ const Component = ({ chartKey }: Props): ReactElement => {
 
   return (
     <View style={styles.chart_item}>
-      <Text style={styles.chart_item_title}>{title}</Text>
+      <Text style={styles.chart_item_title} fontType={'bold'}>
+        {title}
+      </Text>
       <View style={styles.bottom}>
         {Array.isArray(value) ? (
           <Text style={styles.chart_item_value}>
@@ -66,7 +68,6 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   chart_item_title: {
-    color: color.sapphire,
     fontSize: 14,
     lineHeight: 21,
     textTransform: 'capitalize',
@@ -85,7 +86,6 @@ const styles = StyleSheet.create({
   bottom: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
   },
 })
 

@@ -3,12 +3,10 @@ import {
   Image,
   View,
   TouchableOpacity,
-  Platform,
   LogBox,
   StyleSheet,
 } from 'react-native'
 
-import { getStatusBarHeight } from 'react-native-status-bar-height'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { setSkipOnboarding } from '../utils/storage'
@@ -66,15 +64,16 @@ const RenderSwiper = ({
     loop={false}
     dot={<View style={styles.SwiperDot} />}
     activeDot={<View style={styles.SwiperDotActive} />}
-    paginationStyle={{
-      bottom: -15,
-    }}
+    containerStyle={{ marginBottom: 65 }}
+    paginationStyle={{ marginBottom: -30 }}
   >
     {PagerContents.map((v, i) => (
       <View key={i} style={styles.SwiperContent}>
         <Image source={v.image} style={styles.SwiperContentImage} />
-        <View>
-          <Text style={styles.SwiperContentTitle}>{v.title}</Text>
+        <View style={{ height: 163 }}>
+          <Text style={styles.SwiperContentTitle} fontType={'bold'}>
+            {v.title}
+          </Text>
           <Text style={styles.SwiperContentDesc}>
             {v.description}
           </Text>
@@ -106,8 +105,14 @@ const RenderButton = ({
             style={styles.SwiperButtonSkip}
             onPress={enterTabs}
           >
-            <Text style={styles.SwiperButtonSkipText}>Skip</Text>
+            <Text
+              style={styles.SwiperButtonSkipText}
+              fontType={'bold'}
+            >
+              Skip
+            </Text>
           </TouchableOpacity>
+          <View style={{ width: 15 }} />
           <TouchableOpacity
             style={styles.SwiperButtonNext}
             onPress={(): void => refSwipe.current?.scrollBy(1)}
@@ -131,6 +136,7 @@ const RenderButton = ({
                 lineHeight: 24,
                 color: 'rgb(255,255,255)',
               }}
+              fontType={'bold'}
             >
               Get Started
             </Text>
@@ -140,20 +146,6 @@ const RenderButton = ({
     </View>
   )
 }
-
-const RenderLanguageButton = (): ReactElement => (
-  <View style={styles.SelectLanguageContainer}>
-    <TouchableOpacity style={styles.SelectLanguageButton}>
-      <Text style={styles.SelectLanguageButtonText}>English</Text>
-      <Icon
-        name="caret-down"
-        size={10}
-        color="rgb(32,67,181)"
-        style={styles.SelectLanguageButtonCaret}
-      />
-    </TouchableOpacity>
-  </View>
-)
 
 const OnBoarding = ({
   setshowOnBoarding,
@@ -165,7 +157,6 @@ const OnBoarding = ({
 
   return (
     <>
-      <RenderLanguageButton />
       <RenderSwiper refSwipe={refSwipe} setLastPage={setLastPage} />
       <RenderButton
         refSwipe={refSwipe}
@@ -177,22 +168,6 @@ const OnBoarding = ({
 }
 
 const styles = StyleSheet.create({
-  SelectLanguageContainer: {
-    alignItems: 'flex-end',
-    marginTop: Platform.OS === 'ios' ? getStatusBarHeight() : 0,
-    padding: 10,
-  },
-  SelectLanguageButton: {
-    padding: 10,
-    flexDirection: 'row',
-  },
-  SelectLanguageButtonText: {
-    color: color.sapphire,
-  },
-  SelectLanguageButtonCaret: {
-    margin: 5,
-  },
-
   SwiperDot: {
     backgroundColor: 'rgba(32, 67, 181, 0.2)',
     width: 6,
@@ -212,35 +187,34 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-around',
+    paddingHorizontal: 30,
   },
   SwiperContentImage: {
     resizeMode: 'contain',
     alignSelf: 'center',
+    flex: 1,
   },
   SwiperContentTitle: {
     fontSize: 24,
     lineHeight: 36,
-    color: color.sapphire,
+    letterSpacing: 0,
     textAlign: 'center',
-    marginBottom: 5,
-    marginHorizontal: 30,
   },
   SwiperContentDesc: {
     fontSize: 16,
     lineHeight: 24,
-    color: color.sapphire,
+    letterSpacing: 0,
     textAlign: 'center',
-    marginHorizontal: 30,
   },
-
   SwiperButtonContainer: {
-    marginVertical: 30,
+    marginBottom: 35,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
+    paddingHorizontal: 30,
   },
   SwiperButtonSkip: {
-    width: 150,
+    flex: 1,
     height: 50,
     borderRadius: 25,
     paddingVertical: 13,
@@ -253,16 +227,15 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   SwiperButtonNext: {
-    width: 150,
+    flex: 1,
     height: 50,
     borderRadius: 25,
-    paddingHorizontal: 58,
     paddingVertical: 13,
     backgroundColor: color.sapphire,
     alignItems: 'center',
   },
   SwiperButtonStart: {
-    width: 315,
+    flex: 1,
     height: 50,
     borderRadius: 25,
     paddingHorizontal: 58,

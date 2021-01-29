@@ -46,12 +46,7 @@ const Screen = ({ navigation }: Props): ReactElement => {
   }, [])
 
   return (
-    <Body
-      theme={'sky'}
-      containerStyle={{ paddingTop: 20 }}
-      scrollable
-      onRefresh={refreshPage}
-    >
+    <Body theme={'sky'} scrollable onRefresh={refreshPage}>
       {refreshing ? null : <Render user={user} />}
     </Body>
   )

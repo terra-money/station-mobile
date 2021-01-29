@@ -18,7 +18,9 @@ const PleaseSignIn = (): ReactElement => {
 
   return (
     <Card>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title} fontType={'bold'}>
+        {title}
+      </Text>
       <Text style={styles.content}>
         <Trans i18nKey={i18nKey}>
           <Text />
@@ -28,7 +30,9 @@ const PleaseSignIn = (): ReactElement => {
         onPress={(): void => navigate('AuthMenu')}
       >
         <View style={styles.button}>
-          <Text style={styles.button_text}>{button}</Text>
+          <Text style={styles.button_text} fontType={'medium'}>
+            {button}
+          </Text>
         </View>
       </TouchableWithoutFeedback>
     </Card>
@@ -37,15 +41,16 @@ const PleaseSignIn = (): ReactElement => {
 
 const styles = StyleSheet.create({
   title: {
-    color: color.sapphire,
-    fontSize: 18,
-    lineHeight: 27,
+    fontSize: 16,
+    lineHeight: 24,
+    letterSpacing: 0,
     marginBottom: 5,
   },
   content: {
-    color: color.sapphire,
     fontSize: 14,
     lineHeight: 21,
+    letterSpacing: 0,
+    marginBottom: 30,
   },
   button: {
     backgroundColor: color.sapphire,
@@ -53,7 +58,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 20,
-    marginTop: 40,
   },
   button_text: {
     color: '#fff',

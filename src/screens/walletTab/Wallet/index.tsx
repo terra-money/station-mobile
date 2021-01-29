@@ -42,12 +42,7 @@ const Screen = ({ navigation }: Props): ReactElement => {
   return (
     <WithAuth>
       {(user): ReactElement => (
-        <Body
-          theme={'sky'}
-          scrollable
-          containerStyle={{ paddingTop: 20 }}
-          onRefresh={refreshPage}
-        >
+        <Body theme={'sky'} scrollable onRefresh={refreshPage}>
           {refreshing ? null : (
             <>
               <WalletAddress user={user} />
