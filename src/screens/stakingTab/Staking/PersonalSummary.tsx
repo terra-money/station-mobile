@@ -13,12 +13,33 @@ import { RootStackParams } from 'types'
 import { useWithdraw } from 'hooks/useWithdraw'
 
 const NotStaked = (): ReactElement => {
+  const { navigate } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
+
   return (
     <>
       <View style={styles.header}>
-        <Text style={styles.headerTitle} fontType={'bold'}>
-          Staking rewards
-        </Text>
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 20,
+          }}
+          onPress={(): void => {
+            navigate('StakingInformation')
+          }}
+        >
+          <Text style={styles.headerTitle} fontType={'bold'}>
+            Staking rewards
+          </Text>
+          <Icon
+            color={color.sapphire}
+            name={'info'}
+            size={16}
+            style={{ marginLeft: 6 }}
+          />
+        </TouchableOpacity>
       </View>
       <Text>
         {
@@ -56,9 +77,12 @@ const PersonalSummary = ({
       {myDelegations || myRewards ? (
         <>
           <View style={styles.header}>
-            <Text style={styles.headerTitle} fontType={'bold'}>
-              Summary
-            </Text>
+            <View style={{ marginBottom: 20 }}>
+              <Text style={styles.headerTitle} fontType={'bold'}>
+                Summary
+              </Text>
+            </View>
+
             <TouchableOpacity
               onPress={(): void => {
                 navigate('StakingPersonal')
@@ -142,7 +166,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     letterSpacing: 0,
-    marginBottom: 20,
   },
   itemBox: {
     flexDirection: 'row',

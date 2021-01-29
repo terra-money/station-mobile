@@ -27,6 +27,7 @@ import Delegate from '../screens/Delegate'
 import ChangePassword from '../screens/ChangePassword'
 import SendTxPasswordView from '../screens/topup/SendTxPasswordView'
 import SendTxCompleteView from '../screens/topup/SendTxCompleteView'
+import StakingInformation from '../screens/StakingInformation'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -150,6 +151,11 @@ const AppNavigator = (): ReactElement => {
           name="ChangePassword"
           component={ChangePassword}
           options={ChangePassword.navigationOptions}
+        />
+        <RootStack.Screen
+          name="StakingInformation"
+          component={StakingInformation}
+          options={StakingInformation.navigationOptions}
         />
       </RootStack.Navigator>
     </NavigationContainer>

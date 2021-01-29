@@ -77,7 +77,7 @@ const Button = (props: ButtonProps): ReactElement => {
       {typeof props.title === 'string' ? (
         <Text
           style={[titleStyle, props.titleStyle]}
-          fontType={props.titleFontType}
+          fontType={props.titleFontType || 'medium'}
         >
           {props.title}
         </Text>
