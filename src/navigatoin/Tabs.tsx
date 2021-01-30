@@ -137,8 +137,9 @@ const Tabs = (): ReactElement => {
         labelPosition,
       }}
     >
-      {_.map(tabScreenItemList, (item) => (
+      {_.map(tabScreenItemList, (item, index) => (
         <Tab.Screen
+          key={`tabScreenItemList-${index}`}
           name={item.name}
           component={item.component}
           options={({ route }): BottomTabNavigationOptions => ({
