@@ -24,7 +24,7 @@ const FormInput = (props: FormInputProps): ReactElement => {
   return (
     <>
       <Input
-        style={inputContainerStyle}
+        containerStyle={inputContainerStyle}
         autoCorrect={false}
         {...rest}
       />

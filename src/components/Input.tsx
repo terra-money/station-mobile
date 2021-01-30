@@ -11,14 +11,14 @@ import {
 import color from 'styles/color'
 
 type InputProps = {
-  containerStyle: StyleProp<ViewStyle>
+  containerStyle?: StyleProp<ViewStyle>
 } & TextInputProps
 
 const Input = (props: InputProps): ReactElement => {
   const { style, ...rest } = props
   const defaultStyle: StyleProp<TextStyle> = {
     borderRadius: 8,
-    height: 45,
+    height: '100%',
     backgroundColor:
       false === rest.editable ? '#ebeff8' : color.white,
     justifyContent: 'center',
@@ -32,6 +32,8 @@ const Input = (props: InputProps): ReactElement => {
           borderRadius: 8,
           borderWidth: 1,
           borderColor: '#cfd8ea',
+          height: 45,
+          paddingBottom: 1,
         },
         props.containerStyle,
       ]}
