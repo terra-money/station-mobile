@@ -51,9 +51,11 @@ const Screen = (): ReactElement => {
           </View>
           <Input
             style={{
-              height: 100,
               padding: 5,
               textAlignVertical: 'top',
+            }}
+            containerStyle={{
+              height: 100,
             }}
             multiline
             autoCorrect={false}
