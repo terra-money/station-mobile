@@ -11,7 +11,7 @@ import _ from 'lodash'
 
 import { useApp } from 'hooks'
 import color from 'styles/color'
-import { Text } from 'components'
+import Text from './Text'
 
 const SelectItemList = <T,>({
   list,

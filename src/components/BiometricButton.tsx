@@ -2,7 +2,8 @@ import React, { ReactElement } from 'react'
 import { View, Image } from 'react-native'
 
 import { authenticateBiometric } from 'utils/bio'
-import { Text, Button } from 'components'
+import Text from './Text'
+import Button from './Button'
 
 import color from 'styles/color'
 import images from 'assets/images'
