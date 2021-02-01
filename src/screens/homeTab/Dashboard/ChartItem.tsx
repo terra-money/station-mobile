@@ -10,6 +10,7 @@ import ErrorBoundary from 'components/ErrorBoundary'
 import ErrorComponent from 'components/ErrorComponent'
 import { Text, Number, LoadingIcon } from 'components'
 import color from 'styles/color'
+import layout from 'styles/layout'
 
 interface Props {
   chartKey: ChartKey
@@ -43,13 +44,15 @@ const Component = ({ chartKey }: Props): ReactElement => {
           <Number {...value} integer />
         )}
         {chart?.data ? (
-          <AreaChart
-            style={{ width: 60, height: 40, marginBottom: 5 }}
-            data={displayData}
-            contentInset={{ top: 0, bottom: 10 }}
-            curve={shape.curveNatural}
-            svg={{ fill: 'rgba(32, 67, 181, 0.15)' }}
-          />
+          layout.getScreenWideType() !== 'narrow' && (
+            <AreaChart
+              style={{ width: 60, height: 40, marginBottom: 5 }}
+              data={displayData}
+              contentInset={{ top: 0, bottom: 10 }}
+              curve={shape.curveNatural}
+              svg={{ fill: 'rgba(32, 67, 181, 0.15)' }}
+            />
+          )
         ) : (
           <LoadingIcon />
         )}

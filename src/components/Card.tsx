@@ -14,6 +14,7 @@ import { API } from 'use-station/src'
 import Icon from './Icon'
 import Text from './Text'
 import color from 'styles/color'
+import layout from 'styles/layout'
 
 interface Props extends Partial<API<any>> {
   style?: ViewStyle
@@ -67,11 +68,13 @@ const Card = ({
           </Text>
           {action ??
             (badge ? (
-              <View style={styles.badge}>
-                <Text style={[textStyle, styles.badge_text]}>
-                  {badge}
-                </Text>
-              </View>
+              layout.getScreenWideType() !== 'narrow' && (
+                <View style={styles.badge}>
+                  <Text style={[textStyle, styles.badge_text]}>
+                    {badge}
+                  </Text>
+                </View>
+              )
             ) : (
               <Icon
                 name="chevron-right"
@@ -90,7 +93,16 @@ const Card = ({
       ) : (
         children ?? (
           <View style={styles.bottom}>
-            <Text style={[textStyle, styles.value]}>
+            <Text
+              style={[
+                textStyle,
+                styles.value,
+                {
+                  fontSize:
+                    layout.getScreenWideType() === 'narrow' ? 20 : 24,
+                },
+              ]}
+            >
               {content}
               {value}
               <Text style={styles.unit}> {unit}</Text>
@@ -171,13 +183,13 @@ const styles = StyleSheet.create({
   },
 
   value: {
-    fontSize: 24,
     letterSpacing: -0.5,
     lineHeight: 36,
     marginTop: 10,
   },
 
   unit: {
+    color: 'white',
     fontSize: 18,
     letterSpacing: 0,
   },

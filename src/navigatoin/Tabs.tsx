@@ -5,6 +5,7 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs'
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
+import _ from 'lodash'
 
 import Dashboard from '../screens/homeTab/Dashboard'
 import Wallet from '../screens/walletTab/Wallet'
@@ -17,6 +18,7 @@ import Staking from '../screens/stakingTab/Staking'
 import StakingPersonal from '../screens/stakingTab/StakingPersonal'
 import ValidatorDetail from '../screens/stakingTab/ValidatorDetail'
 import { Text, Icon } from 'components'
+import layout from 'styles/layout'
 
 export const INITIAL = 'Dashboard'
 
@@ -89,107 +91,85 @@ const styles = StyleSheet.create({
 /* routes */
 const Tab = createBottomTabNavigator()
 
-const Tabs = (): ReactElement => (
-  <Tab.Navigator
-    initialRouteName={INITIAL}
-    tabBarOptions={{
-      activeTintColor: '#2043B5',
-      inactiveTintColor: '#C1C7D0',
-    }}
-  >
-    <Tab.Screen
-      name="Dashboard"
-      component={DashboardStack}
-      options={{
-        tabBarLabel: ({ color }: any): ReactElement => (
-          <Text
-            style={[styles.tabbar_text, { color }]}
-            fontType={'bold'}
-          >
-            DASHBOARD
-          </Text>
-        ),
-        tabBarIcon: ({ color }: any): ReactElement => (
-          <Icon
-            name="dashboard"
-            color={color}
-            size={26}
-            style={{ marginTop: 5 }}
-          />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Wallet"
-      component={WalletStack}
-      options={{
-        tabBarLabel: ({ color }: any): ReactElement => (
-          <Text
-            style={[styles.tabbar_text, { color }]}
-            fontType={'bold'}
-          >
-            WALLET
-          </Text>
-        ),
-        tabBarIcon: ({ color }: any): ReactElement => (
-          <Icon
-            name="account-balance-wallet"
-            color={color}
-            size={28}
-            style={{ marginTop: 5 }}
-          />
-        ),
-      }}
-    />
+const tabScreenItemList: {
+  name: string
+  component: () => ReactElement
+  label: string
+  iconName: string
+}[] = [
+  {
+    name: 'Dashboard',
+    component: DashboardStack,
+    label: 'DASHBOARD',
+    iconName: 'dashboard',
+  },
+  {
+    name: 'Wallet',
+    component: WalletStack,
+    label: 'WALLET',
+    iconName: 'account-balance-wallet',
+  },
+  {
+    name: 'Staking',
+    component: StakingStack,
+    label: 'STAKING',
+    iconName: 'layers',
+  },
+  {
+    name: 'Swap',
+    component: SwapStack,
+    label: 'SWAP',
+    iconName: 'swap-horiz',
+  },
+]
 
-    <Tab.Screen
-      name="Staking"
-      component={StakingStack}
-      options={({ route }): BottomTabNavigationOptions => ({
-        tabBarLabel: ({ color }: any): ReactElement => (
-          <Text
-            style={[styles.tabbar_text, { color }]}
-            fontType={'bold'}
-          >
-            STAKING
-          </Text>
-        ),
-        tabBarIcon: ({ color }: any): ReactElement => (
-          <Icon
-            name="layers"
-            color={color}
-            size={28}
-            style={{ marginTop: 5 }}
-          />
-        ),
-        tabBarVisible: isTabBarVisible(route),
-      })}
-    />
-
-    <Tab.Screen
-      name="Swap"
-      component={SwapStack}
-      options={({ route }): BottomTabNavigationOptions => ({
-        tabBarLabel: ({ color }: any): ReactElement => (
-          <Text
-            style={[styles.tabbar_text, { color }]}
-            fontType={'bold'}
-          >
-            Swap
-          </Text>
-        ),
-        tabBarIcon: ({ color }: any): ReactElement => (
-          <Icon
-            name="swap-horiz"
-            color={color}
-            size={28}
-            style={{ marginTop: 5 }}
-          />
-        ),
-        tabBarVisible: isTabBarVisible(route),
-      })}
-    />
-  </Tab.Navigator>
-)
+const Tabs = (): ReactElement => {
+  const labelPosition =
+    layout.getScreenWideType() === 'wide'
+      ? 'beside-icon'
+      : 'below-icon'
+  return (
+    <Tab.Navigator
+      initialRouteName={INITIAL}
+      tabBarOptions={{
+        activeTintColor: '#2043B5',
+        inactiveTintColor: '#C1C7D0',
+        labelPosition,
+      }}
+    >
+      {_.map(tabScreenItemList, (item, index) => (
+        <Tab.Screen
+          key={`tabScreenItemList-${index}`}
+          name={item.name}
+          component={item.component}
+          options={({ route }): BottomTabNavigationOptions => ({
+            tabBarLabel:
+              labelPosition === 'below-icon'
+                ? ({ color }: { color: string }): ReactElement => (
+                    <Text
+                      style={[styles.tabbar_text, { color }]}
+                      fontType={'bold'}
+                    >
+                      {item.label}
+                    </Text>
+                  )
+                : item.label,
+            tabBarIcon: ({ color }: any): ReactElement => (
+              <Icon
+                name={item.iconName}
+                color={color}
+                size={26}
+                style={
+                  labelPosition === 'below-icon' && { marginTop: 5 }
+                }
+              />
+            ),
+            tabBarVisible: isTabBarVisible(route),
+          })}
+        />
+      ))}
+    </Tab.Navigator>
+  )
+}
 
 export default Tabs

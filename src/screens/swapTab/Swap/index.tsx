@@ -1,5 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import _ from 'lodash'
 
 import Tooltip from 'react-native-walkthrough-tooltip'
 
@@ -8,6 +9,7 @@ import Body from 'components/layout/Body'
 import WithAuth from 'components/layout/WithAuth'
 import {
   ConfirmProps,
+  Field,
   FormUI,
   SwapUI,
   useMarket,
@@ -17,14 +19,109 @@ import {
 import { StackScreenProps } from '@react-navigation/stack'
 
 import ErrorComponent from 'components/ErrorComponent'
-import UseStationFormField from 'components/UseStationFormField'
-import { Text, Icon, Number, Button, Loading } from 'components'
+import Input from 'components/Input'
+import {
+  Text,
+  Icon,
+  Number,
+  Button,
+  Loading,
+  SelectOptionProps,
+  Select,
+} from 'components'
 
 import color from 'styles/color'
 import { useConfirm } from 'hooks/useConfirm'
 import { RootStackParams } from 'types'
+import layout from 'styles/layout'
 
 type Props = StackScreenProps<RootStackParams, 'Swap'>
+
+const SwapTypeSelect = ({
+  field,
+}: {
+  field: Field
+}): ReactElement => {
+  const { attrs, setValue } = field
+  const options: SelectOptionProps[] = _.map(
+    field.options?.filter((x) => !x.disabled),
+    (option) => {
+      return {
+        label: option.children,
+        value: option.value,
+      }
+    }
+  )
+  return (
+    <>
+      {!field.attrs.hidden && (
+        <Select
+          disabled={options.length < 1}
+          selectedValue={attrs.value}
+          onValueChange={(value): void => {
+            setValue && setValue(`${value}`)
+          }}
+          optionList={options}
+          containerStyle={{ height: 30, paddingLeft: 0 }}
+        />
+      )}
+    </>
+  )
+}
+
+const SelectInputForm = ({
+  selectField,
+  inputField,
+}: {
+  selectField: Field
+  inputField: Field
+}): ReactElement => {
+  const options: SelectOptionProps[] = _.map(
+    selectField.options?.filter((x) => !x.disabled),
+    (option) => {
+      return {
+        label: option.children,
+        value: option.value,
+      }
+    }
+  )
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#cfd8ea',
+      }}
+    >
+      <Select
+        disabled={options.length < 1}
+        selectedValue={selectField.attrs.value}
+        onValueChange={(value): void => {
+          selectField.setValue && selectField.setValue(`${value}`)
+        }}
+        optionList={options}
+        containerStyle={{
+          flex: layout.getScreenWideType() === 'narrow' ? 3 : 2,
+          borderWidth: 0,
+        }}
+      />
+      <Input
+        value={inputField.attrs.value}
+        defaultValue={inputField.attrs.defaultValue}
+        editable={!inputField.attrs.readOnly}
+        placeholder={inputField.attrs.placeholder}
+        onChangeText={inputField.setValue}
+        containerStyle={{ flex: 3, borderWidth: 0 }}
+        style={{
+          borderRadius: 0,
+          borderTopRightRadius: 8,
+          borderBottomRightRadius: 8,
+        }}
+      />
+    </View>
+  )
+}
 
 const Render = ({
   form,
@@ -49,9 +146,24 @@ const Render = ({
 
   return (
     <View style={styles.swapForm}>
-      <Text style={styles.swapTitle} fontType={'bold'}>
-        {title}
-      </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}
+      >
+        <View>
+          <Text style={styles.swapTitle} fontType={'bold'}>
+            {title}
+          </Text>
+        </View>
+
+        <View style={{ flex: 1, maxWidth: 160 }}>
+          {/* fields[4] : Swap option between default and terraswap */}
+          <SwapTypeSelect field={fields[4]} />
+        </View>
+      </View>
+
       <View>
         <TouchableOpacity
           onPress={max.attrs.onClick}
@@ -70,29 +182,18 @@ const Render = ({
           </Number>
         </TouchableOpacity>
       </View>
-      <View style={{ flexDirection: 'row' }}>
-        {fields.slice(0, 2).map((field, i) => (
-          <View
-            key={field.attrs.id}
-            style={{ flex: i === 0 ? 1 : 2 }}
-          >
-            <UseStationFormField field={field} />
-          </View>
-        ))}
-      </View>
+
+      <SelectInputForm
+        selectField={fields[0]}
+        inputField={fields[1]}
+      />
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
         <Icon size={24} color={color.sapphire} name={'swap-vert'} />
       </View>
-      <View style={{ flexDirection: 'row' }}>
-        {fields.slice(2, 4).map((field, i) => (
-          <View
-            key={field.attrs.id}
-            style={{ flex: i === 0 ? 1 : 2 }}
-          >
-            <UseStationFormField field={field} />
-          </View>
-        ))}
-      </View>
+      <SelectInputForm
+        selectField={fields[2]}
+        inputField={fields[3]}
+      />
 
       <View
         style={{

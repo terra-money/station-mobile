@@ -1,5 +1,11 @@
 import React, { ReactElement } from 'react'
-import { StyleSheet, TextInputProps, View } from 'react-native'
+import {
+  StyleProp,
+  StyleSheet,
+  TextInputProps,
+  View,
+  ViewStyle,
+} from 'react-native'
 import _ from 'lodash'
 
 import Text from './Text'
@@ -9,10 +15,11 @@ import color from 'styles/color'
 
 export type FormInputProps = {
   errorMessage?: string
+  containerStyle?: StyleProp<ViewStyle>
 } & TextInputProps
 
 const FormInput = (props: FormInputProps): ReactElement => {
-  const { errorMessage, ...rest } = props
+  const { errorMessage, containerStyle, ...rest } = props
 
   const inputContainerStyle = _.some(errorMessage)
     ? {
@@ -24,7 +31,7 @@ const FormInput = (props: FormInputProps): ReactElement => {
   return (
     <>
       <Input
-        style={inputContainerStyle}
+        containerStyle={[inputContainerStyle, containerStyle]}
         autoCorrect={false}
         {...rest}
       />

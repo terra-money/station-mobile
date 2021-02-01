@@ -130,7 +130,11 @@ const Screen = (): ReactElement => {
         theme={'sapphire'}
         title={'Select Address to Recover'}
       />
-      <Body theme={'sky'} containerStyle={styles.container}>
+      <Body
+        theme={'sky'}
+        containerStyle={styles.container}
+        scrollable
+      >
         <View style={{ flex: 1 }}>
           {mk118 && (
             <View style={{ marginBottom: 20 }}>
@@ -155,7 +159,7 @@ const Screen = (): ReactElement => {
         <Button
           title="Recover"
           theme={'sapphire'}
-          containerStyle={{ marginBottom: 10 }}
+          containerStyle={{ marginTop: 40 }}
           disabled={!stepConfirmed}
           onPress={onPressNext}
         />
