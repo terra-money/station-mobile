@@ -15,14 +15,15 @@ import Body from 'components/layout/Body'
 import WithAuth from 'components/layout/WithAuth'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import { UseStationForm, Button, BiometricButton } from 'components'
+import { UseStationForm, Button } from 'components'
 
 import { RootStackParams } from 'types/navigation'
 
 import ConfirmStore from 'stores/ConfirmStore'
-import { getIsUseBioAuth } from 'utils/storage'
+import { getBioAuthPassword, getIsUseBioAuth } from 'utils/storage'
 import { useConfirm } from 'hooks/useConfirm'
 import { useLoading } from 'hooks/useLoading'
+import { authenticateBiometric } from 'utils/bio'
 
 type Props = StackScreenProps<RootStackParams, 'ConfirmPassword'>
 
@@ -42,25 +43,25 @@ const Render = ({
   const { navigate, dispatch } = useNavigation<
     NavigationProp<RootStackParams>
   >()
-  const [isUseBioAuth, setIsUseBioAuth] = useState(false)
   const [bioAuthTrigger, setBioAuthTrigger] = useState(0)
 
-  const onPressBiometricButton = ({
-    isSuccess,
-    password,
-  }: {
-    isSuccess: boolean
-    password: string
-  }): void => {
-    if (isSuccess) {
-      // form.fields must have password
-      const formPassword = _.find(
-        form.fields,
-        (x) => x.attrs.id === 'password'
-      )
-      if (formPassword?.setValue) {
-        formPassword.setValue(password)
-        setBioAuthTrigger((ori) => ori + 1)
+  const runBioAuth = async (): Promise<void> => {
+    const isUse = await getIsUseBioAuth()
+    if (isUse) {
+      const isSuccess = await authenticateBiometric()
+      if (isSuccess) {
+        const password = await getBioAuthPassword({
+          walletName: user.name || '',
+        })
+        // form.fields must have password
+        const formPassword = _.find(
+          form.fields,
+          (x) => x.attrs.id === 'password'
+        )
+        if (formPassword?.setValue) {
+          formPassword.setValue(password)
+          setBioAuthTrigger((ori) => ori + 1)
+        }
       }
     }
   }
@@ -86,9 +87,7 @@ const Render = ({
   }, [result])
 
   useEffect(() => {
-    getIsUseBioAuth().then((isUse) => {
-      setIsUseBioAuth(isUse)
-    })
+    runBioAuth()
   }, [])
 
   return (
@@ -110,15 +109,6 @@ const Render = ({
             title={form.submitLabel}
             onPress={form.onSubmit}
           />
-          {isUseBioAuth && (
-            <View style={{ marginTop: 10 }}>
-              <BiometricButton
-                disabled={form.submitting}
-                walletName={user.name || ''}
-                onPress={onPressBiometricButton}
-              />
-            </View>
-          )}
         </View>
       </Body>
     </>

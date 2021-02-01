@@ -50,7 +50,9 @@ export const createWallet = async ({
   seed: string
   name: string
   password: string
-}): Promise<boolean> => {
+}): Promise<
+  { success: true; wallet: LocalWallet } | { success: false }
+> => {
   const { mk330 } = generateAddresses(seed)
 
   return recover(mk330, { name, password })
@@ -59,7 +61,9 @@ export const createWallet = async ({
 export const recover = async (
   mk: MnemonicKey,
   { name, password }: { name: string; password: string }
-): Promise<boolean> => {
+): Promise<
+  { success: true; wallet: LocalWallet } | { success: false }
+> => {
   try {
     const key = encrypt(mk.privateKey.toString('hex'), password)
     if (!key) {
@@ -67,9 +71,9 @@ export const recover = async (
     }
     const wallet = { name, address: mk.accAddress }
     await addWallet({ wallet, key, password })
-    return true
+    return { success: true, wallet }
   } catch {
-    return false
+    return { success: false }
   }
 }
 

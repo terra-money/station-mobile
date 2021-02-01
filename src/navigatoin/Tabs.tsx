@@ -7,7 +7,7 @@ import {
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 import _ from 'lodash'
 
-import Dashboard from '../screens/homeTab/Dashboard'
+// import Dashboard from '../screens/homeTab/Dashboard'
 import Wallet from '../screens/walletTab/Wallet'
 import Swap from '../screens/swapTab/Swap'
 
@@ -20,15 +20,15 @@ import layout from 'styles/layout'
 
 export const INITIAL = 'Dashboard'
 
-const DashboardStack = (): ReactElement => (
-  <RootStack.Navigator initialRouteName={INITIAL}>
-    <RootStack.Screen
-      name={INITIAL}
-      component={Dashboard}
-      options={Dashboard.navigationOptions}
-    />
-  </RootStack.Navigator>
-)
+// const DashboardStack = (): ReactElement => (
+//   <RootStack.Navigator initialRouteName={INITIAL}>
+//     <RootStack.Screen
+//       name={INITIAL}
+//       component={Dashboard}
+//       options={Dashboard.navigationOptions}
+//     />
+//   </RootStack.Navigator>
+// )
 
 const WalletStack = (): ReactElement => (
   <RootStack.Navigator initialRouteName="Wallet">
@@ -95,12 +95,12 @@ const tabScreenItemList: {
   label: string
   iconName: string
 }[] = [
-  {
-    name: 'Dashboard',
-    component: DashboardStack,
-    label: 'DASHBOARD',
-    iconName: 'dashboard',
-  },
+  // {
+  //   name: 'Dashboard',
+  //   component: DashboardStack,
+  //   label: 'DASHBOARD',
+  //   iconName: 'dashboard',
+  // },
   {
     name: 'Wallet',
     component: WalletStack,
@@ -108,16 +108,16 @@ const tabScreenItemList: {
     iconName: 'account-balance-wallet',
   },
   {
-    name: 'Staking',
-    component: StakingStack,
-    label: 'STAKING',
-    iconName: 'layers',
-  },
-  {
     name: 'Swap',
     component: SwapStack,
     label: 'SWAP',
     iconName: 'swap-horiz',
+  },
+  {
+    name: 'Staking',
+    component: StakingStack,
+    label: 'STAKING',
+    iconName: 'layers',
   },
 ]
 
