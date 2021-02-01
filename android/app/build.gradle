@@ -152,6 +152,7 @@ android {
         versionName "0.0.1"
         multiDexEnabled true
         setProperty('archivesBaseName', renameArtifact())
+        missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {
         abi {
