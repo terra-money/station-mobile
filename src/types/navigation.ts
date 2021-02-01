@@ -6,7 +6,7 @@ import { Card, VestingItemUI } from 'use-station/src'
 export type RootStackParams = {
   OnBoarding: undefined
   Tabs: undefined
-  Dashboard: undefined
+  // Dashboard: undefined
   Wallet: undefined
   Staking: undefined
   StakingPersonal: undefined
