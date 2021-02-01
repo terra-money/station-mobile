@@ -1,15 +1,10 @@
 import React, { ReactElement } from 'react'
-import {
-  TouchableWithoutFeedback,
-  View,
-  StyleSheet,
-} from 'react-native'
+import { StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useInfo, Trans } from 'use-station/src'
 
 import Card from './Card'
-import { Text } from 'components'
-import color from 'styles/color'
+import { Button, Text } from 'components'
 
 const PleaseSignIn = (): ReactElement => {
   const { navigate } = useNavigation()
@@ -26,15 +21,13 @@ const PleaseSignIn = (): ReactElement => {
           <Text />
         </Trans>
       </Text>
-      <TouchableWithoutFeedback
+      <Button
         onPress={(): void => navigate('AuthMenu')}
-      >
-        <View style={styles.button}>
-          <Text style={styles.button_text} fontType={'medium'}>
-            {button}
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
+        titleStyle={styles.button_text}
+        title={button || ''}
+        theme={'sapphire'}
+        containerStyle={{ height: 40 }}
+      />
     </Card>
   )
 }
@@ -52,16 +45,9 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     marginBottom: 30,
   },
-  button: {
-    backgroundColor: color.sapphire,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 20,
-  },
   button_text: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
   },
 })
 
