@@ -98,6 +98,7 @@ const Screen = (): ReactElement => {
   const onPressDisconnect = (): void => {
     settings.delete(['user'])
     signOut()
+    navigate('Wallet')
   }
 
   const initPage = async (): Promise<void> => {
