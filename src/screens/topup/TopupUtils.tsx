@@ -4,23 +4,17 @@ import { LCDClient } from '@terra-money/terra.js'
 import { ReactElement } from 'react'
 import { ActivityIndicator, Alert, Linking, View } from 'react-native'
 
-export const DEBUG_TOPUP = true
+export const DEBUG_TOPUP = false
 
-export const chain = {
-  columbus: {
-    chainID: 'columbus-4',
-    URL: 'https://lcd.terra.dev',
-  },
-  tequila: {
-    chainID: 'tequila-0004',
-    URL: 'https://tequila-lcd.terra.dev',
-  },
+export const getLCDClient = (
+  chainID: string,
+  URL: string
+): LCDClient => {
+  return new LCDClient({
+    chainID,
+    URL,
+  })
 }
-
-export const lcdClient = new LCDClient({
-  chainID: chain.tequila.chainID,
-  URL: chain.tequila.URL,
-})
 
 export const restoreApp = (
   navigation: any,
@@ -32,6 +26,7 @@ export const restoreApp = (
       Alert.alert('Cannot return!')
     })
 }
+
 export const gotoDashboard = (navigation: any): void => {
   navigation.dispatch(
     CommonActions.reset({

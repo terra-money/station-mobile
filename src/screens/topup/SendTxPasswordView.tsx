@@ -23,13 +23,13 @@ import {
   Text,
 } from 'components'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useAuth } from 'use-station/src'
+import { useAuth, useConfig } from 'use-station/src'
 import { getDecyrptedKey } from 'utils/wallet'
 import { useLoading } from 'hooks/useLoading'
 import {
   DEBUG_TOPUP,
+  getLCDClient,
   gotoDashboard,
-  lcdClient,
   onPressComplete,
 } from './TopupUtils'
 import { StackScreenProps } from '@react-navigation/stack'
@@ -42,6 +42,7 @@ type Props = StackScreenProps<RootStackParams, 'SendTxPasswordView'>
 const SendTxPasswordView = (props: Props): ReactElement => {
   const insets = useSafeAreaInsets()
   const { user } = useAuth()
+  const { chain } = useConfig()
   const { showLoading, hideLoading } = useLoading()
   const [password, setPassword] = useState<string>('')
   const [signedTx, setSignedTx] = useState<StdTx>()
@@ -79,7 +80,10 @@ const SendTxPasswordView = (props: Props): ReactElement => {
   }
 
   const broadcastSignedTx = async (): Promise<SyncTxBroadcastResult> => {
-    const result = await lcdClient.tx.broadcastSync(signedTx!)
+    const result = await getLCDClient(
+      chain.current.chainID,
+      chain.current.lcd
+    ).tx.broadcastSync(signedTx!)
     return result
     // if (typeof result === 'object' && 'code' in result) {
     //   if (result.code) {

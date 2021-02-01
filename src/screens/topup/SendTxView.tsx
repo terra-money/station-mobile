@@ -209,7 +209,8 @@ const SendTxView = (props: Props): ReactElement => {
           />
           <View style={{ width: 10 }} />
           <Input
-            style={style.amountContainer}
+            containerStyle={style.amountContainer}
+            style={style.amountText}
             value={feeAmount}
             editable={false}
           />
@@ -291,6 +292,8 @@ const style = StyleSheet.create({
   },
   amountContainer: {
     flex: 2,
+  },
+  amountText: {
     color: color.sapphire,
     fontFamily: font.gotham.book,
     fontVariant: ['tabular-nums'],
