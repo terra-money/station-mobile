@@ -1,8 +1,10 @@
+import { Icon } from 'components'
 import React, { ReactElement } from 'react'
-import { TextStyle, ViewStyle } from 'react-native'
+import { Platform, TextStyle, View, ViewStyle } from 'react-native'
 import PickerSelect, { PickerStyle } from 'react-native-picker-select'
 
 import color from 'styles/color'
+import font from 'styles/font'
 
 export type SelectOptionProps = {
   label: string
@@ -22,6 +24,12 @@ export type SelectProps = {
 } & PickerStyle
 
 const Select = (props: SelectProps): ReactElement => {
+  const textStyle: TextStyle = {
+    color: color.sapphire,
+    paddingLeft: 10,
+    fontFamily: font.gotham.book,
+  }
+
   return (
     <PickerSelect
       value={props.selectedValue}
@@ -38,13 +46,38 @@ const Select = (props: SelectProps): ReactElement => {
           ...props.containerStyle,
         },
         inputAndroid: {
-          fontFamily: 'Gotham-Medium',
+          ...textStyle,
           ...props.textStyle,
         },
-        inputIOS: { fontFamily: 'Gotham-Medium', ...props.textStyle },
+        // ios11 text style
+        inputIOS: {
+          ...textStyle,
+          ...props.textStyle,
+        },
       }}
       placeholder={{}}
       {...props}
+      pickerProps={{
+        // g7 text style
+        style: {
+          ...textStyle,
+          ...props.textStyle,
+        },
+        dropdownIconColor: color.sapphire,
+      }}
+      Icon={
+        Platform.OS === 'ios'
+          ? (): ReactElement => (
+              <View style={{ paddingRight: 10 }}>
+                <Icon
+                  name={'arrow-drop-down'}
+                  size={18}
+                  color={color.sapphire}
+                />
+              </View>
+            )
+          : undefined
+      }
     />
   )
 }

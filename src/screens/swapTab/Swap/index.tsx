@@ -19,7 +19,6 @@ import {
 import { StackScreenProps } from '@react-navigation/stack'
 
 import ErrorComponent from 'components/ErrorComponent'
-import Input from 'components/Input'
 import {
   Text,
   Icon,
@@ -33,7 +32,9 @@ import {
 import color from 'styles/color'
 import { useConfirm } from 'hooks/useConfirm'
 import { RootStackParams } from 'types'
-import layout from 'styles/layout'
+import font from 'styles/font'
+
+import SelectInputForm from './SelectInputForm'
 
 type Props = StackScreenProps<RootStackParams, 'Swap'>
 
@@ -62,64 +63,14 @@ const SwapTypeSelect = ({
             setValue && setValue(`${value}`)
           }}
           optionList={options}
-          containerStyle={{ height: 30, paddingLeft: 0 }}
+          containerStyle={{ height: 30 }}
+          textStyle={{
+            fontSize: 10,
+            fontFamily: font.gotham.medium,
+          }}
         />
       )}
     </>
-  )
-}
-
-const SelectInputForm = ({
-  selectField,
-  inputField,
-}: {
-  selectField: Field
-  inputField: Field
-}): ReactElement => {
-  const options: SelectOptionProps[] = _.map(
-    selectField.options?.filter((x) => !x.disabled),
-    (option) => {
-      return {
-        label: option.children,
-        value: option.value,
-      }
-    }
-  )
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: '#cfd8ea',
-      }}
-    >
-      <Select
-        disabled={options.length < 1}
-        selectedValue={selectField.attrs.value}
-        onValueChange={(value): void => {
-          selectField.setValue && selectField.setValue(`${value}`)
-        }}
-        optionList={options}
-        containerStyle={{
-          flex: layout.getScreenWideType() === 'narrow' ? 3 : 2,
-          borderWidth: 0,
-        }}
-      />
-      <Input
-        value={inputField.attrs.value}
-        defaultValue={inputField.attrs.defaultValue}
-        editable={!inputField.attrs.readOnly}
-        placeholder={inputField.attrs.placeholder}
-        onChangeText={inputField.setValue}
-        containerStyle={{ flex: 3, borderWidth: 0 }}
-        style={{
-          borderRadius: 0,
-          borderTopRightRadius: 8,
-          borderBottomRightRadius: 8,
-        }}
-      />
-    </View>
   )
 }
 
@@ -146,88 +97,103 @@ const Render = ({
 
   return (
     <View style={styles.swapForm}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}
-      >
-        <View>
-          <Text style={styles.swapTitle} fontType={'bold'}>
-            {title}
-          </Text>
-        </View>
-
-        <View style={{ flex: 1, maxWidth: 160 }}>
-          {/* fields[4] : Swap option between default and terraswap */}
-          <SwapTypeSelect field={fields[4]} />
-        </View>
-      </View>
-
-      <View>
-        <TouchableOpacity
-          onPress={max.attrs.onClick}
+      <View style={styles.topSection}>
+        <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: 5,
+            marginBottom: 20,
           }}
         >
-          <Text style={{ fontSize: 12, paddingRight: 5 }}>
-            {max.title}
-          </Text>
-          <Number numberFontStyle={{ fontSize: 12 }}>
-            {max.display.value}
-          </Number>
-        </TouchableOpacity>
-      </View>
+          <View>
+            <Text style={styles.swapTitle} fontType={'bold'}>
+              {title}
+            </Text>
+          </View>
 
-      <SelectInputForm
-        selectField={fields[0]}
-        inputField={fields[1]}
-      />
-      <View style={{ alignItems: 'center', marginBottom: 10 }}>
-        <Icon size={24} color={color.sapphire} name={'swap-vert'} />
-      </View>
-      <SelectInputForm
-        selectField={fields[2]}
-        inputField={fields[3]}
-      />
+          <View style={{ flex: 1, maxWidth: 160 }}>
+            {/* fields[4] : Swap option between default and terraswap */}
+            <SwapTypeSelect field={fields[4]} />
+          </View>
+        </View>
 
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 30,
-        }}
-      >
-        <Tooltip
-          isVisible={isVisibleSpreadTooltip}
-          content={<Text>{spread.text}</Text>}
-          placement="top"
-          onClose={(): void => setisVisibleSpreadTooltip(false)}
-        >
+        <View>
           <TouchableOpacity
-            onPress={(): void => setisVisibleSpreadTooltip(true)}
-            style={{ flexDirection: 'row', alignItems: 'center' }}
+            onPress={max.attrs.onClick}
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              marginBottom: 5,
+            }}
           >
-            <Text>{spread.title}</Text>
-            <Icon name={'info'} color={color.sapphire} size={14} />
+            <Text style={{ fontSize: 12, paddingRight: 5 }}>
+              Available:
+            </Text>
+            <Number
+              numberFontStyle={{
+                fontSize: 12,
+                color: color.dodgerBlue,
+              }}
+            >
+              {max.display.value}
+            </Number>
           </TouchableOpacity>
-        </Tooltip>
-        <Text>{spread.value}</Text>
+        </View>
+
+        <SelectInputForm
+          selectField={fields[0]}
+          inputField={fields[1]}
+        />
+        <View style={{ alignItems: 'center', marginBottom: 10 }}>
+          <Icon size={24} color={color.sapphire} name={'swap-vert'} />
+        </View>
+        <SelectInputForm
+          selectField={fields[2]}
+          inputField={fields[3]}
+        />
       </View>
-      <Button
-        theme={'sapphire'}
-        disabled={form.disabled}
-        title={submitLabel}
-        onPress={(): void => {
-          onSubmit && onSubmit()
-          confirm && navigateToConfirm({ confirm })
-        }}
-      />
+      <View style={styles.bottomSection}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 30,
+          }}
+        >
+          <Tooltip
+            isVisible={isVisibleSpreadTooltip}
+            content={<Text>{spread.text}</Text>}
+            placement="top"
+            onClose={(): void => setisVisibleSpreadTooltip(false)}
+          >
+            <TouchableOpacity
+              onPress={(): void => setisVisibleSpreadTooltip(true)}
+              style={{ flexDirection: 'row', alignItems: 'center' }}
+            >
+              <Text>{spread.title}</Text>
+              <Icon
+                name={'info'}
+                color={color.sapphire}
+                size={14}
+                style={{ marginLeft: 5 }}
+              />
+            </TouchableOpacity>
+          </Tooltip>
+          <Text>{spread.value}</Text>
+        </View>
+        <Button
+          theme={'sapphire'}
+          disabled={form.disabled}
+          title={submitLabel}
+          onPress={(): void => {
+            onSubmit && onSubmit()
+            confirm && navigateToConfirm({ confirm })
+          }}
+        />
+      </View>
     </View>
   )
 }
@@ -318,7 +284,6 @@ export default Screen
 
 const styles = StyleSheet.create({
   swapForm: {
-    padding: 20,
     borderRadius: 20,
     backgroundColor: '#ffffff',
     shadowColor: 'rgba(0, 0, 0, 0.05)',
@@ -329,5 +294,17 @@ const styles = StyleSheet.create({
   },
   swapTitle: {
     fontSize: 16,
+  },
+  topSection: {
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 30,
+    borderBottomWidth: 1,
+    borderBottomColor: '#edf1f7',
+  },
+  bottomSection: {
+    paddingTop: 30,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
 })
