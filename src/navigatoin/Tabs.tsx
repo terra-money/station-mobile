@@ -11,8 +11,6 @@ import Dashboard from '../screens/homeTab/Dashboard'
 import Wallet from '../screens/walletTab/Wallet'
 import Swap from '../screens/swapTab/Swap'
 
-// import Governance from '../screens/governance'
-
 import { RootStack } from 'types/navigation'
 import Staking from '../screens/stakingTab/Staking'
 import StakingPersonal from '../screens/stakingTab/StakingPersonal'

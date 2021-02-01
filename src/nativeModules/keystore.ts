@@ -7,12 +7,12 @@ export enum KeystoreEnum {
   bioAuthData = 'BAD',
 }
 
-export type Keystore = {
+export type KeystoreType = {
   write(key: string, value: string): void
   read(key: string): Promise<string>
   remove(key: string): void
 }
 
-const Keystore: Keystore = NativeModules.Keystore
+const Keystore: KeystoreType = NativeModules.Keystore
 
 export default Keystore
