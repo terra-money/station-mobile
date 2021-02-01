@@ -25,6 +25,7 @@ export const BaseModalButton = ({
         onPress={(): void => {
           setShowModal(true)
         }}
+        containerStyle={{ height: 40 }}
       />
       <Modal
         visible={showModal}

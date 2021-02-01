@@ -1,4 +1,7 @@
-import { useNavigation } from '@react-navigation/native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 import React, { ReactElement } from 'react'
 import {
   StyleSheet,
@@ -14,6 +17,7 @@ import {
   StackHeaderTitleProps,
   StackNavigationOptions,
 } from '@react-navigation/stack'
+import { RootStackParams } from 'types'
 
 type HeaderTheme = 'white' | 'sky' | 'sapphire'
 
@@ -37,16 +41,26 @@ const HeaderLeft = ({
   theme?: HeaderTheme
   goBackIconType?: 'arrow' | 'close'
 }): ReactElement => {
-  const { goBack } = useNavigation()
+  const { goBack, canGoBack, navigate } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
+
+  const onPressGoBack = (): void => {
+    if (canGoBack()) {
+      goBack()
+    }
+    navigate('Tabs')
+  }
 
   return (
-    <TouchableOpacity onPress={goBack} style={{ paddingLeft: 20 }}>
+    <TouchableOpacity
+      onPress={onPressGoBack}
+      style={{ paddingLeft: 20 }}
+    >
       <Icon
-        name={
-          goBackIconType === 'close' ? 'clear' : 'keyboard-arrow-left'
-        }
+        name={goBackIconType === 'close' ? 'close' : 'arrow-back-ios'}
         color={theme === 'sapphire' ? color.white : color.sapphire}
-        size={32}
+        size={goBackIconType === 'close' ? 28 : 24}
       />
     </TouchableOpacity>
   )

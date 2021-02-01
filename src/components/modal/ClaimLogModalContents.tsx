@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     shadowRadius: 35,
     shadowOpacity: 1,
     backgroundColor: 'white',
-    height: layout.windowHeight,
+    height: layout.getWindowHeight(),
     borderColor: '#eeeeee',
     borderWidth: 1,
     marginBottom: 20,

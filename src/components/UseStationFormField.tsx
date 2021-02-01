@@ -48,8 +48,10 @@ const FormTextarea = ({ field }: { field: Field }): ReactElement => {
         placeholder={attrs.placeholder}
         secureTextEntry={attrs.type === 'password'}
         style={{
-          height: 100,
           textAlignVertical: 'top',
+        }}
+        containerStyle={{
+          height: 100,
         }}
         onChangeText={setValue}
       />

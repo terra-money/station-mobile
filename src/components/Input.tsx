@@ -1,20 +1,25 @@
 import React, { ReactElement } from 'react'
 import {
+  Keyboard,
   StyleProp,
   TextInput,
   TextInputProps,
   TextStyle,
+  View,
+  ViewStyle,
 } from 'react-native'
 
 import color from 'styles/color'
 
-const Input = (props: TextInputProps): ReactElement => {
+type InputProps = {
+  containerStyle?: StyleProp<ViewStyle>
+} & TextInputProps
+
+const Input = (props: InputProps): ReactElement => {
   const { style, ...rest } = props
   const defaultStyle: StyleProp<TextStyle> = {
-    height: 45,
     borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#cfd8ea',
+    height: '100%',
     backgroundColor:
       false === rest.editable ? '#ebeff8' : color.white,
     justifyContent: 'center',
@@ -22,11 +27,26 @@ const Input = (props: TextInputProps): ReactElement => {
     paddingLeft: 15,
   }
   return (
-    <TextInput
-      style={[defaultStyle, style]}
-      {...rest}
-      underlineColorAndroid={'#ffffff00'}
-    />
+    <View
+      style={[
+        {
+          borderRadius: 8,
+          borderWidth: 1,
+          borderColor: '#cfd8ea',
+          height: 45,
+          paddingBottom: 1,
+        },
+        props.containerStyle,
+      ]}
+    >
+      <TextInput
+        blurOnSubmit={false} // To prevent strong password in IOS
+        onSubmitEditing={(): void => Keyboard.dismiss()} // To prevent strong password in IOS
+        style={[defaultStyle, style]}
+        {...rest}
+        underlineColorAndroid={'#ffffff00'}
+      />
+    </View>
   )
 }
 

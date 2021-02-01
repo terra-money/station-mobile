@@ -28,6 +28,7 @@ import ChangePassword from '../screens/ChangePassword'
 import SendTxPasswordView from '../screens/topup/SendTxPasswordView'
 import SendTxCompleteView from '../screens/topup/SendTxCompleteView'
 import StakingInformation from '../screens/StakingInformation'
+import { User } from 'use-station/src'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -37,7 +38,7 @@ const TerraTheme = {
   },
 }
 
-const AppNavigator = (): ReactElement => {
+const AppNavigator = ({ user }: { user?: User }): ReactElement => {
   /* linking */
   const linking: LinkingOptions = {
     prefixes: ['terrastation://'],
@@ -55,7 +56,9 @@ const AppNavigator = (): ReactElement => {
 
   return (
     <NavigationContainer theme={TerraTheme} linking={linking}>
-      <RootStack.Navigator initialRouteName={'Tabs'}>
+      <RootStack.Navigator
+        initialRouteName={user ? 'Tabs' : 'AuthMenu'}
+      >
         <RootStack.Screen
           name="OnBoarding"
           component={OnBoarding}

@@ -34,10 +34,12 @@ const deleteSettings = async (
   )
 }
 
-export const clearSettings = (): void => {
+const clearSettings = (): void => {
   preferences.clear()
 }
 
+// interface of setting
+// For Setting page
 export const settings = {
   get: getSettings,
   set: setSettings,

@@ -7,6 +7,7 @@ import { ExtLink, Icon, Number, Text } from 'components'
 import color from 'styles/color'
 import { getDateYMD } from 'utils/date'
 import { DelegationsModalButton } from 'components/modal/DelegationsModalContents'
+import layout from 'styles/layout'
 
 const Delegations = ({
   address,
@@ -24,7 +25,15 @@ const Delegations = ({
         <>
           {_.map(ui.table?.contents, (item, index) => {
             return (
-              <View key={`contents-${index}`} style={styles.content}>
+              <View
+                key={`contents-${index}`}
+                style={[
+                  styles.content,
+                  layout.getScreenWideType() === 'narrow' && {
+                    flexDirection: 'column',
+                  },
+                ]}
+              >
                 <Text style={styles.contentType} fontType={'medium'}>
                   {item.type}
                 </Text>
@@ -101,6 +110,7 @@ const styles = StyleSheet.create({
   },
   contentRight: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   contentType: {
     fontSize: 14,

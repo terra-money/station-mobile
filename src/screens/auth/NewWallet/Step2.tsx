@@ -15,8 +15,8 @@ import {
 } from 'components'
 
 import color from 'styles/color'
-import { modules } from 'utils'
 import NewWalletStore from 'stores/NewWalletStore'
+import terraWallet from 'nativeModules/terraWallet'
 
 const Screen = (): ReactElement => {
   const [seed, setSeed] = useRecoilState(NewWalletStore.seed)
@@ -29,7 +29,7 @@ const Screen = (): ReactElement => {
   const stepConfirmed = seed.length > 0
 
   useEffect(() => {
-    modules.generateSeed().then((mnemonic) => {
+    terraWallet.getNewWallet().then(({ mnemonic }) => {
       setSeed(mnemonic.split(' '))
     })
   }, [])

@@ -6,6 +6,7 @@ import { format, useDelegators } from 'use-station/src'
 import { ExtLink, Icon, Number, Text } from 'components'
 import color from 'styles/color'
 import { DelegatorsModalButton } from 'components/modal/DelegatorsModalContents'
+import layout from 'styles/layout'
 
 const Delegations = ({
   address,
@@ -23,7 +24,15 @@ const Delegations = ({
         <>
           {_.map(ui.table.contents, (item, index) => {
             return (
-              <View key={`contents-${index}`} style={styles.content}>
+              <View
+                key={`contents-${index}`}
+                style={[
+                  styles.content,
+                  layout.getScreenWideType() === 'narrow' && {
+                    flexDirection: 'column',
+                  },
+                ]}
+              >
                 <ExtLink
                   url={item.link}
                   title={
@@ -106,6 +115,7 @@ const styles = StyleSheet.create({
   },
   contentRight: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   contentAddress: {
     fontSize: 14,
