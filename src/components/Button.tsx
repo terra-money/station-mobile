@@ -29,7 +29,7 @@ export type ButtonProps = {
 
 const Button = (props: ButtonProps): ReactElement => {
   const { theme, disabled } = props
-  const titleStyle: StyleProp<TextStyle> = {}
+  const titleStyle: StyleProp<TextStyle> = { fontSize: 16 }
   const containerStyle: StyleProp<ViewStyle> = {}
 
   switch (theme) {

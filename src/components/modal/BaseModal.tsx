@@ -26,6 +26,7 @@ export const BaseModalButton = ({
           setShowModal(true)
         }}
         containerStyle={{ height: 40 }}
+        titleStyle={{ fontSize: 14 }}
       />
       <Modal
         visible={showModal}
