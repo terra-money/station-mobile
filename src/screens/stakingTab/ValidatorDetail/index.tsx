@@ -11,9 +11,9 @@ import Top from './Top'
 import Actions from './Actions'
 import MonikerInfo from './MonikerInfo'
 import Informations from './Informations'
-import Delegations from './Delegations'
-import Delegators from './Delegators'
-import ClaimLog from './ClaimLog'
+// import Delegations from './Delegations'
+// import Delegators from './Delegators'
+// import ClaimLog from './ClaimLog'
 
 type Props = StackScreenProps<RootStackParams, 'ValidatorDetail'>
 
@@ -35,9 +35,9 @@ const Render = ({
               {user && <Actions ui={ui} user={user} />}
               <MonikerInfo ui={ui} user={user} />
               <Informations {...ui} />
-              <Delegations address={address} />
+              {/* <Delegations address={address} />
               <Delegators address={address} />
-              <ClaimLog address={address} />
+              <ClaimLog address={address} /> */}
             </>
           )}
         </>
