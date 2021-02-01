@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react'
 import {
+  Keyboard,
   StyleProp,
   TextInput,
   TextInputProps,
@@ -39,6 +40,8 @@ const Input = (props: InputProps): ReactElement => {
       ]}
     >
       <TextInput
+        blurOnSubmit={false} // To prevent strong password in IOS
+        onSubmitEditing={(): void => Keyboard.dismiss()} // To prevent strong password in IOS
         style={[defaultStyle, style]}
         {...rest}
         underlineColorAndroid={'#ffffff00'}
