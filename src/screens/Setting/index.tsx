@@ -95,6 +95,11 @@ const Screen = (): ReactElement => {
     chain.set(value)
   }
 
+  const onPressDisconnect = (): void => {
+    settings.delete(['user'])
+    signOut()
+  }
+
   const initPage = async (): Promise<void> => {
     setIsUseBioAuth(await getIsUseBioAuth())
     setSupportBioAuth(await isSupportedBiometricAuthentication())
@@ -214,7 +219,7 @@ const Screen = (): ReactElement => {
           <View style={styles.section}>
             <TouchableOpacity
               style={styles.authItemBox}
-              onPress={signOut}
+              onPress={onPressDisconnect}
             >
               <Text style={styles.authItemName} fontType={'bold'}>
                 Disconnect

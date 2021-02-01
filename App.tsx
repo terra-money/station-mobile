@@ -156,7 +156,7 @@ let App = ({
                       translucent={false}
                     />
                     <RecoilRoot>
-                      <AppNavigator />
+                      <AppNavigator user={auth.user} />
                       <AppModal modal={modal} />
                       <Drawer drawer={drawer} />
                       <AlertModal modal={alertModal} />
