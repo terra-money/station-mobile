@@ -311,7 +311,7 @@ const Screen = ({ navigation }: Props): ReactElement => {
 }
 
 Screen.navigationOptions = navigationHeaderOptions({
-  title: 'Spaw',
+  title: 'Swap',
 })
 
 export default Screen
