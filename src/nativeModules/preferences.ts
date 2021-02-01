@@ -7,7 +7,7 @@ export enum PreferencesEnum {
   wallets = 'wallets',
 }
 
-export type Preferences = {
+export type PreferencesType = {
   setString(key: string, val: string): void
   getString(key: string): Promise<string>
   setBool(key: string, val: boolean): void
@@ -16,6 +16,6 @@ export type Preferences = {
   clear(): void
 }
 
-const Preferences: Preferences = NativeModules.Preferences
+const Preferences: PreferencesType = NativeModules.Preferences
 
 export default Preferences
