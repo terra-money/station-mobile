@@ -5,7 +5,7 @@ import { StackScreenProps } from '@react-navigation/stack'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import Body from 'components/layout/Body'
 
-import { RootStackParams } from '../../../types/navigation'
+import { RootStackParams } from '../../types/navigation'
 
 import Top from './Top'
 import Actions from './Actions'

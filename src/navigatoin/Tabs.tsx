@@ -4,10 +4,7 @@ import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs'
-import {
-  getFocusedRouteNameFromRoute,
-  useNavigation,
-} from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import _ from 'lodash'
 
 // import Dashboard from '../screens/homeTab/Dashboard'
@@ -16,8 +13,6 @@ import Swap from '../screens/swapTab/Swap'
 
 import { RootStack } from 'types/navigation'
 import Staking from '../screens/stakingTab/Staking'
-import StakingPersonal from '../screens/stakingTab/StakingPersonal'
-import ValidatorDetail from '../screens/stakingTab/ValidatorDetail'
 import { Text, Icon } from 'components'
 import layout from 'styles/layout'
 import { useAuth } from 'use-station/src'
@@ -51,16 +46,6 @@ const StakingStack = (): ReactElement => (
       component={Staking}
       options={Staking.navigationOptions}
     />
-    <RootStack.Screen
-      name="StakingPersonal"
-      component={StakingPersonal}
-      options={StakingPersonal.navigationOptions}
-    />
-    <RootStack.Screen
-      name="ValidatorDetail"
-      component={ValidatorDetail}
-      options={ValidatorDetail.navigationOptions}
-    />
   </RootStack.Navigator>
 )
 
@@ -73,15 +58,6 @@ const SwapStack = (): ReactElement => (
     />
   </RootStack.Navigator>
 )
-
-const isTabBarVisible = (route: any): boolean => {
-  const routeName = getFocusedRouteNameFromRoute(route)
-  if (routeName && ['StakingPersonal'].includes(routeName)) {
-    return false
-  }
-
-  return true
-}
 
 const styles = StyleSheet.create({
   tabbar_text: {
@@ -152,7 +128,7 @@ const Tabs = (): ReactElement => {
           key={`tabScreenItemList-${index}`}
           name={item.name}
           component={item.component}
-          options={({ route }): BottomTabNavigationOptions => ({
+          options={(): BottomTabNavigationOptions => ({
             tabBarLabel:
               labelPosition === 'below-icon'
                 ? ({ color }: { color: string }): ReactElement => (
@@ -174,7 +150,6 @@ const Tabs = (): ReactElement => {
                 }
               />
             ),
-            tabBarVisible: isTabBarVisible(route),
           })}
         />
       ))}

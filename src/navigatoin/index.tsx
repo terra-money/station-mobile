@@ -28,6 +28,8 @@ import SendTxPasswordView from '../screens/topup/SendTxPasswordView'
 import SendTxCompleteView from '../screens/topup/SendTxCompleteView'
 import StakingInformation from '../screens/StakingInformation'
 import WalletHistory from '../screens/WalletHistory'
+import StakingPersonal from '../screens/StakingPersonal'
+import ValidatorDetail from '../screens/ValidatorDetail'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -153,6 +155,16 @@ const AppNavigator = (): ReactElement => {
           name="WalletHistory"
           component={WalletHistory}
           options={WalletHistory.navigationOptions}
+        />
+        <RootStack.Screen
+          name="StakingPersonal"
+          component={StakingPersonal}
+          options={StakingPersonal.navigationOptions}
+        />
+        <RootStack.Screen
+          name="ValidatorDetail"
+          component={ValidatorDetail}
+          options={ValidatorDetail.navigationOptions}
         />
       </RootStack.Navigator>
     </NavigationContainer>
