@@ -1,4 +1,9 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, {
+  ReactElement,
+  useEffect,
+  useState,
+  Fragment,
+} from 'react'
 import { useSetRecoilState } from 'recoil'
 import { StackScreenProps } from '@react-navigation/stack'
 
@@ -19,12 +24,9 @@ const Screen = ({ navigation }: Props): ReactElement => {
   const { loading, data } = useSwapRate()
   const setSwapRate = useSetRecoilState(SwapRateStore.swapRate)
 
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshingKey, setRefreshingKey] = useState(0)
   const refreshPage = async (): Promise<void> => {
-    setRefreshing(true)
-    setTimeout(() => {
-      setRefreshing(false)
-    }, 100)
+    setRefreshingKey((ori) => ori + 1)
   }
 
   useEffect(() => {
@@ -34,22 +36,22 @@ const Screen = ({ navigation }: Props): ReactElement => {
   }, [loading, data?.length])
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
-      refreshPage()
-    })
-  }, [])
+    if (loading === false) {
+      navigation.addListener('focus', () => {
+        refreshPage()
+      })
+    }
+  }, [loading])
 
   return (
     <WithAuth>
       {(user): ReactElement => (
         <Body theme={'sky'} scrollable onRefresh={refreshPage}>
-          {refreshing ? null : (
-            <>
-              <WalletAddress user={user} />
-              <AvailableAssets user={user} />
-              <History user={user} />
-            </>
-          )}
+          <Fragment key={refreshingKey}>
+            <WalletAddress user={user} />
+            <AvailableAssets user={user} />
+            <History user={user} />
+          </Fragment>
         </Body>
       )}
     </WithAuth>

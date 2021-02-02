@@ -1,10 +1,10 @@
-import { Icon } from 'components'
 import React, { ReactElement } from 'react'
 import { Platform, TextStyle, View, ViewStyle } from 'react-native'
 import PickerSelect, { PickerStyle } from 'react-native-picker-select'
 
 import color from 'styles/color'
 import font from 'styles/font'
+import Icon from './Icon'
 
 export type SelectOptionProps = {
   label: string

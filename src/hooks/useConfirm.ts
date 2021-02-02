@@ -35,6 +35,7 @@ export const useConfirm = (): {
     confirm: ConfirmProps
     user: User
   }) => ConfirmPage
+  initConfirm: () => void
 } => {
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
@@ -48,6 +49,10 @@ export const useConfirm = (): {
   }: NavigateToConfirmProps): void => {
     setConfirm(confirm)
     navigate('Confirm')
+  }
+
+  const initConfirm = (): void => {
+    setConfirm(undefined)
   }
 
   const getComfirmData = ({
@@ -76,5 +81,5 @@ export const useConfirm = (): {
     })
   }
 
-  return { navigateToConfirm, getComfirmData }
+  return { navigateToConfirm, getComfirmData, initConfirm }
 }

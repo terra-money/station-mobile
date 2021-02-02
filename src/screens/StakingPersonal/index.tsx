@@ -20,8 +20,20 @@ import { Text } from 'components'
 
 type Props = StackScreenProps<RootStackParams, 'Staking'>
 
-const Render = ({ user }: { user?: User }): ReactElement => {
-  const { personal, ui } = useStaking(user)
+const Render = ({
+  user,
+  setLoadingComplete,
+}: {
+  user?: User
+  setLoadingComplete: React.Dispatch<React.SetStateAction<boolean>>
+}): ReactElement => {
+  const { personal, ui, loading } = useStaking(user)
+
+  useEffect(() => {
+    if (loading === false) {
+      setLoadingComplete(true)
+    }
+  }, [loading])
 
   const findMoniker = ({
     name,
@@ -43,20 +55,20 @@ const Render = ({ user }: { user?: User }): ReactElement => {
 
 const Screen = ({ navigation }: Props): ReactElement => {
   const { user } = useAuth()
+  const [loadingComplete, setLoadingComplete] = useState(false)
 
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshingKey, setRefreshingKey] = useState(0)
   const refreshPage = async (): Promise<void> => {
-    setRefreshing(true)
-    setTimeout(() => {
-      setRefreshing(false)
-    }, 100)
+    setRefreshingKey((ori) => ori + 1)
   }
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
-      refreshPage()
-    })
-  }, [])
+    if (loadingComplete) {
+      navigation.addListener('focus', () => {
+        refreshPage()
+      })
+    }
+  }, [loadingComplete])
 
   return (
     <Body
@@ -65,7 +77,11 @@ const Screen = ({ navigation }: Props): ReactElement => {
       scrollable
       onRefresh={refreshPage}
     >
-      {refreshing ? null : <Render user={user} />}
+      <Render
+        key={refreshingKey}
+        user={user}
+        setLoadingComplete={setLoadingComplete}
+      />
     </Body>
   )
 }
