@@ -45,7 +45,11 @@ const Actions = ({
         </Text>
 
         <View style={{ alignItems: 'flex-start' }}>
-          <Number {...myDelegations.display} />
+          <Number
+            numberFontStyle={{ fontSize: 20 }}
+            decimalFontStyle={{ fontSize: 15 }}
+            {...myDelegations.display}
+          />
         </View>
 
         <View
@@ -92,7 +96,11 @@ const Actions = ({
         </Text>
 
         <View style={{ alignItems: 'flex-start' }}>
-          <Number {...myRewards.display} />
+          <Number
+            numberFontStyle={{ fontSize: 20 }}
+            decimalFontStyle={{ fontSize: 15 }}
+            {...myRewards.display}
+          />
         </View>
 
         <View style={styles.buttonBox}>

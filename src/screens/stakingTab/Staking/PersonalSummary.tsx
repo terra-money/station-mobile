@@ -107,6 +107,7 @@ const PersonalSummary = ({
                 <Text>{rewards.title}</Text>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
+                  decimalFontStyle={{ fontSize: 10.5 }}
                   {...rewards.display}
                   estimated
                 />
@@ -117,6 +118,7 @@ const PersonalSummary = ({
                 <Text>{delegated.title}</Text>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
+                  decimalFontStyle={{ fontSize: 10.5 }}
                   {...delegated.display}
                 />
               </View>
@@ -132,6 +134,7 @@ const PersonalSummary = ({
                 </View>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
+                  decimalFontStyle={{ fontSize: 10.5 }}
                   {...undelegated.display}
                 />
               </View>

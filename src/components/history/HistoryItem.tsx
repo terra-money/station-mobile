@@ -84,7 +84,9 @@ const HistoryItem = ({ item }: { item: TxUI }): ReactElement => {
         <Message messages={item.messages} link={item.link} />
       )}
 
-      <Text style={styles.historyItemDate} fontType="medium">{item.date}</Text>
+      <Text style={styles.historyItemDate} fontType="medium">
+        {item.date}
+      </Text>
     </>
   )
 }
