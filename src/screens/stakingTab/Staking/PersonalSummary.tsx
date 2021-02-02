@@ -1,5 +1,10 @@
 import React, { ReactElement } from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { 
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from 'react-native'
 
 import { StakingPersonal, User } from 'use-station/src'
 
@@ -11,6 +16,7 @@ import {
 } from '@react-navigation/native'
 import { RootStackParams } from 'types'
 import { useWithdraw } from 'hooks/useWithdraw'
+import images from 'assets/images'
 
 const NotStaked = (): ReactElement => {
   const { navigate } = useNavigation<
@@ -117,7 +123,13 @@ const PersonalSummary = ({
             )}
             {undelegated && undelegated.table && (
               <View style={styles.itemBox}>
-                <Text>{undelegated.title}</Text>
+                <View style={styles.undelegated}>
+                  <Text>{undelegated.title}</Text>
+                  <Image
+                    source={images.loading_circle}
+                    style={{ width: 18, height: 18, marginLeft: 3 }}
+                  />
+                </View>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
                   {...undelegated.display}
@@ -172,5 +184,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
+  },
+  undelegated: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 })

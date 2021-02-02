@@ -8,6 +8,7 @@ import Select, { SelectOptionProps } from './Select'
 import DefaultFormInput from './FormInput'
 import Number from './Number'
 import FormLabel from './FormLabel'
+import color from 'styles/color'
 
 type FieldButton = {
   label: string
@@ -25,10 +26,14 @@ const FormButton = ({
       style={styles.formButtonContainer}
       onPress={attrs.onClick}
     >
-      <Text style={styles.formButtonLabel}>{label}</Text>
+      <Text style={styles.formButtonLabel}>{label}:</Text>
       <Number
-        numberFontStyle={{ fontSize: 12 }}
-        decimalFontStyle={{ fontSize: 12 }}
+        numberFontStyle={{
+          fontSize: 12,
+          color: color.dodgerBlue,
+          textDecorationLine: 'underline',
+        }}
+        fontType="medium"
       >
         {display.value}
       </Number>

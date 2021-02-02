@@ -21,7 +21,16 @@ const Message = ({
       }}
     >
       <View style={{ flexDirection: 'row' }}>
-        <Text style={{ fontSize: 10, textTransform: 'uppercase', lineHeight: 15 }} fontType={'bold'}>{message.tag}</Text>
+        <Text
+          style={{
+            fontSize: 10,
+            textTransform: 'uppercase',
+            lineHeight: 15,
+          }}
+          fontType={'bold'}
+        >
+          {message.tag}
+        </Text>
         {messages.length > 1 && (
           <Text style={styles.moreMsg} fontType={'medium'}>
             +{messages.length - 1} MSG{messages.length > 2 && 'S'}
@@ -37,10 +46,18 @@ const Message = ({
         }}
       >
         <View style={{ flex: 1, marginVertical: 3 }}>
-          <Text style={{ fontSize: 14, lineHeight: 19, letterSpacing: -0.1 }}>{message.text}</Text>
+          <Text
+            style={{
+              fontSize: 14,
+              lineHeight: 19,
+              letterSpacing: -0.1,
+            }}
+          >
+            {message.text}
+          </Text>
         </View>
 
-        <View style={{ paddingLeft:20 }}>
+        <View style={{ paddingLeft: 20 }}>
           <ExtLink
             url={link}
             title={
@@ -67,7 +84,7 @@ const HistoryItem = ({ item }: { item: TxUI }): ReactElement => {
         <Message messages={item.messages} link={item.link} />
       )}
 
-      <Text style={styles.historyItemDate}>{item.date}</Text>
+      <Text style={styles.historyItemDate} fontType="medium">{item.date}</Text>
     </>
   )
 }

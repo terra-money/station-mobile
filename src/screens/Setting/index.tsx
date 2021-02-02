@@ -164,7 +164,7 @@ const Screen = (): ReactElement => {
                     walletName: user.name,
                   })
                 } else {
-                  alert({ desc: 'No wallet Name' })
+                  alert({ desc: 'No wallet name' })
                 }
               }}
             >
@@ -281,6 +281,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     textAlign: 'center',
     color: '#ffffff',
+    marginTop: 3,
     marginBottom: 8,
   },
   section: {

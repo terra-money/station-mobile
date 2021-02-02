@@ -57,7 +57,9 @@ const Rewards = ({
                   decimalFontStyle={{ fontSize: 10.5 }}
                   {...content.display}
                 />
-                <Text style={{ fontSize: 12 }}>{content.date}</Text>
+                <Text style={{ fontSize: 10.5, marginTop: 2 }}>
+                  {content.date}
+                </Text>
               </View>
             </View>
           )
@@ -88,8 +90,8 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   headerTitle: {
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: 14,
+    lineHeight: 21,
     letterSpacing: 0,
   },
   itemBox: {

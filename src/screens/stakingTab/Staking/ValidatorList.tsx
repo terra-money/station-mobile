@@ -121,7 +121,7 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
         <Selector
           display={
             <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.textFilter} fontType={'medium'}>
+              <Text style={styles.textFilter} fontType="medium">
                 {validatorFilter
                   .find((x) => x.value === currentFilter)
                   ?.label.toUpperCase()}
@@ -175,19 +175,30 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
                 }}
               >
                 {index === 0 ? (
-                  <Text style={[styles.rank, styles.rank1st]}>
+                  <Text
+                    style={[styles.rank, styles.rank1st]}
+                    fontType="medium"
+                  >
                     {index + 1}
                   </Text>
                 ) : index === 1 ? (
-                  <Text style={[styles.rank, styles.rank2nd]}>
+                  <Text
+                    style={[styles.rank, styles.rank2nd]}
+                    fontType="medium"
+                  >
                     {index + 1}
                   </Text>
                 ) : index === 2 ? (
-                  <Text style={[styles.rank, styles.rank3rd]}>
+                  <Text
+                    style={[styles.rank, styles.rank3rd]}
+                    fontType="medium"
+                  >
                     {index + 1}
                   </Text>
                 ) : (
-                  <Text style={styles.rank}>{index + 1}</Text>
+                  <Text style={styles.rank} fontType="medium">
+                    {index + 1}
+                  </Text>
                 )}
               </View>
               <Image
@@ -266,7 +277,6 @@ const styles = StyleSheet.create({
   rank: {
     fontSize: 12,
     lineHeight: 18,
-    fontWeight: '500',
     letterSpacing: 0,
     color: 'rgb(32, 67, 181)',
   },
