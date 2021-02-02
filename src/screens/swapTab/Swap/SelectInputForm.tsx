@@ -55,6 +55,12 @@ const SelectInputForm = ({
           containerStyle={{
             flex: layout.getScreenWideType() === 'narrow' ? 2 : 1,
             borderWidth: 0,
+            borderRadius: 0,
+            borderTopLeftRadius: 8,
+            borderBottomLeftRadius: 8,
+            backgroundColor: !inputField.attrs.readOnly
+              ? 'white'
+              : '#ebeff8',
           }}
         />
         <Input
