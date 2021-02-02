@@ -82,25 +82,23 @@ const PersonalSummary = ({
     <View style={styles.container}>
       {myDelegations || myRewards ? (
         <>
-          <View style={styles.header}>
+          <TouchableOpacity
+            onPress={(): void => {
+              navigate('StakingPersonal')
+            }}
+            style={styles.header}
+          >
             <View style={{ marginBottom: 20 }}>
               <Text style={styles.headerTitle} fontType={'bold'}>
                 Summary
               </Text>
             </View>
-
-            <TouchableOpacity
-              onPress={(): void => {
-                navigate('StakingPersonal')
-              }}
-            >
-              <Icon
-                name={'arrow-forward'}
-                color={color.sapphire}
-                size={24}
-              />
-            </TouchableOpacity>
-          </View>
+            <Icon
+              name={'arrow-forward'}
+              color={color.sapphire}
+              size={24}
+            />
+          </TouchableOpacity>
           <View style={{ marginBottom: 10 }}>
             {rewards && (
               <View style={styles.itemBox}>
