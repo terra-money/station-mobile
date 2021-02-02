@@ -51,10 +51,10 @@ const Rewards = ({
                 />
                 <Text>{content.name}</Text>
               </View>
-              <View>
+              <View style={{ alignItems: 'flex-end' }}>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
-                  decimalFontStyle={{ fontSize: 10 }}
+                  decimalFontStyle={{ fontSize: 10.5 }}
                   {...content.display}
                 />
                 <Text style={{ fontSize: 12 }}>{content.date}</Text>
@@ -105,6 +105,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     width: 24,
     height: 24,
-    marginHorizontal: 12,
+    marginRight: 5,
   },
 })

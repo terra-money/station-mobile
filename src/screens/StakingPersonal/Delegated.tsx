@@ -30,7 +30,14 @@ const Rewards = ({
           fontType={'medium'}
         />
       </View>
-      <View style={{ marginBottom: 10 }}>
+      <View
+        style={{
+          marginBottom: 5,
+          paddingTop: 20,
+          borderTopColor: '#edf1f7',
+          borderTopWidth: 1,
+        }}
+      >
         {_.map(myDelegations?.table?.contents, (content, i) => {
           const moniker = findMoniker({ name: content.name })
           return (
@@ -54,7 +61,7 @@ const Rewards = ({
 
               <Number
                 numberFontStyle={{ fontSize: 14 }}
-                decimalFontStyle={{ fontSize: 10 }}
+                decimalFontStyle={{ fontSize: 10.5 }}
                 {...content.delegated}
               />
             </View>
@@ -93,16 +100,13 @@ const styles = StyleSheet.create({
   itemBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
-    paddingVertical: 12,
+    paddingBottom: 15,
     paddingHorizontal: 20,
-    borderTopColor: '#edf1f7',
-    borderTopWidth: 1,
   },
   profileImage: {
     borderRadius: 12,
     width: 24,
     height: 24,
-    marginHorizontal: 12,
+    marginRight: 5,
   },
 })

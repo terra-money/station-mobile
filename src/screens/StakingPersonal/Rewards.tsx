@@ -35,7 +35,7 @@ const Rewards = ({
           fontType={'medium'}
         />
       </View>
-      <View style={{ marginBottom: 10 }}>
+      <View style={{ marginBottom: 8 }}>
         {_.map(rewards.table?.contents, (content, i) => {
           return (
             <View
@@ -45,7 +45,7 @@ const Rewards = ({
               <Text>{content.unit}</Text>
               <Number
                 numberFontStyle={{ fontSize: 14 }}
-                decimalFontStyle={{ fontSize: 10 }}
+                decimalFontStyle={{ fontSize: 10.5 }}
               >
                 {content.value}
               </Number>
@@ -61,6 +61,7 @@ const Rewards = ({
           onPress={(): void => {
             runWithdraw()
           }}
+          size="sm"
         />
       </View>
     </View>
@@ -95,7 +96,6 @@ const styles = StyleSheet.create({
   itemBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderTopColor: '#edf1f7',

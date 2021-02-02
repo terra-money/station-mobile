@@ -13,7 +13,6 @@ import SelectWallet from '../screens/auth/SelectWallet'
 import NewWalletStack from './NewWalletStack'
 import RecoverWalletStack from './RecoverWalletStack'
 
-import OnBoarding from '../screens/OnBoarding'
 import Setting from '../screens/Setting'
 import ConnectView from '../screens/topup/ConnectView'
 import SendTxView from '../screens/topup/SendTxView'
@@ -28,7 +27,9 @@ import ChangePassword from '../screens/ChangePassword'
 import SendTxPasswordView from '../screens/topup/SendTxPasswordView'
 import SendTxCompleteView from '../screens/topup/SendTxCompleteView'
 import StakingInformation from '../screens/StakingInformation'
-import { User } from 'use-station/src'
+import WalletHistory from '../screens/WalletHistory'
+import StakingPersonal from '../screens/StakingPersonal'
+import ValidatorDetail from '../screens/ValidatorDetail'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -38,7 +39,7 @@ const TerraTheme = {
   },
 }
 
-const AppNavigator = ({ user }: { user?: User }): ReactElement => {
+const AppNavigator = (): ReactElement => {
   /* linking */
   const linking: LinkingOptions = {
     prefixes: ['terrastation://'],
@@ -56,17 +57,7 @@ const AppNavigator = ({ user }: { user?: User }): ReactElement => {
 
   return (
     <NavigationContainer theme={TerraTheme} linking={linking}>
-      <RootStack.Navigator
-        initialRouteName={user ? 'Tabs' : 'AuthMenu'}
-      >
-        <RootStack.Screen
-          name="OnBoarding"
-          component={OnBoarding}
-          options={{
-            headerShown: false,
-            animationEnabled: false,
-          }}
-        />
+      <RootStack.Navigator>
         <RootStack.Screen
           name="Tabs"
           component={Tabs}
@@ -159,6 +150,21 @@ const AppNavigator = ({ user }: { user?: User }): ReactElement => {
           name="StakingInformation"
           component={StakingInformation}
           options={StakingInformation.navigationOptions}
+        />
+        <RootStack.Screen
+          name="WalletHistory"
+          component={WalletHistory}
+          options={WalletHistory.navigationOptions}
+        />
+        <RootStack.Screen
+          name="StakingPersonal"
+          component={StakingPersonal}
+          options={StakingPersonal.navigationOptions}
+        />
+        <RootStack.Screen
+          name="ValidatorDetail"
+          component={ValidatorDetail}
+          options={ValidatorDetail.navigationOptions}
         />
       </RootStack.Navigator>
     </NavigationContainer>

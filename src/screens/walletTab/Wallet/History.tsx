@@ -5,12 +5,13 @@ import _ from 'lodash'
 import { TxsUI, TxType, useMenu, User, useTxs } from 'use-station/src'
 
 import HistoryItem from 'components/history/HistoryItem'
-import { HistoryModalButton } from 'components/modal/HistoryModalContents'
-import { Text, ErrorComponent } from 'components'
+import { Text, ErrorComponent, Button } from 'components'
+import { useNavigation } from '@react-navigation/native'
 
 const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
   const { History: title } = useMenu()
   const { list } = ui
+  const { navigate } = useNavigation()
 
   return list ? (
     <View style={styles.container}>
@@ -26,7 +27,14 @@ const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
         </View>
       ))}
 
-      <HistoryModalButton />
+      <Button
+        title={'More'}
+        onPress={(): void => {
+          navigate('WalletHistory')
+        }}
+        theme="gray"
+        size="sm"
+      />
     </View>
   ) : (
     <View />

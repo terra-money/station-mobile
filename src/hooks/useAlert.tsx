@@ -18,19 +18,19 @@ type ConfirmProps = {
 const AlertScreen = (
   props:
     | {
-        alertModal: AlertModal
+        alertViewProps: AlertView
         alertType: 'confirm'
         alertProps: ConfirmProps
       }
     | {
-        alertModal: AlertModal
+        alertViewProps: AlertView
         alertType: 'alert'
         alertProps: AlertProps
       }
 ): ReactElement => {
-  const { alertModal, alertProps } = props
+  const { alertViewProps, alertProps } = props
   const onPressConfirm = (): void => {
-    alertModal.close()
+    alertViewProps.close()
     alertProps.onPressConfirm && alertProps.onPressConfirm()
   }
 
@@ -61,7 +61,7 @@ const AlertScreen = (
               { borderLeftWidth: 1, borderColor: '#ddd' },
             ]}
             onPress={(): void => {
-              alertModal.close()
+              alertViewProps.close()
               props.alertProps.onPressCancel &&
                 props.alertProps.onPressCancel()
             }}
@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     borderRadius: 20,
     backgroundColor: 'white',
+    marginHorizontal: 40,
   },
   textBox: {
     paddingHorizontal: 20,
@@ -123,21 +124,21 @@ export const useAlert = (): {
   alert: (props: AlertProps) => void
   confirm: (props: ConfirmProps) => void
 } => {
-  const { alertModal } = useApp()
+  const { alertViewProps } = useApp()
 
   const alert = (props: AlertProps): void => {
-    alertModal.open(
+    alertViewProps.open(
       AlertScreen({
-        alertModal,
+        alertViewProps,
         alertType: 'alert',
         alertProps: props,
       })
     )
   }
   const confirm = (props: ConfirmProps): void => {
-    alertModal.open(
+    alertViewProps.open(
       AlertScreen({
-        alertModal,
+        alertViewProps,
         alertType: 'confirm',
         alertProps: props,
       })

@@ -6,6 +6,15 @@ import {
   FlatList,
 } from 'react-native'
 import _ from 'lodash'
+import {
+  CardStyleInterpolators,
+  StackNavigationOptions,
+} from '@react-navigation/stack'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 
 import {
   TxUI,
@@ -26,14 +35,13 @@ import { Text, Icon, LoadingIcon, Selector } from 'components'
 
 import color from 'styles/color'
 import layout from 'styles/layout'
-import { BaseModalButton } from '../BaseModal'
+import { RootStackParams } from 'types'
 
 const RenderList = ({
   tsUiList,
   isLastPage,
   params,
   setParams,
-  closeModal,
 }: {
   tsUiList: TxUI[]
   isLastPage: boolean
@@ -47,12 +55,11 @@ const RenderList = ({
       page: number
     }>
   >
-  closeModal: () => void
 }): ReactElement => {
   const tabs = useTxTypes()
   const { History: title } = useMenu()
   const selectedTab = tabs.find((x) => x.key === params.type)
-
+  const { goBack } = useNavigation<NavigationProp<RootStackParams>>()
   const onSelectTab = (value: TxType): void => {
     setParams({
       type: value,
@@ -96,8 +103,8 @@ const RenderList = ({
           />
         </View>
 
-        <TouchableOpacity onPress={closeModal}>
-          <Icon name={'clear'} color={color.sapphire} size={32} />
+        <TouchableOpacity onPress={goBack}>
+          <Icon name={'close'} color={color.sapphire} size={28} />
         </TouchableOpacity>
       </View>
       <FlatList
@@ -137,13 +144,7 @@ const RenderList = ({
   )
 }
 
-const History = ({
-  user,
-  closeModal,
-}: {
-  user: User
-  closeModal: () => void
-}): ReactElement => {
+const History = ({ user }: { user: User }): ReactElement => {
   const [params, setParams] = useState({
     type: '' as TxType,
     page: 1,
@@ -186,27 +187,30 @@ const History = ({
   return error ? (
     <ErrorComponent />
   ) : ui ? (
-    <RenderList
-      {...{ tsUiList, isLastPage, params, setParams, closeModal }}
-    />
+    <RenderList {...{ tsUiList, isLastPage, params, setParams }} />
   ) : (
     <View />
   )
 }
 
-export const HistoryModalButton = (): ReactElement => {
+const Screen = (): ReactElement => {
   return (
-    <BaseModalButton
-      contents={({ closeModal }): ReactElement => (
-        <WithAuth>
-          {(user): ReactElement => (
-            <History user={user} closeModal={closeModal} />
-          )}
-        </WithAuth>
-      )}
-    />
+    <SafeAreaView>
+      <WithAuth>
+        {(user): ReactElement => <History user={user} />}
+      </WithAuth>
+    </SafeAreaView>
   )
 }
+
+const navigationOptions: StackNavigationOptions = {
+  headerShown: false,
+  cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+}
+
+Screen.navigationOptions = navigationOptions
+
+export default Screen
 
 const styles = StyleSheet.create({
   container: {

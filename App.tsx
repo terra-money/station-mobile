@@ -26,9 +26,9 @@ import OnBoarding from './src/screens/OnBoarding'
 import AppModal, {
   useModalState,
 } from 'components/onlyForApp.tsx/AppModal'
-import AlertModal, {
-  useAlertModalState,
-} from 'components/onlyForApp.tsx/AlertModal'
+import AlertView, {
+  useAlertViewState,
+} from 'components/onlyForApp.tsx/AlertView'
 import Drawer, {
   useDrawerState,
 } from 'components/onlyForApp.tsx/Drawer'
@@ -44,7 +44,7 @@ let App = ({
   /* drawer */
   const drawer = useDrawerState()
   const modal = useModalState()
-  const alertModal = useAlertModalState()
+  const alertViewProps = useAlertViewState()
 
   /* provider */
   const config = useConfigState({
@@ -58,7 +58,6 @@ let App = ({
 
   /* onboarding */
   const [showOnBoarding, setshowOnBoarding] = useState<boolean>(false)
-
   /* update */
   const [updateAvailable, setUpdateAvailable] = useState<boolean>()
   const [receivedBytes, setReceivedBytes] = useState<number>(0)
@@ -94,6 +93,10 @@ let App = ({
       }
     )
   }, [])
+
+  const closeOnBoarding = (): void => {
+    setshowOnBoarding(false)
+  }
 
   const checkUpdate = async (): Promise<void> => {
     const update = await CodePush.checkForUpdate()
@@ -137,32 +140,32 @@ let App = ({
   return (
     <>
       {ready && updateAvailable !== undefined && (
-        <AppProvider value={{ drawer, modal, alertModal }}>
+        <AppProvider value={{ drawer, modal, alertViewProps }}>
           <ConfigProvider value={config}>
             <AuthProvider value={auth}>
               <SafeAreaProvider>
-                {updateAvailable ? (
-                  <Update
-                    receivedBytes={receivedBytes}
-                    totalBytes={totalBytes}
-                  />
-                ) : showOnBoarding ? (
-                  <OnBoarding setshowOnBoarding={setshowOnBoarding} />
-                ) : (
-                  <>
-                    <StatusBar
-                      barStyle="dark-content"
-                      backgroundColor="transparent"
-                      translucent={false}
+                <RecoilRoot>
+                  {updateAvailable ? (
+                    <Update
+                      receivedBytes={receivedBytes}
+                      totalBytes={totalBytes}
                     />
-                    <RecoilRoot>
-                      <AppNavigator user={auth.user} />
+                  ) : showOnBoarding ? (
+                    <OnBoarding closeOnBoarding={closeOnBoarding} />
+                  ) : (
+                    <>
+                      <StatusBar
+                        barStyle="dark-content"
+                        backgroundColor="transparent"
+                        translucent={false}
+                      />
+                      <AppNavigator />
                       <AppModal modal={modal} />
                       <Drawer drawer={drawer} />
-                      <AlertModal modal={alertModal} />
-                    </RecoilRoot>
-                  </>
-                )}
+                      <AlertView alertViewProps={alertViewProps} />
+                    </>
+                  )}
+                </RecoilRoot>
               </SafeAreaProvider>
             </AuthProvider>
           </ConfigProvider>

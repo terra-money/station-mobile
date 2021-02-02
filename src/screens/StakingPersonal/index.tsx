@@ -16,6 +16,7 @@ import { RootStackParams } from 'types'
 import Rewards from './Rewards'
 import Delegated from './Delegated'
 import UnDelegated from './UnDelegated'
+import { Text } from 'components'
 
 type Props = StackScreenProps<RootStackParams, 'Staking'>
 
@@ -71,6 +72,14 @@ const Screen = ({ navigation }: Props): ReactElement => {
 
 Screen.navigationOptions = navigationHeaderOptions({
   theme: 'white',
+  headerTitle: (): ReactElement => (
+    <Text
+      style={{ fontSize: 16, lineHeight: 24, letterSpacing: 0 }}
+      fontType="bold"
+    >
+      Staking Detail
+    </Text>
+  ),
 })
 
 export default Screen

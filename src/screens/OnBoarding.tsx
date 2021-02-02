@@ -85,16 +85,16 @@ const RenderSwiper = ({
 
 const RenderButton = ({
   refSwipe,
-  setshowOnBoarding,
+  closeOnBoarding,
   isLastPage,
 }: {
   refSwipe: React.RefObject<Swiper>
-  setshowOnBoarding: React.Dispatch<React.SetStateAction<boolean>>
+  closeOnBoarding: () => void
   isLastPage: boolean
 }): ReactElement => {
   const enterTabs = (): void => {
     setSkipOnboarding(true)
-    setshowOnBoarding(false)
+    closeOnBoarding()
   }
 
   return (
@@ -148,9 +148,9 @@ const RenderButton = ({
 }
 
 const OnBoarding = ({
-  setshowOnBoarding,
+  closeOnBoarding,
 }: {
-  setshowOnBoarding: React.Dispatch<React.SetStateAction<boolean>>
+  closeOnBoarding: () => void
 }): ReactElement => {
   const [lastPage, setLastPage] = useState(false)
   const refSwipe = useRef<Swiper>(null)
@@ -160,7 +160,7 @@ const OnBoarding = ({
       <RenderSwiper refSwipe={refSwipe} setLastPage={setLastPage} />
       <RenderButton
         refSwipe={refSwipe}
-        setshowOnBoarding={setshowOnBoarding}
+        closeOnBoarding={closeOnBoarding}
         isLastPage={lastPage}
       />
     </>

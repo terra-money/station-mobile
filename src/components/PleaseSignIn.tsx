@@ -26,7 +26,7 @@ const PleaseSignIn = (): ReactElement => {
         titleStyle={styles.button_text}
         title={button || ''}
         theme={'sapphire'}
-        containerStyle={{ height: 40 }}
+        size="sm"
       />
     </Card>
   )
@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
   },
   button_text: {
     color: '#fff',
-    fontSize: 14,
   },
 })
 

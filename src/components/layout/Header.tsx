@@ -67,7 +67,7 @@ const HeaderLeft = ({
 }
 
 export const navigationHeaderOptions = (
-  props: HeaderProps
+  props: HeaderProps & StackNavigationOptions
 ): StackNavigationOptions => {
   const {
     theme,
