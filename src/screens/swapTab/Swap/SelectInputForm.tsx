@@ -42,7 +42,6 @@ const SelectInputForm = ({
           borderRadius: 8,
           borderWidth: 1,
           borderColor: '#cfd8ea',
-          marginBottom: 5,
         }}
       >
         <Select

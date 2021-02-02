@@ -27,10 +27,10 @@ const Complete = ({ route }: Props): ReactElement => {
           color={color.sapphire}
           name={'check-circle-outline'}
         />
-        <Text style={{ fontSize: 24 }} fontType={'bold'}>
+        <Text style={{ fontSize: 24, marginVertical: 5 }} fontType={'bold'}>
           {card.title}
         </Text>
-        <Text style={{ fontSize: 16 }}>{card.content}</Text>
+        <Text style={{ fontSize: 16, textAlign: 'center' }}>{card.content}</Text>
       </View>
       <Button
         theme={'sapphire'}

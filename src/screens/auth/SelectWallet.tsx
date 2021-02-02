@@ -92,7 +92,7 @@ const Screen = (): ReactElement => {
           theme={'sky'}
           containerStyle={{
             paddingBottom: 50,
-            paddingTop: 10,
+            paddingTop: 20,
             justifyContent: 'space-between',
           }}
         >

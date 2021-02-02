@@ -68,7 +68,7 @@ const SwapTypeSelect = ({
             setValue && setValue(`${value}`)
           }}
           optionList={options}
-          containerStyle={{ height: 30 }}
+          containerStyle={{ height: 24 }}
           textStyle={{
             fontSize: 10,
             fontFamily: font.gotham.medium,
@@ -109,6 +109,7 @@ const Render = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             marginBottom: 20,
+            height: 24,
           }}
         >
           <View>
@@ -117,7 +118,7 @@ const Render = ({
             </Text>
           </View>
 
-          <View style={{ flex: 1, maxWidth: 160 }}>
+          <View style={{ flex: 1, maxWidth: 100 }}>
             {/* fields[4] : Swap option between default and terraswap */}
             <SwapTypeSelect field={fields[4]} />
           </View>
@@ -140,6 +141,8 @@ const Render = ({
               numberFontStyle={{
                 fontSize: 12,
                 color: color.dodgerBlue,
+                fontWeight: '500',
+                textDecorationLine: 'underline',
               }}
             >
               {max.display.value}
@@ -288,6 +291,8 @@ const styles = StyleSheet.create({
       width: 0,
       height: 20,
     },
+    shadowRadius: 35,
+    shadowOpacity: 1,
   },
   swapTitle: {
     fontSize: 16,

@@ -41,7 +41,7 @@ const Screen = (): ReactElement => {
             </Text>
             <Text style={styles.subTitle}>
               {_.some(wallets)
-                ? 'Connect to your wallet, Create a new wallet or recover an existing wallet using a seed phrase or QR code'
+                ? 'Connect to your wallet, create a new wallet or recover an existing wallet using a seed phrase or QR code'
                 : 'Create a new wallet or recover an existing wallet using a seed phrase or QR code'}
             </Text>
             <View style={styles.imageBox}>
@@ -65,7 +65,7 @@ const Screen = (): ReactElement => {
                 {_.some(wallets) && (
                   <Button
                     theme={'white'}
-                    title={'Select Wallet'}
+                    title={'Select wallet'}
                     onPress={(): void => navigate('SelectWallet')}
                     containerStyle={{ marginBottom: 10 }}
                   />
@@ -73,7 +73,7 @@ const Screen = (): ReactElement => {
 
                 <Button
                   theme={_.some(wallets) ? 'transparent' : 'white'}
-                  title={'New Wallet'}
+                  title={'New wallet'}
                   onPress={(): void => navigate('NewWallet')}
                 />
 
@@ -82,7 +82,7 @@ const Screen = (): ReactElement => {
                 </View>
                 <Button
                   theme={'transparent'}
-                  title={'Recover Existing Wallet'}
+                  title={'Recover existing wallet'}
                   onPress={(): void => navigate('RecoverWallet')}
                 />
               </>
@@ -90,7 +90,7 @@ const Screen = (): ReactElement => {
               <>
                 <Button
                   theme={'white'}
-                  title={'Sign Out'}
+                  title={'Disconnect'}
                   onPress={signOut}
                 />
               </>

@@ -91,7 +91,7 @@ const Screen = (): ReactElement => {
           <View style={styles.sectionGroup}>
             <View style={styles.section}>
               <FormLabel
-                text={`${numeral(quiz[0] + 1).format('0o')} Word`}
+                text={`${numeral(quiz[0] + 1).format('0o')} word`}
               />
 
               <TouchableOpacity
@@ -123,7 +123,7 @@ const Screen = (): ReactElement => {
             <View style={{ width: 15 }} />
             <View style={styles.section}>
               <FormLabel
-                text={`${numeral(quiz[1] + 1).format('0o')} Word`}
+                text={`${numeral(quiz[1] + 1).format('0o')} word`}
               />
 
               <TouchableOpacity
