@@ -12,13 +12,13 @@ type PermissionResult =
   | 'granted'
   | 'limited'
 
-const openPermissionSettings = (): void => {
+export const openPermissionSettings = (): void => {
   openSettings().catch(() => {
     // error handling
   })
 }
 
-const checkCameraPermission = async (): Promise<PermissionResult> => {
+export const checkCameraPermission = async (): Promise<PermissionResult> => {
   const permissions =
     Platform.OS === 'ios' ? PERMISSIONS.IOS : PERMISSIONS.ANDROID
 

@@ -48,8 +48,9 @@ const HeaderLeft = ({
   const onPressGoBack = (): void => {
     if (canGoBack()) {
       goBack()
+    } else {
+      navigate('Tabs')
     }
-    navigate('Tabs')
   }
 
   return (

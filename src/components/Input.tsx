@@ -34,7 +34,6 @@ const Input = (props: InputProps): ReactElement => {
           borderWidth: 1,
           borderColor: '#cfd8ea',
           height: 45,
-          paddingBottom: 1,
         },
         props.containerStyle,
       ]}
