@@ -25,7 +25,7 @@ const CopyButton = (props: CopyButtonProps): ReactElement => {
 
   switch (theme) {
     case 'sapphire':
-      containerStyle.borderColor = color.white
+      containerStyle.borderColor = 'rgba(255,255,255,.5)'
       containerStyle.backgroundColor = color.sapphire
       textStyle.color = color.white
       break
@@ -51,7 +51,10 @@ const CopyButton = (props: CopyButtonProps): ReactElement => {
         name={'content-paste'}
         color={theme === 'sapphire' ? color.white : color.sapphire}
       />
-      <Text style={[{ fontSize: 10, marginLeft: 4 }, textStyle]}>
+      <Text
+        style={[{ fontSize: 10, marginLeft: 4 }, textStyle]} 
+        fontType="medium"
+      >
         COPY
       </Text>
     </TouchableOpacity>

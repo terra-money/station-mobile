@@ -49,7 +49,7 @@ const HeaderRight = (): ReactElement => {
                 name="account-balance-wallet"
                 size={14}
                 color="#2043b5"
-                style={{ marginRight: 8 }}
+                style={{ marginRight: 3 }}
               />
               <Text style={styles.connectText} fontType={'medium'}>
                 CONNECT
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   connectText: {
     color: color.sapphire,
     fontSize: 10,
-    lineHeight: 15,
+    lineHeight: 13,
     letterSpacing: -0.4,
   },
 })

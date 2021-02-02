@@ -134,7 +134,7 @@ const Screen = (): ReactElement => {
           />
         </View>
       ) : (
-        <SubHeader theme={'sapphire'} title={'settings'} />
+        <SubHeader theme={'sapphire'} title={'Settings'} />
       )}
 
       <Body
