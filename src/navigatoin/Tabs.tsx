@@ -1,10 +1,13 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { StyleSheet } from 'react-native'
 import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs'
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
+import {
+  getFocusedRouteNameFromRoute,
+  useNavigation,
+} from '@react-navigation/native'
 import _ from 'lodash'
 
 // import Dashboard from '../screens/homeTab/Dashboard'
@@ -17,6 +20,7 @@ import StakingPersonal from '../screens/stakingTab/StakingPersonal'
 import ValidatorDetail from '../screens/stakingTab/ValidatorDetail'
 import { Text, Icon } from 'components'
 import layout from 'styles/layout'
+import { useAuth } from 'use-station/src'
 
 export const INITIAL = 'Dashboard'
 
@@ -122,6 +126,14 @@ const tabScreenItemList: {
 ]
 
 const Tabs = (): ReactElement => {
+  const { navigate } = useNavigation()
+  const { user } = useAuth()
+  useEffect(() => {
+    if (_.isEmpty(user)) {
+      navigate('AuthMenu')
+    }
+  }, [])
+
   const labelPosition =
     layout.getScreenWideType() === 'wide'
       ? 'beside-icon'

@@ -58,7 +58,6 @@ let App = ({
 
   /* onboarding */
   const [showOnBoarding, setshowOnBoarding] = useState<boolean>(false)
-
   /* update */
   const [updateAvailable, setUpdateAvailable] = useState<boolean>()
   const [receivedBytes, setReceivedBytes] = useState<number>(0)
@@ -94,6 +93,10 @@ let App = ({
       }
     )
   }, [])
+
+  const closeOnBoarding = (): void => {
+    setshowOnBoarding(false)
+  }
 
   const checkUpdate = async (): Promise<void> => {
     const update = await CodePush.checkForUpdate()
@@ -141,28 +144,28 @@ let App = ({
           <ConfigProvider value={config}>
             <AuthProvider value={auth}>
               <SafeAreaProvider>
-                {updateAvailable ? (
-                  <Update
-                    receivedBytes={receivedBytes}
-                    totalBytes={totalBytes}
-                  />
-                ) : showOnBoarding ? (
-                  <OnBoarding setshowOnBoarding={setshowOnBoarding} />
-                ) : (
-                  <>
-                    <StatusBar
-                      barStyle="dark-content"
-                      backgroundColor="transparent"
-                      translucent={false}
+                <RecoilRoot>
+                  {updateAvailable ? (
+                    <Update
+                      receivedBytes={receivedBytes}
+                      totalBytes={totalBytes}
                     />
-                    <RecoilRoot>
-                      <AppNavigator user={auth.user} />
+                  ) : showOnBoarding ? (
+                    <OnBoarding closeOnBoarding={closeOnBoarding} />
+                  ) : (
+                    <>
+                      <StatusBar
+                        barStyle="dark-content"
+                        backgroundColor="transparent"
+                        translucent={false}
+                      />
+                      <AppNavigator />
                       <AppModal modal={modal} />
                       <Drawer drawer={drawer} />
                       <AlertModal modal={alertModal} />
-                    </RecoilRoot>
-                  </>
-                )}
+                    </>
+                  )}
+                </RecoilRoot>
               </SafeAreaProvider>
             </AuthProvider>
           </ConfigProvider>
