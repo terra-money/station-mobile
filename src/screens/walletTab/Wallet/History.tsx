@@ -32,6 +32,8 @@ const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
         onPress={(): void => {
           navigate('WalletHistory')
         }}
+        theme="gray"
+        size="sm"
       />
     </View>
   ) : (

@@ -12,6 +12,7 @@ import color from 'styles/color'
 import Text from './Text'
 
 export type ButtonProps = {
+  size?: 'sm' | 'md'
   onPress?: (event: GestureResponderEvent) => void
   containerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
@@ -28,9 +29,13 @@ export type ButtonProps = {
 }
 
 const Button = (props: ButtonProps): ReactElement => {
-  const { theme, disabled } = props
-  const titleStyle: StyleProp<TextStyle> = { fontSize: 16 }
-  const containerStyle: StyleProp<ViewStyle> = {}
+  const { theme, disabled, size } = props
+  const titleStyle: StyleProp<TextStyle> = {
+    fontSize: size === 'sm' ? 14 : 16,
+  }
+  const containerStyle: StyleProp<ViewStyle> = {
+    height: size === 'sm' ? 40 : 60,
+  }
 
   switch (theme) {
     case 'sapphire':
@@ -94,7 +99,6 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
     borderRadius: 30,
-    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
   },

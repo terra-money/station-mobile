@@ -67,7 +67,7 @@ const Actions = ({
                   isUndelegation: false,
                 })
               }}
-              containerStyle={{ height: 40 }}
+              size="sm"
             />
           </View>
           <View style={{ flex: 1, marginLeft: 5 }}>
@@ -81,7 +81,7 @@ const Actions = ({
                   isUndelegation: true,
                 })
               }}
-              containerStyle={{ height: 40 }}
+              size="sm"
             />
           </View>
         </View>
@@ -103,7 +103,7 @@ const Actions = ({
             onPress={(): void => {
               runWithdraw()
             }}
-            containerStyle={{ height: 40 }}
+            size="sm"
           />
         </View>
       </View>

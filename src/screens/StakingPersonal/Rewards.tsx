@@ -61,6 +61,7 @@ const Rewards = ({
           onPress={(): void => {
             runWithdraw()
           }}
+          size="sm"
         />
       </View>
     </View>

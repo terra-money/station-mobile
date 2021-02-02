@@ -133,6 +133,7 @@ const PersonalSummary = ({
             onPress={(): void => {
               runWithdraw()
             }}
+            size="sm"
           />
         </>
       ) : (
