@@ -27,6 +27,7 @@ import ChangePassword from '../screens/ChangePassword'
 import SendTxPasswordView from '../screens/topup/SendTxPasswordView'
 import SendTxCompleteView from '../screens/topup/SendTxCompleteView'
 import StakingInformation from '../screens/StakingInformation'
+import WalletHistory from '../screens/WalletHistory'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -147,6 +148,11 @@ const AppNavigator = (): ReactElement => {
           name="StakingInformation"
           component={StakingInformation}
           options={StakingInformation.navigationOptions}
+        />
+        <RootStack.Screen
+          name="WalletHistory"
+          component={WalletHistory}
+          options={WalletHistory.navigationOptions}
         />
       </RootStack.Navigator>
     </NavigationContainer>

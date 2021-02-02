@@ -40,6 +40,7 @@ export type RootStackParams = {
   Delegate: { validatorAddress: string; isUndelegation: boolean }
   ChangePassword: { walletName: string }
   StakingInformation: undefined
+  WalletHistory: undefined
 }
 
 export const RootStack = createStackNavigator<RootStackParams>()
