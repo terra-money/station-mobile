@@ -1,7 +1,7 @@
 interface App {
   drawer: Drawer
   modal: AppModal
-  alertModal: AlertModal
+  alertViewProps: AlertView
 }
 
 interface Drawer {
@@ -22,7 +22,7 @@ interface AppModal {
   onRequestClose: () => void
 }
 
-interface AlertModal {
+interface AlertView {
   isOpen: boolean
   open: (content: ReactNode) => void
   close: () => void

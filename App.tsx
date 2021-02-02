@@ -26,9 +26,9 @@ import OnBoarding from './src/screens/OnBoarding'
 import AppModal, {
   useModalState,
 } from 'components/onlyForApp.tsx/AppModal'
-import AlertModal, {
-  useAlertModalState,
-} from 'components/onlyForApp.tsx/AlertModal'
+import AlertView, {
+  useAlertViewState,
+} from 'components/onlyForApp.tsx/AlertView'
 import Drawer, {
   useDrawerState,
 } from 'components/onlyForApp.tsx/Drawer'
@@ -44,7 +44,7 @@ let App = ({
   /* drawer */
   const drawer = useDrawerState()
   const modal = useModalState()
-  const alertModal = useAlertModalState()
+  const alertViewProps = useAlertViewState()
 
   /* provider */
   const config = useConfigState({
@@ -140,7 +140,7 @@ let App = ({
   return (
     <>
       {ready && updateAvailable !== undefined && (
-        <AppProvider value={{ drawer, modal, alertModal }}>
+        <AppProvider value={{ drawer, modal, alertViewProps }}>
           <ConfigProvider value={config}>
             <AuthProvider value={auth}>
               <SafeAreaProvider>
@@ -162,7 +162,7 @@ let App = ({
                       <AppNavigator />
                       <AppModal modal={modal} />
                       <Drawer drawer={drawer} />
-                      <AlertModal modal={alertModal} />
+                      <AlertView alertViewProps={alertViewProps} />
                     </>
                   )}
                 </RecoilRoot>
