@@ -17,7 +17,7 @@ const Screen = (): ReactElement => {
           size={60}
           color={color.sapphire}
         />
-        <Text style={styles.infoTitle}>Wallet Created!</Text>
+        <Text style={styles.infoTitle}>Wallet created!</Text>
         <Text style={{ color: color.sapphire }}>
           Welcome abroad to Terra Station
         </Text>
@@ -52,5 +52,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     textAlign: 'center',
     color: color.sapphire,
+    marginVertical: 5,
   },
 })

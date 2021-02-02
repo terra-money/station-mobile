@@ -59,7 +59,7 @@ const AssetItem = ({
             </Number>
             {_.some(swapValue) && (
               <Number
-                numberFontStyle={{ opacity: 0.5, fontSize: 10 }}
+                numberFontStyle={{ opacity: 0.5, fontSize: 10, marginTop: 2 }}
                 value={setComma(swapValue)}
                 unit={currency.current?.value}
               />

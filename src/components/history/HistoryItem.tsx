@@ -21,7 +21,7 @@ const Message = ({
       }}
     >
       <View style={{ flexDirection: 'row' }}>
-        <Text fontType={'bold'}>{message.tag}</Text>
+        <Text style={{ fontSize: 10, textTransform: 'uppercase', lineHeight: 15 }} fontType={'bold'}>{message.tag}</Text>
         {messages.length > 1 && (
           <Text style={styles.moreMsg} fontType={'medium'}>
             +{messages.length - 1} MSG{messages.length > 2 && 'S'}
@@ -36,17 +36,17 @@ const Message = ({
           alignItems: 'center',
         }}
       >
-        <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 14 }}>{message.text}</Text>
+        <View style={{ flex: 1, marginVertical: 3 }}>
+          <Text style={{ fontSize: 14, lineHeight: 19, letterSpacing: -0.1 }}>{message.text}</Text>
         </View>
 
-        <View style={{ paddingLeft: 30 }}>
+        <View style={{ paddingLeft:20 }}>
           <ExtLink
             url={link}
             title={
               <Icon
-                size={24}
-                color={'#d8d8d8'}
+                size={20}
+                color={'#EAEDF8'}
                 name={'open-in-new'}
               />
             }
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   },
   moreMsg: {
     fontSize: 10,
+    lineHeight: 15,
     marginLeft: 5,
     borderRadius: 7.5,
     backgroundColor: '#f4f5fb',
