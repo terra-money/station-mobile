@@ -60,7 +60,7 @@ const EmptyWallet = ({ card }: { card?: Card }): ReactElement => {
         </Text>
       </View>
 
-      <Text>{card.content}</Text>
+      <Text style={{ lineHeight: 21 }}>{card.content}</Text>
     </View>
   ) : (
     <View />

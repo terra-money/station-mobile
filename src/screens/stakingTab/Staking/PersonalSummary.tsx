@@ -41,7 +41,7 @@ const NotStaked = (): ReactElement => {
           />
         </TouchableOpacity>
       </View>
-      <Text>
+      <Text style={{ lineHeight: 21, marginTop: -15 }}>
         {
           "You haven't staked any assets yet. Stake your Luna and stack up rewards."
         }

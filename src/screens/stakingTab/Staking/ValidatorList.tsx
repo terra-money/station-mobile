@@ -121,7 +121,7 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
         <Selector
           display={
             <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.textFilter} fontType={'bold'}>
+              <Text style={styles.textFilter} fontType={'medium'}>
                 {validatorFilter
                   .find((x) => x.value === currentFilter)
                   ?.label.toUpperCase()}
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   },
   textFilter: {
     fontSize: 10,
-    lineHeight: 15,
+    lineHeight: 18,
     letterSpacing: -0.1,
   },
   textMoniker: {
@@ -266,6 +266,7 @@ const styles = StyleSheet.create({
   rank: {
     fontSize: 12,
     lineHeight: 18,
+    fontWeight: '500',
     letterSpacing: 0,
     color: 'rgb(32, 67, 181)',
   },

@@ -97,7 +97,7 @@ export default Button
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
+    borderWidth: 0,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',

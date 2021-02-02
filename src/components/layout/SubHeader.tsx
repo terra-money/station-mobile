@@ -57,5 +57,6 @@ export const styles = StyleSheet.create({
   headerBottomTitle: {
     fontSize: 26,
     lineHeight: 39,
+    fontWeight: 'bold',
   },
 })
