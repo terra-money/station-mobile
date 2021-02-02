@@ -20,11 +20,18 @@ type Props = StackScreenProps<RootStackParams, 'ValidatorDetail'>
 const Render = ({
   user,
   address,
+  setLoadingComplete,
 }: {
   user?: User
   address: string
+  setLoadingComplete: React.Dispatch<React.SetStateAction<boolean>>
 }): ReactElement => {
   const { ui, loading } = useValidator(address, user)
+  useEffect(() => {
+    if (loading === false) {
+      setLoadingComplete(true)
+    }
+  }, [loading])
   return (
     <>
       {loading ? null : (
@@ -50,19 +57,19 @@ const Screen = ({ navigation, route }: Props): ReactElement => {
   const { user } = useAuth()
 
   const { address } = route.params
-  const [refreshing, setRefreshing] = useState(false)
+  const [loadingComplete, setLoadingComplete] = useState(false)
+  const [refreshingKey, setRefreshingKey] = useState(0)
   const refreshPage = async (): Promise<void> => {
-    setRefreshing(true)
-    setTimeout(() => {
-      setRefreshing(false)
-    }, 100)
+    setRefreshingKey((ori) => ori + 1)
   }
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
-      refreshPage()
-    })
-  }, [])
+    if (loadingComplete) {
+      navigation.addListener('focus', () => {
+        refreshPage()
+      })
+    }
+  }, [loadingComplete])
 
   return (
     <Body
@@ -71,7 +78,12 @@ const Screen = ({ navigation, route }: Props): ReactElement => {
       scrollable
       onRefresh={refreshPage}
     >
-      {refreshing ? null : <Render user={user} address={address} />}
+      <Render
+        user={user}
+        address={address}
+        key={refreshingKey}
+        setLoadingComplete={setLoadingComplete}
+      />
     </Body>
   )
 }

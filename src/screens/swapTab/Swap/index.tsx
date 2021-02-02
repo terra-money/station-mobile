@@ -1,4 +1,9 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, {
+  ReactElement,
+  useEffect,
+  useState,
+  Fragment,
+} from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import _ from 'lodash'
 
@@ -230,46 +235,38 @@ const RenderSwap = ({
   )
 }
 
-const RenderMarket = ({ user }: { user: User }): ReactElement => {
-  const { error, loading, ui, swap } = useMarket()
-
-  return (
-    <>
-      {error ? (
-        <ErrorComponent card />
-      ) : loading ? (
-        <Loading />
-      ) : (
-        ui && (
-          <RenderSwap
-            {...{ actives: ui.actives, user, title: swap }}
-          />
-        )
-      )}
-    </>
-  )
-}
-
 const Screen = ({ navigation }: Props): ReactElement => {
-  const [refreshing, setRefreshing] = useState(false)
+  const { error, loading, ui, swap } = useMarket()
+  const [refreshingKey, setRefreshingKey] = useState(0)
   const refreshPage = async (): Promise<void> => {
-    setRefreshing(true)
-    setTimeout(() => {
-      setRefreshing(false)
-    }, 100)
+    setRefreshingKey((ori) => ori + 1)
   }
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
-      refreshPage()
-    })
-  }, [])
+    if (loading === false) {
+      navigation.addListener('focus', () => {
+        refreshPage()
+      })
+    }
+  }, [loading])
 
   return (
     <WithAuth>
       {(user): ReactElement => (
         <Body theme={'sky'} scrollable onRefresh={refreshPage}>
-          {refreshing ? null : <RenderMarket user={user} />}
+          <Fragment key={refreshingKey}>
+            {error ? (
+              <ErrorComponent card />
+            ) : loading ? (
+              <Loading />
+            ) : (
+              ui && (
+                <RenderSwap
+                  {...{ actives: ui.actives, user, title: swap }}
+                />
+              )
+            )}
+          </Fragment>
         </Body>
       )}
     </WithAuth>
