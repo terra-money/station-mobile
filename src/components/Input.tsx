@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import {
   Keyboard,
+  Platform,
   StyleProp,
   TextInput,
   TextInputProps,
@@ -34,7 +35,7 @@ const Input = (props: InputProps): ReactElement => {
           borderWidth: 1,
           borderColor: '#cfd8ea',
           height: 45,
-          paddingBottom: 1,
+          paddingBottom: Platform.OS === 'android' ? 1 : 0,
         },
         props.containerStyle,
       ]}

@@ -14,13 +14,7 @@ import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 
-import {
-  FormLabel,
-  NumberStep,
-  Text,
-  Button,
-  Input,
-} from 'components'
+import { FormLabel, NumberStep, Text, Button } from 'components'
 
 import color from 'styles/color'
 import NewWalletStore from 'stores/NewWalletStore'
@@ -38,7 +32,7 @@ const Screen = (): ReactElement => {
   const password = useRecoilValue(NewWalletStore.password)
   const [firstSeedWord, setFirstSeedWord] = useState('')
   const [secondSeedWord, setSecondSeedWord] = useState('')
-  const [focusInputIndex, setFocusInputIndex] = useState<0 | 1>()
+  const [focusInputIndex, setFocusInputIndex] = useState<0 | 1>(0)
 
   const [quiz, setQuiz] = useState<number[]>([])
   const [hint, setHint] = useState<number[]>([])
@@ -51,8 +45,10 @@ const Screen = (): ReactElement => {
 
   const onPressHint = (index: number): void => {
     if (focusInputIndex === 1) {
+      setFocusInputIndex(0)
       setSecondSeedWord(seed[index])
     } else {
+      setFocusInputIndex(1)
       setFirstSeedWord(seed[index])
     }
   }
@@ -97,28 +93,64 @@ const Screen = (): ReactElement => {
               <FormLabel
                 text={`${numeral(quiz[0] + 1).format('0o')} Word`}
               />
-              <Input
-                onFocus={(): void => setFocusInputIndex(0)}
-                underlineColorAndroid="#ccc"
-                value={firstSeedWord}
-                autoCapitalize={'none'}
-                onChangeText={setFirstSeedWord}
-                placeholder={'Select or Type'}
-              />
+
+              <TouchableOpacity
+                onPress={(): void => setFocusInputIndex(0)}
+                style={[
+                  {
+                    borderRadius: 8,
+                    borderWidth: 1,
+                    borderColor: '#cfd8ea',
+                    height: 45,
+                    justifyContent: 'center',
+                    paddingLeft: 10,
+                    backgroundColor: 'white',
+                  },
+                  focusInputIndex === 0 && {
+                    borderColor: color.sapphire,
+                  },
+                ]}
+              >
+                {firstSeedWord ? (
+                  <Text>{firstSeedWord}</Text>
+                ) : (
+                  <Text style={{ color: '#dddddd' }}>
+                    Select or Type
+                  </Text>
+                )}
+              </TouchableOpacity>
             </View>
             <View style={{ width: 15 }} />
             <View style={styles.section}>
               <FormLabel
                 text={`${numeral(quiz[1] + 1).format('0o')} Word`}
               />
-              <Input
-                onFocus={(): void => setFocusInputIndex(1)}
-                underlineColorAndroid="#ccc"
-                value={secondSeedWord}
-                autoCapitalize={'none'}
-                onChangeText={setSecondSeedWord}
-                placeholder={'Select or Type'}
-              />
+
+              <TouchableOpacity
+                onPress={(): void => setFocusInputIndex(1)}
+                style={[
+                  {
+                    borderRadius: 8,
+                    borderWidth: 1,
+                    borderColor: '#cfd8ea',
+                    height: 45,
+                    justifyContent: 'center',
+                    paddingLeft: 10,
+                    backgroundColor: 'white',
+                  },
+                  focusInputIndex === 1 && {
+                    borderColor: color.sapphire,
+                  },
+                ]}
+              >
+                {secondSeedWord ? (
+                  <Text>{secondSeedWord}</Text>
+                ) : (
+                  <Text style={{ color: '#dddddd' }}>
+                    Select or Type
+                  </Text>
+                )}
+              </TouchableOpacity>
             </View>
           </View>
           <View>
