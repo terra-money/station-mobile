@@ -7,7 +7,7 @@ import color from 'styles/color'
 const WalletAddress = ({ user }: { user: User }): ReactElement => {
   return (
     <View style={styles.container}>
-      <Text style={{ color: color.white, flex: 1 }} numberOfLines={1}>
+      <Text style={styles.userAddress} numberOfLines={1}>
         {user.address}
       </Text>
       <View>
@@ -35,5 +35,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 15,
     paddingHorizontal: 20,
+  },
+  userAddress: {
+    fontSize: 13,
+    fontFamily: 'Gotham-Book',
+    color: '#ffffff',
+    flex: 1,
+    paddingRight: 10,
   },
 })

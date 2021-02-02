@@ -25,7 +25,7 @@ const Screen = (): ReactElement => {
       </View>
       <Button
         theme={'sapphire'}
-        title={'Explore The Terra Network'}
+        title={'Explore the Terra network'}
         onPress={(): void => navigate('Tabs')}
       />
     </Body>

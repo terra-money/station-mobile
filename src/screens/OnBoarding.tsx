@@ -107,7 +107,7 @@ const RenderButton = ({
           >
             <Text
               style={styles.SwiperButtonSkipText}
-              fontType={'bold'}
+              fontType={'medium'}
             >
               Skip
             </Text>
@@ -136,9 +136,9 @@ const RenderButton = ({
                 lineHeight: 24,
                 color: 'rgb(255,255,255)',
               }}
-              fontType={'bold'}
+              fontType={'medium'}
             >
-              Get Started
+              Get started
             </Text>
           </TouchableOpacity>
         </>

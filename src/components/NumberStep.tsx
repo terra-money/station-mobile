@@ -27,6 +27,8 @@ const NumberStep = ({
                 style={{
                   color: color.sapphire,
                   fontVariant: ['tabular-nums'],
+                  fontSize: 10,
+                  fontWeight: 'bold',
                 }}
               >
                 {index + 1}
@@ -61,7 +63,7 @@ const styles = StyleSheet.create({
   line: {
     width: 15,
     borderBottomColor: 'white',
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     marginBottom: 8,
   },
 })

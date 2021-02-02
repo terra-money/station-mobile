@@ -39,11 +39,11 @@ const Screen = (): ReactElement => {
       <SubHeader theme={'sapphire'} title={'Write Down Your Seed'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
-          <View style={{ alignItems: 'flex-end', marginBottom: 20 }}>
+          <View style={{ alignItems: 'flex-end', marginBottom: 10 }}>
             <CopyButton copyString={seed.join(' ')} />
           </View>
           <View style={styles.seedBox}>
-            <Text>{seed.join(' ')}</Text>
+            <Text style={{ fontSize: 14, lineHeight: 21 }}>{seed.join(' ')}</Text>
           </View>
           <WarningBox
             message={
@@ -59,7 +59,7 @@ const Screen = (): ReactElement => {
         </View>
 
         <Button
-          title="I Have Written Down My Seed."
+          title="I have written down my seed"
           theme={'sapphire'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
@@ -88,17 +88,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   seedBox: {
-    padding: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
     marginBottom: 20,
     flexDirection: 'row',
-    backgroundColor: color.white,
-    borderRadius: 10,
-    shadowColor: 'rgba(0, 0, 0, 0.05)',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowRadius: 25,
-    shadowOpacity: 1,
+    backgroundColor: '#EBEFF8',
+    borderRadius: 8,
+    borderColor: '#CFD8EA',
+    borderWidth: 1,
   },
 })

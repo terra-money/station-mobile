@@ -41,8 +41,8 @@ const Screen = (): ReactElement => {
             </Text>
             <Text style={styles.subTitle}>
               {_.some(wallets)
-                ? 'Connect to your wallet, Create a new wallet or recover an existing wallet using a seed phrase'
-                : 'Create a new wallet or recover an existing wallet using a seed phrase'}
+                ? 'Connect to your wallet, Create a new wallet or recover an existing wallet using a seed phrase or QR code'
+                : 'Create a new wallet or recover an existing wallet using a seed phrase or QR code'}
             </Text>
             <View style={styles.imageBox}>
               <Icon
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
   orBox: {
     borderBottomWidth: 1,
-    borderColor: color.white,
+    borderColor: 'rgba(255,255,255,.3)',
     alignItems: 'center',
     marginVertical: 30,
   },

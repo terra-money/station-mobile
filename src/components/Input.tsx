@@ -25,6 +25,8 @@ const Input = (props: InputProps): ReactElement => {
     justifyContent: 'center',
     padding: 0,
     paddingLeft: 15,
+    fontFamily: 'Gotham-Book',
+    color: color.sapphire,
   }
   return (
     <View
@@ -44,6 +46,7 @@ const Input = (props: InputProps): ReactElement => {
         style={[defaultStyle, style]}
         {...rest}
         underlineColorAndroid={'#ffffff00'}
+        placeholderTextColor="rgba(32,67,181,.5)"
       />
     </View>
   )

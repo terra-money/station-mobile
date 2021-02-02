@@ -5,7 +5,7 @@ import Text from './Text'
 import color from 'styles/color'
 
 const FormLabel = ({ text }: { text: string }): ReactElement => (
-  <Text style={styles.formLabel} fontType={'bold'}>
+  <Text style={styles.formLabel} fontType={'medium'}>
     {text}
   </Text>
 )
