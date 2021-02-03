@@ -61,7 +61,7 @@ const SwapStack = (): ReactElement => (
 
 const styles = StyleSheet.create({
   tabbar_text: {
-    fontSize: 8,
+    fontSize: 9,
     marginBottom: 3,
   },
 })

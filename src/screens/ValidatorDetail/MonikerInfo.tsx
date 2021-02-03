@@ -46,12 +46,12 @@ const Top = ({
             <Text style={styles.infoItemTitle} fontType={'bold'}>
               {votingPower.title}
             </Text>
-            <Text style={styles.infoItemValue} fontType={'bold'}>
+            <Text style={styles.infoItemValue} fontType={'medium'}>
               {votingPower.percent}
             </Text>
             <Number
               {...votingPower.display}
-              numberFontStyle={{ fontSize: 12 }}
+              numberFontStyle={{ fontSize: 12, lineHeight: 18 }}
             />
           </View>
 
@@ -59,12 +59,12 @@ const Top = ({
             <Text style={styles.infoItemTitle} fontType={'bold'}>
               {selfDelegation.title}
             </Text>
-            <Text style={styles.infoItemValue} fontType={'bold'}>
+            <Text style={styles.infoItemValue} fontType={'medium'}>
               {selfDelegation.percent}
             </Text>
             <Number
               {...selfDelegation.display}
-              numberFontStyle={{ fontSize: 12 }}
+              numberFontStyle={{ fontSize: 12, lineHeight: 18 }}
             />
           </View>
         </View>
@@ -73,7 +73,7 @@ const Top = ({
             <Text style={styles.infoItemTitle} fontType={'bold'}>
               {commission.title}
             </Text>
-            <Text style={styles.infoItemValue} fontType={'bold'}>
+            <Text style={styles.infoItemValue} fontType={'medium'}>
               {commission.percent}
             </Text>
           </View>
@@ -82,7 +82,7 @@ const Top = ({
             <Text style={styles.infoItemTitle} fontType={'bold'}>
               {uptime.title}
             </Text>
-            <Text style={styles.infoItemValue} fontType={'bold'}>
+            <Text style={styles.infoItemValue} fontType={'medium'}>
               {uptime.percent}
             </Text>
           </View>
@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
   },
   infoItemValue: {
     fontSize: 24,
+    lineHeight: 29,
     letterSpacing: 0,
   },
   details: {

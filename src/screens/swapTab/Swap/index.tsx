@@ -141,9 +141,9 @@ const Render = ({
               numberFontStyle={{
                 fontSize: 12,
                 color: color.dodgerBlue,
-                fontWeight: '500',
                 textDecorationLine: 'underline',
               }}
+              fontType="medium"
             >
               {max.display.value}
             </Number>

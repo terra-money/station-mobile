@@ -1,5 +1,10 @@
 import React, { ReactElement } from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { 
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from 'react-native'
 
 import { StakingPersonal, User } from 'use-station/src'
 
@@ -11,6 +16,7 @@ import {
 } from '@react-navigation/native'
 import { RootStackParams } from 'types'
 import { useWithdraw } from 'hooks/useWithdraw'
+import images from 'assets/images'
 
 const NotStaked = (): ReactElement => {
   const { navigate } = useNavigation<
@@ -76,31 +82,30 @@ const PersonalSummary = ({
     <View style={styles.container}>
       {myDelegations || myRewards ? (
         <>
-          <View style={styles.header}>
+          <TouchableOpacity
+            onPress={(): void => {
+              navigate('StakingPersonal')
+            }}
+            style={styles.header}
+          >
             <View style={{ marginBottom: 20 }}>
               <Text style={styles.headerTitle} fontType={'bold'}>
                 Summary
               </Text>
             </View>
-
-            <TouchableOpacity
-              onPress={(): void => {
-                navigate('StakingPersonal')
-              }}
-            >
-              <Icon
-                name={'arrow-forward'}
-                color={color.sapphire}
-                size={24}
-              />
-            </TouchableOpacity>
-          </View>
+            <Icon
+              name={'arrow-forward'}
+              color={color.sapphire}
+              size={24}
+            />
+          </TouchableOpacity>
           <View style={{ marginBottom: 10 }}>
             {rewards && (
               <View style={styles.itemBox}>
                 <Text>{rewards.title}</Text>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
+                  decimalFontStyle={{ fontSize: 10.5 }}
                   {...rewards.display}
                   estimated
                 />
@@ -111,15 +116,23 @@ const PersonalSummary = ({
                 <Text>{delegated.title}</Text>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
+                  decimalFontStyle={{ fontSize: 10.5 }}
                   {...delegated.display}
                 />
               </View>
             )}
             {undelegated && undelegated.table && (
               <View style={styles.itemBox}>
-                <Text>{undelegated.title}</Text>
+                <View style={styles.undelegated}>
+                  <Text>{undelegated.title}</Text>
+                  <Image
+                    source={images.loading_circle}
+                    style={{ width: 18, height: 18, marginLeft: 3 }}
+                  />
+                </View>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
+                  decimalFontStyle={{ fontSize: 10.5 }}
                   {...undelegated.display}
                 />
               </View>
@@ -172,5 +185,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
+  },
+  undelegated: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 })

@@ -33,7 +33,15 @@ const AssetItem = ({
   )
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <TouchableOpacity
+        style={styles.inner}
+        onPress={(): void => {
+          navigate('Send', {
+            denomOrToken: item.denom || item.token || '',
+          })
+        }}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <View style={styles.iconBox}>
           <AssetIcon uri={icon} name={display.unit} />
         </View>
@@ -41,13 +49,6 @@ const AssetItem = ({
           {display.unit}
         </Text>
       </View>
-      <TouchableOpacity
-        onPress={(): void => {
-          navigate('Send', {
-            denomOrToken: item.denom || item.token || '',
-          })
-        }}
-      >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={{ alignItems: 'flex-end' }}>
             <Number
@@ -59,7 +60,16 @@ const AssetItem = ({
             </Number>
             {_.some(swapValue) && (
               <Number
-                numberFontStyle={{ opacity: 0.5, fontSize: 10, marginTop: 2 }}
+                numberFontStyle={{
+                  opacity: 0.5,
+                  fontSize: 10,
+                  marginTop: 2,
+                }}
+                decimalFontStyle={{
+                  opacity: 1,
+                  fontSize: 10,
+                  marginTop: 2,
+                }}
                 value={setComma(swapValue)}
                 unit={currency.current?.value}
               />
@@ -94,6 +104,9 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 35,
     shadowOpacity: 1,
+  },
+  inner: {
+    height: 64,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

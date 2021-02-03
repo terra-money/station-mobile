@@ -88,7 +88,9 @@ const Render = ({
                   </View>
                 ))}
                 {_.some(text) && (
-                  <Input editable={false} value={text} />
+                  <Text style={{ fontSize: 16, lineHeight: 24 }}>
+                    {text}
+                  </Text>
                 )}
               </View>
             )

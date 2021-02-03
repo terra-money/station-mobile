@@ -42,7 +42,7 @@ const RenderUi = ({ ui }: { ui: RecentSentUI }): ReactElement => {
               key={`ui.contents-contents-${j}`}
               style={styles.recentTxRow}
             >
-              <Text style={styles.recentTxTh}>{content.title}</Text>
+              <Text style={styles.recentTxTh} fontType="medium">{content.title}</Text>
               <Text style={styles.recentTxTd} numberOfLines={1}>
                 {content.content}
               </Text>
@@ -136,7 +136,8 @@ export default Screen
 
 const styles = StyleSheet.create({
   recentTxBox: {
-    padding: 10,
+    paddingVertical: 7,
+    paddingHorizontal: 15,
     marginBottom: 10,
     borderRadius: 8,
     backgroundColor: 'rgb(238,240,250)',
@@ -146,8 +147,12 @@ const styles = StyleSheet.create({
   },
   recentTxTh: {
     minWidth: 70,
+    fontSize: 10,
+    lineHeight: 20,
   },
   recentTxTd: {
     flex: 1,
+    fontSize: 10,
+    lineHeight: 20,
   },
 })

@@ -77,7 +77,7 @@ const Screen = (): ReactElement => {
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={styles.section}>
-            <FormLabel text={'Wallet Name'} />
+            <FormLabel text={'Wallet name'} />
             <FormInput
               underlineColorAndroid="#ccc"
               value={inputName}
@@ -98,7 +98,7 @@ const Screen = (): ReactElement => {
             />
           </View>
           <View style={styles.section}>
-            <FormLabel text={'Confirm Password'} />
+            <FormLabel text={'Confirm password'} />
             <FormInput
               underlineColorAndroid="#ccc"
               value={passwordConfirm}

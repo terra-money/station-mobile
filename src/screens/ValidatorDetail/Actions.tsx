@@ -45,7 +45,11 @@ const Actions = ({
         </Text>
 
         <View style={{ alignItems: 'flex-start' }}>
-          <Number {...myDelegations.display} />
+          <Number
+            numberFontStyle={{ fontSize: 20 }}
+            decimalFontStyle={{ fontSize: 15 }}
+            {...myDelegations.display}
+          />
         </View>
 
         <View
@@ -56,7 +60,7 @@ const Actions = ({
             },
           ]}
         >
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, marginRight: 5 }}>
             <Button
               theme={'sapphire'}
               disabled={delegate.disabled}
@@ -92,12 +96,16 @@ const Actions = ({
         </Text>
 
         <View style={{ alignItems: 'flex-start' }}>
-          <Number {...myRewards.display} />
+          <Number
+            numberFontStyle={{ fontSize: 20 }}
+            decimalFontStyle={{ fontSize: 15 }}
+            {...myRewards.display}
+          />
         </View>
 
         <View style={styles.buttonBox}>
           <Button
-            theme={'dodgerBlue'}
+            theme={'sapphire'}
             disabled={withdraw.disabled}
             title={withdraw.children}
             onPress={(): void => {
@@ -126,6 +134,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     letterSpacing: 0,
+    marginBottom: 5,
   },
   buttonBox: {
     marginTop: 20,
