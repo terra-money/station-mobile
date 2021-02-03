@@ -42,13 +42,13 @@ const AssetItem = ({
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <View style={styles.iconBox}>
-          <AssetIcon uri={icon} name={display.unit} />
+          <View style={styles.iconBox}>
+            <AssetIcon uri={icon} name={display.unit} />
+          </View>
+          <Text style={styles.unit} fontType={'bold'}>
+            {display.unit}
+          </Text>
         </View>
-        <Text style={styles.unit} fontType={'bold'}>
-          {display.unit}
-        </Text>
-      </View>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={{ alignItems: 'flex-end' }}>
             <Number

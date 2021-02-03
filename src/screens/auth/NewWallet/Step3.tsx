@@ -170,7 +170,6 @@ const Screen = (): ReactElement => {
             />
           </View>
         </View>
-        bubble afford crew wealth east eyebrow dentist era artwork post pupil such save suspect main vacant wool mother pipe ridge comfort beef assist burst
         <Button
           title="Confirm and finish"
           theme={'sapphire'}
