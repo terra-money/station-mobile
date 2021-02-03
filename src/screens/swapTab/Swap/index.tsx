@@ -4,7 +4,12 @@ import React, {
   useState,
   Fragment,
 } from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from 'react-native'
 import _ from 'lodash'
 
 import Tooltip from 'react-native-walkthrough-tooltip'
@@ -73,6 +78,19 @@ const SwapTypeSelect = ({
             fontSize: 10,
             fontFamily: font.gotham.medium,
           }}
+          icon={
+            Platform.OS === 'ios'
+              ? (): ReactElement => (
+                  <View style={{ marginRight: -10 }}>
+                    <Icon
+                      name={'arrow-drop-down'}
+                      size={14}
+                      color={color.sapphire}
+                    />
+                  </View>
+                )
+              : undefined
+          }
         />
       )}
     </>

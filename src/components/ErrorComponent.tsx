@@ -7,7 +7,7 @@ const ErrorComponent: FC<{ card?: boolean }> = ({
   children,
 }) => {
   const { ERROR } = useInfo()
-  const props = { icon: '"sentiment-very-dissatisfied"', card }
+  const props = { icon: 'sentiment-very-dissatisfied', card }
 
   return children ? (
     <Info {...props}>{children}</Info>

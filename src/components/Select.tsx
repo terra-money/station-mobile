@@ -21,6 +21,7 @@ export type SelectProps = {
   containerStyle?: ViewStyle
   textStyle?: TextStyle
   disabled?: boolean
+  icon?: React.ReactNode
 } & PickerStyle
 
 const Select = (props: SelectProps): ReactElement => {
@@ -43,6 +44,7 @@ const Select = (props: SelectProps): ReactElement => {
           backgroundColor: color.white,
           justifyContent: 'center',
           paddingLeft: 5,
+          paddingRight: Platform.OS === 'ios' ? 25 : 0,
           ...props.containerStyle,
         },
         inputAndroid: {
@@ -52,6 +54,7 @@ const Select = (props: SelectProps): ReactElement => {
         // ios11 text style
         inputIOS: {
           ...textStyle,
+
           ...props.textStyle,
         },
       }}
@@ -66,9 +69,10 @@ const Select = (props: SelectProps): ReactElement => {
         dropdownIconColor: color.sapphire,
       }}
       Icon={
-        Platform.OS === 'ios'
+        props.icon ||
+        (Platform.OS === 'ios'
           ? (): ReactElement => (
-              <View style={{ paddingRight: 10 }}>
+              <View style={{ marginRight: -10 }}>
                 <Icon
                   name={'arrow-drop-down'}
                   size={18}
@@ -76,7 +80,7 @@ const Select = (props: SelectProps): ReactElement => {
                 />
               </View>
             )
-          : undefined
+          : undefined)
       }
     />
   )

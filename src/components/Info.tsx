@@ -20,17 +20,17 @@ const Info: FC<Props> = ({
 }) => {
   const inner = (
     <>
-      {typeof icon === 'string' ? <Icon name={icon} /> : icon}
+      {typeof icon === 'string' ? <Icon name={icon} size={50} color="#2043B5" style={{ alignSelf: 'center' }} /> : icon}
       {_.some(title) && (
-        <Text style={{ textAlign: 'center' }}>{title}</Text>
+        <Text style={{ textAlign: 'center', marginTop: 3, fontSize: 17, lineHeight: 24 }} fontType="bold">{title}</Text>
       )}
-      <Text style={{ textAlign: 'center' }}>
+      <Text style={{ textAlign: 'center', marginTop: 3, fontSize: 14, lineHeight: 21 }}>
         {content ?? children}
       </Text>
     </>
   )
 
-  return card ? <Card>{inner}</Card> : inner
+  return card ? <Card style={{ marginHorizontal: 0 }}>{inner}</Card> : inner
 }
 
 export default Info
