@@ -4,12 +4,13 @@ import Terra from 'assets/svg/Terra'
 
 export type AssetIconProps = {
   size?: number
+  iconSize?: number
   uri?: string
   name: string
 }
 
 const AssetIcon = (props: AssetIconProps): ReactElement => {
-  const { name, uri, size = 16 } = props
+  const { name, uri, size = 16, iconSize = 12 } = props
   const src = `https://assets.terra.money/icon/60/${name}.png`
 
   return (
@@ -17,7 +18,7 @@ const AssetIcon = (props: AssetIconProps): ReactElement => {
       {uri ? (
         <View
           style={{
-            backgroundColor: 'black',
+            backgroundColor: '#131A2F',
             borderWidth: 1,
             borderRadius: 100,
             width: size,
@@ -28,7 +29,7 @@ const AssetIcon = (props: AssetIconProps): ReactElement => {
         >
           <Image
             source={{ uri }}
-            style={{ width: size, height: size }}
+            style={{ width: iconSize, height: iconSize }}
           />
         </View>
       ) : name === 'Terra' ? (
