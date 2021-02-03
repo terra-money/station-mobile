@@ -7,7 +7,11 @@ import color from 'styles/color'
 const WalletAddress = ({ user }: { user: User }): ReactElement => {
   return (
     <View style={styles.container}>
-      <Text style={styles.userAddress} numberOfLines={1}>
+      <Text
+        style={styles.userAddress}
+        numberOfLines={1}
+        ellipsizeMode={'middle'}
+      >
         {user.address}
       </Text>
       <View>

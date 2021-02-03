@@ -1,5 +1,6 @@
 // all atom key have to be unique
 export enum StoreKeyEnum {
+  showLoading = 'showLoading',
   newWalletName = 'newWalletName',
   newWalletPassword = 'newWalletPassword',
   newWalletSeed = 'newWalletSeed',

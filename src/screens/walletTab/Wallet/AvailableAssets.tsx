@@ -68,7 +68,7 @@ const EmptyWallet = ({ card }: { card?: Card }): ReactElement => {
 }
 
 const WalletAddress = ({ user }: { user: User }): ReactElement => {
-  const { ui, loading } = useAssets(user)
+  const { ui, loading } = useAssets(user, { hideSmall: true })
 
   const render = ({
     available,

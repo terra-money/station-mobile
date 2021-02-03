@@ -32,8 +32,8 @@ import AlertView, {
 import Drawer, {
   useDrawerState,
 } from 'components/onlyForApp.tsx/Drawer'
+import { LoadingView } from 'components/onlyForApp.tsx/LoadingView'
 import Update from './src/screens/Update'
-
 import networks from './networks'
 
 let App = ({
@@ -165,6 +165,7 @@ let App = ({
                       <AlertView alertViewProps={alertViewProps} />
                     </>
                   )}
+                  <LoadingView />
                 </RecoilRoot>
               </SafeAreaProvider>
             </AuthProvider>
