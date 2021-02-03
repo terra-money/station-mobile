@@ -16,8 +16,20 @@ const seed = atom<string[]>({
   default: [],
 })
 
+const qrData = atom<
+  | {
+      address: string
+      name: string
+      privateKey: string
+    }
+  | undefined
+>({
+  key: StoreKeyEnum.recoverQRData,
+  default: undefined,
+})
 export default {
   name,
   password,
   seed,
+  qrData,
 }

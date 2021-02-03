@@ -8,19 +8,19 @@ import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 import PasteButton from 'components/PasteButton'
-import { Input, Button, Text, Icon, FormLabel } from 'components'
+import { Input, Button, FormLabel } from 'components'
 
 import RecoverWalletStore from 'stores/RecoverWalletStore'
 import NumberStep from 'components/NumberStep'
 import { useSignUp } from 'use-station/src'
 import { formatSeedStringToArray } from 'utils/wallet'
-import color from 'styles/color'
 
 const Screen = (): ReactElement => {
   const [seed, setSeed] = useRecoilState(RecoverWalletStore.seed)
+
   const { navigate } = useNavigation()
   const onPressNext = (): void => {
-    navigate('RecoverWalletStep3')
+    navigate('Step3Seed')
   }
 
   const stepConfirmed = _.every(seed, _.some)
@@ -75,39 +75,9 @@ const Screen = (): ReactElement => {
               onChangeSeedWord({ value })
             }
           />
-          <View style={styles.orBox}>
-            <Text style={styles.orText} fontType="medium">
-              or
-            </Text>
-          </View>
-          <Button
-            theme="gray"
-            size="sm"
-            title={
-              <View
-                style={{ flexDirection: 'row', alignItems: 'center' }}
-              >
-                <Icon
-                  name={'qr-code-scanner'}
-                  size={13}
-                  color={color.sapphire}
-                />
-                <Text
-                  style={{
-                    fontSize: 14,
-                    letterSpacing: 0,
-                    marginLeft: 5,
-                  }}
-                  fontType={'medium'}
-                >
-                  Scan QR code
-                </Text>
-              </View>
-            }
-          />
         </View>
         <Button
-          title="Finish"
+          title="Next"
           theme={'sapphire'}
           containerStyle={{ marginBottom: 10 }}
           disabled={!stepConfirmed}
@@ -119,7 +89,7 @@ const Screen = (): ReactElement => {
 }
 
 const HeaderRight = (): ReactElement => (
-  <NumberStep stepSize={3} nowStep={2} />
+  <NumberStep stepSize={3} nowStep={1} />
 )
 
 Screen.navigationOptions = navigationHeaderOptions({
@@ -134,19 +104,5 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     paddingTop: 20,
     justifyContent: 'space-between',
-  },
-  orBox: {
-    borderBottomWidth: 1,
-    borderColor: 'rgba(32,67,181,0.5)',
-    alignItems: 'center',
-    marginVertical: 30,
-  },
-  orText: {
-    fontSize: 14,
-    letterSpacing: 0,
-    marginBottom: -10,
-    paddingHorizontal: 10,
-    backgroundColor: color.sky,
-    color: color.sapphire,
   },
 })

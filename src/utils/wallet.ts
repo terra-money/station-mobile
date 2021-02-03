@@ -55,10 +55,10 @@ export const createWallet = async ({
 > => {
   const { mk330 } = generateAddresses(seed)
 
-  return recover(mk330, { name, password })
+  return recoverWalletWithMnemonicKey(mk330, { name, password })
 }
 
-export const recover = async (
+export const recoverWalletWithMnemonicKey = async (
   mk: MnemonicKey,
   { name, password }: { name: string; password: string }
 ): Promise<
@@ -113,7 +113,7 @@ export const getEncryptedKey = async (
   return encryptedKey
 }
 
-const addWallet = async ({
+export const addWallet = async ({
   wallet,
   key,
   password,
