@@ -4,7 +4,6 @@ import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs'
-import { useNavigation } from '@react-navigation/native'
 import _ from 'lodash'
 
 // import Dashboard from '../screens/homeTab/Dashboard'
@@ -15,7 +14,9 @@ import { RootStack } from 'types/navigation'
 import Staking from '../screens/stakingTab/Staking'
 import { Text, Icon } from 'components'
 import layout from 'styles/layout'
-import { useAuth } from 'use-station/src'
+import { useRecoilState } from 'recoil'
+import AppStore from 'stores/AppStore'
+import { useNavigation } from '@react-navigation/native'
 
 export const INITIAL = 'Dashboard'
 
@@ -102,11 +103,14 @@ const tabScreenItemList: {
 ]
 
 const Tabs = (): ReactElement => {
+  const [afterOnBoarding, setAfterOnBoarding] = useRecoilState(
+    AppStore.afterOnBoarding
+  )
   const { navigate } = useNavigation()
-  const { user } = useAuth()
   useEffect(() => {
-    if (_.isEmpty(user)) {
+    if (afterOnBoarding) {
       navigate('AuthMenu')
+      setAfterOnBoarding(false)
     }
   }, [])
 

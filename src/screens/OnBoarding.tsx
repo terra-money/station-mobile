@@ -14,6 +14,8 @@ import { setSkipOnboarding } from '../utils/storage'
 import { Text } from 'components'
 import images from 'assets/images'
 import color from 'styles/color'
+import { useSetRecoilState } from 'recoil'
+import AppStore from 'stores/AppStore'
 
 LogBox.ignoreLogs([
   // https://reactjs.org/blog/2020/02/26/react-v16.13.0.html#warnings-for-some-updates-during-render
@@ -92,9 +94,13 @@ const RenderButton = ({
   closeOnBoarding: () => void
   isLastPage: boolean
 }): ReactElement => {
+  const setAfterOnBoarding = useSetRecoilState(
+    AppStore.afterOnBoarding
+  )
   const enterTabs = (): void => {
     setSkipOnboarding(true)
     closeOnBoarding()
+    setAfterOnBoarding(true)
   }
 
   return (
