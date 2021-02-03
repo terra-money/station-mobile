@@ -209,8 +209,8 @@ const style = StyleSheet.create({
     lineHeight: 24,
   },
 
-  titleText: { fontSize: 24, lineHeight: 36 },
-  contentText: { fontSize: 16, lineHeight: 24 },
+  titleText: { fontSize: 24, lineHeight: 36, marginVertical: 5 },
+  contentText: { fontSize: 16, lineHeight: 24, textAlign: 'center' },
 
   debugContainer: { alignSelf: 'flex-start' },
   debugText: { marginBottom: 4 },

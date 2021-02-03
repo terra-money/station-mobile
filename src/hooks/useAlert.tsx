@@ -50,7 +50,7 @@ const AlertScreen = (
           style={styles.buttonBox}
           onPress={onPressConfirm}
         >
-          <Text style={styles.buttonText} fontType={'bold'}>
+          <Text style={styles.buttonText} fontType={'medium'}>
             {alertProps.onPressConfirmText || 'Ok'}
           </Text>
         </TouchableOpacity>
@@ -58,7 +58,7 @@ const AlertScreen = (
           <TouchableOpacity
             style={[
               styles.buttonBox,
-              { borderLeftWidth: 1, borderColor: '#ddd' },
+              { borderLeftWidth: 1, borderColor: '#CED6F1' },
             ]}
             onPress={(): void => {
               alertViewProps.close()
@@ -66,7 +66,7 @@ const AlertScreen = (
                 props.alertProps.onPressCancel()
             }}
           >
-            <Text style={styles.buttonText} fontType={'bold'}>
+            <Text style={styles.buttonText} fontType={'medium'}>
               {props.alertProps.onPressCancelText || 'Cancel'}
             </Text>
           </TouchableOpacity>
@@ -89,14 +89,15 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 20,
     lineHeight: 36,
     letterSpacing: 0,
     textAlign: 'center',
+    marginBottom: 5,
   },
   desc: {
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: 15,
+    lineHeight: 23,
     letterSpacing: 0,
     textAlign: 'center',
   },

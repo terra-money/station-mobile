@@ -50,11 +50,11 @@ const Number: FC<Props> = ({ value, unit, children, ...config }) => {
 /* styles */
 const styles = StyleSheet.create({
   number: {
-    fontSize: 24,
+    fontSize: 16,
     color: color.sapphire,
   },
   decimal: {
-    fontSize: 18,
+    fontSize: 12,
     color: color.sapphire,
   },
 })

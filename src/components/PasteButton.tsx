@@ -18,7 +18,10 @@ const PasteButton = (props: PasteButtonProps): ReactElement => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.copyButton}>
       <Icon name={'content-paste'} color={color.sapphire} />
-      <Text style={{ color: color.sapphire, fontSize: 10 }}>
+      <Text
+        style={{ color: color.sapphire, fontSize: 10, marginLeft: 5 }}
+        fontType="medium"
+      >
         PASTE
       </Text>
     </TouchableOpacity>

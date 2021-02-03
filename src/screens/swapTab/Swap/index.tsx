@@ -1,4 +1,9 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, {
+  ReactElement,
+  useEffect,
+  useState,
+  Fragment,
+} from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import _ from 'lodash'
 
@@ -63,7 +68,7 @@ const SwapTypeSelect = ({
             setValue && setValue(`${value}`)
           }}
           optionList={options}
-          containerStyle={{ height: 30 }}
+          containerStyle={{ height: 24 }}
           textStyle={{
             fontSize: 10,
             fontFamily: font.gotham.medium,
@@ -104,6 +109,7 @@ const Render = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             marginBottom: 20,
+            height: 24,
           }}
         >
           <View>
@@ -112,7 +118,7 @@ const Render = ({
             </Text>
           </View>
 
-          <View style={{ flex: 1, maxWidth: 160 }}>
+          <View style={{ flex: 1, maxWidth: 100 }}>
             {/* fields[4] : Swap option between default and terraswap */}
             <SwapTypeSelect field={fields[4]} />
           </View>
@@ -135,7 +141,9 @@ const Render = ({
               numberFontStyle={{
                 fontSize: 12,
                 color: color.dodgerBlue,
+                textDecorationLine: 'underline',
               }}
+              fontType="medium"
             >
               {max.display.value}
             </Number>
@@ -230,46 +238,38 @@ const RenderSwap = ({
   )
 }
 
-const RenderMarket = ({ user }: { user: User }): ReactElement => {
-  const { error, loading, ui, swap } = useMarket()
-
-  return (
-    <>
-      {error ? (
-        <ErrorComponent card />
-      ) : loading ? (
-        <Loading />
-      ) : (
-        ui && (
-          <RenderSwap
-            {...{ actives: ui.actives, user, title: swap }}
-          />
-        )
-      )}
-    </>
-  )
-}
-
 const Screen = ({ navigation }: Props): ReactElement => {
-  const [refreshing, setRefreshing] = useState(false)
+  const { error, loading, ui, swap } = useMarket()
+  const [refreshingKey, setRefreshingKey] = useState(0)
   const refreshPage = async (): Promise<void> => {
-    setRefreshing(true)
-    setTimeout(() => {
-      setRefreshing(false)
-    }, 100)
+    setRefreshingKey((ori) => ori + 1)
   }
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
-      refreshPage()
-    })
-  }, [])
+    if (loading === false) {
+      navigation.addListener('focus', () => {
+        refreshPage()
+      })
+    }
+  }, [loading])
 
   return (
     <WithAuth>
       {(user): ReactElement => (
         <Body theme={'sky'} scrollable onRefresh={refreshPage}>
-          {refreshing ? null : <RenderMarket user={user} />}
+          <Fragment key={refreshingKey}>
+            {error ? (
+              <ErrorComponent card />
+            ) : loading ? (
+              <Loading />
+            ) : (
+              ui && (
+                <RenderSwap
+                  {...{ actives: ui.actives, user, title: swap }}
+                />
+              )
+            )}
+          </Fragment>
         </Body>
       )}
     </WithAuth>
@@ -291,6 +291,8 @@ const styles = StyleSheet.create({
       width: 0,
       height: 20,
     },
+    shadowRadius: 35,
+    shadowOpacity: 1,
   },
   swapTitle: {
     fontSize: 16,

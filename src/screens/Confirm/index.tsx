@@ -84,11 +84,16 @@ const Render = ({
                     }}
                   >
                     <Number>{value}</Number>
-                    <Text>{unit}</Text>
+                    <Text style={{ fontSize: 12, lineHeight: 16 }}>
+                      {' '}
+                      {unit}
+                    </Text>
                   </View>
                 ))}
                 {_.some(text) && (
-                  <Input editable={false} value={text} />
+                  <Text style={{ fontSize: 16, lineHeight: 24 }}>
+                    {text}
+                  </Text>
                 )}
               </View>
             )
@@ -110,7 +115,7 @@ const Render = ({
             <View
               style={{
                 flex: 1,
-                paddingLeft: 17,
+                paddingLeft: 0,
               }}
             >
               <Input editable={false} value={fee.input.attrs.value} />
@@ -124,7 +129,7 @@ const Render = ({
         <Button
           theme={'sapphire'}
           disabled={form.disabled}
-          title={'next'}
+          title={'Next'}
           onPress={(): void => {
             navigate('ConfirmPassword', {
               feeSelectValue: fee.select.attrs.value || '',

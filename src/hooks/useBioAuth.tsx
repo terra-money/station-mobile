@@ -127,5 +127,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     textAlign: 'center',
     color: color.sapphire,
+    marginVertical: 5,
   },
 })

@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 35,
     shadowOpacity: 1,
+    marginBottom: 20,
   },
   historyTitleBox: {
     borderBottomColor: '#edf1f7',

@@ -1,6 +1,8 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { useStaking, useAuth, User } from 'use-station/src'
+import { View } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
+
+import { useStaking, useAuth, User } from 'use-station/src'
 
 import { navigationHeaderOptions } from 'components/layout/TabScreenHeader'
 import Body from 'components/layout/Body'
@@ -12,42 +14,56 @@ import { RootStackParams } from 'types'
 
 type Props = StackScreenProps<RootStackParams, 'Staking'>
 
-const Render = ({ user }: { user?: User }): ReactElement => {
+const Render = ({
+  user,
+  setLoadingComplete,
+}: {
+  user?: User
+  setLoadingComplete: React.Dispatch<React.SetStateAction<boolean>>
+}): ReactElement => {
   const { personal, ui, loading } = useStaking(user)
-  return (
-    <>
-      {loading ? null : (
-        <>
-          {personal && user && (
-            <PersonalSummary personal={personal} user={user} />
-          )}
-          {ui && <ValidatorList {...ui} />}
-        </>
+
+  useEffect(() => {
+    if (loading === false) {
+      setLoadingComplete(true)
+    }
+  }, [loading])
+
+  return loading ? (
+    <View />
+  ) : (
+    <View>
+      {personal && user && (
+        <PersonalSummary personal={personal} user={user} />
       )}
-    </>
+      {ui && <ValidatorList {...ui} />}
+    </View>
   )
 }
 
 const Screen = ({ navigation }: Props): ReactElement => {
   const { user } = useAuth()
-
-  const [refreshing, setRefreshing] = useState(false)
+  const [loadingComplete, setLoadingComplete] = useState(false)
+  const [refreshingKey, setRefreshingKey] = useState(0)
   const refreshPage = async (): Promise<void> => {
-    setRefreshing(true)
-    setTimeout(() => {
-      setRefreshing(false)
-    }, 100)
+    setRefreshingKey((ori) => ori + 1)
   }
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
-      refreshPage()
-    })
-  }, [])
+    if (loadingComplete) {
+      navigation.addListener('focus', () => {
+        refreshPage()
+      })
+    }
+  }, [loadingComplete])
 
   return (
     <Body theme={'sky'} scrollable onRefresh={refreshPage}>
-      {refreshing ? null : <Render user={user} />}
+      <Render
+        user={user}
+        key={refreshingKey}
+        setLoadingComplete={setLoadingComplete}
+      />
     </Body>
   )
 }

@@ -7,10 +7,8 @@ import { MessageUI, TxUI } from 'use-station/src'
 
 const Message = ({
   messages,
-  link,
 }: {
   messages: MessageUI[]
-  link: string
 }): ReactElement => {
   const message = messages[0]
   return (
@@ -20,40 +18,52 @@ const Message = ({
         justifyContent: 'flex-start',
       }}
     >
-      <View style={{ flexDirection: 'row' }}>
-        <Text fontType={'bold'}>{message.tag}</Text>
-        {messages.length > 1 && (
-          <Text style={styles.moreMsg} fontType={'medium'}>
-            +{messages.length - 1} MSG{messages.length > 2 && 'S'}
-          </Text>
-        )}
-      </View>
-
       <View
         style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+          width: '100%',
         }}
       >
-        <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 14 }}>{message.text}</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Text
+            style={{
+              fontSize: 10,
+              textTransform: 'uppercase',
+              lineHeight: 15,
+            }}
+            fontType={'bold'}
+          >
+            {message.tag}
+          </Text>
+          {messages.length > 1 && (
+            <Text style={styles.moreMsg} fontType={'medium'}>
+              +{messages.length - 1} MSG{messages.length > 2 && 'S'}
+            </Text>
+          )}
         </View>
 
-        <View style={{ paddingLeft: 30 }}>
-          <ExtLink
-            url={link}
-            title={
-              <Icon
-                size={24}
-                color={'#d8d8d8'}
-                name={'open-in-new'}
-              />
-            }
-            textStyle={{
-              fontSize: 10,
-            }}
-          />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <View style={{ flex: 1, marginVertical: 3 }}>
+            <Text
+              style={{
+                fontSize: 14,
+                lineHeight: 19,
+                letterSpacing: -0.1,
+              }}
+            >
+              {message.text}
+            </Text>
+          </View>
+          <View style={{ paddingLeft: 20 }}>
+            <Icon size={20} color={'#EAEDF8'} name={'open-in-new'} />
+          </View>
         </View>
       </View>
     </View>
@@ -62,13 +72,23 @@ const Message = ({
 
 const HistoryItem = ({ item }: { item: TxUI }): ReactElement => {
   return (
-    <>
-      {_.some(item.messages) && (
-        <Message messages={item.messages} link={item.link} />
-      )}
+    <ExtLink
+      url={item.link}
+      title={
+        <View>
+          {_.some(item.messages) && (
+            <Message messages={item.messages} />
+          )}
 
-      <Text style={styles.historyItemDate}>{item.date}</Text>
-    </>
+          <Text style={styles.historyItemDate} fontType="medium">
+            {item.date}
+          </Text>
+        </View>
+      }
+      textStyle={{
+        fontSize: 10,
+      }}
+    />
   )
 }
 
@@ -83,6 +103,7 @@ const styles = StyleSheet.create({
   },
   moreMsg: {
     fontSize: 10,
+    lineHeight: 15,
     marginLeft: 5,
     borderRadius: 7.5,
     backgroundColor: '#f4f5fb',

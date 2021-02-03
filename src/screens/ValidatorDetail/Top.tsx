@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 24,
     letterSpacing: 0,
+    marginBottom: 5,
   },
   validatorIconBox: {
     marginRight: 6,

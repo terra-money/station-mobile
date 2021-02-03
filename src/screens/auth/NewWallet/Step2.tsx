@@ -36,14 +36,16 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'sapphire'} title={'Write Down Your Seed'} />
+      <SubHeader theme={'sapphire'} title={'Write down your seed'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={{ alignItems: 'flex-end', marginBottom: 10 }}>
             <CopyButton copyString={seed.join(' ')} />
           </View>
           <View style={styles.seedBox}>
-            <Text style={{ fontSize: 14, lineHeight: 21 }}>{seed.join(' ')}</Text>
+            <Text style={{ fontSize: 14, lineHeight: 21 }}>
+              {seed.join(' ')}
+            </Text>
           </View>
           <WarningBox
             message={

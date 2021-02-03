@@ -36,7 +36,7 @@ const Render = ({
   confirm: ConfirmProps
 } & Props): ReactElement => {
   const feeSelectValue = route.params.feeSelectValue
-  const { getComfirmData } = useConfirm()
+  const { getComfirmData, initConfirm } = useConfirm()
   const { showLoading, hideLoading } = useLoading()
   const { result, form, fee } = getComfirmData({ confirm, user })
 
@@ -83,6 +83,7 @@ const Render = ({
     if (result) {
       dispatch(StackActions.popToTop())
       navigate('Complete', { result })
+      initConfirm()
     }
   }, [result])
 
