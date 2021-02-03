@@ -30,7 +30,9 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
               source={images.bio_face}
               style={styles.infoImage}
             />
-            <Text style={styles.infoTitle}>Use Face ID</Text>
+            <Text style={styles.infoTitle} fontType={'bold'}>
+              Use Face ID
+            </Text>
             <Text style={{ color: color.sapphire }}>
               Use your Face ID for faster, easier access to your
               acount.
@@ -121,7 +123,6 @@ const styles = StyleSheet.create({
   },
   infoTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
     fontStyle: 'normal',
     lineHeight: 36,
     letterSpacing: 0,

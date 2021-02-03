@@ -8,6 +8,7 @@ export enum StoreKeyEnum {
   recoverWalletName = 'recoverWalletName',
   recoverWalletPassword = 'recoverWalletPassword',
   recoverWalletSeed = 'recoverWalletSeed',
+  recoverQRData = 'recoverQRData',
   swapRate = 'swapRate',
   swapValue = 'swapValue',
   confirm = 'confirm',

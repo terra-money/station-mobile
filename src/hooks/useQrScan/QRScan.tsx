@@ -9,7 +9,6 @@ import {
 import { Text } from 'components'
 import { BarCodeReadEvent } from 'react-native-camera'
 import QRCodeScanner from 'react-native-qrcode-scanner'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import color from 'styles/color'
 
 const MARKER_FULL_WIDTH = 260
@@ -19,11 +18,14 @@ const FRAME_WIDTH = 20 + FRAME_BORDER
 const FRAME_HEIGHT = 20
 const MARKER_WIDTH = MARKER_FULL_WIDTH + FRAME_BORDER * 2
 
-const QRScan = (): ReactElement => {
-  const insets = useSafeAreaInsets()
+type QrScanType = {
+  onRead: (event: BarCodeReadEvent) => void
+} & AppModal
 
+const QRScan = ({ close, onRead }: QrScanType): ReactElement => {
   const onSuccess = (e: BarCodeReadEvent): void => {
-    e.data
+    onRead(e)
+    close()
   }
 
   const Vertical = (): ReactElement => (
@@ -43,10 +45,8 @@ const QRScan = (): ReactElement => {
   )
 
   const Back = (): ReactElement => (
-    <TouchableOpacity
-      style={[style.backContainer, { marginTop: insets.top }]}
-    >
-      <Icon name={'arrow-back-ios'} color={color.white} size={24} />
+    <TouchableOpacity style={style.backContainer} onPress={close}>
+      <Icon name={'close'} color={color.white} size={28} />
     </TouchableOpacity>
   )
 
@@ -146,7 +146,6 @@ const style = StyleSheet.create({
     color: color.white,
     alignSelf: 'center',
   },
-
   horizontalFrameContainer: {
     width: FRAME_BORDER,
     justifyContent: 'space-between',

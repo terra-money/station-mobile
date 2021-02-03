@@ -18,7 +18,9 @@ const Screen = (): ReactElement => {
           size={60}
           color={color.sapphire}
         />
-        <Text style={styles.infoTitle}>Wallet recovered!</Text>
+        <Text style={styles.infoTitle} fontType={'bold'}>
+          Wallet recovered!
+        </Text>
         <Text style={{ color: color.sapphire }}>
           Welcome back to Terra Station
         </Text>
@@ -47,7 +49,6 @@ const styles = StyleSheet.create({
   },
   infoTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
     fontStyle: 'normal',
     lineHeight: 36,
     letterSpacing: 0,

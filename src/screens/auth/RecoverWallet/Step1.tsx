@@ -1,4 +1,4 @@
-import React, { useState, ReactElement, useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { useRecoilState, useSetRecoilState } from 'recoil'
@@ -7,128 +7,168 @@ import { useNavigation } from '@react-navigation/native'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import Button from 'components/Button'
-import FormInput from 'components/FormInput'
-import { useValueValidator } from 'hooks/useValueValidator'
+import { Button, Text, Icon } from 'components'
+
 import RecoverWalletStore from 'stores/RecoverWalletStore'
-import NumberStep from 'components/NumberStep'
-import FormLabel from 'components/FormLabel'
+import color from 'styles/color'
+import { useQRScan } from 'hooks/useQrScan'
+import { useAlert } from 'hooks/useAlert'
+import { BarCodeReadEvent } from 'react-native-camera'
 
 const Screen = (): ReactElement => {
+  const setPassword = useSetRecoilState(RecoverWalletStore.password)
+  const setName = useSetRecoilState(RecoverWalletStore.name)
+  const setQRData = useSetRecoilState(RecoverWalletStore.qrData)
+  const [seed, setSeed] = useRecoilState(RecoverWalletStore.seed)
+
+  const { openQRScan } = useQRScan()
   const { navigate } = useNavigation()
-  const setSeed = useSetRecoilState(RecoverWalletStore.seed)
-  const [name, setName] = useRecoilState(RecoverWalletStore.name)
-  const [inputName, setinputName] = useState('')
+  const { alert } = useAlert()
 
-  const { valueValidate } = useValueValidator()
-  const [nameErrMsg, setNameErrMsg] = useState('')
-  const [password, setPassword] = useRecoilState(
-    RecoverWalletStore.password
-  )
-  const [passwordErrMsg, setPasswordErrMsg] = useState('')
+  const stepConfirmed = _.every(seed, _.some)
 
-  const [passwordConfirm, setPasswordConfirm] = useState('')
-  const [passwordConfirmErrMsg, setPasswordConfirmErrMsg] = useState(
-    ''
-  )
+  const onRead = (e: BarCodeReadEvent): void => {
+    let data
+    try {
+      data = JSON.parse(e.data)
+    } catch {}
 
-  const stepConfirmed =
-    _.isEmpty(
-      nameErrMsg || passwordErrMsg || passwordConfirmErrMsg
-    ) && _.some(name && password && passwordConfirm)
-
-  const onChangeName = (text: string): void => {
-    setName(text)
-    setinputName(text)
-    setNameErrMsg(valueValidate.name(text))
+    if (
+      typeof data === 'object' &&
+      'address' in data &&
+      'name' in data &&
+      'privateKey' in data
+    ) {
+      setQRData(data)
+      setName(data.name)
+      navigate('Step2QR')
+    } else {
+      alert({ desc: 'Wrong QR Code' })
+    }
   }
 
-  const onChangePassword = (text: string): void => {
-    setPassword(text)
-    setPasswordErrMsg(valueValidate.password(text))
-    setPasswordConfirmErrMsg(
-      text === passwordConfirm ? '' : 'Password does not match'
-    )
-  }
-
-  const onChangePasswordConfirm = (text: string): void => {
-    setPasswordConfirm(text)
-    setPasswordConfirmErrMsg(
-      text === password ? '' : 'Password does not match'
-    )
-  }
-
-  const onPressNext = (): void => {
-    navigate('RecoverWalletStep2')
+  const onPressQRScan = (): void => {
+    openQRScan({
+      onRead,
+    })
   }
 
   useEffect(() => {
     setName('')
     setPassword('')
     setSeed([])
+    setQRData(undefined)
   }, [])
 
   return (
     <>
       <SubHeader
         theme={'sapphire'}
-        title={'Recover Existing Wallet'}
+        title={'Recover existing wallet'}
       />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
-          <View style={styles.section}>
-            <FormLabel text={'Wallet name'} />
-            <FormInput
-              underlineColorAndroid="#ccc"
-              value={inputName}
-              onChangeText={onChangeName}
-              placeholder={'Enter 5-20 alphanumeric characters'}
-              errorMessage={nameErrMsg}
-            />
-          </View>
-          <View style={styles.section}>
-            <FormLabel text={'Password'} />
-            <FormInput
-              underlineColorAndroid="#ccc"
-              value={password}
-              secureTextEntry
-              onChangeText={onChangePassword}
-              placeholder={'Must be at least 10 characters'}
-              errorMessage={passwordErrMsg}
-            />
-          </View>
-          <View style={styles.section}>
-            <FormLabel text={'Confirm password'} />
-            <FormInput
-              underlineColorAndroid="#ccc"
-              value={passwordConfirm}
-              secureTextEntry
-              onChangeText={onChangePasswordConfirm}
-              placeholder={'Confirm your password'}
-              errorMessage={passwordConfirmErrMsg}
-            />
-          </View>
-        </View>
+          <Button
+            title={
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  paddingHorizontal: 30,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    letterSpacing: 0,
+                  }}
+                  fontType={'medium'}
+                >
+                  Use seed phrase
+                </Text>
 
-        <Button
-          title="Next"
-          theme={'sapphire'}
-          containerStyle={{ marginBottom: 10 }}
-          disabled={!stepConfirmed}
-          onPress={onPressNext}
-        />
+                <Icon
+                  name={'content-paste'}
+                  size={24}
+                  color={color.sapphire}
+                />
+              </View>
+            }
+            theme={'white'}
+            containerStyle={{
+              marginBottom: 20,
+              borderWidth: 1,
+              borderColor: '#d2d9f0',
+            }}
+            disabled={!stepConfirmed}
+            onPress={(): void => navigate('Step2Seed')}
+          />
+          <Button
+            onPress={onPressQRScan}
+            theme="white"
+            title={
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  paddingHorizontal: 30,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    letterSpacing: 0,
+                  }}
+                  fontType={'medium'}
+                >
+                  Scan QR code
+                </Text>
+
+                <Icon
+                  name={'qr-code-scanner'}
+                  size={24}
+                  color={color.sapphire}
+                />
+              </View>
+            }
+            containerStyle={{
+              marginBottom: 20,
+              borderWidth: 1,
+              borderColor: '#d2d9f0',
+            }}
+          />
+        </View>
+        <View
+          style={{
+            opacity: 0.91,
+            borderRadius: 8,
+            backgroundColor: '#ebeff8',
+            paddingHorizontal: 20,
+            paddingVertical: 15,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 12,
+              lineHeight: 18,
+              letterSpacing: 0,
+            }}
+          >
+            Generate QR code from <Icon name={'settings'} size={14} />
+            settings menu of Terra Station desktop or extension
+          </Text>
+        </View>
       </Body>
     </>
   )
 }
 
-const HeaderRight = (): ReactElement => (
-  <NumberStep stepSize={3} nowStep={1} />
-)
-
 Screen.navigationOptions = navigationHeaderOptions({
   theme: 'sapphire',
-  headerRight: HeaderRight,
 })
 
 export default Screen
@@ -137,9 +177,5 @@ const styles = StyleSheet.create({
   container: {
     paddingBottom: 50,
     paddingTop: 20,
-    justifyContent: 'space-between',
-  },
-  section: {
-    marginBottom: 20,
   },
 })
