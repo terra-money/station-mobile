@@ -84,7 +84,10 @@ const Render = ({
                     }}
                   >
                     <Number>{value}</Number>
-                    <Text style={{ fontSize: 12, lineHeight: 16 }}> {unit}</Text>
+                    <Text style={{ fontSize: 12, lineHeight: 16 }}>
+                      {' '}
+                      {unit}
+                    </Text>
                   </View>
                 ))}
                 {_.some(text) && (

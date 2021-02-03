@@ -52,7 +52,7 @@ const CopyButton = (props: CopyButtonProps): ReactElement => {
         color={theme === 'sapphire' ? color.white : color.sapphire}
       />
       <Text
-        style={[{ fontSize: 10, marginLeft: 4 }, textStyle]} 
+        style={[{ fontSize: 10, marginLeft: 4 }, textStyle]}
         fontType="medium"
       >
         COPY

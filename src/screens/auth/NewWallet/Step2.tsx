@@ -43,7 +43,9 @@ const Screen = (): ReactElement => {
             <CopyButton copyString={seed.join(' ')} />
           </View>
           <View style={styles.seedBox}>
-            <Text style={{ fontSize: 14, lineHeight: 21 }}>{seed.join(' ')}</Text>
+            <Text style={{ fontSize: 14, lineHeight: 21 }}>
+              {seed.join(' ')}
+            </Text>
           </View>
           <WarningBox
             message={

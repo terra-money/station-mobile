@@ -18,7 +18,11 @@ const WarningBox = ({
 
       <View style={{ flex: 1 }}>
         {typeof message === 'string' ? (
-          <Text style={{ color: color.red, fontSize: 14, lineHeight: 21, }}>{message}</Text>
+          <Text
+            style={{ color: color.red, fontSize: 14, lineHeight: 21 }}
+          >
+            {message}
+          </Text>
         ) : (
           message
         )}
