@@ -57,9 +57,13 @@ const Rewards = ({
                   decimalFontStyle={{ fontSize: 10.5 }}
                   {...content.display}
                 />
-                <Text style={{ fontSize: 10.5, marginTop: 2 }}>
-                  {content.date}
+                <Text
+                  style={{ fontSize: 10.5, marginTop: 5 }}
+                  fontType="medium"
+                >
+                  Release time
                 </Text>
+                <Text style={{ fontSize: 10.5 }}>{content.date}</Text>
               </View>
             </View>
           )
