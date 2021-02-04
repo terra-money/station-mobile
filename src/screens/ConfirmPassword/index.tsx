@@ -76,7 +76,7 @@ const Render = ({
     if (bioAuthTrigger) {
       form.onSubmit && form.onSubmit()
     }
-  }, [form.disabled, bioAuthTrigger])
+  }, [bioAuthTrigger])
 
   // result will set after form.onSubmit or error
   useEffect(() => {
