@@ -11,6 +11,7 @@ import ValidatorList from './ValidatorList'
 import PersonalSummary from './PersonalSummary'
 
 import { RootStackParams } from 'types'
+import { LoadingIcon } from 'components'
 
 type Props = StackScreenProps<RootStackParams, 'Staking'>
 
@@ -30,7 +31,7 @@ const Render = ({
   }, [loading])
 
   return loading ? (
-    <View />
+    <LoadingIcon />
   ) : (
     <View>
       {personal && user && (

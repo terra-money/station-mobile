@@ -1,5 +1,4 @@
 import React, { useState, useEffect, ReactElement } from 'react'
-import { AppState, AppStateStatus, Platform } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import SplashScreen from 'react-native-splash-screen'
 import { RecoilRoot } from 'recoil'

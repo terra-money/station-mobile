@@ -1,4 +1,4 @@
-import { Icon } from 'components'
+import { Icon, NumberStep } from 'components'
 import React, { ReactElement } from 'react'
 import {
   Dimensions,
@@ -20,9 +20,14 @@ const MARKER_WIDTH = MARKER_FULL_WIDTH + FRAME_BORDER * 2
 
 type QrScanType = {
   onRead: (event: BarCodeReadEvent) => void
+  marginTop: number
 } & AppModal
 
-const QRScan = ({ close, onRead }: QrScanType): ReactElement => {
+const QRScan = ({
+  close,
+  onRead,
+  marginTop,
+}: QrScanType): ReactElement => {
   const onSuccess = (e: BarCodeReadEvent): void => {
     onRead(e)
     close()
@@ -44,10 +49,22 @@ const QRScan = ({ close, onRead }: QrScanType): ReactElement => {
     </View>
   )
 
-  const Back = (): ReactElement => (
-    <TouchableOpacity style={style.backContainer} onPress={close}>
-      <Icon name={'close'} color={color.white} size={28} />
-    </TouchableOpacity>
+  const Header = (): ReactElement => (
+    <View
+      style={{
+        position: 'absolute',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop,
+      }}
+    >
+      <TouchableOpacity style={style.backContainer} onPress={close}>
+        <Icon name={'close'} color={color.white} size={28} />
+      </TouchableOpacity>
+      <NumberStep stepSize={2} nowStep={1} />
+    </View>
   )
 
   const Title = (): ReactElement => (
@@ -97,7 +114,7 @@ const QRScan = ({ close, onRead }: QrScanType): ReactElement => {
           <Title />
 
           <View style={style.verticalContainer} />
-          <Back />
+          <Header />
         </View>
       }
     />
@@ -133,7 +150,6 @@ const style = StyleSheet.create({
   },
 
   backContainer: {
-    position: 'absolute',
     paddingHorizontal: 20,
     paddingVertical: 18,
   },

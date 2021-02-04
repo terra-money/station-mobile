@@ -19,7 +19,10 @@ const SelectItemList = <T,>({
   selectedValue,
   compareKey,
   flatListRef,
-}: { drawer: Drawer } & SelectorProps<T>): ReactElement => {
+}: {
+  drawer: Drawer
+  flatListRef: React.RefObject<FlatList<any>>
+} & SelectorProps<T>): ReactElement => {
   return (
     <View style={styles.container}>
       <FlatList
@@ -120,7 +123,6 @@ type SelectorProps<T> = {
   }[]
   onSelect: (value: T) => void
   compareKey?: keyof T
-  flatListRef: React.RefObject<FlatList<any>>
 }
 
 const Selector = <T,>(props: SelectorProps<T>): ReactElement => {
