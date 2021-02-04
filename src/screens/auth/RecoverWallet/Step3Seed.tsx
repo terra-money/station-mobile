@@ -1,4 +1,4 @@
-import React, { useState, ReactElement } from 'react'
+import React, { useState, ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { useRecoilState } from 'recoil'
@@ -60,6 +60,11 @@ const Screen = (): ReactElement => {
   const onPressNext = (): void => {
     navigate('Step4Seed')
   }
+
+  useEffect(() => {
+    setName('')
+    setPassword('')
+  }, [])
 
   return (
     <>
