@@ -128,12 +128,15 @@ const PersonalSummary = ({
             {undelegated && undelegated.table && (
               <View style={styles.itemBox}>
                 <View style={styles.undelegated}>
-                  <Text style={{ paddingRight: 20 }}>
-                    {'Undelegated'}
-                  </Text>
+                  <Text>{'Undelegated'}</Text>
                   <Image
                     source={images.loading_circle}
-                    style={{ width: 18, height: 18, marginLeft: 3 }}
+                    style={{
+                      width: 18,
+                      height: 18,
+                      marginLeft: 3,
+                      paddingRight: 20,
+                    }}
                   />
                 </View>
                 <Number

@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactNode, useState } from 'react'
-import { Modal, SafeAreaView } from 'react-native'
+import { Modal, View } from 'react-native'
 
 const AppModal = ({ modal }: { modal: AppModal }): ReactElement => {
   return (
@@ -8,7 +8,7 @@ const AppModal = ({ modal }: { modal: AppModal }): ReactElement => {
       onRequestClose={modal.onRequestClose}
       transparent
     >
-      <SafeAreaView style={{ flex: 1 }}>{modal.content}</SafeAreaView>
+      <View style={{ flex: 1 }}>{modal.content}</View>
     </Modal>
   )
 }
