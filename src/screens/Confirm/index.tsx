@@ -85,7 +85,7 @@ const Render = ({
                   >
                     <Number
                       numberFontStyle={{
-                        textAlign: 'left'
+                        textAlign: 'left',
                       }}
                     >
                       {value}

@@ -7,7 +7,6 @@ const StatusBar = ({
 }: {
   theme?: 'sapphire' | 'sky' | 'white'
 }): ReactElement => {
-  console.log('theme', theme)
   return (
     <>
       {theme === 'sapphire' ? (

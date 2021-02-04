@@ -30,7 +30,7 @@ const AddressBox = ({
   selectedMk,
   setSelectedMk,
 }: {
-  bip: number
+  bip: 118 | 330
   mk: MnemonicKey
   selectedMk?: MnemonicKey
   setSelectedMk: React.Dispatch<
@@ -42,7 +42,7 @@ const AddressBox = ({
   const [isDelegated, setIsDelegated] = useState(false)
   const [isUndelegated, setIsUndelegated] = useState(false)
   const [balanceList, setBalanceList] = useState<string[]>([])
-
+  const [showAddressBox, setShowAddressBox] = useState(false)
   const selectedStyle =
     selectedMk &&
     (selectedMk === mk
@@ -62,10 +62,17 @@ const AddressBox = ({
           )
         )
       }
+      setShowAddressBox(
+        bip === 330 ||
+          _.some(data.balance) ||
+          _.some(data.vesting) ||
+          _.some(data.delegations) ||
+          _.some(data.unbondings)
+      )
     }
   }, [bank.loading])
 
-  return (
+  return showAddressBox ? (
     <TouchableOpacity
       onPress={(): void => {
         setSelectedMk(mk)
@@ -88,6 +95,8 @@ const AddressBox = ({
         </View>
       </View>
     </TouchableOpacity>
+  ) : (
+    <View />
   )
 }
 
