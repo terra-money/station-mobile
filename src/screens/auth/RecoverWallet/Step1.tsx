@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { useRecoilState, useSetRecoilState } from 'recoil'
@@ -14,7 +14,6 @@ import color from 'styles/color'
 import { useQRScan } from 'hooks/useQrScan'
 import { useAlert } from 'hooks/useAlert'
 import { BarCodeReadEvent } from 'react-native-camera'
-import { checkCameraPermission } from 'utils/permission'
 import { RootStackParams } from 'types'
 import { StackScreenProps } from '@react-navigation/stack'
 
@@ -25,7 +24,6 @@ const Screen = ({ navigation }: Props): ReactElement => {
   const setName = useSetRecoilState(RecoverWalletStore.name)
   const setQRData = useSetRecoilState(RecoverWalletStore.qrData)
   const [seed, setSeed] = useRecoilState(RecoverWalletStore.seed)
-  const [ableCamera, setAbleCamera] = useState(false)
   const { openQRScan } = useQRScan()
   const { navigate } = useNavigation()
   const { alert } = useAlert()
@@ -55,9 +53,6 @@ const Screen = ({ navigation }: Props): ReactElement => {
   const onPressQRScan = async (): Promise<void> => {
     openQRScan({
       onRead,
-      checkPermission: (res) => {
-        setAbleCamera(res)
-      },
     })
   }
 
@@ -66,9 +61,6 @@ const Screen = ({ navigation }: Props): ReactElement => {
     setPassword('')
     setSeed([])
     setQRData(undefined)
-    checkCameraPermission().then((res) => {
-      setAbleCamera(res === 'granted')
-    })
   }
 
   useEffect(() => {
@@ -177,46 +169,21 @@ const Screen = ({ navigation }: Props): ReactElement => {
               letterSpacing: 0,
             }}
           >
-            Generate QR code from <Icon name={'settings'} size={14} />
+            Generate QR code from{' '}
+            <View style={{ width: 15 }}>
+              <Icon
+                name={'settings'}
+                size={14}
+                color={color.sapphire}
+                style={{
+                  position: 'absolute',
+                  marginTop: -12,
+                }}
+              />
+            </View>
             settings menu of Terra Station desktop or extension
           </Text>
         </View>
-        {ableCamera === false && (
-          <View
-            style={{
-              opacity: 0.91,
-              borderRadius: 8,
-              backgroundColor: '#ffeff0',
-              borderStyle: 'solid',
-              borderWidth: 1,
-              borderColor: 'rgba(255, 85, 97, 0.2)',
-              paddingHorizontal: 20,
-              paddingVertical: 15,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 14,
-                lineHeight: 21,
-                letterSpacing: 0,
-                color: '#ff5561',
-              }}
-              fontType={'bold'}
-            >
-              Camera not authorized
-            </Text>
-            <Text
-              style={{
-                fontSize: 12,
-                lineHeight: 18,
-                letterSpacing: 0,
-                color: '#ff5561',
-              }}
-            >
-              You need to set up a camera in Settings
-            </Text>
-          </View>
-        )}
       </Body>
     </>
   )
