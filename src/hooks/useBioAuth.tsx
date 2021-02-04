@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { View, Image, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet, Platform } from 'react-native'
 
 import Button from 'components/Button'
 import Body from 'components/layout/Body'
@@ -24,7 +24,7 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
   return (
     <Body containerStyle={styles.container}>
       <View style={{ flex: 1 }}>
-        {bioType === BiometricType.FACE && (
+        {Platform.OS === 'ios' && bioType === BiometricType.FACE && (
           <View style={styles.info}>
             <Image
               source={images.bio_face}
@@ -40,19 +40,20 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
           </View>
         )}
 
-        {bioType === BiometricType.FINGERPRINT && (
-          <View style={styles.info}>
-            <Image
-              source={images.finger_print}
-              style={styles.infoImage}
-            />
-            <Text style={styles.infoTitle}>Use Touch ID</Text>
-            <Text style={{ color: color.sapphire }}>
-              Use your Touch ID for faster, easier access to your
-              acount.
-            </Text>
-          </View>
-        )}
+        {Platform.OS === 'android' &&
+          bioType === BiometricType.FINGERPRINT && (
+            <View style={styles.info}>
+              <Image
+                source={images.finger_print}
+                style={styles.infoImage}
+              />
+              <Text style={styles.infoTitle}>Use Touch ID</Text>
+              <Text style={{ color: color.sapphire }}>
+                Use your Touch ID for faster, easier access to your
+                acount.
+              </Text>
+            </View>
+          )}
       </View>
       <View>
         <Button

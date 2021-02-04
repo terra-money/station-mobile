@@ -28,7 +28,7 @@ const Screen = (): ReactElement => {
   const [name, setName] = useRecoilState(RecoverWalletStore.name)
   const [inputName, setinputName] = useState(name)
   const [disableNextButton, setDisableNextButton] = useState(false)
-  const { valueValidate } = useValueValidator()
+  const { valueValidate, walletList } = useValueValidator()
   const [nameErrMsg, setNameErrMsg] = useState('')
   const [password, setPassword] = useRecoilState(
     RecoverWalletStore.password
@@ -51,6 +51,11 @@ const Screen = (): ReactElement => {
   }
 
   const onPressNext = async (): Promise<void> => {
+    const inputNameError = valueValidate.name(inputName)
+    if (_.some(inputNameError)) {
+      setNameErrMsg(inputNameError)
+      return
+    }
     setDisableNextButton(true)
     if (qrData) {
       const key = decryptKey(qrData.privateKey, password)
@@ -87,6 +92,12 @@ const Screen = (): ReactElement => {
       setinputName(name)
     }
   }, [name])
+
+  useEffect(() => {
+    if (walletList.length > 0) {
+      setNameErrMsg(valueValidate.name(inputName))
+    }
+  }, [walletList])
 
   return (
     <>

@@ -15,8 +15,12 @@ import { useQRScan } from 'hooks/useQrScan'
 import { useAlert } from 'hooks/useAlert'
 import { BarCodeReadEvent } from 'react-native-camera'
 import { checkCameraPermission } from 'utils/permission'
+import { RootStackParams } from 'types'
+import { StackScreenProps } from '@react-navigation/stack'
 
-const Screen = (): ReactElement => {
+type Props = StackScreenProps<RootStackParams>
+
+const Screen = ({ navigation }: Props): ReactElement => {
   const setPassword = useSetRecoilState(RecoverWalletStore.password)
   const setName = useSetRecoilState(RecoverWalletStore.name)
   const setQRData = useSetRecoilState(RecoverWalletStore.qrData)
@@ -57,7 +61,7 @@ const Screen = (): ReactElement => {
     })
   }
 
-  useEffect(() => {
+  const initStoreData = (): void => {
     setName('')
     setPassword('')
     setSeed([])
@@ -65,6 +69,13 @@ const Screen = (): ReactElement => {
     checkCameraPermission().then((res) => {
       setAbleCamera(res === 'granted')
     })
+  }
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      initStoreData()
+    })
+    initStoreData()
   }, [])
 
   return (
