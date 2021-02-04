@@ -1,13 +1,12 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useRef } from 'react'
 import {
   TouchableOpacity,
   StyleSheet,
   View,
-  ScrollView,
   StyleProp,
   ViewStyle,
+  FlatList,
 } from 'react-native'
-import _ from 'lodash'
 
 import { useApp } from 'hooks'
 import color from 'styles/color'
@@ -19,14 +18,43 @@ const SelectItemList = <T,>({
   drawer,
   selectedValue,
   compareKey,
+  flatListRef,
 }: { drawer: Drawer } & SelectorProps<T>): ReactElement => {
   return (
     <View style={styles.container}>
-      <ScrollView scrollEnabled={list.length > 6}>
-        {_.map(list, (item, index) => {
+      <FlatList
+        ref={flatListRef}
+        scrollEnabled={list.length > 6}
+        getItemLayout={(
+          data,
+          index
+        ): {
+          length: number
+          offset: number
+          index: number
+        } => ({
+          length: 60,
+          offset: 60 * index,
+          index,
+        })}
+        onLayout={(): void => {
+          if (selectedValue && flatListRef.current) {
+            const index = list.findIndex((x) =>
+              compareKey
+                ? selectedValue[compareKey] === x.value[compareKey]
+                : selectedValue === x.value
+            )
+            flatListRef.current.scrollToIndex({
+              animated: true,
+              index,
+            })
+          }
+        }}
+        data={list}
+        keyExtractor={(item, index): string => `items-${index}`}
+        renderItem={({ item, index }): ReactElement => {
           return (
             <TouchableOpacity
-              key={`items-${index}`}
               onPress={(): void => {
                 onSelect(item.value)
                 drawer.close()
@@ -76,8 +104,8 @@ const SelectItemList = <T,>({
               </View>
             </TouchableOpacity>
           )
-        })}
-      </ScrollView>
+        }}
+      />
     </View>
   )
 }
@@ -92,12 +120,15 @@ type SelectorProps<T> = {
   }[]
   onSelect: (value: T) => void
   compareKey?: keyof T
+  flatListRef: React.RefObject<FlatList<any>>
 }
 
 const Selector = <T,>(props: SelectorProps<T>): ReactElement => {
   const { drawer } = useApp()
+  const flatListRef = useRef<FlatList>(null)
+
   const onPress = (): void => {
-    drawer.open(SelectItemList({ ...props, drawer }))
+    drawer.open(SelectItemList({ ...props, drawer, flatListRef }))
   }
   return (
     <TouchableOpacity style={props.containerStyle} onPress={onPress}>
