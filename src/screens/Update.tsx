@@ -50,11 +50,17 @@ const Update = (props: Props): ReactElement => {
     <View
       style={[
         { flex: 1, backgroundColor: color.white },
-        { marginTop: insets.top, marginBottom: insets.bottom },
+        {
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom + 120,
+        },
       ]}
     >
       <SafeAreaView style={styles.container}>
-        <Image source={images.loading_image} />
+        <Image
+          source={images.loading_image}
+          style={{ width: 160, height: 160 }}
+        />
         <Text fontType="bold" style={styles.progressTitle}>
           Updating...
         </Text>
