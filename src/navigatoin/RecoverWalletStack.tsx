@@ -1,29 +1,41 @@
 import React, { ReactElement } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import RecoverWalletStep1 from '../screens/auth/RecoverWallet/Step1'
-import RecoverWalletStep2 from '../screens/auth/RecoverWallet/Step2'
-import RecoverWalletStep3 from '../screens/auth/RecoverWallet/Step3'
+import Step1 from '../screens/auth/RecoverWallet/Step1'
+import Step2QR from '../screens/auth/RecoverWallet/Step2QR'
+import Step2Seed from '../screens/auth/RecoverWallet/Step2Seed'
+import Step3Seed from '../screens/auth/RecoverWallet/Step3Seed'
+import Step4Seed from '../screens/auth/RecoverWallet/Step4Seed'
 
 import WalletRecovered from '../screens/auth/RecoverWallet/WalletRecovered'
 const Stack = createStackNavigator()
 
 const StakingStack = (): ReactElement => (
-  <Stack.Navigator initialRouteName="RecoverWalletStep1">
+  <Stack.Navigator initialRouteName="Step1">
     <Stack.Screen
-      name="RecoverWalletStep1"
-      component={RecoverWalletStep1}
-      options={RecoverWalletStep1.navigationOptions}
+      name="Step1"
+      component={Step1}
+      options={Step1.navigationOptions}
     />
     <Stack.Screen
-      name="RecoverWalletStep2"
-      component={RecoverWalletStep2}
-      options={RecoverWalletStep2.navigationOptions}
+      name="Step2QR"
+      component={Step2QR}
+      options={Step2QR.navigationOptions}
     />
     <Stack.Screen
-      name="RecoverWalletStep3"
-      component={RecoverWalletStep3}
-      options={RecoverWalletStep3.navigationOptions}
+      name="Step2Seed"
+      component={Step2Seed}
+      options={Step2Seed.navigationOptions}
+    />
+    <Stack.Screen
+      name="Step3Seed"
+      component={Step3Seed}
+      options={Step3Seed.navigationOptions}
+    />
+    <Stack.Screen
+      name="Step4Seed"
+      component={Step4Seed}
+      options={Step4Seed.navigationOptions}
     />
     <Stack.Screen
       name="WalletRecovered"

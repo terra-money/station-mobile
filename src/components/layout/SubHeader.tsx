@@ -39,7 +39,7 @@ const SubHeader = ({
     <View style={[styles.headerBottomTitleBox, containerStyle]}>
       <Text
         style={[styles.headerBottomTitle, textStyle]}
-        fontType={'medium'}
+        fontType={'bold'}
       >
         {title}
       </Text>
@@ -57,6 +57,5 @@ export const styles = StyleSheet.create({
   headerBottomTitle: {
     fontSize: 26,
     lineHeight: 39,
-    fontWeight: 'bold',
   },
 })

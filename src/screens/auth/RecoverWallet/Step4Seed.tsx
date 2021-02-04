@@ -17,7 +17,10 @@ import { Text } from 'components'
 import RecoverWalletStore from 'stores/RecoverWalletStore'
 import { useBioAuth } from 'hooks/useBioAuth'
 import { isSupportedBiometricAuthentication } from 'utils/bio'
-import { recover, generateAddresses } from 'utils/wallet'
+import {
+  recoverWalletWithMnemonicKey,
+  generateAddresses,
+} from 'utils/wallet'
 import color from 'styles/color'
 import { getIsUseBioAuth, settings } from 'utils/storage'
 
@@ -103,7 +106,11 @@ const Screen = (): ReactElement => {
 
   const onPressNext = async (): Promise<void> => {
     const result =
-      selectedMk && (await recover(selectedMk, { name, password }))
+      selectedMk &&
+      (await recoverWalletWithMnemonicKey(selectedMk, {
+        name,
+        password,
+      }))
 
     if (result?.success) {
       signIn(result.wallet)

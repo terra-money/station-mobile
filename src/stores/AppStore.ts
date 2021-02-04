@@ -11,4 +11,7 @@ const showLoading = atom<boolean>({
   default: false,
 })
 
-export default { showLoading, afterOnBoarding }
+export default {
+  showLoading,
+  afterOnBoarding,
+}
