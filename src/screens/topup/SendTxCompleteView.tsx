@@ -1,10 +1,12 @@
-import { Text, Button } from 'components'
-import Body from 'components/layout/Body'
 import React, { ReactElement } from 'react'
 import { View, StyleSheet } from 'react-native'
-import color from 'styles/color'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { StackScreenProps } from '@react-navigation/stack'
+
+import { Text, Button } from 'components'
+import StatusBar from 'components/StatusBar'
+import Body from 'components/layout/Body'
+import color from 'styles/color'
 import { RootStackParams } from 'types'
 
 type Props = StackScreenProps<RootStackParams, 'SendTxCompleteView'>

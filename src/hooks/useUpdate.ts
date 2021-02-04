@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { AppState, AppStateStatus, Platform } from 'react-native'
+import { Platform } from 'react-native'
 
 import CodePush from 'react-native-code-push'
 
@@ -40,8 +40,6 @@ export const useUpdate = (): Update => {
         ? version.ios
         : version.android
       ).slice(1)
-      console.log('currentVersion', currentVersion)
-      console.log('serverVersion', serverVersion)
 
       if (
         currentVersion === undefined ||
@@ -63,7 +61,7 @@ export const useUpdate = (): Update => {
     return updateAvailable
   }
 
-  const syncUpdate = async () => {
+  const syncUpdate = async (): Promise<void> => {
     CodePush.sync(
       {
         updateDialog: undefined,
@@ -72,11 +70,9 @@ export const useUpdate = (): Update => {
       (status) => {
         switch (status) {
           case CodePush.SyncStatus.UP_TO_DATE:
-            console.log('CodePush.SyncStatus.UP_TO_DATE')
             setIsUpToDate(true)
             break
           case CodePush.SyncStatus.UPDATE_INSTALLED:
-            console.log('CodePush.SyncStatus.UPDATE_INSTALLED')
             CodePush.allowRestart()
             break
         }

@@ -116,7 +116,7 @@ const PersonalSummary = ({
             {delegated && (
               <View style={styles.itemBox}>
                 <Text style={{ paddingRight: 20 }}>
-                 {'Delegated'}
+                  {'Delegated'}
                 </Text>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}

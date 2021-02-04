@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { Keyboard, View } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 import { useRecoilValue } from 'recoil'
 import {
@@ -108,7 +108,10 @@ const Render = ({
             theme={'sapphire'}
             disabled={form.disabled}
             title={form.submitLabel}
-            onPress={form.onSubmit}
+            onPress={(): void => {
+              Keyboard.dismiss()
+              form.onSubmit && form.onSubmit()
+            }}
           />
         </View>
       </Body>

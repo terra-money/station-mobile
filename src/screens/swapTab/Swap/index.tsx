@@ -37,6 +37,7 @@ import {
   Loading,
   SelectOptionProps,
   Select,
+  LoadingIcon,
 } from 'components'
 
 import color from 'styles/color'
@@ -208,7 +209,9 @@ const Render = ({
               />
             </TouchableOpacity>
           </Tooltip>
-          <Text style={{ flexShrink: 1, paddingLeft: 20 }}>{spread.value}</Text>
+          <Text style={{ flexShrink: 1, paddingLeft: 20 }}>
+            {spread.value}
+          </Text>
         </View>
         <Button
           theme={'sapphire'}
@@ -233,26 +236,37 @@ const RenderSwap = ({
   user: User
   title: string
 }): ReactElement => {
-  const { error, loading, form, confirm, ui } = useSwap(user, actives)
+  const { loading: swapLoading, form, confirm, ui } = useSwap(
+    user,
+    actives
+  )
+  const [loading, setLoading] = useState(swapLoading)
+
+  useEffect(() => {
+    setTimeout((): void => {
+      setLoading(false)
+    }, 400)
+  }, [])
 
   return (
-    <>
-      {error ? (
-        <ErrorComponent card />
-      ) : loading ? (
-        <Loading />
-      ) : (
-        ui &&
-        form && (
-          <Render
-            form={form}
-            title={title}
-            ui={ui}
-            confirm={confirm}
-          />
-        )
+    <View>
+      {ui && form && (
+        <Render form={form} title={title} ui={ui} confirm={confirm} />
       )}
-    </>
+      {loading && (
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backgroundColor: color.sky,
+            paddingTop: 30,
+          }}
+        >
+          <LoadingIcon />
+        </View>
+      )}
+    </View>
   )
 }
 
