@@ -28,7 +28,7 @@ const Rewards = ({
           {rewards.title}
         </Text>
         <Number
-          numberFontStyle={{ fontSize: 20 }}
+          numberFontStyle={{ fontSize: 20, textAlign: 'left' }}
           decimalFontStyle={{ fontSize: 15 }}
           {...rewards.display}
           estimated
@@ -42,7 +42,7 @@ const Rewards = ({
               key={`rewards.table.contents-${i}`}
               style={styles.itemBox}
             >
-              <Text>{content.unit}</Text>
+              <Text style={{ paddingRight: 20 }}>{content.unit}</Text>
               <Number
                 numberFontStyle={{ fontSize: 14 }}
                 decimalFontStyle={{ fontSize: 10.5 }}
