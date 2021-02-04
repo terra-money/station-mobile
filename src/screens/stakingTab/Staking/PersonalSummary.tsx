@@ -102,7 +102,9 @@ const PersonalSummary = ({
           <View style={{ marginBottom: 10 }}>
             {rewards && (
               <View style={styles.itemBox}>
-                <Text>{rewards.title}</Text>
+                <Text style={{ paddingRight: 20 }}>
+                  {rewards.title}
+                </Text>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
                   decimalFontStyle={{ fontSize: 10.5 }}
@@ -113,7 +115,9 @@ const PersonalSummary = ({
             )}
             {delegated && (
               <View style={styles.itemBox}>
-                <Text>{'Delegated'}</Text>
+                <Text style={{ paddingRight: 20 }}>
+                 {'Delegated'}
+                </Text>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
                   decimalFontStyle={{ fontSize: 10.5 }}
@@ -124,7 +128,9 @@ const PersonalSummary = ({
             {undelegated && undelegated.table && (
               <View style={styles.itemBox}>
                 <View style={styles.undelegated}>
-                  <Text>{'Undelegated'}</Text>
+                  <Text style={{ paddingRight: 20 }}>
+                    {'Undelegated'}
+                  </Text>
                   <Image
                     source={images.loading_circle}
                     style={{ width: 18, height: 18, marginLeft: 3 }}
@@ -184,6 +190,7 @@ const styles = StyleSheet.create({
   itemBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 10,
   },
   undelegated: {

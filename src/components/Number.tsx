@@ -52,6 +52,8 @@ const styles = StyleSheet.create({
   number: {
     fontSize: 16,
     color: color.sapphire,
+    textAlign: 'right',
+    flexShrink: 1,
   },
   decimal: {
     fontSize: 12,

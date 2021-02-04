@@ -51,7 +51,11 @@ const Top = ({
             </Text>
             <Number
               {...votingPower.display}
-              numberFontStyle={{ fontSize: 12, lineHeight: 18 }}
+              numberFontStyle={{
+                fontSize: 12,
+                lineHeight: 18,
+                textAlign: 'center',
+              }}
             />
           </View>
 
@@ -64,7 +68,11 @@ const Top = ({
             </Text>
             <Number
               {...selfDelegation.display}
-              numberFontStyle={{ fontSize: 12, lineHeight: 18 }}
+              numberFontStyle={{
+                fontSize: 12,
+                lineHeight: 18,
+                textAlign: 'center',
+              }}
             />
           </View>
         </View>
@@ -138,6 +146,7 @@ const styles = StyleSheet.create({
   },
   section: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
   },
   infoItem: {
     flex: 1,
@@ -154,6 +163,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 29,
     letterSpacing: 0,
+    textAlign: 'center',
   },
   details: {
     fontSize: 14,

@@ -24,7 +24,7 @@ const Rewards = ({
           {'Undelegated'}
         </Text>
         <Number
-          numberFontStyle={{ fontSize: 20 }}
+          numberFontStyle={{ fontSize: 20, textAlign: 'left' }}
           decimalFontStyle={{ fontSize: 15 }}
           {...undelegated.display}
           fontType={'medium'}
@@ -39,7 +39,11 @@ const Rewards = ({
               style={styles.itemBox}
             >
               <View
-                style={{ flexDirection: 'row', alignItems: 'center' }}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingRight: 20,
+                }}
               >
                 <Image
                   source={
