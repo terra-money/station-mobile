@@ -21,10 +21,10 @@ const Rewards = ({
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle} fontType={'medium'}>
-          {delegated.title}
+          {'Delegated'}
         </Text>
         <Number
-          numberFontStyle={{ fontSize: 20 }}
+          numberFontStyle={{ fontSize: 20, textAlign: 'left' }}
           decimalFontStyle={{ fontSize: 15 }}
           {...delegated.display}
           fontType={'medium'}
@@ -46,7 +46,11 @@ const Rewards = ({
               style={styles.itemBox}
             >
               <View
-                style={{ flexDirection: 'row', alignItems: 'center' }}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingRight: 20,
+                }}
               >
                 <Image
                   source={

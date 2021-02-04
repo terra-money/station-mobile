@@ -49,8 +49,20 @@ const AssetItem = ({
             {display.unit}
           </Text>
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View style={{ alignItems: 'flex-end' }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            flexShrink: 1,
+          }}
+        >
+          <View
+            style={{
+              alignItems: 'flex-end',
+              paddingLeft: 20,
+              flexShrink: 1,
+            }}
+          >
             <Number
               numberFontStyle={{ fontSize: 15 }}
               decimalFontStyle={{ fontSize: 11 }}
@@ -93,7 +105,7 @@ export default AssetItem
 
 const styles = StyleSheet.create({
   container: {
-    height: 64,
+    paddingVertical: 10,
     marginBottom: 10,
     borderRadius: 20,
     backgroundColor: '#ffffff',
@@ -106,7 +118,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
   },
   inner: {
-    height: 64,
+    minHeight: 44,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

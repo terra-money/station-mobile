@@ -8,6 +8,7 @@ export const useValueValidator = (): {
     password: (password: string) => string
     name: (name: string) => string
   }
+  walletList: LocalWallet[]
 } => {
   const [walletList, setWalletList] = useState<LocalWallet[]>([])
 
@@ -38,5 +39,6 @@ export const useValueValidator = (): {
   }, [])
   return {
     valueValidate,
+    walletList,
   }
 }

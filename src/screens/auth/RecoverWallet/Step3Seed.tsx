@@ -60,6 +60,7 @@ const Screen = (): ReactElement => {
   const onPressNext = (): void => {
     navigate('Step4Seed')
   }
+
   return (
     <>
       <SubHeader

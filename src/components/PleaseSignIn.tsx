@@ -9,7 +9,7 @@ import { Button, Text } from 'components'
 const PleaseSignIn = (): ReactElement => {
   const { navigate } = useNavigation()
   const { SIGN_IN_REQUIRED } = useInfo()
-  const { title, i18nKey, button } = SIGN_IN_REQUIRED
+  const { title, i18nKey } = SIGN_IN_REQUIRED
 
   return (
     <Card>
@@ -24,7 +24,7 @@ const PleaseSignIn = (): ReactElement => {
       <Button
         onPress={(): void => navigate('AuthMenu')}
         titleStyle={styles.button_text}
-        title={button || ''}
+        title={'Connect'}
         theme={'sapphire'}
         size="sm"
       />
