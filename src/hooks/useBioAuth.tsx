@@ -47,9 +47,9 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
                 source={images.finger_print}
                 style={styles.infoImage}
               />
-              <Text style={styles.infoTitle}>Use Touch ID</Text>
+              <Text style={styles.infoTitle}>Use Fingerprint</Text>
               <Text style={{ color: color.sapphire }}>
-                Use your Touch ID for faster, easier access to your
+                Use your Fingerprint for faster, easier access to your
                 acount.
               </Text>
             </View>

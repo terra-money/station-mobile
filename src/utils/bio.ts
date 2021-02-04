@@ -27,16 +27,16 @@ export const getSupportedType = async (): Promise<BiometricType> => {
   if (supportedAuthenticationTypes.length > 0) {
     if (
       supportedAuthenticationTypes.includes(
-        LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION
-      )
-    ) {
-      return BiometricType.FACE
-    } else if (
-      supportedAuthenticationTypes.includes(
         LocalAuthentication.AuthenticationType.FINGERPRINT
       )
     ) {
       return BiometricType.FINGERPRINT
+    } else if (
+      supportedAuthenticationTypes.includes(
+        LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION
+      )
+    ) {
+      return BiometricType.FACE
     }
   }
 
