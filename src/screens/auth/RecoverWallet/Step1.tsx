@@ -169,7 +169,18 @@ const Screen = ({ navigation }: Props): ReactElement => {
               letterSpacing: 0,
             }}
           >
-            Generate QR code from <Icon name={'settings'} size={14} />
+            Generate QR code from{' '}
+            <View style={{ width: 15 }}>
+              <Icon
+                name={'settings'}
+                size={14}
+                color={color.sapphire}
+                style={{
+                  position: 'absolute',
+                  marginTop: -12,
+                }}
+              />
+            </View>
             settings menu of Terra Station desktop or extension
           </Text>
         </View>
