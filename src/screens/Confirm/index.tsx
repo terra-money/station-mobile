@@ -83,7 +83,13 @@ const Render = ({
                       alignItems: 'flex-end',
                     }}
                   >
-                    <Number>{value}</Number>
+                    <Number
+                      numberFontStyle={{
+                        textAlign: 'left'
+                      }}
+                    >
+                      {value}
+                    </Number>
                     <Text style={{ fontSize: 12, lineHeight: 16 }}>
                       {' '}
                       {unit}

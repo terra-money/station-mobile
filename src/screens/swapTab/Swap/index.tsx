@@ -208,7 +208,7 @@ const Render = ({
               />
             </TouchableOpacity>
           </Tooltip>
-          <Text>{spread.value}</Text>
+          <Text style={{ flexShrink: 1, paddingLeft: 20 }}>{spread.value}</Text>
         </View>
         <Button
           theme={'sapphire'}
