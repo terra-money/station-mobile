@@ -9,6 +9,7 @@ import {
 
 import { Text } from 'components'
 import color from 'styles/color'
+import StatusBar from 'components/StatusBar'
 
 type HeaderTheme = 'sapphire' | 'white'
 
@@ -36,14 +37,17 @@ const SubHeader = ({
   }
 
   return (
-    <View style={[styles.headerBottomTitleBox, containerStyle]}>
-      <Text
-        style={[styles.headerBottomTitle, textStyle]}
-        fontType={'bold'}
-      >
-        {title}
-      </Text>
-    </View>
+    <>
+      <StatusBar theme={theme} />
+      <View style={[styles.headerBottomTitleBox, containerStyle]}>
+        <Text
+          style={[styles.headerBottomTitle, textStyle]}
+          fontType={'bold'}
+        >
+          {title}
+        </Text>
+      </View>
+    </>
   )
 }
 

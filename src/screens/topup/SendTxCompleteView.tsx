@@ -11,37 +11,40 @@ type Props = StackScreenProps<RootStackParams, 'SendTxCompleteView'>
 
 const SendTxCompleteView = (props: Props): ReactElement => {
   return (
-    <Body>
-      <View style={style.container}>
-        {props.route.params.success === undefined ||
-        props.route.params.success === true ? (
-          <MaterialCommunityIcon
-            size={60}
-            color={color.sapphire}
-            name={'check-circle-outline'}
-          />
-        ) : (
-          <MaterialCommunityIcon
-            size={60}
-            color={color.sapphire}
-            name={'alert-circle-outline'}
-          />
-        )}
-        <Text style={style.titleText} fontType={'bold'}>
-          {props.route.params.title ?? 'Success!'}
-        </Text>
-        <Text style={style.contentText}>
-          {props.route.params.content ??
-            'Your transaction has been successfully processed.'}
-        </Text>
-      </View>
-      <Button
-        theme={'sapphire'}
-        title={props.route.params.button ?? 'Continue'}
-        onPress={props.route.params.onPress}
-        containerStyle={style.buttonContainer}
-      />
-    </Body>
+    <>
+      <StatusBar theme="white" />
+      <Body>
+        <View style={style.container}>
+          {props.route.params.success === undefined ||
+          props.route.params.success === true ? (
+            <MaterialCommunityIcon
+              size={60}
+              color={color.sapphire}
+              name={'check-circle-outline'}
+            />
+          ) : (
+            <MaterialCommunityIcon
+              size={60}
+              color={color.sapphire}
+              name={'alert-circle-outline'}
+            />
+          )}
+          <Text style={style.titleText} fontType={'bold'}>
+            {props.route.params.title ?? 'Success!'}
+          </Text>
+          <Text style={style.contentText}>
+            {props.route.params.content ??
+              'Your transaction has been successfully processed.'}
+          </Text>
+        </View>
+        <Button
+          theme={'sapphire'}
+          title={props.route.params.button ?? 'Continue'}
+          onPress={props.route.params.onPress}
+          containerStyle={style.buttonContainer}
+        />
+      </Body>
+    </>
   )
 }
 

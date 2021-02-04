@@ -1,10 +1,5 @@
 import React, { useState, useEffect, ReactElement } from 'react'
-import {
-  AppState,
-  AppStateStatus,
-  Platform,
-  StatusBar,
-} from 'react-native'
+import { AppState, AppStateStatus, Platform } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import SplashScreen from 'react-native-splash-screen'
 import { RecoilRoot } from 'recoil'
@@ -37,6 +32,7 @@ import Update from './src/screens/Update'
 import networks, { isDev, version } from './networks'
 import { getJson } from 'utils/request'
 import { useUpdate } from 'hooks/useUpdate'
+import StatusBar from 'components/StatusBar'
 
 let App = ({
   settings: { lang, user, chain, currency },
@@ -65,7 +61,7 @@ let App = ({
     setshowOnBoarding(false)
   }
 
-  /* update */
+  /* codepush */
   const {
     checkUpdate,
     syncUpdate,
@@ -113,6 +109,7 @@ let App = ({
           <ConfigProvider value={config}>
             <AuthProvider value={auth}>
               <SafeAreaProvider>
+                <StatusBar theme="white" />
                 <RecoilRoot>
                   {updateAvailable && !isUpToDate ? (
                     <Update
@@ -123,11 +120,6 @@ let App = ({
                     <OnBoarding closeOnBoarding={closeOnBoarding} />
                   ) : (
                     <>
-                      <StatusBar
-                        barStyle="dark-content"
-                        backgroundColor="transparent"
-                        translucent={false}
-                      />
                       <AppNavigator />
                       <AppModal modal={modal} />
                       <Drawer drawer={drawer} />
