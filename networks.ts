@@ -22,4 +22,10 @@ const network: Record<NetworkEnum, ChainOptions> = {
   },
 }
 
+export const isDev = true
+export const version = {
+  production: 'https://terra.money/station-mobile/version.json',
+  staging: 'https://terra.money/station-mobile/version_staging.json',
+}
+
 export default network
