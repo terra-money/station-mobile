@@ -81,11 +81,13 @@ const Screen = (): ReactElement => {
       }
     }
   }
+
   useEffect(() => {
     if (name && _.isEmpty(inputName)) {
       setinputName(name)
     }
   }, [name])
+
   return (
     <>
       <SubHeader theme={'sapphire'} title={'Set up your wallet'} />
