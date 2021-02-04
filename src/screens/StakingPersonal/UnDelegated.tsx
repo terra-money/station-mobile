@@ -21,7 +21,7 @@ const Rewards = ({
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle} fontType={'medium'}>
-          {undelegated.title}
+          {'Undelegated'}
         </Text>
         <Number
           numberFontStyle={{ fontSize: 20 }}

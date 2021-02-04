@@ -113,7 +113,7 @@ const PersonalSummary = ({
             )}
             {delegated && (
               <View style={styles.itemBox}>
-                <Text>{delegated.title}</Text>
+                <Text>{'Delegated'}</Text>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
                   decimalFontStyle={{ fontSize: 10.5 }}
@@ -124,7 +124,7 @@ const PersonalSummary = ({
             {undelegated && undelegated.table && (
               <View style={styles.itemBox}>
                 <View style={styles.undelegated}>
-                  <Text>{undelegated.title}</Text>
+                  <Text>{'Undelegated'}</Text>
                   <Image
                     source={images.loading_circle}
                     style={{ width: 18, height: 18, marginLeft: 3 }}
