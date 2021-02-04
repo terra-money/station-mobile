@@ -2,7 +2,6 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import {
   KeyboardAvoidingView,
   ScrollView,
-  StatusBar,
   TouchableOpacity,
   View,
   StyleSheet,
@@ -36,6 +35,7 @@ import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
 import { isSupportedBiometricAuthentication } from 'utils/bio'
 import { getIsUseBioAuth } from 'utils/storage'
+import StatusBar from 'components/StatusBar'
 
 type Props = StackScreenProps<RootStackParams, 'SendTxPasswordView'>
 
@@ -175,16 +175,12 @@ const SendTxPasswordView = (props: Props): ReactElement => {
         },
       ]}
     >
+      <StatusBar theme="sapphire" />
       <View
         style={{
           height: insets.top,
           backgroundColor: color.sapphire,
         }}
-      />
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={color.sapphire}
-        translucent={false}
       />
       <View style={style.headerContainer}>
         <TouchableOpacity

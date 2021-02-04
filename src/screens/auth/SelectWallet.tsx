@@ -23,6 +23,7 @@ import { getIsUseBioAuth } from 'utils/storage'
 import { RootStackParams } from 'types'
 import useOnAuth from './useOnAuth'
 import { useAlert } from 'hooks/useAlert'
+import SubHeader from 'components/layout/SubHeader'
 
 const Screen = (): ReactElement => {
   const { alert } = useAlert()
@@ -88,59 +89,62 @@ const Screen = (): ReactElement => {
   return (
     <>
       {initPageComplete && (
-        <Body
-          theme={'sky'}
-          containerStyle={{
-            paddingBottom: 50,
-            paddingTop: 20,
-            justifyContent: 'space-between',
-          }}
-        >
-          <View>
-            <View style={styles.section}>
-              <FormLabel text={'Wallet'} />
-              <Select
-                selectedValue={name}
-                optionList={wallets.map(({ name }) => {
-                  return {
-                    label: name,
-                    value: name,
-                  }
-                })}
-                onValueChange={(itemValue): void => {
-                  setName(`${itemValue}`)
-                }}
-              />
-            </View>
-
-            <View style={styles.section}>
-              <FormLabel text={'Password'} />
-              <Input
-                underlineColorAndroid="#ccc"
-                value={password}
-                secureTextEntry
-                onChangeText={setPassword}
-                placeholder={'Must be at least 10 characters'}
-              />
-            </View>
-          </View>
-          <View>
-            <Button
-              title="Next"
-              theme={'sapphire'}
-              onPress={(): Promise<void> => submit({ password })}
-              containerStyle={{ marginBottom: 10 }}
-            />
-            {isUseBioAuth && (
-              <View style={{ marginTop: 10 }}>
-                <BiometricButton
-                  walletName={name}
-                  onPress={onPressBiometricButton}
+        <>
+          <SubHeader theme={'sapphire'} title={'Select wallet'} />
+          <Body
+            theme={'sky'}
+            containerStyle={{
+              paddingBottom: 50,
+              paddingTop: 20,
+              justifyContent: 'space-between',
+            }}
+          >
+            <View>
+              <View style={styles.section}>
+                <FormLabel text={'Wallet'} />
+                <Select
+                  selectedValue={name}
+                  optionList={wallets.map(({ name }) => {
+                    return {
+                      label: name,
+                      value: name,
+                    }
+                  })}
+                  onValueChange={(itemValue): void => {
+                    setName(`${itemValue}`)
+                  }}
                 />
               </View>
-            )}
-          </View>
-        </Body>
+
+              <View style={styles.section}>
+                <FormLabel text={'Password'} />
+                <Input
+                  underlineColorAndroid="#ccc"
+                  value={password}
+                  secureTextEntry
+                  onChangeText={setPassword}
+                  placeholder={'Must be at least 10 characters'}
+                />
+              </View>
+            </View>
+            <View>
+              <Button
+                title="Next"
+                theme={'sapphire'}
+                onPress={(): Promise<void> => submit({ password })}
+                containerStyle={{ marginBottom: 10 }}
+              />
+              {isUseBioAuth && (
+                <View style={{ marginTop: 10 }}>
+                  <BiometricButton
+                    walletName={name}
+                    onPress={onPressBiometricButton}
+                  />
+                </View>
+              )}
+            </View>
+          </Body>
+        </>
       )}
     </>
   )

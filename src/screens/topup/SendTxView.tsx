@@ -3,7 +3,6 @@ import {
   View,
   Alert,
   ViewProps,
-  StatusBar,
   TouchableOpacity,
   ScrollView,
   StyleSheet,
@@ -28,6 +27,7 @@ import {
 } from './TopupUtils'
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
+import StatusBar from 'components/StatusBar'
 
 type Props = StackScreenProps<RootStackParams, 'SendTxView'>
 
@@ -167,16 +167,12 @@ const SendTxView = (props: Props): ReactElement => {
         },
       ]}
     >
+      <StatusBar theme="sapphire" />
       <View
         style={{
           height: insets.top,
           backgroundColor: color.sapphire,
         }}
-      />
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={color.sapphire}
-        translucent={false}
       />
       <View style={style.headerContainer}>
         <TouchableOpacity

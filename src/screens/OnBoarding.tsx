@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 
 import Swiper from 'react-native-swiper'
-import Icon from 'react-native-vector-icons/FontAwesome5'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { setSkipOnboarding } from '../utils/storage'
 
 import { Text } from 'components'

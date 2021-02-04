@@ -15,6 +15,7 @@ import {
 } from './TopupUtils'
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
+import StatusBar from 'components/StatusBar'
 
 type Props = StackScreenProps<RootStackParams, 'ConnectView'>
 
@@ -116,6 +117,7 @@ const ConnectView = (props: Props): ReactElement => {
         },
       ]}
     >
+      <StatusBar theme="white" />
       <View style={style.closeView}>
         <TouchableOpacity
           onPress={(): void => gotoDashboard(props.navigation)}

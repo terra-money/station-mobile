@@ -1,10 +1,5 @@
 import React, { useState, useEffect, ReactElement } from 'react'
-import {
-  AppState,
-  AppStateStatus,
-  Platform,
-  StatusBar,
-} from 'react-native'
+import { AppState, AppStateStatus, Platform } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import SplashScreen from 'react-native-splash-screen'
 import { RecoilRoot } from 'recoil'
@@ -34,7 +29,10 @@ import Drawer, {
 } from 'components/onlyForApp.tsx/Drawer'
 import { LoadingView } from 'components/onlyForApp.tsx/LoadingView'
 import Update from './src/screens/Update'
-import networks from './networks'
+import networks, { isDev, version } from './networks'
+import { getJson } from 'utils/request'
+import { useUpdate } from 'hooks/useUpdate'
+import StatusBar from 'components/StatusBar'
 
 let App = ({
   settings: { lang, user, chain, currency },
@@ -58,67 +56,38 @@ let App = ({
 
   /* onboarding */
   const [showOnBoarding, setshowOnBoarding] = useState<boolean>(false)
-  /* update */
-  const [updateAvailable, setUpdateAvailable] = useState<boolean>()
-  const [receivedBytes, setReceivedBytes] = useState<number>(0)
-  const [totalBytes, setTotalBytes] = useState<number>(0)
-
-  useEffect(() => {
-    CodePush.sync(
-      {
-        updateDialog: undefined,
-        installMode: CodePush.InstallMode.IMMEDIATE,
-      },
-      (status) => {
-        switch (status) {
-          case CodePush.SyncStatus.UP_TO_DATE:
-            setUpdateAvailable(false)
-            break
-          case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
-            break
-          case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
-            setUpdateAvailable(true)
-            break
-          case CodePush.SyncStatus.INSTALLING_UPDATE:
-            setUpdateAvailable(true)
-            break
-          case CodePush.SyncStatus.UPDATE_INSTALLED:
-            setUpdateAvailable(true)
-            break
-        }
-      },
-      ({ receivedBytes, totalBytes }) => {
-        setReceivedBytes(receivedBytes)
-        setTotalBytes(totalBytes)
-      }
-    )
-  }, [])
 
   const closeOnBoarding = (): void => {
     setshowOnBoarding(false)
   }
 
-  const checkUpdate = async (): Promise<void> => {
-    const update = await CodePush.checkForUpdate()
-    if (update) {
-      setUpdateAvailable(true)
-    } else {
-      setUpdateAvailable(false)
-    }
-  }
+  /* codepush */
+  const {
+    checkUpdate,
+    syncUpdate,
+    receivedBytes,
+    totalBytes,
+    isUpToDate,
+  } = useUpdate()
+
+  const [updateAvailable, setUpdateAvailable] = useState<boolean>()
 
   useEffect(() => {
-    Platform.OS === 'android' && checkUpdate()
-
-    const activeListener = (state: AppStateStatus): void => {
-      state === 'active' && checkUpdate()
+    const check = async (): Promise<void> => {
+      const serverVersion = await getJson(
+        isDev ? version.staging : version.production
+      )
+      const update = await checkUpdate(serverVersion)
+      setUpdateAvailable(update)
     }
 
-    AppState.addEventListener('change', activeListener)
-    return (): void => {
-      AppState.removeEventListener('change', activeListener)
-    }
+    check()
   }, [])
+
+  useEffect(() => {
+    updateAvailable !== undefined && SplashScreen.hide()
+    updateAvailable === true && syncUpdate()
+  }, [updateAvailable])
 
   /* auth */
   const auth = useAuthState(user)
@@ -133,10 +102,6 @@ let App = ({
     checkShowOnboarding()
   }, [])
 
-  useEffect(() => {
-    updateAvailable !== undefined && SplashScreen.hide()
-  }, [updateAvailable])
-
   return (
     <>
       {ready && updateAvailable !== undefined && (
@@ -144,8 +109,9 @@ let App = ({
           <ConfigProvider value={config}>
             <AuthProvider value={auth}>
               <SafeAreaProvider>
+                <StatusBar theme="white" />
                 <RecoilRoot>
-                  {updateAvailable ? (
+                  {updateAvailable && !isUpToDate ? (
                     <Update
                       receivedBytes={receivedBytes}
                       totalBytes={totalBytes}
@@ -154,11 +120,6 @@ let App = ({
                     <OnBoarding closeOnBoarding={closeOnBoarding} />
                   ) : (
                     <>
-                      <StatusBar
-                        barStyle="dark-content"
-                        backgroundColor="transparent"
-                        translucent={false}
-                      />
                       <AppNavigator />
                       <AppModal modal={modal} />
                       <Drawer drawer={drawer} />
