@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactElement } from 'react'
-import { AppState, AppStateStatus, Platform } from 'react-native'
+import { Alert, NativeModules } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import SplashScreen from 'react-native-splash-screen'
 import { RecoilRoot } from 'recoil'
@@ -33,6 +33,7 @@ import networks, { isDev, version } from './networks'
 import { getJson } from 'utils/request'
 import { useUpdate } from 'hooks/useUpdate'
 import StatusBar from 'components/StatusBar'
+import RNExitApp from 'react-native-exit-app'
 
 let App = ({
   settings: { lang, user, chain, currency },
@@ -53,6 +54,39 @@ let App = ({
   const { current: currentLang = '' } = config.lang
   const { current: currentChainOptions } = config.chain
   const { name: currentChain = '' } = currentChainOptions
+
+  /* root check */
+  const [isRooted, setRooted] = useState<boolean | undefined>(
+    undefined
+  )
+  useEffect(() => {
+    if (isRooted === undefined) {
+      const showAlert = (message: string): void => {
+        Alert.alert(
+          '',
+          message,
+          [
+            {
+              text: 'OK',
+              onPress: (): void => RNExitApp.exitApp(),
+            },
+          ],
+          { cancelable: false }
+        )
+      }
+
+      NativeModules.RootChecker.isDeviceRooted().then(
+        (ret: boolean) => {
+          setRooted(ret)
+
+          ret &&
+            showAlert(
+              'The device is rooted. For security reasons the application cannot be run from a rooted device.'
+            )
+        }
+      )
+    }
+  }, [])
 
   /* onboarding */
   const [showOnBoarding, setshowOnBoarding] = useState<boolean>(false)
@@ -81,8 +115,8 @@ let App = ({
       setUpdateAvailable(update)
     }
 
-    check()
-  }, [])
+    isRooted === false && check()
+  }, [isRooted])
 
   useEffect(() => {
     updateAvailable !== undefined && SplashScreen.hide()
