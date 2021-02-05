@@ -70,6 +70,7 @@
 		2D5A2B6408BCAEF90EBF2A24 /* Pods-TerraStation-TerraStationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TerraStation-TerraStationTests.debug.xcconfig"; path = "Target Support Files/Pods-TerraStation-TerraStationTests/Pods-TerraStation-TerraStationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		66745909255D7E904677F954 /* libPods-TerraStation-TerraStationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TerraStation-TerraStationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5C1EC3AF4C50F577E0F592 /* Pods-TerraStation-TerraStationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TerraStation-TerraStationTests.release.xcconfig"; path = "Target Support Files/Pods-TerraStation-TerraStationTests/Pods-TerraStation-TerraStationTests.release.xcconfig"; sourceTree = "<group>"; };
+		BA69BE9825CD1031001E26A5 /* TerraStation.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TerraStation.entitlements; path = TerraStation/TerraStation.entitlements; sourceTree = "<group>"; };
 		BA92551425B134EA0081BC42 /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "TerraStation/AppCenter-Config.plist"; sourceTree = "<group>"; };
 		BA9257F625B17ACF0081BC42 /* Gotham-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Medium.ttf"; sourceTree = "<group>"; };
 		BA9257F725B17ACF0081BC42 /* Gotham-Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Book.ttf"; sourceTree = "<group>"; };
@@ -182,6 +183,7 @@
 		13B07FAE1A68108700A75B9A /* TerraStation */ = {
 			isa = PBXGroup;
 			children = (
+				BA69BE9825CD1031001E26A5 /* TerraStation.entitlements */,
 				BA92551425B134EA0081BC42 /* AppCenter-Config.plist */,
 				0243C635249B50ED001C2EFA /* KeystoreLib */,
 				0243C634249B50E1001C2EFA /* PreferencesLib */,
@@ -689,7 +691,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CODE_SIGN_ENTITLEMENTS = TerraStation/TerraStation.entitlements;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = U5D98K4YPD;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -721,7 +724,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CODE_SIGN_ENTITLEMENTS = TerraStation/TerraStation.entitlements;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = U5D98K4YPD;
 				EXCLUDED_ARCHS = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
