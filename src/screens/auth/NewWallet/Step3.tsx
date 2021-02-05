@@ -114,9 +114,7 @@ const Screen = (): ReactElement => {
                 {firstSeedWord ? (
                   <Text>{firstSeedWord}</Text>
                 ) : (
-                  <Text style={{ color: '#dddddd' }}>
-                    Select or Type
-                  </Text>
+                  <Text style={{ color: '#dddddd' }}>Select</Text>
                 )}
               </TouchableOpacity>
             </View>
@@ -146,9 +144,7 @@ const Screen = (): ReactElement => {
                 {secondSeedWord ? (
                   <Text>{secondSeedWord}</Text>
                 ) : (
-                  <Text style={{ color: '#dddddd' }}>
-                    Select or Type
-                  </Text>
+                  <Text style={{ color: '#dddddd' }}>Select</Text>
                 )}
               </TouchableOpacity>
             </View>
