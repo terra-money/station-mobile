@@ -20,7 +20,7 @@ import History from './History'
 
 type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
-const Screen = ({ navigation }: Props): ReactElement => {
+const Screen = (props: Props): ReactElement => {
   const { loading, data } = useSwapRate()
   const setSwapRate = useSetRecoilState(SwapRateStore.swapRate)
 
@@ -35,22 +35,14 @@ const Screen = ({ navigation }: Props): ReactElement => {
     }
   }, [loading, data?.length])
 
-  useEffect(() => {
-    if (loading === false) {
-      navigation.addListener('focus', () => {
-        refreshPage()
-      })
-    }
-  }, [loading])
-
   return (
     <WithAuth>
       {(user): ReactElement => (
         <Body theme={'sky'} scrollable onRefresh={refreshPage}>
           <Fragment key={refreshingKey}>
             <WalletAddress user={user} />
-            <AvailableAssets user={user} />
-            <History user={user} />
+            <AvailableAssets user={user} {...props} />
+            <History user={user} {...props} />
           </Fragment>
         </Body>
       )}
