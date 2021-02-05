@@ -69,6 +69,7 @@ const FormInput = ({ field }: { field: Field }): ReactElement => {
   return (
     <DefaultFormInput
       secureTextEntry={attrs.type === 'password'}
+      keyboardType={attrs.type === 'number' ? 'numeric' : 'default'}
       errorMessage={error}
       value={attrs.value}
       defaultValue={attrs.defaultValue}
