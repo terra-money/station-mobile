@@ -4,15 +4,11 @@ import React, {
   useState,
   Fragment,
 } from 'react'
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Platform,
-} from 'react-native'
+import { View, StyleSheet, Platform } from 'react-native'
 import _ from 'lodash'
 import Tooltip from 'react-native-walkthrough-tooltip'
 import { StackScreenProps } from '@react-navigation/stack'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import { RootStackParams } from 'types'
 import { navigationHeaderOptions } from 'components/layout/TabScreenHeader'
