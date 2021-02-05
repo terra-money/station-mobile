@@ -17,8 +17,8 @@ import { Icon, Text, Selector } from 'components'
 import images from 'assets/images'
 import { useValidator } from 'hooks/useValidator'
 import layout from 'styles/layout'
+import { FlatList } from 'react-native-gesture-handler'
 
-// H. REQ i18n
 const validatorTitle = 'Validators'
 
 enum FilterEnum {
@@ -56,12 +56,6 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
     })
   }, [])
 
-  /**
-   * Content 정렬,
-   * - 2차정렬 방법 정의
-   *
-   * 1차 정렬 이후 Staking return값으로 2차 정렬. 이후 Moniker로 3차 정렬
-   */
   const sortContents = (a: ValidatorUI, b: ValidatorUI): number => {
     const [_a, _b] =
       currentFilter === FilterEnum.delegationReturn
@@ -94,7 +88,7 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
   contents.sort(sortContents)
 
   useEffect(() => {
-    setReverseContents(true) // 필터가 바뀌면 정렬을 원래대로 돌려놓음
+    setReverseContents(true)
   }, [currentFilter])
 
   return (
@@ -139,113 +133,120 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
           onSelect={setCurrentFilter}
         />
       </View>
-      {contents.map((content, index) => (
-        <TouchableOpacity
-          onPress={(): void =>
-            navigate('ValidatorDetail', {
-              address: content.operatorAddress.address,
-            })
-          }
-          key={index}
-        >
-          <View
-            style={{
-              backgroundColor: 'rgb(237, 241, 247)',
-              height: 1,
-              width: '100%',
-            }}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginVertical: 12,
-              paddingHorizontal: 20,
-            }}
+      <FlatList
+        data={contents}
+        scrollEnabled={false}
+        renderItem={({ item, index }): ReactElement => (
+          <TouchableOpacity
+            onPress={(): void =>
+              navigate('ValidatorDetail', {
+                address: item.operatorAddress.address,
+              })
+            }
+            key={index}
           >
             <View
-              style={{ flexDirection: 'row', alignItems: 'center' }}
+              style={{
+                backgroundColor: 'rgb(237, 241, 247)',
+                height: 1,
+                width: '100%',
+              }}
+            />
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginVertical: 12,
+                paddingHorizontal: 20,
+              }}
             >
               <View
                 style={{
-                  width: 18,
-                  justifyContent: 'center',
+                  flexDirection: 'row',
                   alignItems: 'center',
                 }}
               >
-                {index === 0 ? (
-                  <Text
-                    style={[styles.rank, styles.rank1st]}
-                    fontType="medium"
-                  >
-                    {index + 1}
-                  </Text>
-                ) : index === 1 ? (
-                  <Text
-                    style={[styles.rank, styles.rank2nd]}
-                    fontType="medium"
-                  >
-                    {index + 1}
-                  </Text>
-                ) : index === 2 ? (
-                  <Text
-                    style={[styles.rank, styles.rank3rd]}
-                    fontType="medium"
-                  >
-                    {index + 1}
-                  </Text>
-                ) : (
-                  <Text style={styles.rank} fontType="medium">
-                    {index + 1}
-                  </Text>
+                <View
+                  style={{
+                    width: 18,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  {index === 0 ? (
+                    <Text
+                      style={[styles.rank, styles.rank1st]}
+                      fontType="medium"
+                    >
+                      {index + 1}
+                    </Text>
+                  ) : index === 1 ? (
+                    <Text
+                      style={[styles.rank, styles.rank2nd]}
+                      fontType="medium"
+                    >
+                      {index + 1}
+                    </Text>
+                  ) : index === 2 ? (
+                    <Text
+                      style={[styles.rank, styles.rank3rd]}
+                      fontType="medium"
+                    >
+                      {index + 1}
+                    </Text>
+                  ) : (
+                    <Text style={styles.rank} fontType="medium">
+                      {index + 1}
+                    </Text>
+                  )}
+                </View>
+                <Image
+                  source={
+                    item.profile
+                      ? { uri: item.profile }
+                      : images.terra
+                  }
+                  style={styles.profileImage}
+                />
+                <Text
+                  style={[
+                    styles.textMoniker,
+                    layout.getScreenWideType() === 'narrow' && {
+                      maxWidth: '50%',
+                    },
+                  ]}
+                  fontType={'medium'}
+                  numberOfLines={1}
+                >
+                  {item.moniker}
+                </Text>
+                {_.some(
+                  validatorList[item.operatorAddress.address]
+                ) && (
+                  <EntypoIcon
+                    style={{ marginLeft: 6 }}
+                    name="check"
+                    size={14}
+                    color="rgb(118, 169, 244)"
+                  />
                 )}
               </View>
-              <Image
-                source={
-                  content.profile
-                    ? { uri: content.profile }
-                    : images.terra
-                }
-                style={styles.profileImage}
-              />
-              <Text
-                style={[
-                  styles.textMoniker,
-                  layout.getScreenWideType() === 'narrow' && {
-                    maxWidth: '50%',
-                  },
-                ]}
-                fontType={'medium'}
-                numberOfLines={1}
-              >
-                {content.moniker}
+              <Text style={styles.textPercent}>
+                {currentFilter === FilterEnum.delegationReturn
+                  ? item.delegationReturn.percent
+                  : currentFilter === FilterEnum.commission
+                  ? item.commission.percent
+                  : currentFilter === FilterEnum.votingPower
+                  ? item.votingPower.percent
+                  : currentFilter === FilterEnum.uptime
+                  ? item.uptime.percent
+                  : ''}
               </Text>
-              {_.some(
-                validatorList[content.operatorAddress.address]
-              ) && (
-                <EntypoIcon
-                  style={{ marginLeft: 6 }}
-                  name="check"
-                  size={14}
-                  color="rgb(118, 169, 244)"
-                />
-              )}
             </View>
-            <Text style={styles.textPercent}>
-              {currentFilter === FilterEnum.delegationReturn
-                ? content.delegationReturn.percent
-                : currentFilter === FilterEnum.commission
-                ? content.commission.percent
-                : currentFilter === FilterEnum.votingPower
-                ? content.votingPower.percent
-                : currentFilter === FilterEnum.uptime
-                ? content.uptime.percent
-                : ''}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      ))}
+          </TouchableOpacity>
+        )}
+      />
     </Card>
   )
 }
