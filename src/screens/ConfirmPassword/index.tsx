@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { Keyboard, View } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 import { useRecoilValue } from 'recoil'
@@ -7,7 +7,6 @@ import {
   StackActions,
   useNavigation,
 } from '@react-navigation/native'
-import _ from 'lodash'
 
 import { ConfirmProps, User } from 'use-station/src'
 
@@ -20,10 +19,8 @@ import { UseStationForm, Button } from 'components'
 import { RootStackParams } from 'types/navigation'
 
 import ConfirmStore from 'stores/ConfirmStore'
-import { getBioAuthPassword, getIsUseBioAuth } from 'utils/storage'
 import { useConfirm } from 'hooks/useConfirm'
 import { useLoading } from 'hooks/useLoading'
-import { authenticateBiometric } from 'utils/bio'
 
 type Props = StackScreenProps<RootStackParams, 'ConfirmPassword'>
 
@@ -43,40 +40,11 @@ const Render = ({
   const { navigate, dispatch } = useNavigation<
     NavigationProp<RootStackParams>
   >()
-  const [bioAuthTrigger, setBioAuthTrigger] = useState(0)
 
-  const runBioAuth = async (): Promise<void> => {
-    const isUse = await getIsUseBioAuth()
-    if (isUse) {
-      const isSuccess = await authenticateBiometric()
-      if (isSuccess) {
-        const password = await getBioAuthPassword({
-          walletName: user.name || '',
-        })
-        // form.fields must have password
-        const formPassword = _.find(
-          form.fields,
-          (x) => x.attrs.id === 'password'
-        )
-        if (formPassword?.setValue) {
-          formPassword.setValue(password)
-          setBioAuthTrigger((ori) => ori + 1)
-        }
-      }
-    }
-  }
-
+  // during form is submitting, show loading
   useEffect(() => {
     form.submitting ? showLoading() : hideLoading()
   }, [form.submitting])
-
-  // for Bio Auth, bioauthTrigger or form will change after bio auth
-  useEffect(() => {
-    fee.select.setValue(feeSelectValue)
-    if (bioAuthTrigger) {
-      form.onSubmit && form.onSubmit()
-    }
-  }, [bioAuthTrigger])
 
   // result will set after form.onSubmit or error
   useEffect(() => {
@@ -88,7 +56,7 @@ const Render = ({
   }, [result])
 
   useEffect(() => {
-    runBioAuth()
+    fee.select.setValue(feeSelectValue)
   }, [])
 
   return (
