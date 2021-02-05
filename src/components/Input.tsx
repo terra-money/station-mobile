@@ -47,6 +47,7 @@ const Input = (props: InputProps): ReactElement => {
         {...rest}
         underlineColorAndroid={'#ffffff00'}
         placeholderTextColor="rgba(32,67,181,.5)"
+        textContentType={'none'}
       />
     </View>
   )
