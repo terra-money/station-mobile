@@ -69,6 +69,7 @@ const SelectInputForm = ({
           placeholder={inputField.attrs.placeholder}
           onChangeText={inputField.setValue}
           containerStyle={{ flex: 2, borderWidth: 0 }}
+          keyboardType="numeric"
           style={{
             borderRadius: 0,
             borderTopRightRadius: 8,

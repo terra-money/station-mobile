@@ -48,6 +48,7 @@ const Input = (props: InputProps): ReactElement => {
         underlineColorAndroid={'#ffffff00'}
         placeholderTextColor="rgba(32,67,181,.5)"
         textContentType={'none'}
+        keyboardType={props.keyboardType}
       />
     </View>
   )

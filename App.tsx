@@ -48,7 +48,7 @@ let App = ({
   /* provider */
   const config = useConfigState({
     lang,
-    chain: chain || networks.tequila,
+    chain: chain || (isDev ? networks.tequila : networks.mainnet),
     currency,
   })
   const { current: currentLang = '' } = config.lang
