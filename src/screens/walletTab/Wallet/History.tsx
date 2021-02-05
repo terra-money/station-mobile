@@ -1,12 +1,16 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
+import { StackScreenProps } from '@react-navigation/stack'
 
+import { RootStackParams } from 'types'
 import { TxsUI, TxType, useMenu, User, useTxs } from 'use-station/src'
 
 import HistoryItem from 'components/history/HistoryItem'
 import { Text, ErrorComponent, Button } from 'components'
 import { useNavigation } from '@react-navigation/native'
+
+type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
 const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
   const { History: title } = useMenu()
@@ -41,9 +45,18 @@ const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
   )
 }
 
-const History = ({ user }: { user: User }): ReactElement => {
+const History = ({
+  user,
+  navigation,
+}: { user: User } & Props): ReactElement => {
   const params = { type: '' as TxType, page: 1 }
-  const { error, ui } = useTxs(user, params)
+  const { error, ui, execute } = useTxs(user, params)
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      execute()
+    })
+  }, [])
 
   return error ? (
     <ErrorComponent />
