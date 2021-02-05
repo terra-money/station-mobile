@@ -5,6 +5,8 @@ import {
   ViewStyle,
   ScrollView,
   RefreshControl,
+  TouchableWithoutFeedback, // It's for keyboard.dismiss. not works with getgure-handler's
+  Keyboard,
 } from 'react-native'
 import color from 'styles/color'
 
@@ -66,11 +68,21 @@ const Body = (props: BodyProps): ReactElement => {
           {props.children}
         </ScrollView>
       ) : (
-        <View
-          style={[containerStyle, { flex: 1 }, props.containerStyle]}
+        <TouchableWithoutFeedback // It must be from react-native, not gesture-handler's
+          style={{ flex: 1 }}
+          onPress={Keyboard.dismiss}
+          accessible={false}
         >
-          {props.children}
-        </View>
+          <View
+            style={[
+              containerStyle,
+              { flex: 1 },
+              props.containerStyle,
+            ]}
+          >
+            {props.children}
+          </View>
+        </TouchableWithoutFeedback>
       )}
     </>
   )

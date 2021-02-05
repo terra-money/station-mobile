@@ -1,7 +1,6 @@
 import { MnemonicKey } from '@terra-money/terra.js'
 import { encrypt, decrypt } from './crypto'
 
-import dev from './dev'
 import preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
@@ -194,18 +193,27 @@ export const testPassword = async ({
 }: {
   name: string
   password: string
-}): Promise<boolean> => {
+}): Promise<
+  { isSuccess: true } | { isSuccess: false; errorMessage: string }
+> => {
   const wallet = await getWallet(name)
 
-  if (!wallet) throw new Error('Wallet with that name does not exist')
+  if (!wallet) {
+    return {
+      isSuccess: false,
+      errorMessage: 'Wallet with that name does not exist',
+    }
+  }
 
-  try {
-    const key = await keystore.read(wallet.name)
-    const ret = decrypt(key, password)
-    if (ret === '') return false
-    return true
-  } catch (e) {
-    dev.log(e)
-    return false
+  const key = await keystore.read(wallet.name)
+  const ret = decrypt(key, password)
+  if (ret) {
+    return {
+      isSuccess: true,
+    }
+  }
+  return {
+    isSuccess: false,
+    errorMessage: 'Incorrect password',
   }
 }

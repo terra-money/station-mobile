@@ -5,6 +5,8 @@ import {
   StyleProp,
   ViewStyle,
   TextStyle,
+  TouchableWithoutFeedback,
+  Keyboard, // It's for keyboard.dismiss. not works with getgure-handler's
 } from 'react-native'
 
 import { Text } from 'components'
@@ -39,14 +41,19 @@ const SubHeader = ({
   return (
     <>
       <StatusBar theme={theme} />
-      <View style={[styles.headerBottomTitleBox, containerStyle]}>
-        <Text
-          style={[styles.headerBottomTitle, textStyle]}
-          fontType={'bold'}
-        >
-          {title}
-        </Text>
-      </View>
+      <TouchableWithoutFeedback // It must be from react-native, not gesture-handler's
+        onPress={Keyboard.dismiss}
+        accessible={false}
+      >
+        <View style={[styles.headerBottomTitleBox, containerStyle]}>
+          <Text
+            style={[styles.headerBottomTitle, textStyle]}
+            fontType={'bold'}
+          >
+            {title}
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
     </>
   )
 }

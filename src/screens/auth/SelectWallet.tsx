@@ -56,13 +56,13 @@ const Screen = (): ReactElement => {
   }: {
     password: string
   }): Promise<void> => {
-    try {
-      if ((await testPassword({ name, password })) === false)
-        throw new Error('Wrong Password!')
+    const result = await testPassword({ name, password })
+
+    if (result.isSuccess) {
       const wallet = wallets.find((w) => w.name === name)
       wallet && signIn(wallet)
-    } catch (e) {
-      alert({ desc: e.toString() })
+    } else {
+      alert({ desc: result.errorMessage })
     }
   }
 
