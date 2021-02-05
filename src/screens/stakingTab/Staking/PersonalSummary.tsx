@@ -135,7 +135,6 @@ const PersonalSummary = ({
                       width: 18,
                       height: 18,
                       marginLeft: 3,
-                      paddingRight: 20,
                     }}
                   />
                 </View>
@@ -200,5 +199,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    paddingRight: 20,
   },
 })
