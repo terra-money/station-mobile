@@ -1,7 +1,9 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import _ from 'lodash'
+import { StackScreenProps } from '@react-navigation/stack'
 
+import { RootStackParams } from 'types'
 import {
   useAssets,
   AssetsUI,
@@ -10,11 +12,13 @@ import {
   VestingUI,
   Card,
 } from 'use-station/src'
-import { Text, Loading, Icon } from 'components'
+import { Text, Icon } from 'components'
 
 import AvailableItem from './AvailableItem'
 import VestingItem from './VestingItem'
 import color from 'styles/color'
+
+type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
 const AvailableList = ({ list }: AvailableUI): ReactElement => {
   return (
@@ -67,8 +71,19 @@ const EmptyWallet = ({ card }: { card?: Card }): ReactElement => {
   )
 }
 
-const WalletAddress = ({ user }: { user: User }): ReactElement => {
-  const { ui, loading } = useAssets(user, { hideSmall: true })
+const WalletAddress = ({
+  user,
+  navigation,
+}: {
+  user: User
+} & Props): ReactElement => {
+  const { ui, execute } = useAssets(user)
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      execute()
+    })
+  }, [])
 
   const render = ({
     available,
@@ -169,7 +184,7 @@ const WalletAddress = ({ user }: { user: User }): ReactElement => {
     )
   }
 
-  return <>{loading ? <Loading /> : ui ? render(ui) : null}</>
+  return <>{ui ? render(ui) : null}</>
 }
 
 export default WalletAddress

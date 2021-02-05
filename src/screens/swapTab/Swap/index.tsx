@@ -11,9 +11,10 @@ import {
   Platform,
 } from 'react-native'
 import _ from 'lodash'
-
 import Tooltip from 'react-native-walkthrough-tooltip'
+import { StackScreenProps } from '@react-navigation/stack'
 
+import { RootStackParams } from 'types'
 import { navigationHeaderOptions } from 'components/layout/TabScreenHeader'
 import Body from 'components/layout/Body'
 import WithAuth from 'components/layout/WithAuth'
@@ -26,7 +27,6 @@ import {
   User,
   useSwap,
 } from 'use-station/src'
-import { StackScreenProps } from '@react-navigation/stack'
 
 import ErrorComponent from 'components/ErrorComponent'
 import {
@@ -34,20 +34,17 @@ import {
   Icon,
   Number,
   Button,
-  Loading,
   SelectOptionProps,
   Select,
-  LoadingIcon,
 } from 'components'
 
 import color from 'styles/color'
 import { useConfirm } from 'hooks/useConfirm'
-import { RootStackParams } from 'types'
 import font from 'styles/font'
 
 import SelectInputForm from './SelectInputForm'
 
-type Props = StackScreenProps<RootStackParams, 'Swap'>
+type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
 const SwapTypeSelect = ({
   field,
@@ -231,21 +228,24 @@ const RenderSwap = ({
   actives,
   user,
   title,
+  navigation,
+  refreshing,
 }: {
   actives: string[]
   user: User
   title: string
-}): ReactElement => {
-  const { loading: swapLoading, form, confirm, ui } = useSwap(
-    user,
-    actives
-  )
-  const [loading, setLoading] = useState(swapLoading)
+  refreshing: boolean
+} & Props): ReactElement => {
+  const { form, confirm, ui, load } = useSwap(user, actives)
 
   useEffect(() => {
-    setTimeout((): void => {
-      setLoading(false)
-    }, 400)
+    navigation.addListener('focus', () => {
+      if (load) {
+        load()
+        const amtSet = form?.fields[1].setValue
+        amtSet && amtSet('')
+      }
+    })
   }, [])
 
   return (
@@ -253,7 +253,7 @@ const RenderSwap = ({
       {ui && form && (
         <Render form={form} title={title} ui={ui} confirm={confirm} />
       )}
-      {loading && (
+      {refreshing && (
         <View
           style={{
             position: 'absolute',
@@ -262,25 +262,27 @@ const RenderSwap = ({
             backgroundColor: color.sky,
             paddingTop: 30,
           }}
-        >
-          <LoadingIcon />
-        </View>
+        ></View>
       )}
     </View>
   )
 }
 
-const Screen = ({ navigation }: Props): ReactElement => {
-  const { error, loading, ui, swap } = useMarket()
+const Screen = (props: Props): ReactElement => {
+  const { error, loading, ui, swap, execute } = useMarket()
   const [refreshingKey, setRefreshingKey] = useState(0)
+  const [refreshing, setRefreshing] = useState(false)
   const refreshPage = async (): Promise<void> => {
     setRefreshingKey((ori) => ori + 1)
+    setRefreshing(true)
+    setTimeout((): void => {
+      setRefreshing(false)
+    }, 400)
   }
-
   useEffect(() => {
-    if (loading === false) {
-      navigation.addListener('focus', () => {
-        refreshPage()
+    if (false === loading) {
+      props.navigation.addListener('focus', () => {
+        execute()
       })
     }
   }, [loading])
@@ -292,12 +294,16 @@ const Screen = ({ navigation }: Props): ReactElement => {
           <Fragment key={refreshingKey}>
             {error ? (
               <ErrorComponent card />
-            ) : loading ? (
-              <Loading />
             ) : (
               ui && (
                 <RenderSwap
-                  {...{ actives: ui.actives, user, title: swap }}
+                  {...{
+                    actives: ui.actives,
+                    user,
+                    title: swap,
+                    refreshing,
+                  }}
+                  {...props}
                 />
               )
             )}

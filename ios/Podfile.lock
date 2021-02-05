@@ -411,6 +411,8 @@ PODS:
     - React-Core
   - RNDeviceInfo (7.4.0):
     - React-Core
+  - RNExitApp (1.1.0):
+    - React
   - RNFBAnalytics (10.4.1):
     - Firebase/Analytics (~> 7.3.0)
     - React-Core
@@ -519,6 +521,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - RNExitApp (from `../node_modules/react-native-exit-app`)
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -658,6 +661,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-picker/picker"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
+  RNExitApp:
+    :path: "../node_modules/react-native-exit-app"
   RNFBAnalytics:
     :path: "../node_modules/@react-native-firebase/analytics"
   RNFBApp:
@@ -771,6 +776,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
   RNCPicker: 77183d9b1cd80ae55505322f8ad09ba0036e29ba
   RNDeviceInfo: febcb25b09201a312c66c36ecc1f155c5a43eecc
+  RNExitApp: 7d81855142a4d11eb75f4f06fdebf5a950d7aef2
   RNFBAnalytics: a274c45ca741e12d1bdb3e0b8465dffc06a8d1b8
   RNFBApp: a9af8372c9c2b2135ffa78817fd2d8baf3ee632e
   RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b

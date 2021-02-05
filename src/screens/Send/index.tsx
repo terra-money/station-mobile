@@ -72,10 +72,9 @@ const RenderForm = ({
       <SubHeader theme={'sapphire'} title={form.title} />
       <Body
         theme={'sky'}
+        scrollable
         containerStyle={{
-          flex: 1,
-          marginBottom: 40,
-          justifyContent: 'space-between',
+          paddingBottom: 40,
         }}
       >
         <View>
