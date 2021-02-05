@@ -1,10 +1,11 @@
-import React, { ReactElement, useEffect } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { StackScreenProps } from '@react-navigation/stack'
 import { useRecoilValue } from 'recoil'
 import {
   NavigationProp,
+  StackActions,
   useNavigation,
 } from '@react-navigation/native'
 
@@ -27,8 +28,14 @@ import {
 import { RootStackParams } from 'types/navigation'
 import { useConfirm } from 'hooks/useConfirm'
 import ConfirmStore from 'stores/ConfirmStore'
+import { getBioAuthPassword, getIsUseBioAuth } from 'utils/storage'
+import { authenticateBiometric } from 'utils/bio'
+import { useAlert } from 'hooks/useAlert'
+import { useLoading } from 'hooks/useLoading'
 
 type Props = StackScreenProps<RootStackParams, 'Confirm'>
+
+const INIT_PASSWORD = '1'
 
 const Render = ({
   user,
@@ -37,26 +44,82 @@ const Render = ({
   user: User
   confirm: ConfirmProps
 } & Props): ReactElement => {
-  const { navigate } = useNavigation<
+  const { navigate, dispatch } = useNavigation<
     NavigationProp<RootStackParams>
   >()
-
-  const { getComfirmData } = useConfirm()
-  const { contents, fee, form } = getComfirmData({ confirm, user })
-
-  // To ignore password validation.
+  const { confirm: confirmAlert } = useAlert()
+  const { showLoading, hideLoading } = useLoading()
+  const { getComfirmData, initConfirm } = useConfirm()
+  const { contents, fee, form, result } = getComfirmData({
+    confirm,
+    user,
+  })
   // form.fields must have password
-  useEffect(() => {
-    if (form) {
-      const formPassword = _.find(
-        form.fields,
-        (x) => x.attrs.id === 'password'
-      )
-      if (formPassword?.setValue) {
-        formPassword.setValue('1')
+  const formPassword = _.find(
+    form.fields,
+    (x) => x.attrs.id === 'password'
+  )
+  const [isUseBioAuth, setIsUseBioAuth] = useState(false)
+  const [initPageComplete, setinitPageComplete] = useState(false)
+  const onPressNextButton = async (): Promise<void> => {
+    if (isUseBioAuth) {
+      const isSuccess = await authenticateBiometric()
+      if (isSuccess) {
+        const password = await getBioAuthPassword({
+          walletName: user.name || '',
+        })
+
+        if (formPassword?.setValue) {
+          formPassword.setValue(password)
+        }
+      } else {
+        confirmAlert({
+          desc: 'Do you want confirm with password?',
+          onPressConfirm: () => {
+            navigate('ConfirmPassword', {
+              feeSelectValue: fee.select.attrs.value || '',
+            })
+          },
+        })
       }
+    } else {
+      navigate('ConfirmPassword', {
+        feeSelectValue: fee.select.attrs.value || '',
+      })
     }
-  }, [form])
+  }
+
+  // during form is submitting, show loading
+  useEffect(() => {
+    form.submitting ? showLoading() : hideLoading()
+  }, [form.submitting])
+
+  // only password change from bio-auth, except init
+  useEffect(() => {
+    const password = formPassword?.attrs.value
+    if (password && password !== INIT_PASSWORD && form.onSubmit) {
+      form.onSubmit()
+    }
+  }, [formPassword?.attrs.value])
+
+  // result will set after form.onSubmit or error
+  useEffect(() => {
+    if (result) {
+      dispatch(StackActions.popToTop())
+      navigate('Complete', { result })
+      initConfirm()
+    }
+  }, [result])
+
+  const initPage = async (): Promise<void> => {
+    formPassword?.setValue && formPassword.setValue(INIT_PASSWORD)
+    setIsUseBioAuth(await getIsUseBioAuth())
+    setinitPageComplete(true)
+  }
+
+  useEffect(() => {
+    initPage()
+  }, [])
 
   return (
     <>
@@ -134,13 +197,9 @@ const Render = ({
 
         <Button
           theme={'sapphire'}
-          disabled={form.disabled}
+          disabled={form.disabled || false === initPageComplete}
           title={'Next'}
-          onPress={(): void => {
-            navigate('ConfirmPassword', {
-              feeSelectValue: fee.select.attrs.value || '',
-            })
-          }}
+          onPress={onPressNextButton}
           containerStyle={{ marginTop: 20 }}
         />
       </Body>
