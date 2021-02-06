@@ -9,6 +9,7 @@ import {
   AuthProvider,
   useConfigState,
   ConfigProvider,
+  User,
 } from 'use-station/src'
 
 import { Settings } from './src/types'
@@ -34,11 +35,14 @@ import { getJson } from 'utils/request'
 import { useUpdate } from 'hooks/useUpdate'
 import StatusBar from 'components/StatusBar'
 import RNExitApp from 'react-native-exit-app'
+import { getWallet } from 'utils/wallet'
 
 let App = ({
-  settings: { lang, user, chain, currency },
+  settings: { lang, chain, currency },
+  user,
 }: {
   settings: Settings
+  user?: User
 }): ReactElement => {
   /* drawer */
   const drawer = useDrawerState()
@@ -125,7 +129,6 @@ let App = ({
 
   /* auth */
   const auth = useAuthState(user)
-
   /* render */
   const ready = !!(currentLang && currentChain)
 
@@ -181,15 +184,29 @@ App = CodePush(CodePushOptions)(App)
 
 export default (): ReactElement => {
   const [local, setLocal] = useState<Settings>()
+  const [user, setUser] = useState<User>()
+  const [initComplete, setInitComplete] = useState(false)
 
   useEffect(() => {
     const init = async (): Promise<void> => {
       const local = await settings.get()
       setLocal(local)
+      if (local.walletName) {
+        const wallet = await getWallet(local.walletName)
+        setUser(wallet)
+      }
     }
 
-    init()
+    init().then((): void => {
+      setInitComplete(true)
+    })
   }, [])
 
-  return <>{local ? <App settings={local} /> : null}</>
+  return (
+    <>
+      {local && initComplete ? (
+        <App settings={local} user={user} />
+      ) : null}
+    </>
+  )
 }

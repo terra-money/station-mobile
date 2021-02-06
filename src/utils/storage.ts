@@ -1,11 +1,10 @@
 import { mergeRight as merge, omit } from 'ramda'
-import _ from 'lodash'
 
 import { Settings } from '../types/settings'
 import preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
-import keystore, { KeystoreEnum } from 'nativeModules/keystore'
+import { getAuthDataValue } from './authData'
 
 const getSettings = async (): Promise<Settings> => {
   const settings = await preferences.getString(
@@ -60,48 +59,6 @@ export const setSkipOnboarding = async (
   preferences.setBool(PreferencesEnum.onboarding, skip)
 }
 
-export const upsertBioAuthPassword = async ({
-  password,
-  walletName,
-}: {
-  password: string
-  walletName: string
-}): Promise<void> => {
-  const bioAuthData = await keystore.read(KeystoreEnum.bioAuthData)
-  let jsonData: Record<string, string> = {}
-
-  if (_.some(bioAuthData)) {
-    jsonData = JSON.parse(bioAuthData)
-  }
-
-  jsonData[walletName] = password
-  keystore.write(KeystoreEnum.bioAuthData, JSON.stringify(jsonData))
-}
-
-export const removeBioAuthPassword = async ({
-  walletName,
-}: {
-  walletName: string
-}): Promise<boolean> => {
-  try {
-    const bioAuthData = await keystore.read(KeystoreEnum.bioAuthData)
-    let jsonData: Record<string, string> = {}
-
-    if (_.some(bioAuthData)) {
-      jsonData = JSON.parse(bioAuthData)
-    }
-
-    keystore.write(
-      KeystoreEnum.bioAuthData,
-      JSON.stringify(_.omit(jsonData, walletName))
-    )
-
-    return true
-  } catch {
-    return false
-  }
-}
-
 export const setUseBioAuth = async ({
   isUse,
 }: {
@@ -118,12 +75,7 @@ export const getBioAuthPassword = async ({
 }: {
   walletName: string
 }): Promise<string> => {
-  const bioAuthData = await keystore.read(KeystoreEnum.bioAuthData)
+  const authDataValue = await getAuthDataValue(walletName)
 
-  if (_.some(bioAuthData)) {
-    const jsonData = JSON.parse(bioAuthData)
-    return jsonData[walletName]
-  }
-
-  return ''
+  return authDataValue ? authDataValue.password : ''
 }

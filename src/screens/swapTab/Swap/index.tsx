@@ -235,13 +235,14 @@ const RenderSwap = ({
   const { form, confirm, ui, load } = useSwap(user, actives)
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       if (load) {
         load()
         const amtSet = form?.fields[1].setValue
         amtSet && amtSet('')
       }
     })
+    return unsubscribe
   }, [])
 
   return (
@@ -276,11 +277,13 @@ const Screen = (props: Props): ReactElement => {
     }, 400)
   }
   useEffect(() => {
+    let unsubscribe
     if (false === loading) {
-      props.navigation.addListener('focus', () => {
+      unsubscribe = props.navigation.addListener('focus', () => {
         execute()
       })
     }
+    return unsubscribe
   }, [loading])
 
   return (

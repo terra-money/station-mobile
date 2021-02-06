@@ -64,11 +64,13 @@ const Screen = ({ navigation, route }: Props): ReactElement => {
   }
 
   useEffect(() => {
+    let unsubscribe
     if (loadingComplete) {
-      navigation.addListener('focus', () => {
+      unsubscribe = navigation.addListener('focus', () => {
         refreshPage()
       })
     }
+    return unsubscribe
   }, [loadingComplete])
 
   return (

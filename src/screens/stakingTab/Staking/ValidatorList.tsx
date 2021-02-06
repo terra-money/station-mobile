@@ -136,6 +136,7 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
       <FlatList
         data={contents}
         scrollEnabled={false}
+        keyExtractor={(item, index): string => `contents${index}`}
         renderItem={({ item, index }): ReactElement => (
           <TouchableOpacity
             onPress={(): void =>
@@ -250,7 +251,6 @@ const ValidatorList = ({ contents }: StakingUI): ReactElement => {
     </Card>
   )
 }
-ValidatorList.option = {}
 
 export default ValidatorList
 

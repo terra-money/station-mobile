@@ -80,9 +80,10 @@ const WalletAddress = ({
   const { ui, execute } = useAssets(user)
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       execute()
     })
+    return unsubscribe
   }, [])
 
   const render = ({

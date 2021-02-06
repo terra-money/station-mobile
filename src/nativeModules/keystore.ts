@@ -4,7 +4,7 @@ import { NativeModules } from 'react-native'
 // enum string length should NOT be in 5 ~ 20
 // AND Don't recommend add to keystore, except wallets-name and bio-auth-data
 export enum KeystoreEnum {
-  bioAuthData = 'BAD',
+  AuthData = 'AD',
 }
 
 export type KeystoreType = {
@@ -15,4 +15,29 @@ export type KeystoreType = {
 
 const Keystore: KeystoreType = NativeModules.Keystore
 
-export default Keystore
+// Prevent Crashing App from native exception
+export default {
+  write: (key: string, value: string): boolean => {
+    try {
+      Keystore.write(key, value)
+      return true
+    } catch {
+      return false
+    }
+  },
+  read: async (key: string): Promise<string> => {
+    try {
+      return Keystore.read(key)
+    } catch {
+      return ''
+    }
+  },
+  remove: (key: string): boolean => {
+    try {
+      Keystore.remove(key)
+      return true
+    } catch {
+      return false
+    }
+  },
+}

@@ -1,14 +1,13 @@
 import { MnemonicKey } from '@terra-money/terra.js'
 import { encrypt, decrypt } from './crypto'
+import _ from 'lodash'
 
-import preferences, {
-  PreferencesEnum,
-} from 'nativeModules/preferences'
-import keystore from 'nativeModules/keystore'
 import {
-  removeBioAuthPassword,
-  upsertBioAuthPassword,
-} from './storage'
+  getAuthData,
+  getAuthDataValue,
+  removeAuthData,
+  upsertAuthData,
+} from './authData'
 
 const sanitize = (s = ''): string =>
   s.toLowerCase().replace(/[^a-z]/g, '')
@@ -88,14 +87,10 @@ export const decryptKey = (
 }
 
 export const getWallets = async (): Promise<LocalWallet[]> => {
-  try {
-    const wallets = await preferences.getString(
-      PreferencesEnum.wallets
-    )
-    return JSON.parse(wallets)
-  } catch {
-    return []
-  }
+  const authData = await getAuthData()
+  return _.map(authData, ({ address }, name) => {
+    return { name, address }
+  })
 }
 
 export const getWallet = async (
@@ -108,8 +103,8 @@ export const getWallet = async (
 export const getEncryptedKey = async (
   name: string
 ): Promise<string> => {
-  const encryptedKey = await keystore.read(name)
-  return encryptedKey
+  const authDataValue = await getAuthDataValue(name)
+  return authDataValue ? authDataValue.encryptedKey : ''
 }
 
 export const addWallet = async ({
@@ -120,19 +115,21 @@ export const addWallet = async ({
   wallet: LocalWallet
   key: string
   password: string
-}): Promise<void> => {
+}): Promise<boolean> => {
   const wallets = await getWallets()
 
   if (wallets.find((w) => w.name === wallet.name))
     throw new Error('Wallet with that name already exists')
 
-  preferences.setString(
-    PreferencesEnum.wallets,
-    JSON.stringify([...wallets, wallet])
-  )
-  keystore.write(wallet.name, key)
-
-  await upsertBioAuthPassword({ walletName: wallet.name, password })
+  return await upsertAuthData({
+    authData: {
+      [wallet.name]: {
+        address: wallet.address,
+        password,
+        encryptedKey: key,
+      },
+    },
+  })
 }
 
 export const getDecyrptedKey = async (
@@ -150,22 +147,7 @@ export const deleteWallet = async ({
 }: {
   walletName: string
 }): Promise<boolean> => {
-  try {
-    const wallets = await getWallets()
-
-    const removedWallets = wallets.filter(
-      (x) => x.name !== walletName
-    )
-    preferences.setString(
-      PreferencesEnum.wallets,
-      JSON.stringify(removedWallets)
-    )
-    keystore.remove(walletName)
-    await removeBioAuthPassword({ walletName })
-    return true
-  } catch {
-    return false
-  }
+  return await removeAuthData({ walletName })
 }
 
 export const changePassword = async (
@@ -173,18 +155,22 @@ export const changePassword = async (
   ondPassword: string,
   newPassword: string
 ): Promise<boolean> => {
-  try {
-    const decryptedKey = await getDecyrptedKey(name, ondPassword)
-    const encryptedKey = encrypt(decryptedKey, newPassword)
-    keystore.write(name, encryptedKey)
-    await upsertBioAuthPassword({
-      walletName: name,
-      password: newPassword,
+  const decryptedKey = await getDecyrptedKey(name, ondPassword)
+  const encryptedKey = encrypt(decryptedKey, newPassword)
+  const authDataValue = await getAuthDataValue(name)
+  if (authDataValue) {
+    upsertAuthData({
+      authData: {
+        [name]: {
+          ...authDataValue,
+          password: newPassword,
+          encryptedKey,
+        },
+      },
     })
     return true
-  } catch {
-    return false
   }
+  return false
 }
 
 export const testPassword = async ({
@@ -205,7 +191,7 @@ export const testPassword = async ({
     }
   }
 
-  const key = await keystore.read(wallet.name)
+  const key = await getEncryptedKey(wallet.name)
   const ret = decrypt(key, password)
   if (ret) {
     return {
