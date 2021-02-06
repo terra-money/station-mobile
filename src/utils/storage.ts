@@ -6,7 +6,6 @@ import preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 import keystore, { KeystoreEnum } from 'nativeModules/keystore'
-import { Alert } from 'react-native'
 
 const getSettings = async (): Promise<Settings> => {
   const settings = await preferences.getString(
@@ -120,14 +119,7 @@ export const getBioAuthPassword = async ({
   walletName: string
 }): Promise<string> => {
   const bioAuthData = await keystore.read(KeystoreEnum.bioAuthData)
-  Alert.alert(
-    '',
-    JSON.stringify({
-      bioAuthData,
-      walletName,
-      isInclude: bioAuthData.indexOf(walletName),
-    })
-  )
+
   if (_.some(bioAuthData)) {
     const jsonData = JSON.parse(bioAuthData)
     return jsonData[walletName]
