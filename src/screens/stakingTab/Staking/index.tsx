@@ -21,9 +21,10 @@ const Render = ({
   const { personal, ui, execute } = useStaking(user)
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       execute()
     })
+    return unsubscribe
   }, [])
 
   return (

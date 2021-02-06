@@ -64,10 +64,11 @@ const Screen = ({ navigation }: Props): ReactElement => {
   }
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       initStoreData()
     })
     initStoreData()
+    return unsubscribe
   }, [])
 
   return (

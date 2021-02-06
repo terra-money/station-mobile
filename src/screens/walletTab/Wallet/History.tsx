@@ -53,9 +53,10 @@ const History = ({
   const { error, ui, execute } = useTxs(user, params)
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       execute()
     })
+    return unsubscribe
   }, [])
 
   return error ? (
