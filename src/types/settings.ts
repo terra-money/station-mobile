@@ -1,8 +1,8 @@
-import { LangKey, ChainOptions, User } from 'use-station/src'
+import { LangKey, ChainOptions } from 'use-station/src'
 
 export interface Settings {
   lang?: LangKey
   chain?: ChainOptions
-  user?: User
+  walletName?: string
   currency?: string
 }

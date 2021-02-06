@@ -71,7 +71,7 @@ const Screen = (): ReactElement => {
           password,
         })
         signIn(wallet)
-        settings.set({ user: wallet })
+        settings.set({ walletName: wallet.name })
         if (
           false === (await getIsUseBioAuth()) &&
           (await isSupportedBiometricAuthentication())

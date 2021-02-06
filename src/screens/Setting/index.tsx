@@ -96,7 +96,7 @@ const Screen = (): ReactElement => {
   }
 
   const onPressDisconnect = (): void => {
-    settings.delete(['user'])
+    settings.delete(['walletName'])
     signOut()
     navigate('Wallet')
   }

@@ -14,7 +14,9 @@ export default (): void => {
   const { user } = useAuth()
 
   useEffect(() => {
-    user ? settings.set({ user }) : settings.delete(['user'])
+    user
+      ? settings.set({ walletName: user.address })
+      : settings.delete(['walletName'])
     user && navigate('Tabs')
   }, [user])
 }
