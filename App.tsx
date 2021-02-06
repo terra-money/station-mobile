@@ -3,6 +3,7 @@ import { Alert, NativeModules } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import SplashScreen from 'react-native-splash-screen'
 import { RecoilRoot } from 'recoil'
+import _ from 'lodash'
 
 import {
   useAuthState,
@@ -36,6 +37,10 @@ import { useUpdate } from 'hooks/useUpdate'
 import StatusBar from 'components/StatusBar'
 import RNExitApp from 'react-native-exit-app'
 import { getWallet } from 'utils/wallet'
+import preferences, {
+  PreferencesEnum,
+} from 'nativeModules/preferences'
+import keystore from 'nativeModules/keystore'
 
 let App = ({
   settings: { lang, chain, currency },
@@ -174,6 +179,22 @@ let App = ({
   )
 }
 
+// TODO : Remove this code when real deploy
+const clearUnusedStorageData = async (): Promise<void> => {
+  try {
+    keystore.remove('BAD')
+    const wallets = await preferences.getString(
+      PreferencesEnum.wallets
+    )
+    if (wallets) {
+      _.forEach(JSON.parse(wallets), ({ name }) => {
+        keystore.remove(name)
+      })
+    }
+    preferences.remove(PreferencesEnum.wallets)
+  } catch {}
+}
+
 const CodePushOptions = {
   checkFrequency: CodePush.CheckFrequency.MANUAL,
   updateDialog: false,
@@ -188,6 +209,7 @@ export default (): ReactElement => {
   const [initComplete, setInitComplete] = useState(false)
 
   useEffect(() => {
+    clearUnusedStorageData()
     const init = async (): Promise<void> => {
       const local = await settings.get()
       setLocal(local)
