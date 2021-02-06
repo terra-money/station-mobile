@@ -15,7 +15,7 @@ export default (): void => {
 
   useEffect(() => {
     user
-      ? settings.set({ walletName: user.address })
+      ? settings.set({ walletName: user.name })
       : settings.delete(['walletName'])
     user && navigate('Tabs')
   }, [user])
