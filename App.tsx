@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactElement } from 'react'
-import { Alert, NativeModules } from 'react-native'
+import { Alert, NativeModules, Platform } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import SplashScreen from 'react-native-splash-screen'
 import { RecoilRoot } from 'recoil'
@@ -179,20 +179,29 @@ let App = ({
   )
 }
 
-// TODO : Remove this code when real deploy
-const clearUnusedStorageData = async (): Promise<void> => {
+const clearKeystoreWhenFirstRun = async (): Promise<void> => {
+  if (Platform.OS !== 'ios') return
+
+  const firstRun = await preferences.getBool(PreferencesEnum.firstRun)
+  if (firstRun) return
+
   try {
     keystore.remove('BAD')
+    keystore.remove('AD')
     const wallets = await preferences.getString(
       PreferencesEnum.wallets
     )
+
     if (wallets) {
       _.forEach(JSON.parse(wallets), ({ name }) => {
         keystore.remove(name)
       })
     }
     preferences.remove(PreferencesEnum.wallets)
-  } catch {}
+  } catch {
+  } finally {
+    preferences.setBool(PreferencesEnum.firstRun, true)
+  }
 }
 
 const CodePushOptions = {
@@ -209,7 +218,7 @@ export default (): ReactElement => {
   const [initComplete, setInitComplete] = useState(false)
 
   useEffect(() => {
-    clearUnusedStorageData()
+    clearKeystoreWhenFirstRun()
     const init = async (): Promise<void> => {
       const local = await settings.get()
       setLocal(local)
