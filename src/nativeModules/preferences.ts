@@ -5,6 +5,7 @@ export enum PreferencesEnum {
   onboarding = 'skipOnboarding',
   useBioAuth = 'useBioAuth',
   wallets = 'wallets',
+  firstRun = 'firstRun',
 }
 
 export type PreferencesType = {
