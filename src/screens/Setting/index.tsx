@@ -36,6 +36,7 @@ import {
   isSupportedBiometricAuthentication,
 } from 'utils/bio'
 import networks from '../../../networks'
+import StatusBar from 'components/StatusBar'
 
 const Screen = (): ReactElement => {
   const { user, signOut } = useAuth()
@@ -142,6 +143,7 @@ const Screen = (): ReactElement => {
         scrollable
         containerStyle={{ paddingHorizontal: 0 }}
       >
+        <StatusBar theme="sapphire" />
         {user && (
           <View style={styles.section}>
             {supportBioAuth && (
