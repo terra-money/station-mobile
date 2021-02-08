@@ -1,16 +1,12 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Switch,
-} from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import _ from 'lodash'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import { CopyButton, Icon, Text, Selector } from 'components'
+import { CopyButton, Icon, Text, Selector, Switch } from 'components'
 
 import { RootStackParams } from 'types/navigation'
 import {
@@ -149,10 +145,13 @@ const Screen = (): ReactElement => {
                 <Text style={styles.itemName} fontType={'medium'}>
                   Use Bio Auth
                 </Text>
-                <Switch
-                  value={isUseBioAuth}
-                  onValueChange={onChangeIsUseBioAuth}
-                />
+                <TouchableWithoutFeedback
+                  onPress={(): void => {
+                    onChangeIsUseBioAuth(!isUseBioAuth)
+                  }}
+                >
+                  <Switch value={isUseBioAuth} />
+                </TouchableWithoutFeedback>
               </View>
             )}
 
