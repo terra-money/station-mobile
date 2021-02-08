@@ -19,9 +19,8 @@ import {
   BiometricButton,
 } from 'components'
 
-import { getIsUseBioAuth } from 'utils/storage'
+import { getIsUseBioAuth, settings } from 'utils/storage'
 import { RootStackParams } from 'types'
-import useOnAuth from './useOnAuth'
 import { useAlert } from 'hooks/useAlert'
 import SubHeader from 'components/layout/SubHeader'
 
@@ -30,7 +29,6 @@ const Screen = (): ReactElement => {
   const [initPageComplete, setInitPageComplete] = useState(false)
   const [wallets, setWallets] = useState<LocalWallet[]>([])
   const [isUseBioAuth, setIsUseBioAuth] = useState(false)
-  useOnAuth()
 
   const { goBack } = useNavigation<NavigationProp<RootStackParams>>()
 
@@ -60,7 +58,10 @@ const Screen = (): ReactElement => {
 
     if (result.isSuccess) {
       const wallet = wallets.find((w) => w.name === name)
-      wallet && signIn(wallet)
+      if (wallet) {
+        signIn(wallet)
+        settings.set({ walletName: wallet.name })
+      }
     } else {
       alert({ desc: result.errorMessage })
     }

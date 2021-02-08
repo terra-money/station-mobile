@@ -2,10 +2,8 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import _ from 'lodash'
 import { View, StyleSheet, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { useAuth } from 'use-station/src'
 
 import Body from 'components/layout/Body'
-import { navigationHeaderOptions } from 'components/layout/Header'
 
 import { Text, Icon, Button, Dot } from 'components'
 
@@ -18,7 +16,6 @@ const Screen = (): ReactElement => {
   const [initPageComplete, setInitPageComplete] = useState(false)
   const [wallets, setWallets] = useState<LocalWallet[]>()
   const { navigate } = useNavigation()
-  const { user, signOut } = useAuth()
 
   const initPage = async (): Promise<void> => {
     setWallets(await getWallets())
@@ -35,7 +32,7 @@ const Screen = (): ReactElement => {
       {initPageComplete && (
         <Body
           theme={'sapphire'}
-          containerStyle={{ paddingBottom: 50, paddingTop: 10 }}
+          containerStyle={{ paddingBottom: 50, paddingTop: 70 }}
         >
           <View style={{ flex: 1 }}>
             <Text style={styles.title} fontType={'bold'}>
@@ -62,52 +59,35 @@ const Screen = (): ReactElement => {
             </View>
           </View>
           <View>
-            {_.isEmpty(user) ? (
-              <>
-                {_.some(wallets) && (
-                  <Button
-                    theme={'white'}
-                    title={'Select wallet'}
-                    onPress={(): void => navigate('SelectWallet')}
-                    containerStyle={{ marginBottom: 10 }}
-                  />
-                )}
-
-                <Button
-                  theme={_.some(wallets) ? 'transparent' : 'white'}
-                  title={'New wallet'}
-                  onPress={(): void => navigate('NewWallet')}
-                />
-
-                <View style={styles.orBox}>
-                  <Text style={styles.orText}>OR</Text>
-                </View>
-                <Button
-                  theme={'transparent'}
-                  title={'Recover existing wallet'}
-                  onPress={(): void => navigate('RecoverWallet')}
-                />
-              </>
-            ) : (
-              <>
-                <Button
-                  theme={'white'}
-                  title={'Disconnect'}
-                  onPress={signOut}
-                />
-              </>
+            {_.some(wallets) && (
+              <Button
+                theme={'white'}
+                title={'Select wallet'}
+                onPress={(): void => navigate('SelectWallet')}
+                containerStyle={{ marginBottom: 10 }}
+              />
             )}
+
+            <Button
+              theme={_.some(wallets) ? 'transparent' : 'white'}
+              title={'New wallet'}
+              onPress={(): void => navigate('NewWallet')}
+            />
+
+            <View style={styles.orBox}>
+              <Text style={styles.orText}>OR</Text>
+            </View>
+            <Button
+              theme={'transparent'}
+              title={'Recover existing wallet'}
+              onPress={(): void => navigate('RecoverWallet')}
+            />
           </View>
         </Body>
       )}
     </>
   )
 }
-
-Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'sapphire',
-  goBackIconType: 'close',
-})
 
 export default Screen
 

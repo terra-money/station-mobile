@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react'
+import React, { ReactElement } from 'react'
 import { StyleSheet } from 'react-native'
 import {
   BottomTabNavigationOptions,
@@ -14,9 +14,6 @@ import { RootStack } from 'types/navigation'
 import Staking from '../screens/stakingTab/Staking'
 import { Text, Icon } from 'components'
 import layout from 'styles/layout'
-import { useRecoilState } from 'recoil'
-import AppStore from 'stores/AppStore'
-import { useNavigation } from '@react-navigation/native'
 
 export const INITIAL = 'Dashboard'
 
@@ -103,17 +100,6 @@ const tabScreenItemList: {
 ]
 
 const Tabs = (): ReactElement => {
-  const [afterOnBoarding, setAfterOnBoarding] = useRecoilState(
-    AppStore.afterOnBoarding
-  )
-  const { navigate } = useNavigation()
-  useEffect(() => {
-    if (afterOnBoarding) {
-      navigate('AuthMenu')
-      setAfterOnBoarding(false)
-    }
-  }, [])
-
   const labelPosition =
     layout.getScreenWideType() === 'wide'
       ? 'beside-icon'

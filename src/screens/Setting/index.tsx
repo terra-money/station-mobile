@@ -6,7 +6,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import { CopyButton, Icon, Text, Selector, Switch } from 'components'
+import { CopyButton, Text, Selector, Switch } from 'components'
 
 import { RootStackParams } from 'types/navigation'
 import {
@@ -217,7 +217,7 @@ const Screen = (): ReactElement => {
             onSelect={onSelectNetwork}
           />
         </View>
-        {user ? (
+        {user && (
           <View style={styles.section}>
             <TouchableOpacity
               style={styles.authItemBox}
@@ -236,23 +236,6 @@ const Screen = (): ReactElement => {
                 fontType={'bold'}
               >
                 Delete wallet
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <View style={styles.section}>
-            <TouchableOpacity
-              style={styles.authItemBox}
-              onPress={(): void => navigate('AuthMenu')}
-            >
-              <Icon
-                name="account-balance-wallet"
-                size={24}
-                color="#2043b5"
-                style={{ marginRight: 8 }}
-              />
-              <Text style={styles.authItemName} fontType={'bold'}>
-                Connect
               </Text>
             </TouchableOpacity>
           </View>

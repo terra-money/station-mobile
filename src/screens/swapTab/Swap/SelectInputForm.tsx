@@ -78,7 +78,7 @@ const SelectInputForm = ({
           autoCorrect={false}
         />
       </View>
-      {_.some(error) && (
+      {_.some(inputField.attrs.value) && _.some(error) && (
         <View style={styles.errorMessageBox}>
           <Icon name={'info'} color={color.red} size={12} />
           <Text style={styles.errorMessage} fontType={'medium'}>

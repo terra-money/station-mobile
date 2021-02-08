@@ -95,8 +95,8 @@ const Top = ({
             </Text>
           </View>
         </View>
-        {user ? (
-          myDelegations.display ? (
+        {user &&
+          (myDelegations.display ? (
             <View />
           ) : (
             <View style={styles.section}>
@@ -115,21 +115,7 @@ const Top = ({
                 />
               </View>
             </View>
-          )
-        ) : (
-          <View style={styles.section}>
-            <View style={styles.infoItem}>
-              <Button
-                theme={'sapphire'}
-                title={'Connect wallet to delegate'}
-                onPress={(): void => {
-                  navigate('AuthMenu')
-                }}
-                containerStyle={{ width: '100%' }}
-              />
-            </View>
-          </View>
-        )}
+          ))}
       </View>
     </View>
   )

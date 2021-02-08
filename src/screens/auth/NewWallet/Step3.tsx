@@ -21,12 +21,10 @@ import NewWalletStore from 'stores/NewWalletStore'
 import { useBioAuth } from 'hooks/useBioAuth'
 import { isSupportedBiometricAuthentication } from 'utils/bio'
 import { createWallet } from 'utils/wallet'
-import { getIsUseBioAuth, settings } from 'utils/storage'
-import { useAuth } from 'use-station/src'
+import { getIsUseBioAuth } from 'utils/storage'
 
 const Screen = (): ReactElement => {
   const { dispatch } = useNavigation()
-  const { signIn } = useAuth()
   const seed = useRecoilValue(NewWalletStore.seed)
   const name = useRecoilValue(NewWalletStore.name)
   const password = useRecoilValue(NewWalletStore.password)
@@ -61,8 +59,6 @@ const Screen = (): ReactElement => {
     })
 
     if (result.success) {
-      signIn(result.wallet)
-      settings.set({ walletName: name })
       if (
         false === (await getIsUseBioAuth()) &&
         (await isSupportedBiometricAuthentication())
@@ -70,7 +66,11 @@ const Screen = (): ReactElement => {
         openIsUseBioAuth()
       }
       dispatch(StackActions.popToTop())
-      dispatch(StackActions.replace('WalletCreated'))
+      dispatch(
+        StackActions.replace('WalletCreated', {
+          wallet: result.wallet,
+        })
+      )
     }
   }
 
