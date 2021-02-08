@@ -2,7 +2,7 @@ import React from 'react'
 import { CommonActions } from '@react-navigation/native'
 import { LCDClient } from '@terra-money/terra.js'
 import { ReactElement } from 'react'
-import { ActivityIndicator, Alert, Linking, View } from 'react-native'
+import { ActivityIndicator, Linking, View } from 'react-native'
 
 export const DEBUG_TOPUP = false
 
@@ -23,7 +23,7 @@ export const restoreApp = (
   Linking.openURL(returnScheme)
     .then(() => gotoDashboard(navigation))
     .catch(() => {
-      Alert.alert('Cannot return!')
+      // return failed
     })
 }
 

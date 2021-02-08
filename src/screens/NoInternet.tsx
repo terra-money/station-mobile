@@ -14,7 +14,6 @@ const NoInternet = (): ReactElement => {
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(
       (state: NetInfoState) => {
-        console.log(state)
         setInternetReachable(
           !state.isConnected || !state.isInternetReachable
         )
