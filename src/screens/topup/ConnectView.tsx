@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { View, Alert, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { Buffer } from 'buffer'
 import { useAuth } from 'use-station/src'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -16,6 +16,7 @@ import {
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
 import StatusBar from 'components/StatusBar'
+import { useAlert } from 'hooks/useAlert'
 
 type Props = StackScreenProps<RootStackParams, 'ConnectView'>
 
@@ -26,16 +27,17 @@ interface SchemeArgs {
 
 const ConnectView = (props: Props): ReactElement => {
   const { user } = useAuth()
+  const { alert } = useAlert()
   const insets = useSafeAreaInsets()
 
   useEffect(() => {
     if (user === undefined) {
-      Alert.alert('Error', 'Wallet not connected!', [
-        {
-          text: 'OK',
-          onPress: (): void => gotoWallet(props.navigation),
-        },
-      ])
+      alert({
+        title: 'Error',
+        desc: 'Wallet not connected!',
+        onPressConfirmText: 'OK',
+        onPressConfirm: () => gotoWallet(props.navigation),
+      })
     }
   }, [])
 
@@ -54,7 +56,7 @@ const ConnectView = (props: Props): ReactElement => {
       props.route.params.arg = undefined
     }
   } catch (e) {
-    Alert.alert(e.toString())
+    alert({ title: 'Unexpected error', desc: e.toString() })
   }
 
   useEffect(() => {
@@ -62,12 +64,12 @@ const ConnectView = (props: Props): ReactElement => {
       setEndpointAddress(arg.endpoint_address)
       setReturnScheme(arg.return_scheme)
     } else {
-      Alert.alert('Parameter error', 'Argument is null', [
-        {
-          text: 'OK',
-          onPress: (): void => gotoDashboard(props.navigation),
-        },
-      ])
+      alert({
+        title: 'Parameter error',
+        desc: 'Argument is null',
+        onPressConfirmText: 'OK',
+        onPressConfirm: () => gotoDashboard(props.navigation),
+      })
     }
   }, [arg])
 
@@ -93,15 +95,18 @@ const ConnectView = (props: Props): ReactElement => {
       const ret = await putConnect(endpointAddress, user?.address)
 
       if (ret.status !== 200) {
-        Alert.alert(
-          `${ret.status} error`,
-          JSON.stringify(await ret.json())
-        )
+        alert({
+          title: `${ret.status} error`,
+          desc: JSON.stringify(await ret.json()),
+        })
       } else {
         restoreApp(props.navigation, returnScheme)
       }
     } catch (e) {
-      Alert.alert('Unexpected Error', e.toString())
+      alert({
+        title: 'Unexpected Error',
+        desc: e.toString(),
+      })
     } finally {
       setLoading(false)
     }

@@ -10,10 +10,14 @@ import color from 'styles/color'
 import layout from 'styles/layout'
 
 const NoInternet = (): ReactElement => {
-  const [isNetworkConnected, setNetworkConnected] = useState(true)
+  const [isInternetReachable, setInternetReachable] = useState(false)
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(
-      (state: NetInfoState) => setNetworkConnected(state.isConnected)
+      (state: NetInfoState) => {
+        setInternetReachable(
+          !state.isConnected || !state.isInternetReachable
+        )
+      }
     )
 
     return (): void => unsubscribe()
@@ -21,7 +25,7 @@ const NoInternet = (): ReactElement => {
 
   return (
     <>
-      {!isNetworkConnected && (
+      {isInternetReachable && (
         <SafeAreaView style={styles.container}>
           <StatusBar theme="white" />
           <Icon
@@ -47,18 +51,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: layout.getWindowWidth(),
     height: layout.getWindowHeight(),
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 20,
+    paddingHorizontal: 20,
+    backgroundColor: color.sky,
   },
-  icon: { marginBottom: 9 },
+  icon: { marginBottom: 15 },
   title: {
     fontSize: 24,
     color: color.sapphire,
     marginBottom: 5,
+    lineHeight: 36,
   },
-  subTitle: { fontSize: 16, color: color.sapphire },
+  subTitle: {
+    fontSize: 16,
+    color: color.sapphire,
+    lineHeight: 24,
+    textAlign: 'center',
+  },
 })
 
 export default NoInternet

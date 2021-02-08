@@ -1,7 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import {
   View,
-  Alert,
   ViewProps,
   TouchableOpacity,
   ScrollView,
@@ -28,6 +27,7 @@ import {
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
 import StatusBar from 'components/StatusBar'
+import { useAlert } from 'hooks/useAlert'
 
 type Props = StackScreenProps<RootStackParams, 'SendTxView'>
 
@@ -38,15 +38,16 @@ interface SchemeArgs {
 
 const SendTxView = (props: Props): ReactElement => {
   const { user } = useAuth()
+  const { alert } = useAlert()
   const insets = useSafeAreaInsets()
 
   if (user === undefined) {
-    Alert.alert('Error', 'Wallet not connected!', [
-      {
-        text: 'OK',
-        onPress: (): void => gotoWallet(props.navigation),
-      },
-    ])
+    alert({
+      title: 'Error',
+      desc: 'Wallet not connected!',
+      onPressConfirmText: 'OK',
+      onPressConfirm: (): void => gotoWallet(props.navigation),
+    })
   }
 
   const [returnScheme, setReturnScheme] = useState('')
@@ -70,7 +71,10 @@ const SendTxView = (props: Props): ReactElement => {
       props.route.params.arg = undefined
     }
   } catch (e) {
-    Alert.alert(e.toString())
+    alert({
+      title: 'Unexpected error',
+      desc: e.toString(),
+    })
   }
 
   useEffect(() => {
