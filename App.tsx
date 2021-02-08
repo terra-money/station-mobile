@@ -41,6 +41,7 @@ import preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 import keystore from 'nativeModules/keystore'
+import NoInternet from './src/screens/NoInternet'
 
 let App = ({
   settings: { lang, chain, currency },
@@ -168,6 +169,7 @@ let App = ({
                       <AlertView alertViewProps={alertViewProps} />
                     </>
                   )}
+                  <NoInternet />
                   <LoadingView />
                 </RecoilRoot>
               </SafeAreaProvider>
