@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
   errorMessageBox: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    marginTop: 5,
   },
   errorMessage: {
     color: color.red,
