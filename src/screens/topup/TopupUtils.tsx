@@ -16,15 +16,18 @@ export const getLCDClient = (
   })
 }
 
-export const restoreApp = (
+export const restoreApp = async (
   navigation: any,
-  returnScheme: string
-): void => {
-  Linking.openURL(returnScheme)
-    .then(() => gotoDashboard(navigation))
-    .catch(() => {
-      // return failed
-    })
+  returnScheme: string,
+  alert: any
+): Promise<void> => {
+  try {
+    await Linking.openURL(returnScheme)
+  } catch (e) {
+    alert({ title: 'Unexpected error', desc: e.toString() })
+  } finally {
+    gotoDashboard(navigation)
+  }
 }
 
 export const gotoDashboard = (navigation: any): void => {
@@ -38,13 +41,6 @@ export const gotoDashboard = (navigation: any): void => {
 
 export const gotoWallet = (navigation: any): void => {
   navigation.replace('AuthMenu')
-}
-
-export const onPressComplete = (
-  navigation: any,
-  returnScheme: string
-): void => {
-  restoreApp(navigation, returnScheme)
 }
 
 export const LoadingIndicator = (): ReactElement => (

@@ -29,7 +29,7 @@ import {
   DEBUG_TOPUP,
   getLCDClient,
   gotoDashboard,
-  onPressComplete,
+  restoreApp,
 } from './TopupUtils'
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
@@ -133,19 +133,23 @@ const SendTxPasswordView = (props: Props): ReactElement => {
           success: false,
           title: `${putResult.status} error`,
           content: JSON.stringify(await putResult.json()),
-          onPress: () =>
-            onPressComplete(
+          onPress: () => {
+            restoreApp(
               props.navigation,
-              props.route.params.returnScheme
-            ),
+              props.route.params.returnScheme,
+              alert
+            )
+          },
         })
       } else {
         props.navigation.replace('SendTxCompleteView', {
-          onPress: () =>
-            onPressComplete(
+          onPress: () => {
+            restoreApp(
               props.navigation,
-              props.route.params.returnScheme
-            ),
+              props.route.params.returnScheme,
+              alert
+            )
+          },
         })
       }
     } catch (e) {
@@ -153,16 +157,16 @@ const SendTxPasswordView = (props: Props): ReactElement => {
         success: false,
         title: `Unexpected error`,
         content: e.toString(),
-        onPress: () =>
-          onPressComplete(
+        onPress: () => {
+          restoreApp(
             props.navigation,
-            props.route.params.returnScheme
-          ),
+            props.route.params.returnScheme,
+            alert
+          )
+        },
       })
     } finally {
-      setTimeout(() => {
-        hideLoading()
-      }, 500)
+      hideLoading()
     }
   }
 

@@ -6,6 +6,7 @@ export enum PreferencesEnum {
   useBioAuth = 'useBioAuth',
   wallets = 'wallets',
   firstRun = 'firstRun',
+  topupAddress = 'topupAddress',
 }
 
 export type PreferencesType = {
