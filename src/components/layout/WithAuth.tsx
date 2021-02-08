@@ -1,6 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react'
 import { useAuth, User } from 'use-station/src'
-import PleaseSignIn from '../PleaseSignIn'
 
 interface Props {
   children: (user: User) => ReactNode
@@ -8,7 +7,7 @@ interface Props {
 
 const WithAuth = ({ children }: Props): ReactElement => {
   const { user } = useAuth()
-  return !user ? <PleaseSignIn /> : <>{children(user)}</>
+  return user ? <>{children(user)}</> : <></>
 }
 
 export default WithAuth

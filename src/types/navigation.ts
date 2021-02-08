@@ -2,9 +2,40 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { StdSignMsg } from '@terra-money/terra.js'
 import { Card, VestingItemUI } from 'use-station/src'
 
+/* Auth */
+export type AuthStackParams = {
+  AuthMenu: undefined
+  SelectWallet: undefined
+  NewWallet: undefined
+  RecoverWallet: undefined
+}
+
+export const AuthStack = createStackNavigator<AuthStackParams>()
+
+/* CreateWallet */
+export type CreateWalletStackParams = {
+  Step1: undefined
+  Step2: undefined
+  Step3: undefined
+  WalletCreated: { wallet: LocalWallet }
+}
+
+export const CreateWalletStack = createStackNavigator<CreateWalletStackParams>()
+
+/* RecoverWallet */
+export type RecoverWalletStackParams = {
+  Step1: undefined
+  Step2QR: undefined
+  Step2Seed: undefined
+  Step3Seed: undefined
+  Step4Seed: undefined
+  WalletRecovered: { wallet: LocalWallet }
+}
+
+export const RecoverWalletStack = createStackNavigator<RecoverWalletStackParams>()
+
 /* Root */
 export type RootStackParams = {
-  OnBoarding: undefined
   Tabs: undefined
   // Dashboard: undefined
   Wallet: undefined
@@ -14,10 +45,6 @@ export type RootStackParams = {
   Swap: undefined
 
   Setting: undefined
-  AuthMenu: undefined
-  SelectWallet: undefined
-  NewWallet: undefined
-  RecoverWallet: undefined
   ConnectView: { arg?: string }
   SendTxView: { arg?: string }
   SendTxPasswordView: {

@@ -2,7 +2,11 @@ import React, { useState, ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { StackActions, useNavigation } from '@react-navigation/native'
+import {
+  StackActions,
+  useNavigation,
+  NavigationProp,
+} from '@react-navigation/native'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -14,14 +18,15 @@ import RecoverWalletStore from 'stores/RecoverWalletStore'
 import NumberStep from 'components/NumberStep'
 import FormLabel from 'components/FormLabel'
 import { decryptKey, addWallet } from 'utils/wallet'
-import { useAuth } from 'use-station/src'
-import { getIsUseBioAuth, settings } from 'utils/storage'
+import { getIsUseBioAuth } from 'utils/storage'
 import { isSupportedBiometricAuthentication } from 'utils/bio'
 import { useBioAuth } from 'hooks/useBioAuth'
+import { RecoverWalletStackParams } from 'types'
 
 const Screen = (): ReactElement => {
-  const { dispatch } = useNavigation()
-  const { signIn } = useAuth()
+  const { dispatch } = useNavigation<
+    NavigationProp<RecoverWalletStackParams>
+  >()
   const { openIsUseBioAuth } = useBioAuth()
 
   const qrData = useRecoilValue(RecoverWalletStore.qrData)
@@ -70,8 +75,6 @@ const Screen = (): ReactElement => {
           key: qrData.privateKey,
           password,
         })
-        signIn(wallet)
-        settings.set({ walletName: wallet.name })
         if (
           false === (await getIsUseBioAuth()) &&
           (await isSupportedBiometricAuthentication())
@@ -79,7 +82,11 @@ const Screen = (): ReactElement => {
           openIsUseBioAuth()
         }
         dispatch(StackActions.popToTop())
-        dispatch(StackActions.replace('WalletRecovered'))
+        dispatch(
+          StackActions.replace('WalletRecovered', {
+            wallet,
+          })
+        )
       } else {
         setDisableNextButton(false)
         setPasswordErrMsg('Incorrect password')

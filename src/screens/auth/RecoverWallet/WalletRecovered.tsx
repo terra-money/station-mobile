@@ -1,15 +1,30 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { StackScreenProps } from '@react-navigation/stack'
 
 import Icon from 'components/Icon'
 import Body from 'components/layout/Body'
 import { Text } from 'components'
 import Button from 'components/Button'
 import color from 'styles/color'
+import { RecoverWalletStackParams } from 'types'
+import { useAuth } from 'use-station/src'
+import { settings } from 'utils/storage'
 
-const Screen = (): ReactElement => {
-  const { navigate } = useNavigation()
+type Props = StackScreenProps<
+  RecoverWalletStackParams,
+  'WalletRecovered'
+>
+
+const Screen = ({ route }: Props): ReactElement => {
+  const wallet = route.params?.wallet
+
+  const { signIn } = useAuth()
+  const onPressButton = (): void => {
+    signIn(wallet)
+    settings.set({ walletName: wallet.name })
+  }
+
   return (
     <Body containerStyle={styles.container}>
       <View style={styles.infoSection}>
@@ -28,7 +43,7 @@ const Screen = (): ReactElement => {
       <Button
         theme={'sapphire'}
         title={'Explore the Terra network'}
-        onPress={(): void => navigate('Tabs')}
+        onPress={onPressButton}
       />
     </Body>
   )

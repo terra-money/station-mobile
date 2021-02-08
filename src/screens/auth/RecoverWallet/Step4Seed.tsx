@@ -1,8 +1,12 @@
 import React, { useState, ReactElement, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useRecoilValue } from 'recoil'
-import { StackActions, useNavigation } from '@react-navigation/native'
-import { useAuth, useBank } from 'use-station/src'
+import {
+  NavigationProp,
+  StackActions,
+  useNavigation,
+} from '@react-navigation/native'
+import { useBank } from 'use-station/src'
 import { MnemonicKey } from '@terra-money/terra.js'
 import _ from 'lodash'
 
@@ -22,7 +26,8 @@ import {
   generateAddresses,
 } from 'utils/wallet'
 import color from 'styles/color'
-import { getIsUseBioAuth, settings } from 'utils/storage'
+import { getIsUseBioAuth } from 'utils/storage'
+import { RecoverWalletStackParams } from 'types'
 
 const AddressBox = ({
   bip,
@@ -101,8 +106,9 @@ const AddressBox = ({
 }
 
 const Screen = (): ReactElement => {
-  const { dispatch } = useNavigation()
-  const { signIn } = useAuth()
+  const { dispatch } = useNavigation<
+    NavigationProp<RecoverWalletStackParams>
+  >()
   const seed = useRecoilValue(RecoverWalletStore.seed)
   const name = useRecoilValue(RecoverWalletStore.name)
   const password = useRecoilValue(RecoverWalletStore.password)
@@ -122,8 +128,6 @@ const Screen = (): ReactElement => {
       }))
 
     if (result?.success) {
-      signIn(result.wallet)
-      settings.set({ walletName: result.wallet.name })
       if (
         false === (await getIsUseBioAuth()) &&
         (await isSupportedBiometricAuthentication())
@@ -131,7 +135,11 @@ const Screen = (): ReactElement => {
         openIsUseBioAuth()
       }
       dispatch(StackActions.popToTop())
-      dispatch(StackActions.replace('WalletRecovered'))
+      dispatch(
+        StackActions.replace('WalletRecovered', {
+          wallet: result.wallet,
+        })
+      )
     }
   }
 
