@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import _ from 'lodash'
 import { StackScreenProps } from '@react-navigation/stack'
@@ -77,7 +77,22 @@ const WalletAddress = ({
 }: {
   user: User
 } & Props): ReactElement => {
-  const { ui, execute } = useAssets(user)
+  const [localHideSmall, setlocalHideSmall] = useState(true)
+  const { ui, execute, setHideSmall } = useAssets(user, {
+    hideSmall: localHideSmall,
+  })
+
+  // If list length is 0 on hiding small-balance-assets, then show small-balance-assets.
+  useEffect(() => {
+    if (
+      localHideSmall &&
+      ui?.available?.list &&
+      ui.available.list.length < 1
+    ) {
+      setHideSmall(false)
+      setlocalHideSmall(false)
+    }
+  }, [ui?.available])
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
