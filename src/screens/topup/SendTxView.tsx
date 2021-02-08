@@ -7,8 +7,8 @@ import {
   StyleSheet,
 } from 'react-native'
 import { Buffer } from 'buffer'
-import { useAuth, format } from 'use-station/src'
-import { Text, Button, Select, Input, Icon } from 'components'
+import { useAuth, format, useBank } from 'use-station/src'
+import { Text, Button, Select, Icon, FormInput } from 'components'
 
 import { StdSignMsg } from '@terra-money/terra.js'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -19,15 +19,16 @@ import BigNumber from 'bignumber.js'
 import SubHeader from 'components/layout/SubHeader'
 import {
   DEBUG_TOPUP,
-  gotoDashboard,
-  gotoWallet,
   LoadingIndicator,
-  onPressComplete,
+  restoreApp,
 } from './TopupUtils'
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
 import StatusBar from 'components/StatusBar'
 import { useAlert } from 'hooks/useAlert'
+import Preferences, {
+  PreferencesEnum,
+} from 'nativeModules/preferences'
 
 type Props = StackScreenProps<RootStackParams, 'SendTxView'>
 
@@ -38,20 +39,13 @@ interface SchemeArgs {
 
 const SendTxView = (props: Props): ReactElement => {
   const { user } = useAuth()
+  const { data: bank } = useBank(user!)
   const { alert } = useAlert()
   const insets = useSafeAreaInsets()
 
-  if (user === undefined) {
-    alert({
-      title: 'Error',
-      desc: 'Wallet not connected!',
-      onPressConfirmText: 'OK',
-      onPressConfirm: (): void => gotoWallet(props.navigation),
-    })
-  }
-
   const [returnScheme, setReturnScheme] = useState('')
   const [endpointAddress, setEndpointAddress] = useState('')
+  const [arg, setArg] = useState<SchemeArgs | undefined>(undefined)
 
   const [stdSignMsg, setStdSignMsg] = useState<StdSignMsg>()
 
@@ -59,23 +53,43 @@ const SendTxView = (props: Props): ReactElement => {
   const [feeAmount, setFeeAmount] = useState('')
 
   const [loading, setLoading] = useState(false)
+  const [enableNext, setEnableNext] = useState(false)
 
-  const [arg, setArg] = useState<SchemeArgs | undefined>(undefined)
-  try {
-    if (props.route.params.arg !== undefined) {
-      setArg(
-        JSON.parse(
-          Buffer.from(props.route.params.arg, 'base64').toString()
+  useEffect(() => {
+    try {
+      if (props.route.params.arg !== undefined) {
+        setArg(
+          JSON.parse(
+            Buffer.from(props.route.params.arg, 'base64').toString()
+          )
         )
-      )
-      props.route.params.arg = undefined
+      }
+    } catch (e) {
+      alert({
+        title: 'Unexpected error',
+        desc: e.toString(),
+      })
     }
-  } catch (e) {
-    alert({
-      title: 'Unexpected error',
-      desc: e.toString(),
-    })
-  }
+  }, [])
+
+  useEffect(() => {
+    const checkUserAddress = async (): Promise<void> => {
+      const connectAddress = await Preferences.getString(
+        PreferencesEnum.topupAddress
+      )
+      if (!connectAddress || connectAddress !== user?.address) {
+        alert({
+          title: 'Error',
+          desc: 'Not match connected wallet!',
+          onPressConfirmText: 'OK',
+          onPressConfirm: (): void => {
+            restoreApp(props.navigation, returnScheme, alert)
+          },
+        })
+      }
+    }
+    checkUserAddress()
+  }, [user])
 
   useEffect(() => {
     const getUnsignedMessage = async (): Promise<void> => {
@@ -100,13 +114,21 @@ const SendTxView = (props: Props): ReactElement => {
       const amount = stdSignMsg.fee.amount
         .get('ukrw')
         ?.amount.toString()
-      amount &&
-        setFeeAmount(new BigNumber(amount).dividedBy(1e6).toString())
+      amount && setFeeAmount(amount)
 
       const denom = stdSignMsg.fee.amount.get('ukrw')?.denom
-      denom && setFeeDenom(format.denom(denom))
+      denom && setFeeDenom(denom)
     }
   }, [stdSignMsg])
+
+  useEffect(() => {
+    const available = bank?.balance.find((b) => b.denom === feeDenom)
+      ?.available
+
+    available &&
+      new BigNumber(available).gt(feeAmount) &&
+      setEnableNext(true)
+  }, [bank, feeDenom, feeAmount])
 
   useEffect(() => {
     if (arg !== undefined) {
@@ -130,8 +152,9 @@ const SendTxView = (props: Props): ReactElement => {
       success: false,
       title: 'Something wrong',
       content,
-      onPress: (): void =>
-        onPressComplete(props.navigation, returnScheme),
+      onPress: (): void => {
+        restoreApp(props.navigation, returnScheme, alert)
+      },
     })
   }
 
@@ -180,7 +203,9 @@ const SendTxView = (props: Props): ReactElement => {
       />
       <View style={style.headerContainer}>
         <TouchableOpacity
-          onPress={(): void => gotoDashboard(props.navigation)}
+          onPress={(): void => {
+            restoreApp(props.navigation, returnScheme, alert)
+          }}
         >
           <Icon name={'clear'} color={color.white} size={24} />
         </TouchableOpacity>
@@ -199,8 +224,13 @@ const SendTxView = (props: Props): ReactElement => {
         <View style={style.feeContainer}>
           <Select
             disabled={true}
-            selectedValue={feeDenom}
-            optionList={[{ label: feeDenom, value: feeDenom }]}
+            selectedValue={format.denom(feeDenom)}
+            optionList={[
+              {
+                label: format.denom(feeDenom),
+                value: format.denom(feeDenom),
+              },
+            ]}
             onValueChange={(): void => {
               // Do nothing
             }}
@@ -208,12 +238,19 @@ const SendTxView = (props: Props): ReactElement => {
             containerStyle={style.denomContainer}
           />
           <View style={{ width: 10 }} />
-          <Input
-            containerStyle={style.amountContainer}
-            style={style.amountText}
-            value={feeAmount}
-            editable={false}
-          />
+          <View style={style.amountContainer}>
+            <FormInput
+              // containerStyle={style.amountContainer}
+              style={style.amountText}
+              value={new BigNumber(feeAmount)
+                .dividedBy(1e6)
+                .toString()}
+              editable={false}
+              errorMessage={
+                enableNext ? undefined : 'Insufficient balance'
+              }
+            />
+          </View>
         </View>
         {DEBUG_TOPUP && (
           <ScrollView style={style.debugContainer}>
@@ -246,7 +283,7 @@ const SendTxView = (props: Props): ReactElement => {
               })
             }
           }}
-          disabled={stdSignMsg ? false : true}
+          disabled={!enableNext}
         />
       </View>
       {loading && <LoadingIndicator />}

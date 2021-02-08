@@ -17,6 +17,9 @@ import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
 import StatusBar from 'components/StatusBar'
 import { useAlert } from 'hooks/useAlert'
+import Preferences, {
+  PreferencesEnum,
+} from 'nativeModules/preferences'
 
 type Props = StackScreenProps<RootStackParams, 'ConnectView'>
 
@@ -100,7 +103,12 @@ const ConnectView = (props: Props): ReactElement => {
           desc: JSON.stringify(await ret.json()),
         })
       } else {
-        restoreApp(props.navigation, returnScheme)
+        user?.address &&
+          (await Preferences.setString(
+            PreferencesEnum.topupAddress,
+            user.address
+          ))
+        restoreApp(props.navigation, returnScheme, alert)
       }
     } catch (e) {
       alert({
@@ -125,7 +133,9 @@ const ConnectView = (props: Props): ReactElement => {
       <StatusBar theme="white" />
       <View style={style.closeView}>
         <TouchableOpacity
-          onPress={(): void => gotoDashboard(props.navigation)}
+          onPress={(): void => {
+            restoreApp(props.navigation, returnScheme, alert)
+          }}
         >
           <Icon name="close" color={color.sapphire} size={24} />
         </TouchableOpacity>
@@ -182,7 +192,7 @@ const ConnectView = (props: Props): ReactElement => {
           titleStyle={style.buttonTitle}
           titleFontType={'medium'}
           onPress={(): void => {
-            restoreApp(props.navigation, returnScheme)
+            restoreApp(props.navigation, returnScheme, alert)
           }}
         />
       </View>

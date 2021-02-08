@@ -10,12 +10,15 @@ import color from 'styles/color'
 import layout from 'styles/layout'
 
 const NoInternet = (): ReactElement => {
-  const [isInternetReachable, setInternetReachable] = useState(false)
+  const [isNetworkUnavailable, setNetworkUnavailable] = useState(
+    false
+  )
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(
       (state: NetInfoState) => {
-        setInternetReachable(
-          !state.isConnected || !state.isInternetReachable
+        setNetworkUnavailable(
+          state.isConnected === false ||
+            state.isInternetReachable === false
         )
       }
     )
@@ -25,7 +28,7 @@ const NoInternet = (): ReactElement => {
 
   return (
     <>
-      {isInternetReachable && (
+      {isNetworkUnavailable && (
         <SafeAreaView style={styles.container}>
           <StatusBar theme="white" />
           <Icon
