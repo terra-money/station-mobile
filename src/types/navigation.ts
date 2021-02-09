@@ -1,5 +1,4 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import { StdSignMsg } from '@terra-money/terra.js'
 import { Card, VestingItemUI } from 'use-station/src'
 
 /* Root */
@@ -21,7 +20,6 @@ export type RootStackParams = {
   ConnectView: { arg?: string }
   SendTxView: { arg?: string }
   SendTxPasswordView: {
-    stdSignMsg: StdSignMsg
     returnScheme: string
     endpointAddress: string
   }
@@ -30,7 +28,7 @@ export type RootStackParams = {
     title?: string
     content?: string
     button?: string
-    onPress: () => void
+    returnScheme: string
   }
   Send: { denomOrToken: string }
   Complete: { result: Card }

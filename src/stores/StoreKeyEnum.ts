@@ -12,4 +12,5 @@ export enum StoreKeyEnum {
   swapRate = 'swapRate',
   swapValue = 'swapValue',
   confirm = 'confirm',
+  stdSignMsg = 'stdSignMsg',
 }
