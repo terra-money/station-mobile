@@ -47,9 +47,12 @@ const ConnectView = (props: Props): ReactElement => {
     } else {
       // parse deeplink param
       try {
-        if (props.route.params.arg !== undefined) {
+        if (props.route.params.payload !== undefined) {
           const parseArg: SchemeArgs = JSON.parse(
-            Buffer.from(props.route.params.arg, 'base64').toString()
+            Buffer.from(
+              props.route.params.payload,
+              'base64'
+            ).toString()
           )
           setEndpointAddress(parseArg.endpoint_address)
           setReturnScheme(parseArg.return_scheme)
