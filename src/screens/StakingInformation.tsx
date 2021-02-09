@@ -19,9 +19,12 @@ const Screen = (): ReactElement => {
           Staking rewards
         </Text>
         <Text style={styles.contents}>
-          {`Rewards from stake are determined largely by the relative size of stake, and are structured in such a way that rewards increase as transaction volume increases. Luna ownership is thus an investment in the long term growth of Terra.
-        
-Staking rewards come from three sources: gas (compute fees), taxes, and seigniorage rewards.`}
+          {`"Rewards from staking are determined primarily by the relative size of staked LUNA. Rewards are structured so that they increase as transaction volumes increase. As a result, LUNA staking represents an investment in the long-term growth of Terra."
+
+Staking rewards come from three sources:
+1.	Gas (compute fees)
+2.	Network taxes
+3.	Seignorage rewards`}
         </Text>
       </View>
       <Button

@@ -23,27 +23,23 @@ LogBox.ignoreLogs([
 const PagerContents = [
   {
     image: images.on_boarding_0,
-    title: 'Welcome aboard',
     description:
-      'Terra Station is where you can experience through Terra network.',
+      'Terra Station is your gateway to the Terra ecosystem.',
   },
   {
     image: images.on_boarding_1,
-    title: 'Manage assets',
     description:
-      'Send and receive Terra coins from anyone around the world, or even swap among the coins.',
+      'Send, receive, swap, and stake Terra assets like stablecoins (UST), LUNA, and MIR instantly.',
   },
   {
     image: images.on_boarding_2,
-    title: 'Get rewards',
     description:
-      'Delegate your coins to Terra Validators to earn even more coins.',
+      'Delegate your LUNA to Terra validators to earn returns in Terra assets.',
   },
   {
     image: images.on_boarding_4,
-    title: 'Start exploring',
     description:
-      'There are even more useful features. Start Exploring Terra Station.',
+      'Check out all the other features. Start exploring Terra Station',
   },
 ]
 
@@ -70,11 +66,8 @@ const RenderSwiper = ({
     {PagerContents.map((v, i) => (
       <View key={i} style={styles.SwiperContent}>
         <Image source={v.image} style={styles.SwiperContentImage} />
-        <View style={{ height: 163 }}>
-          <Text style={styles.SwiperContentTitle} fontType={'bold'}>
-            {v.title}
-          </Text>
-          <Text style={styles.SwiperContentDesc}>
+        <View style={{ height: 180 }}>
+          <Text style={styles.SwiperContentDesc} fontType="medium">
             {v.description}
           </Text>
         </View>
@@ -194,16 +187,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
   },
-  SwiperContentTitle: {
-    fontSize: 24,
-    lineHeight: 36,
-    letterSpacing: 0,
-    textAlign: 'center',
-  },
   SwiperContentDesc: {
-    fontSize: 16,
-    lineHeight: 24,
-    letterSpacing: 0,
+    fontSize: 22,
+    lineHeight: 33,
+    letterSpacing: -0.3,
     textAlign: 'center',
   },
   SwiperButtonContainer: {
