@@ -70,7 +70,6 @@ const ConnectView = (props: Props): ReactElement => {
     const init = {
       method: 'PUT',
       headers: {
-        Origin: 'https://topup.terra.dev',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ address }),
