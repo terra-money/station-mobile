@@ -17,11 +17,7 @@ import color from 'styles/color'
 import font from 'styles/font'
 import BigNumber from 'bignumber.js'
 import SubHeader from 'components/layout/SubHeader'
-import {
-  DEBUG_TOPUP,
-  LoadingIndicator,
-  restoreApp,
-} from './TopupUtils'
+import { DEBUG_TOPUP } from './TopupUtils'
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
 import StatusBar from 'components/StatusBar'
@@ -29,6 +25,16 @@ import { useAlert } from 'hooks/useAlert'
 import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
+import { useRecoilState } from 'recoil'
+import TopupStore from 'stores/TopupStore'
+import { useTopup } from 'hooks/useTopup'
+import TopupLoadingIndicator from 'components/TopupLoadingIndicator'
+import {
+  authenticateBiometric,
+  isSupportedBiometricAuthentication,
+} from 'utils/bio'
+import { getBioAuthPassword, getIsUseBioAuth } from 'utils/storage'
+import useSignedTx from 'hooks/useSignedTx'
 
 type Props = StackScreenProps<RootStackParams, 'SendTxView'>
 
@@ -45,24 +51,29 @@ const SendTxView = (props: Props): ReactElement => {
 
   const [returnScheme, setReturnScheme] = useState('')
   const [endpointAddress, setEndpointAddress] = useState('')
-  const [arg, setArg] = useState<SchemeArgs | undefined>(undefined)
 
-  const [stdSignMsg, setStdSignMsg] = useState<StdSignMsg>()
+  const [stdSignMsg, setStdSignMsg] = useRecoilState(
+    TopupStore.stdSignMsg
+  )
 
   const [feeDenom, setFeeDenom] = useState('')
   const [feeAmount, setFeeAmount] = useState('')
 
   const [loading, setLoading] = useState(false)
   const [enableNext, setEnableNext] = useState(false)
+  const [bioAvailable, setBioAvailable] = useState(false)
+
+  const { restoreApp } = useTopup()
 
   useEffect(() => {
+    // parse param
     try {
       if (props.route.params.arg !== undefined) {
-        setArg(
-          JSON.parse(
-            Buffer.from(props.route.params.arg, 'base64').toString()
-          )
+        const parseArg: SchemeArgs = JSON.parse(
+          Buffer.from(props.route.params.arg, 'base64').toString()
         )
+        setEndpointAddress(parseArg.endpoint_address)
+        setReturnScheme(parseArg.return_scheme)
       }
     } catch (e) {
       alert({
@@ -70,33 +81,35 @@ const SendTxView = (props: Props): ReactElement => {
         desc: e.toString(),
       })
     }
-  }, [])
 
-  useEffect(() => {
-    const checkUserAddress = async (): Promise<void> => {
-      const connectAddress = await Preferences.getString(
-        PreferencesEnum.topupAddress
-      )
-      if (!connectAddress || connectAddress !== user?.address) {
-        alert({
-          title: 'Error',
-          desc: 'Not match connected wallet!',
-          onPressConfirmText: 'OK',
-          onPressConfirm: (): void => {
-            restoreApp(props.navigation, returnScheme, alert)
-          },
-        })
-      }
+    // bio check
+    const checkBioAuth = async (): Promise<void> => {
+      const support = await isSupportedBiometricAuthentication()
+      const enable = await getIsUseBioAuth()
+
+      setBioAvailable(support && enable)
     }
-    checkUserAddress()
-  }, [user])
+    checkBioAuth()
+  }, [])
 
   useEffect(() => {
     const getUnsignedMessage = async (): Promise<void> => {
       try {
         setLoading(true)
         const unsignedTx = await getUnsignedTx(endpointAddress)
-        setStdSignMsg(StdSignMsg.fromData(unsignedTx.stdSignMsg))
+
+        const signMsg = StdSignMsg.fromData(unsignedTx.stdSignMsg)
+
+        if (signMsg) {
+          const target = signMsg.fee.amount
+
+          const amount = target.toArray()[0]?.amount.toString()
+          amount && setFeeAmount(amount)
+
+          const denom = target.toArray()[0]?.denom
+          denom && setFeeDenom(denom)
+        }
+        setStdSignMsg(signMsg)
       } catch (e) {
         somethingWrong(e.toString())
       } finally {
@@ -104,22 +117,28 @@ const SendTxView = (props: Props): ReactElement => {
       }
     }
 
-    endpointAddress !== '' &&
-      returnScheme !== '' &&
-      getUnsignedMessage()
-  }, [endpointAddress, returnScheme])
-
-  useEffect(() => {
-    if (stdSignMsg) {
-      const amount = stdSignMsg.fee.amount
-        .get('ukrw')
-        ?.amount.toString()
-      amount && setFeeAmount(amount)
-
-      const denom = stdSignMsg.fee.amount.get('ukrw')?.denom
-      denom && setFeeDenom(denom)
+    const checkUserAddress = async (): Promise<void> => {
+      const connectAddress = await Preferences.getString(
+        PreferencesEnum.topupAddress
+      )
+      if (!connectAddress || connectAddress !== user?.address) {
+        alert({
+          title: 'Error',
+          desc:
+            'Current wallet address does not match tx wallet address.',
+          onPressConfirmText: 'OK',
+          onPressConfirm: (): void => {
+            restoreApp(returnScheme)
+          },
+        })
+      }
     }
-  }, [stdSignMsg])
+
+    if (endpointAddress !== '' && returnScheme !== '') {
+      getUnsignedMessage()
+      checkUserAddress()
+    }
+  }, [endpointAddress, returnScheme])
 
   useEffect(() => {
     const available = bank?.balance.find((b) => b.denom === feeDenom)
@@ -129,13 +148,6 @@ const SendTxView = (props: Props): ReactElement => {
       new BigNumber(available).gt(feeAmount) &&
       setEnableNext(true)
   }, [bank, feeDenom, feeAmount])
-
-  useEffect(() => {
-    if (arg !== undefined) {
-      setEndpointAddress(arg.endpoint_address)
-      setReturnScheme(arg.return_scheme)
-    }
-  }, [arg])
 
   const getUnsignedTx = async (url: string): Promise<any> => {
     const response = await fetch(url, { method: 'GET' })
@@ -152,10 +164,37 @@ const SendTxView = (props: Props): ReactElement => {
       success: false,
       title: 'Something wrong',
       content,
-      onPress: (): void => {
-        restoreApp(props.navigation, returnScheme, alert)
-      },
+      returnScheme,
     })
+  }
+
+  const { confirm } = useSignedTx(endpointAddress)
+
+  const confirmSignedTx = async (): Promise<void> => {
+    const gotoPasswordView = (): void => {
+      props.navigation.push('SendTxPasswordView', {
+        returnScheme,
+        endpointAddress,
+      })
+    }
+
+    if (stdSignMsg === undefined) {
+      somethingWrong('Undefined StdSignMsg')
+    } else {
+      if (bioAvailable) {
+        const bioResult = await authenticateBiometric()
+        if (bioResult) {
+          const password = await getBioAuthPassword({
+            walletName: user?.name || '',
+          })
+          await confirm(password, returnScheme)
+        } else {
+          gotoPasswordView()
+        }
+      } else {
+        gotoPasswordView()
+      }
+    }
   }
 
   const TitleIcon = (props?: ViewProps): ReactElement => (
@@ -204,7 +243,7 @@ const SendTxView = (props: Props): ReactElement => {
       <View style={style.headerContainer}>
         <TouchableOpacity
           onPress={(): void => {
-            restoreApp(props.navigation, returnScheme, alert)
+            restoreApp(returnScheme)
           }}
         >
           <Icon name={'clear'} color={color.white} size={24} />
@@ -240,11 +279,11 @@ const SendTxView = (props: Props): ReactElement => {
           <View style={{ width: 10 }} />
           <View style={style.amountContainer}>
             <FormInput
-              // containerStyle={style.amountContainer}
               style={style.amountText}
-              value={new BigNumber(feeAmount)
-                .dividedBy(1e6)
-                .toString()}
+              value={
+                feeAmount &&
+                new BigNumber(feeAmount).dividedBy(1e6).toString()
+              }
               editable={false}
               errorMessage={
                 enableNext ? undefined : 'Insufficient balance'
@@ -272,21 +311,11 @@ const SendTxView = (props: Props): ReactElement => {
           title="Next"
           titleStyle={style.buttonText}
           titleFontType="medium"
-          onPress={(): void => {
-            if (stdSignMsg === undefined) {
-              somethingWrong('undefined StdSignMsg')
-            } else {
-              props.navigation.replace('SendTxPasswordView', {
-                stdSignMsg,
-                returnScheme,
-                endpointAddress,
-              })
-            }
-          }}
+          onPress={confirmSignedTx}
           disabled={!enableNext}
         />
       </View>
-      {loading && <LoadingIndicator />}
+      {loading && <TopupLoadingIndicator />}
     </View>
   )
 }
