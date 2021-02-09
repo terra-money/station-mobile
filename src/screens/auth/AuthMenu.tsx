@@ -49,13 +49,14 @@ const Screen = (): ReactElement => {
                 name={'account-balance-wallet'}
                 size={45}
                 color={color.white}
+                style={{ marginHorizontal: 6 }}
               />
-              <Dot style={{ opacity: 0.25 }} />
-              <Dot style={{ opacity: 0.5 }} />
-              <Dot style={{ opacity: 0.75 }} />
+              <Dot style={{ opacity: 0.25, marginHorizontal: 6 }} />
+              <Dot style={{ opacity: 0.5, marginHorizontal: 6 }} />
+              <Dot style={{ opacity: 0.75, marginHorizontal: 6 }} />
               <Image
                 source={images.satelite}
-                style={{ width: 45, height: 45 }}
+                style={{ width: 45, height: 45, marginHorizontal: 6 }}
               />
             </View>
           </View>
@@ -116,8 +117,7 @@ const styles = StyleSheet.create({
   imageBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingHorizontal: 110,
+    justifyContent: 'center',
     paddingTop: 20,
   },
   orBox: {
