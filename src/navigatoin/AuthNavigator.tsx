@@ -26,7 +26,7 @@ const AppNavigator = (): ReactElement => {
         <AuthStack.Screen
           name="AuthMenu"
           component={AuthMenu}
-          options={{ headerShown: false }}
+          options={AuthMenu.navigationOptions}
         />
         <AuthStack.Screen
           name="SelectWallet"

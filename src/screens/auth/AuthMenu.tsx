@@ -11,6 +11,7 @@ import { getWallets } from 'utils/wallet'
 import color from 'styles/color'
 import images from 'assets/images'
 import StatusBar from 'components/StatusBar'
+import { navigationHeaderOptions } from 'components/layout/Header'
 
 const Screen = (): ReactElement => {
   const [initPageComplete, setInitPageComplete] = useState(false)
@@ -32,7 +33,7 @@ const Screen = (): ReactElement => {
       {initPageComplete && (
         <Body
           theme={'sapphire'}
-          containerStyle={{ paddingBottom: 50, paddingTop: 70 }}
+          containerStyle={{ paddingBottom: 50, paddingTop: 10 }}
         >
           <View style={{ flex: 1 }}>
             <Text style={styles.title} fontType={'bold'}>
@@ -88,6 +89,11 @@ const Screen = (): ReactElement => {
     </>
   )
 }
+
+Screen.navigationOptions = navigationHeaderOptions({
+  theme: 'sapphire',
+  headerLeft: (): ReactElement => <View />,
+})
 
 export default Screen
 
