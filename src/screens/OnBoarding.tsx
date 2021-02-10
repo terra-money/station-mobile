@@ -60,14 +60,33 @@ const RenderSwiper = ({
     loop={false}
     dot={<View style={styles.SwiperDot} />}
     activeDot={<View style={styles.SwiperDotActive} />}
-    containerStyle={{ marginBottom: 65 }}
-    paginationStyle={{ marginBottom: -30 }}
+    containerStyle={{ marginBottom: '16%' }}
+    paginationStyle={{ marginBottom: '-4%' }}
   >
     {PagerContents.map((v, i) => (
       <View key={i} style={styles.SwiperContent}>
-        <Image source={v.image} style={styles.SwiperContentImage} />
-        <View style={{ height: 180 }}>
-          <Text style={styles.SwiperContentDesc} fontType="medium">
+        <View
+          style={{
+            height: '60%',
+            paddingVertical: 20,
+            alignContent: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Image source={v.image} style={styles.SwiperContentImage} />
+        </View>
+        <View
+          style={{
+            minHeight: 160,
+            paddingTop: 20,
+          }}
+        >
+          <Text
+            style={styles.SwiperContentDesc}
+            fontType="medium"
+            adjustsFontSizeToFit
+            numberOfLines={3}
+          >
             {v.description}
           </Text>
         </View>
@@ -179,8 +198,10 @@ const styles = StyleSheet.create({
   SwiperContent: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-around',
-    paddingHorizontal: 30,
+    alignContent: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 30,
   },
   SwiperContentImage: {
     resizeMode: 'contain',
