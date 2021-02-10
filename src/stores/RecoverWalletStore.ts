@@ -16,14 +16,7 @@ const seed = atom<string[]>({
   default: [],
 })
 
-const qrData = atom<
-  | {
-      address: string
-      name: string
-      privateKey: string
-    }
-  | undefined
->({
+const qrData = atom<RecoverWalletQrCodeDataType | undefined>({
   key: StoreKeyEnum.recoverQRData,
   default: undefined,
 })

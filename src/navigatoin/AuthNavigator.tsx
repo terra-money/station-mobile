@@ -3,6 +3,7 @@ import {
   NavigationContainer,
   DefaultTheme,
 } from '@react-navigation/native'
+import { useRecoilValue } from 'recoil'
 
 import { AuthStack } from '../types'
 
@@ -10,6 +11,7 @@ import AuthMenu from '../screens/auth/AuthMenu'
 import SelectWallet from '../screens/auth/SelectWallet'
 import NewWalletStack from './NewWalletStack'
 import RecoverWalletStack from './RecoverWalletStack'
+import LinkingStore from 'stores/LinkingStore'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -20,8 +22,11 @@ const TerraTheme = {
 }
 
 const AppNavigator = (): ReactElement => {
+  /* linking */
+  const authLinking = useRecoilValue(LinkingStore.authLinking)
+
   return (
-    <NavigationContainer theme={TerraTheme}>
+    <NavigationContainer theme={TerraTheme} linking={authLinking}>
       <AuthStack.Navigator>
         <AuthStack.Screen
           name="AuthMenu"

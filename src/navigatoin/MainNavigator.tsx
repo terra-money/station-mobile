@@ -2,8 +2,8 @@ import React, { ReactElement } from 'react'
 import {
   NavigationContainer,
   DefaultTheme,
-  LinkingOptions,
 } from '@react-navigation/native'
+import { useRecoilValue } from 'recoil'
 
 import { RootStack } from '../types'
 
@@ -26,6 +26,8 @@ import StakingInformation from '../screens/StakingInformation'
 import WalletHistory from '../screens/WalletHistory'
 import StakingPersonal from '../screens/StakingPersonal'
 import ValidatorDetail from '../screens/ValidatorDetail'
+import AutoLogout from '../screens/AutoLogout'
+import LinkingStore from 'stores/LinkingStore'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -37,22 +39,10 @@ const TerraTheme = {
 
 const AppNavigator = (): ReactElement => {
   /* linking */
-  const linking: LinkingOptions = {
-    prefixes: ['terrastation://'],
-    config: {
-      screens: {
-        ConnectView: {
-          path: 'connect',
-        },
-        SendTxView: {
-          path: 'sign',
-        },
-      },
-    },
-  }
+  const mainLinking = useRecoilValue(LinkingStore.mainLinking)
 
   return (
-    <NavigationContainer theme={TerraTheme} linking={linking}>
+    <NavigationContainer theme={TerraTheme} linking={mainLinking}>
       <RootStack.Navigator>
         <RootStack.Screen
           name="Tabs"
@@ -141,6 +131,11 @@ const AppNavigator = (): ReactElement => {
           name="ValidatorDetail"
           component={ValidatorDetail}
           options={ValidatorDetail.navigationOptions}
+        />
+        <RootStack.Screen
+          name="AutoLogout"
+          component={AutoLogout}
+          options={{ headerShown: false }}
         />
       </RootStack.Navigator>
     </NavigationContainer>
