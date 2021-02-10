@@ -209,8 +209,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   SwiperContentDesc: {
-    fontSize: 22,
-    lineHeight: 33,
+    fontSize: 20,
+    lineHeight: 30,
     letterSpacing: -0.3,
     textAlign: 'center',
   },
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
   },
   SwiperButtonSkip: {
     flex: 1,
