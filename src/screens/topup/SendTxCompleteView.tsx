@@ -8,10 +8,13 @@ import StatusBar from 'components/StatusBar'
 import Body from 'components/layout/Body'
 import color from 'styles/color'
 import { RootStackParams } from 'types'
+import { useTopup } from 'hooks/useTopup'
 
 type Props = StackScreenProps<RootStackParams, 'SendTxCompleteView'>
 
 const SendTxCompleteView = (props: Props): ReactElement => {
+  const { restoreApp } = useTopup()
+
   return (
     <>
       <StatusBar theme="white" />
@@ -42,7 +45,9 @@ const SendTxCompleteView = (props: Props): ReactElement => {
         <Button
           theme={'sapphire'}
           title={props.route.params.button ?? 'Continue'}
-          onPress={props.route.params.onPress}
+          onPress={(): void => {
+            restoreApp(props.route.params.returnScheme)
+          }}
           containerStyle={style.buttonContainer}
         />
       </Body>

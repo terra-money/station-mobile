@@ -6,13 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Button, Icon, Text } from 'components'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import color from 'styles/color'
-import {
-  DEBUG_TOPUP,
-  gotoDashboard,
-  gotoWallet,
-  LoadingIndicator,
-  restoreApp,
-} from './TopupUtils'
+import { DEBUG_TOPUP } from './TopupUtils'
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
 import StatusBar from 'components/StatusBar'
@@ -20,6 +14,8 @@ import { useAlert } from 'hooks/useAlert'
 import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
+import { useTopup } from 'hooks/useTopup'
+import TopupLoadingIndicator from 'components/TopupLoadingIndicator'
 
 type Props = StackScreenProps<RootStackParams, 'ConnectView'>
 
@@ -31,50 +27,41 @@ interface SchemeArgs {
 const ConnectView = (props: Props): ReactElement => {
   const { user } = useAuth()
   const { alert } = useAlert()
+  const { restoreApp, gotoWallet } = useTopup()
   const insets = useSafeAreaInsets()
-
-  useEffect(() => {
-    if (user === undefined) {
-      alert({
-        title: 'Error',
-        desc: 'Wallet not connected!',
-        onPressConfirmText: 'OK',
-        onPressConfirm: () => gotoWallet(props.navigation),
-      })
-    }
-  }, [])
 
   const [returnScheme, setReturnScheme] = useState('')
   const [endpointAddress, setEndpointAddress] = useState('')
 
   const [loading, setLoading] = useState<boolean>(false)
-  const [arg, setArg] = useState<SchemeArgs | undefined>(undefined)
-  try {
-    if (props.route.params.arg !== undefined) {
-      setArg(
-        JSON.parse(
-          Buffer.from(props.route.params.arg, 'base64').toString()
-        )
-      )
-      props.route.params.arg = undefined
-    }
-  } catch (e) {
-    alert({ title: 'Unexpected error', desc: e.toString() })
-  }
 
   useEffect(() => {
-    if (arg !== undefined) {
-      setEndpointAddress(arg.endpoint_address)
-      setReturnScheme(arg.return_scheme)
-    } else {
+    // check user account
+    if (user === undefined) {
       alert({
-        title: 'Parameter error',
-        desc: 'Argument is null',
+        title: 'Error',
+        desc: 'Wallet not connected!',
         onPressConfirmText: 'OK',
-        onPressConfirm: () => gotoDashboard(props.navigation),
+        onPressConfirm: gotoWallet,
       })
+    } else {
+      // parse deeplink param
+      try {
+        if (props.route.params.payload !== undefined) {
+          const parseArg: SchemeArgs = JSON.parse(
+            Buffer.from(
+              props.route.params.payload,
+              'base64'
+            ).toString()
+          )
+          setEndpointAddress(parseArg.endpoint_address)
+          setReturnScheme(parseArg.return_scheme)
+        }
+      } catch (e) {
+        alert({ title: 'Unexpected error', desc: e.toString() })
+      }
     }
-  }, [arg])
+  }, [])
 
   const putConnect = async (
     url: string,
@@ -83,7 +70,6 @@ const ConnectView = (props: Props): ReactElement => {
     const init = {
       method: 'PUT',
       headers: {
-        Origin: 'https://topup.terra.dev',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ address }),
@@ -108,7 +94,7 @@ const ConnectView = (props: Props): ReactElement => {
             PreferencesEnum.topupAddress,
             user.address
           ))
-        restoreApp(props.navigation, returnScheme, alert)
+        restoreApp(returnScheme)
       }
     } catch (e) {
       alert({
@@ -134,7 +120,7 @@ const ConnectView = (props: Props): ReactElement => {
       <View style={style.closeView}>
         <TouchableOpacity
           onPress={(): void => {
-            restoreApp(props.navigation, returnScheme, alert)
+            restoreApp(returnScheme)
           }}
         >
           <Icon name="close" color={color.sapphire} size={24} />
@@ -180,9 +166,7 @@ const ConnectView = (props: Props): ReactElement => {
           containerStyle={style.buttonContainer}
           titleStyle={style.buttonTitle}
           titleFontType={'medium'}
-          onPress={(): void => {
-            processConnect()
-          }}
+          onPress={processConnect}
         />
         <View style={{ marginHorizontal: 5 }} />
         <Button
@@ -192,11 +176,11 @@ const ConnectView = (props: Props): ReactElement => {
           titleStyle={style.buttonTitle}
           titleFontType={'medium'}
           onPress={(): void => {
-            restoreApp(props.navigation, returnScheme, alert)
+            restoreApp(returnScheme)
           }}
         />
       </View>
-      {loading && <LoadingIndicator />}
+      {loading && <TopupLoadingIndicator />}
     </View>
   )
 }

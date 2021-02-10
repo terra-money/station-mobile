@@ -14,10 +14,10 @@ export enum MainLinkingScreenKeyEnum {
 
 const mainLinkingScreens = {
   [MainLinkingScreenKeyEnum.ConnectView]: {
-    path: 'connect/:arg',
+    path: 'connect',
   },
   [MainLinkingScreenKeyEnum.SendTxView]: {
-    path: 'sign/:arg',
+    path: 'sign',
   },
   [MainLinkingScreenKeyEnum.AutoLogout]: {
     path: 'wallet_recover',
