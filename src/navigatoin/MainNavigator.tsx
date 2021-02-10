@@ -42,10 +42,10 @@ const AppNavigator = (): ReactElement => {
     config: {
       screens: {
         ConnectView: {
-          path: 'connect/:arg',
+          path: 'connect',
         },
         SendTxView: {
-          path: 'sign/:arg',
+          path: 'sign',
         },
       },
     },

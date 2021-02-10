@@ -44,8 +44,8 @@ export type RootStackParams = {
   Swap: undefined
 
   Setting: undefined
-  ConnectView: { arg?: string }
-  SendTxView: { arg?: string }
+  ConnectView: { payload?: string }
+  SendTxView: { payload?: string }
   SendTxPasswordView: {
     returnScheme: string
     endpointAddress: string
