@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { useAuth } from 'use-station/src'
 import {
   NavigationContainer,
@@ -21,6 +21,7 @@ const TerraTheme = {
 }
 const Navigator = (): ReactElement => {
   const { user } = useAuth()
+  const [linkingUrl, setLinkingUrl] = useState('')
   const [isFromAutoLogout, setIsFromAutoLogout] = useRecoilState(
     AutoLogoutStore.isFromAutoLogout
   )
@@ -56,11 +57,21 @@ const Navigator = (): ReactElement => {
   useEffect(() => {
     if (isFromAutoLogout) {
       setIsFromAutoLogout(false)
-      Linking.getInitialURL().then((link) => {
-        link && Linking.openURL(link)
-      })
+      linkingUrl && Linking.openURL(linkingUrl)
     }
   }, [isFromAutoLogout])
+
+  useEffect(() => {
+    Linking.getInitialURL().then((url) => {
+      if (url) {
+        setLinkingUrl(url)
+      } else {
+        Linking.addEventListener('url', ({ url }) => {
+          setLinkingUrl(url)
+        })
+      }
+    })
+  }, [])
 
   return (
     <NavigationContainer theme={TerraTheme} linking={linking}>
