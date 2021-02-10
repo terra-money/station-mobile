@@ -64,16 +64,17 @@ const SendTxView = (props: Props): ReactElement => {
   const [bioAvailable, setBioAvailable] = useState(false)
 
   const { restoreApp } = useTopup()
+  const { confirm } = useSignedTx(endpointAddress)
 
   useEffect(() => {
     // parse param
     try {
       if (props.route.params.payload !== undefined) {
-        const parseArg: SchemeArgs = JSON.parse(
+        const payload: SchemeArgs = JSON.parse(
           Buffer.from(props.route.params.payload, 'base64').toString()
         )
-        setEndpointAddress(parseArg.endpoint_address)
-        setReturnScheme(parseArg.return_scheme)
+        setEndpointAddress(payload.endpoint_address)
+        setReturnScheme(payload.return_scheme)
       }
     } catch (e) {
       alert({
@@ -167,8 +168,6 @@ const SendTxView = (props: Props): ReactElement => {
       returnScheme,
     })
   }
-
-  const { confirm } = useSignedTx(endpointAddress)
 
   const confirmSignedTx = async (): Promise<void> => {
     const gotoPasswordView = (): void => {
@@ -286,7 +285,9 @@ const SendTxView = (props: Props): ReactElement => {
               }
               editable={false}
               errorMessage={
-                enableNext ? undefined : 'Insufficient balance'
+                enableNext && feeAmount !== ''
+                  ? undefined
+                  : 'Insufficient balance'
               }
             />
           </View>

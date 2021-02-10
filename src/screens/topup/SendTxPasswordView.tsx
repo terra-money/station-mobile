@@ -79,7 +79,10 @@ const SendTxPasswordView = (props: Props): ReactElement => {
               placeholderTextColor={color.sapphire_op50}
               placeholder={'Must be at least 10 characters'}
               secureTextEntry={true}
-              onChangeText={(text): void => setPassword(text)}
+              onChangeText={(text): void => {
+                setPassword(text)
+                setError('')
+              }}
               errorMessage={error}
               value={password}
             />
