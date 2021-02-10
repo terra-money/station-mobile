@@ -120,6 +120,10 @@ const Screen = ({ route }: Props): ReactElement => {
   }, [walletList])
 
   useEffect(() => {
+    onChangeName('')
+    setQrData(undefined)
+    setPassword('')
+
     if (payload) {
       const bufferString = Buffer.from(payload, 'base64').toString()
       const data = jsonTryParse<RecoverWalletQrCodeDataType>(
@@ -133,7 +137,7 @@ const Screen = ({ route }: Props): ReactElement => {
         'name' in data &&
         'encrypted_key' in data
       ) {
-        setName(data.name)
+        onChangeName(data.name)
         setQrData(data)
       } else {
         alert({ desc: 'Wrong QR Code' })
