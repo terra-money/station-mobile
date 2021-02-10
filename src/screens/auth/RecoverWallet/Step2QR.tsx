@@ -1,7 +1,7 @@
 import React, { useState, ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
-import { useRecoilState, useSetRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import {
   CommonActions,
   useNavigation,
@@ -28,11 +28,6 @@ import {
 } from '@react-navigation/stack'
 import { jsonTryParse } from 'utils/util'
 import { useAlert } from 'hooks/useAlert'
-import LinkingStore, {
-  AuthLinkingScreenKeyEnum,
-  MainLinkingScreenKeyEnum,
-} from 'stores/LinkingStore'
-
 type Props = StackScreenProps<RecoverWalletStackParams, 'Step2QR'>
 
 const Screen = ({ route }: Props): ReactElement => {
@@ -48,12 +43,6 @@ const Screen = ({ route }: Props): ReactElement => {
   )
   const { alert } = useAlert()
 
-  const setAuthLinkingScreenKeys = useSetRecoilState(
-    LinkingStore.authLinkingScreenKeys
-  )
-  const setMainLinkingScreenKeys = useSetRecoilState(
-    LinkingStore.mainLinkingScreenKeys
-  )
   const [name, setName] = useRecoilState(RecoverWalletStore.name)
   const [inputName, setinputName] = useState(name)
   const [disableNextButton, setDisableNextButton] = useState(false)
@@ -132,20 +121,6 @@ const Screen = ({ route }: Props): ReactElement => {
 
   useEffect(() => {
     if (payload) {
-      setAuthLinkingScreenKeys(
-        (oriList): AuthLinkingScreenKeyEnum[] => {
-          return _.clone(oriList).filter(
-            (x) => x !== AuthLinkingScreenKeyEnum.RecoverWallet
-          )
-        }
-      )
-      setMainLinkingScreenKeys(
-        (oriList): MainLinkingScreenKeyEnum[] => {
-          return _.clone(oriList).filter(
-            (x) => x !== MainLinkingScreenKeyEnum.AutoLogout
-          )
-        }
-      )
       const bufferString = Buffer.from(payload, 'base64').toString()
       const data = jsonTryParse<RecoverWalletQrCodeDataType>(
         bufferString
@@ -215,14 +190,10 @@ const HeaderRight = (): ReactElement => (
   <NumberStep stepSize={2} nowStep={2} />
 )
 
-Screen.navigationOptions = ({
-  route,
-}: Props): StackNavigationOptions => {
-  const payload = route.params?.payload
+Screen.navigationOptions = (): StackNavigationOptions => {
   return navigationHeaderOptions({
     theme: 'sapphire',
     headerRight: HeaderRight,
-    headerLeft: payload ? (): ReactElement => <View /> : undefined,
   })
 }
 

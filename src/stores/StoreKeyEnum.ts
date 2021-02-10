@@ -1,9 +1,6 @@
 // all atom key have to be unique
 export enum StoreKeyEnum {
-  mainLinkingScreenKeys = 'mainLinkingScreenKeys',
-  mainLinking = 'mainLinking',
-  authLinkingScreenKeys = 'authLinkingScreenKeys',
-  authLinking = 'authLinking',
+  isFromAutoLogout = 'isFromAutoLogout',
   showLoading = 'showLoading',
   newWalletName = 'newWalletName',
   newWalletPassword = 'newWalletPassword',
