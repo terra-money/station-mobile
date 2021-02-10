@@ -1,7 +1,4 @@
-import {
-  NavigationProp,
-  useNavigation,
-} from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
 import {
   StyleSheet,
@@ -17,7 +14,7 @@ import {
   StackHeaderTitleProps,
   StackNavigationOptions,
 } from '@react-navigation/stack'
-import { RootStackParams } from 'types'
+import { useAuth } from 'use-station/src'
 
 type HeaderTheme = 'white' | 'sky' | 'sapphire'
 
@@ -41,15 +38,14 @@ const HeaderLeft = ({
   theme?: HeaderTheme
   goBackIconType?: 'arrow' | 'close'
 }): ReactElement => {
-  const { goBack, canGoBack, navigate } = useNavigation<
-    NavigationProp<RootStackParams>
-  >()
+  const { user } = useAuth()
+  const { goBack, canGoBack, navigate } = useNavigation()
 
   const onPressGoBack = (): void => {
     if (canGoBack()) {
       goBack()
     } else {
-      navigate('Tabs')
+      navigate(user ? 'Tabs' : 'AuthMenu')
     }
   }
 

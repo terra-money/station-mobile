@@ -2,8 +2,8 @@ import React, { useState, ReactElement, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useRecoilValue } from 'recoil'
 import {
+  CommonActions,
   NavigationProp,
-  StackActions,
   useNavigation,
 } from '@react-navigation/native'
 import { useBank } from 'use-station/src'
@@ -134,10 +134,16 @@ const Screen = (): ReactElement => {
       ) {
         openIsUseBioAuth()
       }
-      dispatch(StackActions.popToTop())
+
       dispatch(
-        StackActions.replace('WalletRecovered', {
-          wallet: result.wallet,
+        CommonActions.reset({
+          index: 1,
+          routes: [
+            {
+              name: 'WalletRecovered',
+              params: { wallet: result.wallet },
+            },
+          ],
         })
       )
     }

@@ -14,10 +14,11 @@ import color from 'styles/color'
 import { useQRScan } from 'hooks/useQrScan'
 import { useAlert } from 'hooks/useAlert'
 import { BarCodeReadEvent } from 'react-native-camera'
-import { RootStackParams } from 'types'
+import { RecoverWalletStackParams } from 'types'
 import { StackScreenProps } from '@react-navigation/stack'
+import { jsonTryParse, getParam } from 'utils/util'
 
-type Props = StackScreenProps<RootStackParams>
+type Props = StackScreenProps<RecoverWalletStackParams, 'Step1'>
 
 const Screen = ({ navigation }: Props): ReactElement => {
   const setPassword = useSetRecoilState(RecoverWalletStore.password)
@@ -31,16 +32,18 @@ const Screen = ({ navigation }: Props): ReactElement => {
   const stepConfirmed = _.every(seed, _.some)
 
   const onRead = (e: BarCodeReadEvent): void => {
-    let data
-    try {
-      data = JSON.parse(e.data)
-    } catch {}
+    const payload = getParam({ url: e.data, key: 'payload' })
+    const bufferString = Buffer.from(payload, 'base64').toString()
+    const data = jsonTryParse<RecoverWalletQrCodeDataType>(
+      bufferString
+    )
 
     if (
+      data &&
       typeof data === 'object' &&
       'address' in data &&
       'name' in data &&
-      'privateKey' in data
+      'encrypted_key' in data
     ) {
       setQRData(data)
       setName(data.name)

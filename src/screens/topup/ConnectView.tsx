@@ -29,7 +29,6 @@ const ConnectView = (props: Props): ReactElement => {
   const { alert } = useAlert()
   const { restoreApp, gotoWallet } = useTopup()
   const insets = useSafeAreaInsets()
-
   const [returnScheme, setReturnScheme] = useState('')
   const [endpointAddress, setEndpointAddress] = useState('')
 

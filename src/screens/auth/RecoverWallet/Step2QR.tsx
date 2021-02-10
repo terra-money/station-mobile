@@ -1,9 +1,9 @@
 import React, { useState, ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import {
-  StackActions,
+  CommonActions,
   useNavigation,
   NavigationProp,
 } from '@react-navigation/native'
@@ -21,15 +21,28 @@ import { decryptKey, addWallet } from 'utils/wallet'
 import { getIsUseBioAuth } from 'utils/storage'
 import { isSupportedBiometricAuthentication } from 'utils/bio'
 import { useBioAuth } from 'hooks/useBioAuth'
-import { RecoverWalletStackParams } from 'types'
+import { RecoverWalletStackParams, AuthStackParams } from 'types'
+import {
+  StackNavigationOptions,
+  StackScreenProps,
+} from '@react-navigation/stack'
+import { jsonTryParse } from 'utils/util'
+import { useAlert } from 'hooks/useAlert'
+type Props = StackScreenProps<RecoverWalletStackParams, 'Step2QR'>
 
-const Screen = (): ReactElement => {
-  const { dispatch } = useNavigation<
-    NavigationProp<RecoverWalletStackParams>
+const Screen = ({ route }: Props): ReactElement => {
+  const payload = route.params?.payload
+
+  const { dispatch, navigate } = useNavigation<
+    NavigationProp<AuthStackParams>
   >()
   const { openIsUseBioAuth } = useBioAuth()
 
-  const qrData = useRecoilValue(RecoverWalletStore.qrData)
+  const [qrData, setQrData] = useRecoilState(
+    RecoverWalletStore.qrData
+  )
+  const { alert } = useAlert()
+
   const [name, setName] = useRecoilState(RecoverWalletStore.name)
   const [inputName, setinputName] = useState(name)
   const [disableNextButton, setDisableNextButton] = useState(false)
@@ -63,7 +76,7 @@ const Screen = (): ReactElement => {
     }
     setDisableNextButton(true)
     if (qrData) {
-      const key = decryptKey(qrData.privateKey, password)
+      const key = decryptKey(qrData.encrypted_key, password)
       if (key) {
         const wallet = {
           address: qrData.address,
@@ -72,7 +85,7 @@ const Screen = (): ReactElement => {
 
         await addWallet({
           wallet,
-          key: qrData.privateKey,
+          key: qrData.encrypted_key,
           password,
         })
         if (
@@ -81,10 +94,10 @@ const Screen = (): ReactElement => {
         ) {
           openIsUseBioAuth()
         }
-        dispatch(StackActions.popToTop())
         dispatch(
-          StackActions.replace('WalletRecovered', {
-            wallet,
+          CommonActions.reset({
+            index: 1,
+            routes: [{ name: 'WalletRecovered', params: { wallet } }],
           })
         )
       } else {
@@ -105,6 +118,37 @@ const Screen = (): ReactElement => {
       setNameErrMsg(valueValidate.name(inputName))
     }
   }, [walletList])
+
+  useEffect(() => {
+    onChangeName('')
+    setQrData(undefined)
+    setPassword('')
+
+    if (payload) {
+      const bufferString = Buffer.from(payload, 'base64').toString()
+      const data = jsonTryParse<RecoverWalletQrCodeDataType>(
+        bufferString
+      )
+
+      if (
+        data &&
+        typeof data === 'object' &&
+        'address' in data &&
+        'name' in data &&
+        'encrypted_key' in data
+      ) {
+        onChangeName(data.name)
+        setQrData(data)
+      } else {
+        alert({ desc: 'Wrong QR Code' })
+        navigate('AuthMenu')
+      }
+    }
+    return (): void => {
+      setinputName('')
+      setNameErrMsg('')
+    }
+  }, [])
 
   return (
     <>
@@ -150,10 +194,12 @@ const HeaderRight = (): ReactElement => (
   <NumberStep stepSize={2} nowStep={2} />
 )
 
-Screen.navigationOptions = navigationHeaderOptions({
-  theme: 'sapphire',
-  headerRight: HeaderRight,
-})
+Screen.navigationOptions = (): StackNavigationOptions => {
+  return navigationHeaderOptions({
+    theme: 'sapphire',
+    headerRight: HeaderRight,
+  })
+}
 
 export default Screen
 
