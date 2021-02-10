@@ -120,11 +120,10 @@ const Screen = ({ route }: Props): ReactElement => {
   }, [walletList])
 
   useEffect(() => {
-    onChangeName('')
-    setQrData(undefined)
-    setPassword('')
-
     if (payload) {
+      onChangeName('')
+      setQrData(undefined)
+      setPassword('')
       const bufferString = Buffer.from(payload, 'base64').toString()
       const data = jsonTryParse<RecoverWalletQrCodeDataType>(
         bufferString
