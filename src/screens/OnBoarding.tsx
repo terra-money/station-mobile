@@ -23,21 +23,25 @@ LogBox.ignoreLogs([
 const PagerContents = [
   {
     image: images.on_boarding_0,
+    title: 'Welcome Aboard',
     description:
       'Terra Station is your gateway to the Terra ecosystem.',
   },
   {
     image: images.on_boarding_1,
+    title: 'Manage Assets',
     description:
       'Send, receive, swap, and stake Terra assets like stablecoins (UST), LUNA, and MIR instantly.',
   },
   {
     image: images.on_boarding_2,
+    title: 'Get Rewards',
     description:
       'Delegate your LUNA to Terra validators to earn returns in Terra assets.',
   },
   {
     image: images.on_boarding_4,
+    title: 'Start Exploring',
     description:
       'Check out all the other features. Start exploring Terra Station',
   },
@@ -81,11 +85,13 @@ const RenderSwiper = ({
             paddingTop: 20,
           }}
         >
+          <Text style={styles.SwiperContentTitle} fontType="bold">
+            {v.title}
+          </Text>
           <Text
             style={styles.SwiperContentDesc}
-            fontType="medium"
             adjustsFontSizeToFit
-            numberOfLines={3}
+            numberOfLines={2}
           >
             {v.description}
           </Text>
@@ -208,10 +214,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
   },
-  SwiperContentDesc: {
-    fontSize: 20,
-    lineHeight: 30,
+  SwiperContentTitle: {
+    fontSize: 24,
+    lineHeight: 36,
     letterSpacing: -0.3,
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  SwiperContentDesc: {
+    fontSize: 16,
+    lineHeight: 24,
     textAlign: 'center',
   },
   SwiperButtonContainer: {
