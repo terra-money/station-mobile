@@ -23,21 +23,25 @@ LogBox.ignoreLogs([
 const PagerContents = [
   {
     image: images.on_boarding_0,
+    title: 'Welcome Aboard',
     description:
       'Terra Station is your gateway to the Terra ecosystem.',
   },
   {
     image: images.on_boarding_1,
+    title: 'Manage Assets',
     description:
       'Send, receive, swap, and stake Terra assets like stablecoins (UST), LUNA, and MIR instantly.',
   },
   {
     image: images.on_boarding_2,
+    title: 'Get Rewards',
     description:
       'Delegate your LUNA to Terra validators to earn returns in Terra assets.',
   },
   {
     image: images.on_boarding_4,
+    title: 'Start Exploring',
     description:
       'Check out all the other features. Start exploring Terra Station',
   },
@@ -60,14 +64,35 @@ const RenderSwiper = ({
     loop={false}
     dot={<View style={styles.SwiperDot} />}
     activeDot={<View style={styles.SwiperDotActive} />}
-    containerStyle={{ marginBottom: 65 }}
-    paginationStyle={{ marginBottom: -30 }}
+    containerStyle={{ marginBottom: '16%' }}
+    paginationStyle={{ marginBottom: '-4%' }}
   >
     {PagerContents.map((v, i) => (
       <View key={i} style={styles.SwiperContent}>
-        <Image source={v.image} style={styles.SwiperContentImage} />
-        <View style={{ height: 180 }}>
-          <Text style={styles.SwiperContentDesc} fontType="medium">
+        <View
+          style={{
+            height: '60%',
+            paddingVertical: 20,
+            alignContent: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Image source={v.image} style={styles.SwiperContentImage} />
+        </View>
+        <View
+          style={{
+            minHeight: 160,
+            paddingTop: 20,
+          }}
+        >
+          <Text style={styles.SwiperContentTitle} fontType="bold">
+            {v.title}
+          </Text>
+          <Text
+            style={styles.SwiperContentDesc}
+            adjustsFontSizeToFit
+            numberOfLines={2}
+          >
             {v.description}
           </Text>
         </View>
@@ -179,18 +204,26 @@ const styles = StyleSheet.create({
   SwiperContent: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-around',
-    paddingHorizontal: 30,
+    alignContent: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 30,
   },
   SwiperContentImage: {
     resizeMode: 'contain',
     alignSelf: 'center',
     flex: 1,
   },
-  SwiperContentDesc: {
-    fontSize: 22,
-    lineHeight: 33,
+  SwiperContentTitle: {
+    fontSize: 24,
+    lineHeight: 36,
     letterSpacing: -0.3,
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  SwiperContentDesc: {
+    fontSize: 16,
+    lineHeight: 24,
     textAlign: 'center',
   },
   SwiperButtonContainer: {
@@ -198,7 +231,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
   },
   SwiperButtonSkip: {
     flex: 1,

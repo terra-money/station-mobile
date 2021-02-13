@@ -36,7 +36,7 @@ const Screen = ({ route }: Props): ReactElement => {
         <Text style={styles.infoTitle} fontType={'bold'}>
           Wallet recovered!
         </Text>
-        <Text style={{ color: color.sapphire }}>
+        <Text style={{ color: color.sapphire, textAlign: 'center' }}>
           Welcome back to Terra Station
         </Text>
       </View>
