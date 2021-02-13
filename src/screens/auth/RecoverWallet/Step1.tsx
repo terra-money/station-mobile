@@ -76,10 +76,7 @@ const Screen = ({ navigation }: Props): ReactElement => {
 
   return (
     <>
-      <SubHeader
-        theme={'sapphire'}
-        title={'Recover existing wallet'}
-      />
+      <SubHeader theme={'sapphire'} title={'Recover wallet'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <Button

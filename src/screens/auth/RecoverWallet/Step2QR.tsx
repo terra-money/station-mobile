@@ -151,7 +151,7 @@ const Screen = ({ route }: Props): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'sapphire'} title={'Set up your wallet'} />
+      <SubHeader theme={'sapphire'} title={'Set up wallet'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={styles.section}>

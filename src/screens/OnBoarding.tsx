@@ -31,19 +31,18 @@ const PagerContents = [
     image: images.on_boarding_1,
     title: 'Manage Assets',
     description:
-      'Send, receive, swap, and stake Terra assets like stablecoins (UST), LUNA, and MIR instantly.',
+      'Transact, swap, and stake assets on the Terra blockchain.',
   },
   {
     image: images.on_boarding_2,
     title: 'Get Rewards',
     description:
-      'Delegate your LUNA to Terra validators to earn returns in Terra assets.',
+      'Delegate LUNA and earn yield from tranasctions on the Terra network.',
   },
   {
     image: images.on_boarding_4,
     title: 'Start Exploring',
-    description:
-      'Check out all the other features. Start exploring Terra Station',
+    description: 'Just "Start Exploring" looks good',
   },
 ]
 

@@ -36,7 +36,10 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'sapphire'} title={'Write down your seed'} />
+      <SubHeader
+        theme={'sapphire'}
+        title={'Write down seed phrase'}
+      />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View style={{ alignItems: 'flex-end', marginBottom: 10 }}>

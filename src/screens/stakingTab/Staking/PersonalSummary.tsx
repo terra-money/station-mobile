@@ -49,7 +49,7 @@ const NotStaked = (): ReactElement => {
       </View>
       <Text style={{ lineHeight: 21, marginTop: -15 }}>
         {
-          "You haven't staked any assets yet. Stake your Luna and stack up rewards."
+          "You haven't staked any assets yet. Stake Luna to start earning rewards."
         }
       </Text>
     </>

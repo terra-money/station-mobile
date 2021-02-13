@@ -44,7 +44,7 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'sapphire'} title={'Enter Your Seed Phase'} />
+      <SubHeader theme={'sapphire'} title={'Recover wallet'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View>
           <View
