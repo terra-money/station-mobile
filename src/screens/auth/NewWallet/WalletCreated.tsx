@@ -32,10 +32,10 @@ const Screen = ({ route }: Props): ReactElement => {
           color={color.sapphire}
         />
         <Text style={styles.infoTitle} fontType={'bold'}>
-          Wallet created!
+          {'Wallet created!'}
         </Text>
         <Text style={{ color: color.sapphire, textAlign: 'center' }}>
-          Welcome abroad to Terra Station
+          {'Welcome aboard to Terra Station'}
         </Text>
       </View>
       <Button

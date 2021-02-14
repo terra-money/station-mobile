@@ -78,7 +78,7 @@ const QRScan = ({
   return (
     <QRCodeScanner
       onRead={onSuccess}
-      cameraStyle={{ height: Dimensions.get('window').height }}
+      cameraStyle={{ height: '100%' }}
       showMarker
       customMarker={
         <View style={style.container}>

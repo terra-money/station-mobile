@@ -47,14 +47,14 @@ const ConnectView = (props: Props): ReactElement => {
       // parse deeplink param
       try {
         if (props.route.params.payload !== undefined) {
-          const parseArg: SchemeArgs = JSON.parse(
+          const payload: SchemeArgs = JSON.parse(
             Buffer.from(
               props.route.params.payload,
               'base64'
             ).toString()
           )
-          setEndpointAddress(parseArg.endpoint_address)
-          setReturnScheme(parseArg.return_scheme)
+          setEndpointAddress(payload.endpoint_address)
+          setReturnScheme(payload.return_scheme)
         }
       } catch (e) {
         alert({ title: 'Unexpected error', desc: e.toString() })
@@ -82,18 +82,18 @@ const ConnectView = (props: Props): ReactElement => {
       setLoading(true)
       const ret = await putConnect(endpointAddress, user?.address)
 
-      if (ret.status !== 200) {
-        alert({
-          title: `${ret.status} error`,
-          desc: JSON.stringify(await ret.json()),
-        })
-      } else {
+      if (ret.status === 200) {
         user?.address &&
           (await Preferences.setString(
             PreferencesEnum.topupAddress,
             user.address
           ))
         restoreApp(returnScheme)
+      } else {
+        alert({
+          title: `${ret.status} error`,
+          desc: JSON.stringify(await ret.json()),
+        })
       }
     } catch (e) {
       alert({

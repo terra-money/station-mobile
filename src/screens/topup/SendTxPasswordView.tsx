@@ -69,7 +69,7 @@ const SendTxPasswordView = (props: Props): ReactElement => {
               />
             </TouchableOpacity>
           </View>
-          <SubHeader theme="sapphire" title="Enter your password" />
+          <SubHeader theme="sapphire" title="Enter password" />
           <View style={style.contentContainer}>
             <Text fontType="medium" style={style.passwordText}>
               {'Password'}
@@ -79,7 +79,10 @@ const SendTxPasswordView = (props: Props): ReactElement => {
               placeholderTextColor={color.sapphire_op50}
               placeholder={'Must be at least 10 characters'}
               secureTextEntry={true}
-              onChangeText={(text): void => setPassword(text)}
+              onChangeText={(text): void => {
+                setPassword(text)
+                setError('')
+              }}
               errorMessage={error}
               value={password}
             />
