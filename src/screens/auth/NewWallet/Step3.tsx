@@ -8,7 +8,10 @@ import {
 import { useRecoilValue } from 'recoil'
 import _ from 'lodash'
 import numeral from 'numeral'
-import { StackActions, useNavigation } from '@react-navigation/native'
+import {
+  CommonActions,
+  useNavigation,
+} from '@react-navigation/native'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -18,10 +21,7 @@ import { FormLabel, NumberStep, Text, Button } from 'components'
 
 import color from 'styles/color'
 import NewWalletStore from 'stores/NewWalletStore'
-import { useBioAuth } from 'hooks/useBioAuth'
-import { isSupportedBiometricAuthentication } from 'utils/bio'
 import { createWallet } from 'utils/wallet'
-import { getIsUseBioAuth } from 'utils/storage'
 
 const Screen = (): ReactElement => {
   const { dispatch } = useNavigation()
@@ -34,8 +34,6 @@ const Screen = (): ReactElement => {
 
   const [quiz, setQuiz] = useState<number[]>([])
   const [hint, setHint] = useState<number[]>([])
-
-  const { openIsUseBioAuth } = useBioAuth()
 
   const stepConfirmed =
     firstSeedWord === seed[quiz[0]] &&
@@ -59,16 +57,15 @@ const Screen = (): ReactElement => {
     })
 
     if (result.success) {
-      if (
-        false === (await getIsUseBioAuth()) &&
-        (await isSupportedBiometricAuthentication())
-      ) {
-        openIsUseBioAuth()
-      }
-      dispatch(StackActions.popToTop())
       dispatch(
-        StackActions.replace('WalletCreated', {
-          wallet: result.wallet,
+        CommonActions.reset({
+          index: 1,
+          routes: [
+            {
+              name: 'WalletCreated',
+              params: { wallet: result.wallet },
+            },
+          ],
         })
       )
     }
