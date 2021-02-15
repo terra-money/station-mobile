@@ -42,7 +42,7 @@ const PagerContents = [
   {
     image: images.on_boarding_4,
     title: 'Start Exploring',
-    description: 'Just "Start Exploring" looks good',
+    description: '',
   },
 ]
 

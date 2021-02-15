@@ -40,6 +40,12 @@ import preferences, {
 } from 'nativeModules/preferences'
 import keystore from 'nativeModules/keystore'
 import NoInternet from './src/screens/NoInternet'
+import * as Sentry from '@sentry/react-native'
+
+Sentry.init({
+  dsn:
+    'https://f25cbe79cc4a451d8be908e655dd073e@o247107.ingest.sentry.io/5636979',
+})
 
 let App = ({
   settings: { lang, chain, currency },
