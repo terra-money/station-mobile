@@ -41,7 +41,7 @@ const Screen = (): ReactElement => {
             </Text>
             <Text style={styles.subTitle}>
               {_.some(wallets)
-                ? 'Connect to your wallet, create a new wallet or recover an existing wallet using a seed phrase or QR code'
+                ? 'Connect to a wallet, create a new wallet or recover an existing wallet using a seed phrase or QR code'
                 : 'Create a new wallet or recover an existing wallet using a seed phrase or QR code'}
             </Text>
             <View style={styles.imageBox}>
@@ -81,7 +81,7 @@ const Screen = (): ReactElement => {
             </View>
             <Button
               theme={'transparent'}
-              title={'Recover existing wallet'}
+              title={'Recover wallet'}
               onPress={(): void => navigate('RecoverWallet')}
             />
           </View>

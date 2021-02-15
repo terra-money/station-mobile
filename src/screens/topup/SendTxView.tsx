@@ -252,7 +252,7 @@ const SendTxView = (props: Props): ReactElement => {
       <View style={style.contentContainer}>
         <TitleIcon style={style.titleIcon} />
         <Text fontType="book" style={style.titleText}>
-          {'Would you like to allow charging in CHAI?'}
+          {'Grant CHAI permission to charge your wallet?'}
         </Text>
         <View style={style.feeTextContainer}>
           <Text fontType="medium" style={style.feeText}>
@@ -287,7 +287,7 @@ const SendTxView = (props: Props): ReactElement => {
               errorMessage={
                 enableNext && feeAmount !== ''
                   ? undefined
-                  : 'Insufficient balance'
+                  : 'Insufficient funds'
               }
             />
           </View>

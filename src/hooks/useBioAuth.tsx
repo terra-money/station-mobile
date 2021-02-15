@@ -33,7 +33,9 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
             <Text style={styles.infoTitle} fontType={'bold'}>
               Use Face ID
             </Text>
-            <Text style={{ color: color.sapphire }}>
+            <Text
+              style={{ color: color.sapphire, textAlign: 'center' }}
+            >
               Use your Face ID for faster, easier access to your
               acount.
             </Text>

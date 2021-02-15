@@ -85,7 +85,7 @@ const Screen = (): ReactElement => {
 
   return (
     <>
-      <SubHeader theme={'sapphire'} title={'Confirm Your Seed'} />
+      <SubHeader theme={'sapphire'} title={'Confirm seed phrase'} />
       <Body theme={'sky'} containerStyle={styles.container}>
         <View style={{ flex: 1 }}>
           <View style={styles.sectionGroup}>

@@ -69,7 +69,7 @@ const SendTxPasswordView = (props: Props): ReactElement => {
               />
             </TouchableOpacity>
           </View>
-          <SubHeader theme="sapphire" title="Enter your password" />
+          <SubHeader theme="sapphire" title="Enter password" />
           <View style={style.contentContainer}>
             <Text fontType="medium" style={style.passwordText}>
               {'Password'}
