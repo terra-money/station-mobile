@@ -5,7 +5,7 @@ import Button from 'components/Button'
 import Body from 'components/layout/Body'
 import { Text } from 'components'
 
-import { useApp } from './useApp'
+import { useModal } from './useModal'
 
 import { setUseBioAuth } from 'utils/storage'
 import {
@@ -78,7 +78,7 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
 export const useBioAuth = (): {
   openIsUseBioAuth: () => void
 } => {
-  const { modal } = useApp()
+  const { modal } = useModal()
 
   const [bioType, setBioType] = useState<BiometricType>(
     BiometricType.NONE

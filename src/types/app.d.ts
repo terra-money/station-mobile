@@ -1,14 +1,6 @@
 interface App {
-  drawer: Drawer
   modal: AppModal
   alertViewProps: AlertView
-}
-
-interface Drawer {
-  isOpen: boolean
-  open: (content: ReactNode) => void
-  close: () => void
-  content: ReactNode
 }
 
 type AppModalConfig = {
