@@ -46,7 +46,7 @@ export const useQRScan = (): {
     } else {
       confirm({
         title: 'Camera not authorized',
-        desc: 'Do you want to go setting for camera permission?',
+        desc: 'Move to settings to enable camera permissions?',
         onPressConfirm: (): void => {
           openPermissionSettings()
         },

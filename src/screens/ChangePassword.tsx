@@ -38,7 +38,7 @@ const Screen = ({ route }: Props): ReactElement => {
       alert({ desc: passwordText.title })
       goBack()
     } else {
-      alert({ desc: 'Password Change error' })
+      alert({ desc: 'Error while changing password' })
     }
   }
 
