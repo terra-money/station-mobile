@@ -17,16 +17,38 @@ import AvailableAssets from './AvailableAssets'
 import { useSwapRate } from 'hooks/useSwapRate'
 import SwapRateStore from 'stores/SwapRateStore'
 import History from './History'
+import Preferences, {
+  PreferencesEnum,
+} from 'nativeModules/preferences'
 
 type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
 const Screen = (props: Props): ReactElement => {
   const { loading, data } = useSwapRate()
   const setSwapRate = useSetRecoilState(SwapRateStore.swapRate)
+  const [loadingComplete, setLoadingComplete] = useState(false)
+  const [localHideSmall, setlocalHideSmall] = useState(true)
+  const [localHideSmallTokens, setlocalHideSmallTokens] = useState(
+    true
+  )
 
   const [refreshingKey, setRefreshingKey] = useState(0)
   const refreshPage = async (): Promise<void> => {
+    await getWalletSettings()
     setRefreshingKey((ori) => ori + 1)
+  }
+
+  const getWalletSettings = async (): Promise<void> => {
+    setlocalHideSmall(
+      await Preferences.getBool(PreferencesEnum.walletHideSmall)
+    )
+    setlocalHideSmallTokens(
+      await Preferences.getBool(PreferencesEnum.walletHideSmallTokens)
+    )
+  }
+
+  const initPage = async (): Promise<void> => {
+    await getWalletSettings()
   }
 
   useEffect(() => {
@@ -35,16 +57,34 @@ const Screen = (props: Props): ReactElement => {
     }
   }, [loading, data?.length])
 
+  useEffect(() => {
+    initPage().then((): void => {
+      setLoadingComplete(true)
+    })
+  }, [])
+
   return (
     <WithAuth>
       {(user): ReactElement => (
-        <Body theme={'sky'} scrollable onRefresh={refreshPage}>
-          <Fragment key={refreshingKey}>
-            <WalletAddress user={user} />
-            <AvailableAssets user={user} {...props} />
-            <History user={user} {...props} />
-          </Fragment>
-        </Body>
+        <>
+          {loadingComplete && (
+            <Body theme={'sky'} scrollable onRefresh={refreshPage}>
+              <Fragment key={refreshingKey}>
+                <WalletAddress user={user} />
+                <AvailableAssets
+                  {...{
+                    user,
+                    localHideSmall,
+                    setlocalHideSmall,
+                    localHideSmallTokens,
+                  }}
+                  {...props}
+                />
+                <History user={user} {...props} />
+              </Fragment>
+            </Body>
+          )}
+        </>
       )}
     </WithAuth>
   )
