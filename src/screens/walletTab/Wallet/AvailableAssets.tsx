@@ -74,7 +74,7 @@ const EmptyWallet = ({ card }: { card?: Card }): ReactElement => {
   )
 }
 
-const WalletAddress = ({
+const AvailableAssets = ({
   user,
   navigation,
   localHideSmall,
@@ -82,9 +82,9 @@ const WalletAddress = ({
   localHideSmallTokens,
 }: {
   user: User
-  localHideSmall: boolean
+  localHideSmall?: boolean
   setlocalHideSmall: (value: boolean) => void
-  localHideSmallTokens: boolean
+  localHideSmallTokens?: boolean
 } & Props): ReactElement => {
   const { ui, execute, setHideSmall } = useAssets(user, {
     hideSmall: localHideSmall,
@@ -133,9 +133,9 @@ const WalletAddress = ({
               {available && (
                 <TouchableOpacity
                   onPress={async (): Promise<void> => {
-                    Preferences.setBool(
+                    Preferences.setString(
                       PreferencesEnum.walletHideSmall,
-                      !available.hideSmall.checked
+                      available.hideSmall.checked ? 'show' : 'hide'
                     )
                     available.hideSmall.toggle()
                   }}
@@ -148,7 +148,7 @@ const WalletAddress = ({
                     {available.hideSmall.label}
                   </Text>
                   <View style={styles.hideSmallCheckBox}>
-                    {available.hideSmall.checked && (
+                    {!!available.hideSmall.checked && (
                       <View
                         style={{
                           width: 8,
@@ -180,9 +180,9 @@ const WalletAddress = ({
               </Text>
               <TouchableOpacity
                 onPress={async (): Promise<void> => {
-                  Preferences.setBool(
+                  Preferences.setString(
                     PreferencesEnum.walletHideSmallTokens,
-                    !tokens.hideSmall.checked
+                    tokens.hideSmall.checked ? 'show' : 'hide'
                   )
                   tokens.hideSmall.toggle()
                 }}
@@ -195,7 +195,7 @@ const WalletAddress = ({
                   {tokens.hideSmall.label}
                 </Text>
                 <View style={styles.hideSmallCheckBox}>
-                  {tokens.hideSmall.checked && (
+                  {!!tokens.hideSmall.checked && (
                     <View
                       style={{
                         width: 8,
@@ -220,7 +220,7 @@ const WalletAddress = ({
   return <>{ui ? render(ui) : null}</>
 }
 
-export default WalletAddress
+export default AvailableAssets
 
 const styles = StyleSheet.create({
   section: { marginBottom: 20 },
