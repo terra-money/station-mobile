@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import _ from 'lodash'
 import { StackScreenProps } from '@react-navigation/stack'
@@ -17,6 +17,9 @@ import { Text, Icon } from 'components'
 import AvailableItem from './AvailableItem'
 import VestingItem from './VestingItem'
 import color from 'styles/color'
+import Preferences, {
+  PreferencesEnum,
+} from 'nativeModules/preferences'
 
 type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
@@ -74,12 +77,18 @@ const EmptyWallet = ({ card }: { card?: Card }): ReactElement => {
 const WalletAddress = ({
   user,
   navigation,
+  localHideSmall,
+  setlocalHideSmall,
+  localHideSmallTokens,
 }: {
   user: User
+  localHideSmall: boolean
+  setlocalHideSmall: (value: boolean) => void
+  localHideSmallTokens: boolean
 } & Props): ReactElement => {
-  const [localHideSmall, setlocalHideSmall] = useState(true)
   const { ui, execute, setHideSmall } = useAssets(user, {
     hideSmall: localHideSmall,
+    hideSmallTokens: localHideSmallTokens,
   })
 
   // If list length is 0 on hiding small-balance-assets, then show small-balance-assets.
@@ -123,7 +132,11 @@ const WalletAddress = ({
               </Text>
               {available && (
                 <TouchableOpacity
-                  onPress={(): void => {
+                  onPress={async (): Promise<void> => {
+                    Preferences.setBool(
+                      PreferencesEnum.walletHideSmall,
+                      !available.hideSmall.checked
+                    )
                     available.hideSmall.toggle()
                   }}
                   style={{
@@ -166,7 +179,11 @@ const WalletAddress = ({
                 TOKENS
               </Text>
               <TouchableOpacity
-                onPress={(): void => {
+                onPress={async (): Promise<void> => {
+                  Preferences.setBool(
+                    PreferencesEnum.walletHideSmallTokens,
+                    !tokens.hideSmall.checked
+                  )
                   tokens.hideSmall.toggle()
                 }}
                 style={{

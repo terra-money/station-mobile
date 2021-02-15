@@ -2,7 +2,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BarCodeReadEvent } from 'react-native-camera'
 
 import { useAlert } from 'hooks/useAlert'
-import { useApp } from 'hooks/useApp'
+import { useModal } from 'hooks/useModal'
 import {
   checkCameraPermission,
   openPermissionSettings,
@@ -10,7 +10,6 @@ import {
 } from 'utils/permission'
 
 import QRScan from './QRScan'
-
 export const useQRScan = (): {
   openQRScan: ({
     onRead,
@@ -20,7 +19,7 @@ export const useQRScan = (): {
     checkPermission?: (permission: boolean) => void
   }) => void
 } => {
-  const { modal } = useApp()
+  const { modal } = useModal()
   const { confirm } = useAlert()
   const insets = useSafeAreaInsets()
 

@@ -1,11 +1,6 @@
 import { Icon, NumberStep } from 'components'
 import React, { ReactElement } from 'react'
-import {
-  Dimensions,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Text } from 'components'
 import { BarCodeReadEvent } from 'react-native-camera'
 import QRCodeScanner from 'react-native-qrcode-scanner'
