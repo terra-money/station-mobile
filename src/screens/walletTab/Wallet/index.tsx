@@ -21,16 +21,19 @@ import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 
+type VisibleSmallType = 'show' | 'hide'
+
 type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
 const Screen = (props: Props): ReactElement => {
   const { loading, data } = useSwapRate()
   const setSwapRate = useSetRecoilState(SwapRateStore.swapRate)
   const [loadingComplete, setLoadingComplete] = useState(false)
-  const [localHideSmall, setlocalHideSmall] = useState(true)
-  const [localHideSmallTokens, setlocalHideSmallTokens] = useState(
-    true
-  )
+  const [localHideSmall, setlocalHideSmall] = useState<boolean>()
+  const [
+    localHideSmallTokens,
+    setlocalHideSmallTokens,
+  ] = useState<boolean>()
 
   const [refreshingKey, setRefreshingKey] = useState(0)
   const refreshPage = async (): Promise<void> => {
@@ -39,11 +42,22 @@ const Screen = (props: Props): ReactElement => {
   }
 
   const getWalletSettings = async (): Promise<void> => {
+    const hideSmall = (await Preferences.getString(
+      PreferencesEnum.walletHideSmall
+    )) as VisibleSmallType
+    const hideSmallTokens = (await Preferences.getString(
+      PreferencesEnum.walletHideSmallTokens
+    )) as VisibleSmallType
+
     setlocalHideSmall(
-      await Preferences.getBool(PreferencesEnum.walletHideSmall)
+      hideSmall ? (hideSmall === 'hide' ? true : false) : undefined
     )
     setlocalHideSmallTokens(
-      await Preferences.getBool(PreferencesEnum.walletHideSmallTokens)
+      hideSmallTokens
+        ? hideSmallTokens === 'hide'
+          ? true
+          : false
+        : undefined
     )
   }
 
