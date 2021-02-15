@@ -7,6 +7,8 @@ export enum PreferencesEnum {
   wallets = 'wallets',
   firstRun = 'firstRun',
   topupAddress = 'topupAddress',
+  walletHideSmall = 'walletHideSmall',
+  walletHideSmallTokens = 'walletHideSmallTokens',
 }
 
 export type PreferencesType = {
