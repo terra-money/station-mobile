@@ -8,7 +8,10 @@ import {
 import { useRecoilValue } from 'recoil'
 import _ from 'lodash'
 import numeral from 'numeral'
-import { StackActions, useNavigation } from '@react-navigation/native'
+import {
+  CommonActions,
+  useNavigation,
+} from '@react-navigation/native'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -54,10 +57,15 @@ const Screen = (): ReactElement => {
     })
 
     if (result.success) {
-      dispatch(StackActions.popToTop())
       dispatch(
-        StackActions.replace('WalletCreated', {
-          wallet: result.wallet,
+        CommonActions.reset({
+          index: 1,
+          routes: [
+            {
+              name: 'WalletCreated',
+              params: { wallet: result.wallet },
+            },
+          ],
         })
       )
     }
