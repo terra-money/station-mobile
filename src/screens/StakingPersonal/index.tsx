@@ -95,7 +95,7 @@ Screen.navigationOptions = navigationHeaderOptions({
       style={{ fontSize: 16, lineHeight: 24, letterSpacing: 0 }}
       fontType="bold"
     >
-      Staking detail
+      {'Staking details'}
     </Text>
   ),
 })

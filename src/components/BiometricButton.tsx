@@ -22,7 +22,7 @@ const BiometricButtonTitle = (): ReactElement => {
         }}
         fontType="medium"
       >
-        Biometric
+        {'Biometric Authentication'}
       </Text>
     </View>
   )
