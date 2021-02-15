@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TerraStation</string>
     <!--production-->
-<!--    <string moduleConfig="true" name="CodePushDeploymentKey">KIxA7bC-C9HLKazsJTB2bib7nuU4KYV9Ctd22</string>-->
+    <string moduleConfig="true" name="CodePushDeploymentKey">KIxA7bC-C9HLKazsJTB2bib7nuU4KYV9Ctd22</string>
     <!--staging-->
-    <string moduleConfig="true" name="CodePushDeploymentKey">ypsZT-nWfXu_luJ2fiw-4rX3d1tctFGr0yH8O</string>
+<!--    <string moduleConfig="true" name="CodePushDeploymentKey">ypsZT-nWfXu_luJ2fiw-4rX3d1tctFGr0yH8O</string>-->
 </resources>
