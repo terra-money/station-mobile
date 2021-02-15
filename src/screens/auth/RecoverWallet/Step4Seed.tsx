@@ -19,14 +19,11 @@ import Badge from 'components/Badge'
 import { Text } from 'components'
 
 import RecoverWalletStore from 'stores/RecoverWalletStore'
-import { useBioAuth } from 'hooks/useBioAuth'
-import { isSupportedBiometricAuthentication } from 'utils/bio'
 import {
   recoverWalletWithMnemonicKey,
   generateAddresses,
 } from 'utils/wallet'
 import color from 'styles/color'
-import { getIsUseBioAuth } from 'utils/storage'
 import { RecoverWalletStackParams } from 'types'
 
 const AddressBox = ({
@@ -117,8 +114,6 @@ const Screen = (): ReactElement => {
   const [mk330, setMk330] = useState<MnemonicKey>()
   const [selectedMk, setSelectedMk] = useState<MnemonicKey>()
 
-  const { openIsUseBioAuth } = useBioAuth()
-
   const onPressNext = async (): Promise<void> => {
     const result =
       selectedMk &&
@@ -128,13 +123,6 @@ const Screen = (): ReactElement => {
       }))
 
     if (result?.success) {
-      if (
-        false === (await getIsUseBioAuth()) &&
-        (await isSupportedBiometricAuthentication())
-      ) {
-        openIsUseBioAuth()
-      }
-
       dispatch(
         CommonActions.reset({
           index: 1,

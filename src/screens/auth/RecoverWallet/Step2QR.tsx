@@ -18,9 +18,6 @@ import RecoverWalletStore from 'stores/RecoverWalletStore'
 import NumberStep from 'components/NumberStep'
 import FormLabel from 'components/FormLabel'
 import { decryptKey, addWallet } from 'utils/wallet'
-import { getIsUseBioAuth } from 'utils/storage'
-import { isSupportedBiometricAuthentication } from 'utils/bio'
-import { useBioAuth } from 'hooks/useBioAuth'
 import { RecoverWalletStackParams, AuthStackParams } from 'types'
 import {
   StackNavigationOptions,
@@ -36,7 +33,6 @@ const Screen = ({ route }: Props): ReactElement => {
   const { dispatch, navigate } = useNavigation<
     NavigationProp<AuthStackParams>
   >()
-  const { openIsUseBioAuth } = useBioAuth()
 
   const [qrData, setQrData] = useRecoilState(
     RecoverWalletStore.qrData
@@ -88,12 +84,7 @@ const Screen = ({ route }: Props): ReactElement => {
           key: qrData.encrypted_key,
           password,
         })
-        if (
-          false === (await getIsUseBioAuth()) &&
-          (await isSupportedBiometricAuthentication())
-        ) {
-          openIsUseBioAuth()
-        }
+
         dispatch(
           CommonActions.reset({
             index: 1,

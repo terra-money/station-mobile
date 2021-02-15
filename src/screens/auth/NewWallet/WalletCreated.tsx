@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 
 import { StackScreenProps } from '@react-navigation/stack'
@@ -8,7 +8,9 @@ import { Text, Icon, Button } from 'components'
 import color from 'styles/color'
 import { CreateWalletStackParams } from 'types'
 import { useAuth } from 'use-station/src'
-import { settings } from 'utils/storage'
+import { getIsUseBioAuth, settings } from 'utils/storage'
+import { useBioAuth } from 'hooks/useBioAuth'
+import { isSupportedBiometricAuthentication } from 'utils/bio'
 
 type Props = StackScreenProps<
   CreateWalletStackParams,
@@ -19,10 +21,26 @@ const Screen = ({ route }: Props): ReactElement => {
   const wallet = route.params?.wallet
 
   const { signIn } = useAuth()
+  const { openIsUseBioAuth } = useBioAuth()
+
   const onPressButton = (): void => {
     signIn(wallet)
     settings.set({ walletName: wallet.name })
   }
+
+  const checkIfUseBioAuth = async (): Promise<void> => {
+    if (
+      false === (await getIsUseBioAuth()) &&
+      (await isSupportedBiometricAuthentication())
+    ) {
+      openIsUseBioAuth()
+    }
+  }
+
+  useEffect(() => {
+    checkIfUseBioAuth()
+  }, [])
+
   return (
     <Body containerStyle={styles.container}>
       <View style={styles.infoSection}>
