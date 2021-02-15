@@ -26,9 +26,7 @@ import AppModal, {
 import AlertView, {
   useAlertViewState,
 } from 'components/onlyForApp.tsx/AlertView'
-import Drawer, {
-  useDrawerState,
-} from 'components/onlyForApp.tsx/Drawer'
+
 import { LoadingView } from 'components/onlyForApp.tsx/LoadingView'
 import Update from './src/screens/Update'
 import networks, { isDev, version } from './networks'
@@ -51,7 +49,6 @@ let App = ({
   user?: User
 }): ReactElement => {
   /* drawer */
-  const drawer = useDrawerState()
   const modal = useModalState()
   const alertViewProps = useAlertViewState()
 
@@ -148,7 +145,7 @@ let App = ({
   return (
     <>
       {ready && updateAvailable !== undefined && (
-        <AppProvider value={{ drawer, modal, alertViewProps }}>
+        <AppProvider value={{ modal, alertViewProps }}>
           <ConfigProvider value={config}>
             <AuthProvider value={auth}>
               <SafeAreaProvider>
@@ -165,7 +162,6 @@ let App = ({
                     <>
                       <AppNavigator />
                       <AppModal modal={modal} />
-                      <Drawer drawer={drawer} />
                       <AlertView alertViewProps={alertViewProps} />
                     </>
                   )}
