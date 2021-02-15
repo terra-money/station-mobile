@@ -74,7 +74,7 @@ const Render = ({
         }
       } else {
         confirmAlert({
-          desc: 'Do you want confirm with password?',
+          desc: 'Would you like to confirm with your password?',
           onPressConfirm: () => {
             navigate('ConfirmPassword', {
               feeSelectValue: fee.select.attrs.value || '',
