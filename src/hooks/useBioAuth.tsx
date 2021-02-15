@@ -1,5 +1,11 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { View, Image, StyleSheet } from 'react-native'
+import {
+  View,
+  Image,
+  StyleSheet,
+  Platform,
+  ImageSourcePropType,
+} from 'react-native'
 
 import Button from 'components/Button'
 import Body from 'components/layout/Body'
@@ -21,40 +27,36 @@ type BioAuthType = {
 } & AppModal
 
 const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
+  const getBiometricImage = (): ImageSourcePropType => {
+    return bioType === BiometricType.FACE
+      ? images.bio_face
+      : images.finger_print
+  }
+  const getBiometricName = (): string => {
+    return bioType === BiometricType.FACE
+      ? 'Face ID'
+      : Platform.OS === 'ios'
+      ? 'Touch ID'
+      : 'Fingerprint'
+  }
+
   return (
     <Body containerStyle={styles.container}>
       <View style={{ flex: 1 }}>
-        {bioType === BiometricType.FACE && (
-          <View style={styles.info}>
-            <Image
-              source={images.bio_face}
-              style={styles.infoImage}
-            />
-            <Text style={styles.infoTitle} fontType={'bold'}>
-              Use Face ID
-            </Text>
-            <Text
-              style={{ color: color.sapphire, textAlign: 'center' }}
-            >
-              Use your Face ID for faster, easier access to your
-              acount.
-            </Text>
-          </View>
-        )}
-
-        {bioType === BiometricType.FINGERPRINT && (
-          <View style={styles.info}>
-            <Image
-              source={images.finger_print}
-              style={styles.infoImage}
-            />
-            <Text style={styles.infoTitle}>Use Fingerprint</Text>
-            <Text style={{ color: color.sapphire }}>
-              Use your Fingerprint for faster, easier access to your
-              acount.
-            </Text>
-          </View>
-        )}
+        <View style={styles.info}>
+          <Image
+            source={getBiometricImage()}
+            style={styles.infoImage}
+          />
+          <Text style={styles.infoTitle} fontType={'bold'}>
+            {`Use ${getBiometricName()}`}
+          </Text>
+          <Text
+            style={{ color: color.sapphire, textAlign: 'center' }}
+          >
+            {`Use your ${getBiometricName()} for faster, easier access to your acount.`}
+          </Text>
+        </View>
       </View>
       <View>
         <Button
