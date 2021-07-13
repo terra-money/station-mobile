@@ -27,10 +27,12 @@ class PreventCapture(reactContext: ReactApplicationContext?) : ReactContextBaseJ
         val flag = WindowManager.LayoutParams.FLAG_SECURE
         try {
             activity?.let {
-                if(b) {
-                    it.window.clearFlags(flag)
-                } else {
-                    it.window.setFlags(flag, flag)
+                it.runOnUiThread {
+                    if (b) {
+                        it.window.clearFlags(flag)
+                    } else {
+                        it.window.setFlags(flag, flag)
+                    }
                 }
             }
             promise.resolve(true)
