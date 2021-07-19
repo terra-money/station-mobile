@@ -1,0 +1,21 @@
+// all atom key have to be unique
+export enum StoreKeyEnum {
+  modalChildren = 'modalChildren',
+  modalIsVisible = 'modalIsVisible',
+  isFromAutoLogout = 'isFromAutoLogout',
+  showLoading = 'showLoading',
+  newWalletName = 'newWalletName',
+  newWalletPassword = 'newWalletPassword',
+  newWalletSeed = 'newWalletSeed',
+  recoverWalletName = 'recoverWalletName',
+  recoverWalletPassword = 'recoverWalletPassword',
+  recoverWalletSeed = 'recoverWalletSeed',
+  recoverQRData = 'recoverQRData',
+  swapRate = 'swapRate',
+  swapValue = 'swapValue',
+  confirm = 'confirm',
+  stdSignMsg = 'stdSignMsg',
+  connectAddress = 'connectAddress',
+  continueSignedTx = 'continueSignedTx',
+  walletTabUi = 'walletTabUi',
+}
