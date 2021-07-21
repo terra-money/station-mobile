@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native'
+import { NativeModules, Platform } from 'react-native'
 
 // Warning. To avoid making duplicate key with wallet name,
 // enum string length should NOT be in 5 ~ 20
@@ -11,6 +11,7 @@ export type KeystoreType = {
   write(key: string, value: string): void
   read(key: string): Promise<string>
   remove(key: string): void
+  migratePreferences(key: string): Promise<void>
 }
 
 const Keystore: KeystoreType = NativeModules.Keystore
@@ -39,5 +40,11 @@ export default {
     } catch {
       return false
     }
+  },
+  migratePreferences: async (key: string): Promise<void> => {
+    try {
+      Platform.OS === 'android' &&
+        (await Keystore.migratePreferences(key))
+    } catch {}
   },
 }

@@ -155,6 +155,11 @@ export default (): ReactElement => {
 
   useEffect(() => {
     clearKeystoreWhenFirstRun()
+
+    try {
+      Platform.OS === 'android' && keystore.migratePreferences('AD')
+    } catch {}
+
     const init = async (): Promise<void> => {
       const local = await settings.get()
       setLocal(local)
