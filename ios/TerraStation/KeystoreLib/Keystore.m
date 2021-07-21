@@ -150,4 +150,9 @@ RCT_EXPORT_METHOD(remove:(NSString *)key
   }
 }
 
+RCT_EXPORT_METHOD(migratePreferences:(NSString *)key
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{}
+
 @end

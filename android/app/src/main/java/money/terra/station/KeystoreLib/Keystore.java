@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
+
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -15,23 +18,27 @@ import io.michaelrocks.paranoid.Obfuscate;
 
 @Obfuscate
 public class Keystore extends ReactContextBaseJavaModule {
-    private final SharedPreferences preferences;
-    private final Charset charset;
+    private final Context context;
+    private SharedPreferences preferences;
+    private final Charset charset = Charset.forName("UTF-8");;
     private StorageCipher storageCipher = null;
     private static final String ELEMENT_PREFERENCES_KEY_PREFIX = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBhIHNlY3VyZSBzdG9yYWdlCg";
     private static final String SHARED_PREFERENCES_NAME = "SecureStorage";
 
-    public Keystore(ReactApplicationContext context)  {
+    public Keystore(ReactApplicationContext context) {
         super(context);
+        this.context = context;
 
-        preferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        charset = Charset.forName("UTF-8");
-
-        StorageCipher18Implementation.moveSecretFromPreferencesIfNeeded(preferences, context);
         try {
-            storageCipher = new StorageCipher18Implementation(context);
-        } catch(Exception e) {
-            //fail
+            preferences = EncryptedSharedPreferences.create(
+                    SHARED_PREFERENCES_NAME,
+                    MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
+                    context,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -41,14 +48,30 @@ public class Keystore extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void migratePreferences(String key) {
+        try {
+            if(storageCipher == null) {
+                StorageCipher18Implementation.moveSecretFromPreferencesIfNeeded(preferences, context);
+                storageCipher = new StorageCipher18Implementation(context);
+            }
+
+            SharedPreferences oldPreferences =
+                    context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+
+            String encoded = oldPreferences.getString(addPrefixToKey(key), null);
+            String decoded = decodeRawValue(encoded);
+            if (decoded != null) {
+                write(key, decoded);
+                oldPreferences.edit().remove(addPrefixToKey(key)).apply();
+            }
+        } catch(Exception ignored) {}
+    }
+
+    @ReactMethod
     public void write(String key, String value) {
         try {
-            byte[] result = storageCipher.encrypt(value.getBytes(charset));
-            SharedPreferences.Editor editor = preferences.edit();
-
-            editor.putString(addPrefixToKey(key), Base64.encodeToString(result, 0));
-            editor.commit();
-        }catch(Exception e) {
+            preferences.edit().putString(key, value).apply();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -56,20 +79,16 @@ public class Keystore extends ReactContextBaseJavaModule {
     @ReactMethod
     public void read(String key, Promise promise) {
         try {
-            String encoded = preferences.getString(addPrefixToKey(key), null);
-            String decoded = decodeRawValue(encoded);
-            promise.resolve(decoded);
-        }catch(Exception e) {
+            String ret = preferences.getString(key, null);
+            promise.resolve(ret);
+        } catch (Exception e) {
             promise.reject(e);
         }
     }
 
     @ReactMethod
     public void remove(String key) {
-        SharedPreferences.Editor editor = preferences.edit();
-
-        editor.remove(addPrefixToKey(key));
-        editor.commit();
+        preferences.edit().remove(key).apply();
     }
 
     private String addPrefixToKey(String key) {
