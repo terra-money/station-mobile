@@ -19,6 +19,14 @@ class Preferences: NSObject {
     return false
   }
   
+  func readOldPreference(key:String) -> String? {
+    guard let value = UserDefaults.standard.value(forKey: key) as? Data else {
+      return nil
+    }
+    let data = NSData(data: value).aes256Decrypt("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0")!
+    return String(bytes: data, encoding: .utf8)
+  }
+  
   func writePreference(key:String, value:String) {
     let data = NSData(data: value.data(using: .utf8)!).aes256Encrypt()!
     UserDefaults.standard.set(data, forKey: key)
@@ -34,8 +42,9 @@ class Preferences: NSObject {
   }
   
   @objc func setBool(_ key:String, value:Bool) {
-    UserDefaults.standard.set(value, forKey: key)
-    UserDefaults.standard.synchronize()
+    writePreference(key: key, value: value.description)
+//    UserDefaults.standard.set(value, forKey: key)
+//    UserDefaults.standard.synchronize()
   }
   
   @objc func getBool(_ key:String,
@@ -43,20 +52,27 @@ class Preferences: NSObject {
                      rejecter:RCTPromiseRejectBlock) {
     let decryptValue = readPreference(key: key)
     if(decryptValue == nil) {
-      guard let value = UserDefaults.standard.value(forKey: key) as? Bool else {
-        resolver(false)
-        return
+      let oldDecryptValue = readOldPreference(key: key)
+      if(oldDecryptValue == nil) {
+        guard let value = UserDefaults.standard.value(forKey: key) as? Bool else {
+          resolver(false)
+          return
+        }
+        writePreference(key: key, value: value.description)
+        resolver(value)
+      } else {
+        writePreference(key: key, value: oldDecryptValue!.description)
+        resolver(oldDecryptValue == "true" ? true : false)
       }
-      writePreference(key: key, value: value.description)
-      resolver(value)
     } else {
       resolver(decryptValue == "true" ? true : false)
     }
   }
   
   @objc func setString(_ key:String, value:String) {
-    UserDefaults.standard.set(value, forKey: key)
-    UserDefaults.standard.synchronize()
+    writePreference(key: key, value: value)
+//    UserDefaults.standard.set(value, forKey: key)
+//    UserDefaults.standard.synchronize()
   }
   
   @objc func getString(_ key:String,
@@ -64,16 +80,55 @@ class Preferences: NSObject {
                        rejecter:RCTPromiseRejectBlock) {
     let decryptValue = readPreference(key: key)
     if(decryptValue == nil) {
-      guard let value = UserDefaults.standard.value(forKey: key) as? String else {
-        resolver("")
-        return
+      let oldDecryptValue = readOldPreference(key: key)
+      if(oldDecryptValue == nil) {
+        guard let value = UserDefaults.standard.value(forKey: key) as? String else {
+          resolver("")
+          return
+        }
+        writePreference(key: key, value: value)
+        resolver(value)
+      } else {
+        writePreference(key: key, value: oldDecryptValue!)
+        resolver(oldDecryptValue)
       }
-      writePreference(key: key, value: value)
-      resolver(value)
     } else {
       resolver(decryptValue)
     }
   }
+  
+  //
+  //  @objc func setDouble(_ key:String, value:Double) {
+  //    UserDefaults.standard.set(value, forKey: key)
+  //    UserDefaults.standard.synchronize()
+  //  }
+  //
+  //  @objc func getDouble(_ key:String,
+  //                       resolver: RCTPromiseResolveBlock,
+  //                       rejecter:RCTPromiseRejectBlock) {
+  //    guard let value = UserDefaults.standard.value(forKey: key) as? Double else {
+  //      resolver(0.0)
+  //      return
+  //    }
+  //
+  //    resolver(value)
+  //  }
+  //
+  //  @objc func setInt(_ key:String, value:Int) {
+  //    UserDefaults.standard.set(value, forKey: key)
+  //    UserDefaults.standard.synchronize()
+  //  }
+  //
+  //  @objc func getInt(_ key:String,
+  //                    resolver: RCTPromiseResolveBlock,
+  //                    rejecter:RCTPromiseRejectBlock) {
+  //    guard let value = UserDefaults.standard.value(forKey: key) as? Int else {
+  //      resolver(0)
+  //      return
+  //    }
+  //
+  //    resolver(value)
+  //  }
   
   @objc func remove(_ key:String) {
     UserDefaults.standard.removeObject(forKey: key)

@@ -60,6 +60,36 @@ RCT_EXPORT_MODULE()
   }
 }
 
+- (NSString*)readOldKeychain: (NSString*)key {
+  @try {
+    NSMutableDictionary *searchDictionary = [self newSearchDictionary:key];
+    [searchDictionary setObject:(id)kSecMatchLimitOne forKey:(id)kSecMatchLimit];
+    [searchDictionary setObject:(id)kCFBooleanTrue forKey:(id)kSecReturnData];
+    
+    NSDictionary *found = nil;
+    CFTypeRef result = NULL;
+    OSStatus status = SecItemCopyMatching((CFDictionaryRef)searchDictionary,
+                                          (CFTypeRef *)&result);
+    
+    NSString *value = nil;
+    found = (__bridge NSDictionary*)(result);
+    if (found) {
+      NSData* data = [[[NSData alloc] initWithData:found] AES256Decrypt: @"\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0" ];
+      value = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+      if(value == nil) {
+        value = [[NSString alloc] initWithData:found encoding:NSUTF8StringEncoding];
+        if(value) {
+          [self writeKeychain:key value:value];
+        }
+      }
+    }
+    return value;
+  }
+  @catch(NSException *exception) {
+  }
+  return nil;
+}
+
 - (NSString*)readKeychain: (NSString*)key {
   @try {
     NSMutableDictionary *searchDictionary = [self newSearchDictionary:key];
@@ -139,11 +169,11 @@ RCT_EXPORT_METHOD(migratePreferences:(NSString *)key
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
   NSString* data = nil;
-  data = [self readKeychain: key];
-  NSLog(@"data:%@", data);
+  data = [self readOldKeychain: key];
   if(data != nil) {
     [self writeKeychain:key value:data];
   }
+  resolve(nil);
 }
 
 @end

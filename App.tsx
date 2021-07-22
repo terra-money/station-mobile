@@ -156,11 +156,14 @@ export default (): ReactElement => {
   useEffect(() => {
     clearKeystoreWhenFirstRun()
 
-    try {
-      keystore.migratePreferences('AD')
-    } catch {}
+    const migratePreferences = async (): Promise<void> => {
+      try {
+        await keystore.migratePreferences('AD')
+      } catch {}
+    }
 
     const init = async (): Promise<void> => {
+      await migratePreferences()
       const local = await settings.get()
       setLocal(local)
       if (local.walletName) {

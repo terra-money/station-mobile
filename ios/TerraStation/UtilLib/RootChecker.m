@@ -124,7 +124,7 @@ RCT_EXPORT_METHOD(isDeviceRooted:(RCTPromiseResolveBlock) resolve
 #if TARGET_OS_SIMULATOR
   return resolve(@NO);
 #endif
-  BOOL check = [self checkPaths] || [self checkSchemes] || [self canViolateSandbox] || [self checkIOSSecuritySuite] || [self checkIOSSecuritySuite];
+  BOOL check = [self checkPaths] || [self checkSchemes] || [self canViolateSandbox] || [self checkIOSSecuritySuite];
   return resolve(check ? @YES : @NO);
 }
 
