@@ -6,31 +6,59 @@
 //
 #import "NSData+AES.h"
 #import <CommonCrypto/CommonCryptor.h>
-
-NSString* const kOldPrefKey = @"VGhpcyBpcyB0aGUga2V5IGZvciBhIHNlY3VyZSBzdG9yYWdlIEFFUyBLZXkK";
+#import "Keystore.h"
 
 NSString* kPrefKey = NULL;
 
 @implementation NSData (AES)
 
+- (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
+  NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
+  [searchDictionary setObject:(id)kSecClassGenericPassword forKey:(id)kSecClass];
+  [searchDictionary setObject:[identifier dataUsingEncoding:NSUTF8StringEncoding] forKey:(id)kSecAttrAccount];
+  [searchDictionary setObject:@"_secure_storage_service" forKey:(id)kSecAttrService];
+  
+  return searchDictionary;
+}
+
+NSString* const key = @"key";
 - (void) initPrefKey {
-  uint8_t buffer[64];
-  SecRandomCopyBytes(kSecRandomDefault, 64, buffer);
+  @try {
+    NSMutableDictionary *searchDictionary = [self newSearchDictionary:key];
+    [searchDictionary setObject:(id)kSecMatchLimitOne forKey:(id)kSecMatchLimit];
+    [searchDictionary setObject:(id)kCFBooleanTrue forKey:(id)kSecReturnData];
+    
+    NSDictionary *found = nil;
+    CFTypeRef result = NULL;
+    OSStatus status = SecItemCopyMatching((CFDictionaryRef)searchDictionary,
+                                          (CFTypeRef *)&result);
+    
+    found = (__bridge NSDictionary*)(result);
+    if (found) {
+      NSData* data = [[NSData alloc] initWithData:found];
+      kPrefKey = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    }
+  }
+  @catch(NSException *exception) {}
+  
+  if(kPrefKey != nil) {
+    return;
+  }
+  
+  uint8_t buffer[24];
+  (void)SecRandomCopyBytes(kSecRandomDefault, 24, buffer);
   NSData* bufferData = [[NSData alloc] initWithBytes:buffer length:sizeof(buffer)];
   
   const uint8_t* input = (const uint8_t*)[bufferData bytes];
   NSInteger length = [bufferData length];
-
+  
   static char table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
   NSMutableData* data = [NSMutableData dataWithLength:((length + 2) / 3) * 4];
   uint8_t* output = (uint8_t*)data.mutableBytes;
-
-  NSInteger i;
-  for (i=0; i < length; i += 3) {
+  for (NSInteger i=0; i < length; i += 3) {
       NSInteger value = 0;
-      NSInteger j;
-      for (j = i; j < (i + 3); j++) {
+      for (NSInteger j = i; j < (i + 3); j++) {
           value <<= 8;
 
           if (j < length) {
@@ -46,8 +74,30 @@ NSString* kPrefKey = NULL;
   }
 
   kPrefKey = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-  NSLog(@"kPrefKey %@", kPrefKey);
-//  return [[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] autorelease];
+
+  @try {
+    CFStringRef accessible = kSecAttrAccessibleWhenUnlocked;
+    NSMutableDictionary *dictionary = [self newSearchDictionary:key];
+    
+    NSData *valueData = [kPrefKey dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [dictionary setObject:valueData forKey:(id)kSecValueData];
+    dictionary[(__bridge NSString *)kSecAttrAccessible] = (__bridge id)accessible;
+    
+    OSStatus status = SecItemAdd((CFDictionaryRef)dictionary, NULL);
+    if (status == errSecSuccess) {
+      return;
+    } else {
+      NSMutableDictionary *searchDictionary = [self newSearchDictionary:key];
+      NSMutableDictionary *updateDictionary = [[NSMutableDictionary alloc] init];
+      
+      [updateDictionary setObject:valueData forKey:(id)kSecValueData];
+      updateDictionary[(__bridge NSString *)kSecAttrAccessible] = (__bridge id)accessible;
+      OSStatus status = SecItemUpdate((CFDictionaryRef)searchDictionary,
+                                      (CFDictionaryRef)updateDictionary);
+    }
+  }
+  @catch (NSException *exception) { }
   
 }
 
