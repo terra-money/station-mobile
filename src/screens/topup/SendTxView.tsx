@@ -35,6 +35,8 @@ import { getBioAuthPassword, getIsUseBioAuth } from 'utils/storage'
 import useSignedTx from 'hooks/useSignedTx'
 import { useNavigation } from '@react-navigation/native'
 import { getWallets } from 'utils/wallet'
+import { whitelist } from 'utils/whitelist'
+import _ from 'lodash'
 
 type Props = StackScreenProps<RootStackParams, 'SendTxView'>
 
@@ -118,6 +120,40 @@ const SendTxView = (props: Props): ReactElement => {
   }, [returnScheme])
 
   useEffect(() => {
+    const validateMsg = (signMsg: StdSignMsg): void => {
+      // length check - only one message
+      if (signMsg.msgs.length > 1) {
+        throw new Error(`Wrong msg count: ${signMsg.msgs.length}`)
+      }
+
+      const { topupGranteeAddress, topupMessageType } = whitelist()
+      const msg = signMsg.msgs[0].toData()
+
+      // type check - whitelist
+      if (!!msg) {
+        if (!_.includes(topupMessageType, msg.type)) {
+          throw new Error(`Wrong msg type: ${msg.type}`)
+        }
+      } else {
+        throw new Error(`Could not find msg`)
+      }
+
+      // address check - whitelist
+      if (
+        !!msg &&
+        typeof msg.value === 'object' &&
+        'grantee' in msg.value
+      ) {
+        if (!_.includes(topupGranteeAddress, msg.value.grantee)) {
+          throw new Error(
+            `Wrong grantee address: ${msg.value.grantee}`
+          )
+        }
+      } else {
+        throw new Error(`Could not find grantee address`)
+      }
+    }
+
     const getUnsignedMessage = async (): Promise<void> => {
       try {
         setLoading(true)
@@ -134,6 +170,7 @@ const SendTxView = (props: Props): ReactElement => {
           const denom = target.toArray()[0]?.denom
           denom && setFeeDenom(denom)
         }
+        validateMsg(signMsg)
         setStdSignMsg(signMsg)
       } catch (e) {
         somethingWrong(e.toString())
