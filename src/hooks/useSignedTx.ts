@@ -86,14 +86,6 @@ const useSignedTx = (
         chain.current.lcd
       ).tx.broadcast(signedTx)
       return result
-      // if (typeof result === 'object' && 'code' in result) {
-      //   if (result.code) {
-      //     throw result.raw_log
-      //   } else {
-      //     return result
-      //   }
-      // }
-      // throw new Error('UnknownError' + result)
     }
 
     const putTxResult = async (
