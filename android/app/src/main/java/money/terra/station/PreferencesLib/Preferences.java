@@ -16,7 +16,6 @@ import io.michaelrocks.paranoid.Obfuscate;
 public class Preferences extends ReactContextBaseJavaModule {
     private final SharedPreferences preferences;
     private static final String SHARED_PREFERENCES_NAME = "SharedPreferences";
-    private static final String DOUBLE_PREFIX = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBEb3VibGUu";
 
     public Preferences(ReactApplicationContext context)  {
         super(context);
@@ -42,13 +41,12 @@ public class Preferences extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setDouble(String key, double value) {
         String doubleValueStr = Double.toString(value);
-        preferences.edit().putString(key, DOUBLE_PREFIX + doubleValueStr).apply();
+        preferences.edit().putString(key, doubleValueStr).apply();
     }
 
     @ReactMethod
     public void getDouble(String key, Promise promise) {
         String value = preferences.getString(key, "0.0");
-        value = value.replace(DOUBLE_PREFIX, "");
         try {
             promise.resolve(Double.parseDouble(value));
         }catch(NumberFormatException e) {
@@ -58,7 +56,6 @@ public class Preferences extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setInt(String key, int value) {
-        //1.0에서 int를 long으로 처리하고 있음.
         preferences.edit().putLong(key, value).apply();
     }
 

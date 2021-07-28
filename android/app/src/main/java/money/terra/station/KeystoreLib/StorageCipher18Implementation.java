@@ -15,6 +15,7 @@ import javax.crypto.spec.SecretKeySpec;
 import io.michaelrocks.paranoid.Obfuscate;
 
 @Obfuscate
+@Deprecated
 public class StorageCipher18Implementation implements StorageCipher {
 
     private static final int ivSize = 16;
