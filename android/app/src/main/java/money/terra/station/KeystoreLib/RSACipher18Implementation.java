@@ -23,6 +23,7 @@ import javax.security.auth.x500.X500Principal;
 import io.michaelrocks.paranoid.Obfuscate;
 
 @Obfuscate
+@Deprecated
 class RSACipher18Implementation {
 
     private final String KEY_ALIAS;
