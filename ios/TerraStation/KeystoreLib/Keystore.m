@@ -60,47 +60,7 @@ RCT_EXPORT_MODULE()
   }
 }
 
-RCT_EXPORT_METHOD(write: (NSString *)key value:(NSString *)value
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
-{
-  @try {
-    CFStringRef accessible = kSecAttrAccessibleWhenUnlocked;
-    NSMutableDictionary *dictionary = [self newSearchDictionary:key];
-    
-    NSData *valueData = [value dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [dictionary setObject:valueData forKey:(id)kSecValueData];
-    dictionary[(__bridge NSString *)kSecAttrAccessible] = (__bridge id)accessible;
-    
-    OSStatus status = SecItemAdd((CFDictionaryRef)dictionary, NULL);
-    if (status == errSecSuccess) {
-      resolve(@"Key stored successfully");
-    } else {
-      NSMutableDictionary *searchDictionary = [self newSearchDictionary:key];
-      NSMutableDictionary *updateDictionary = [[NSMutableDictionary alloc] init];
-      NSData *passwordData = [value dataUsingEncoding:NSUTF8StringEncoding];
-      [updateDictionary setObject:passwordData forKey:(id)kSecValueData];
-      updateDictionary[(__bridge NSString *)kSecAttrAccessible] = (__bridge id)accessible;
-      OSStatus status = SecItemUpdate((CFDictionaryRef)searchDictionary,
-                                      (CFDictionaryRef)updateDictionary);
-      
-      if (status == errSecSuccess) {
-        resolve(@"Key updated successfully");
-      } else {
-        reject(@"9", @"key does not present", nil);
-      }
-    }
-  }
-  @catch (NSException *exception) {
-    reject(@"9", @"key does not present", nil);
-  }
-}
-
-RCT_EXPORT_METHOD(read:(NSString *)key
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
-{
+- (NSString*)readKeychain: (NSString*)key {
   @try {
     NSMutableDictionary *searchDictionary = [self newSearchDictionary:key];
     [searchDictionary setObject:(id)kSecMatchLimitOne forKey:(id)kSecMatchLimit];
@@ -123,7 +83,31 @@ RCT_EXPORT_METHOD(read:(NSString *)key
         }
       }
     }
-    
+    return value;
+  }
+  @catch(NSException *exception) {
+  }
+  return nil;
+}
+
+RCT_EXPORT_METHOD(write: (NSString *)key value:(NSString *)value
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+  @try {
+    [self writeKeychain:key value:value];
+  }
+  @catch (NSException *exception) {
+    reject(@"9", @"key does not present", nil);
+  }
+}
+
+RCT_EXPORT_METHOD(read:(NSString *)key
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+  @try {
+    NSString* value = [self readKeychain: key];
     resolve(value);
   }
   @catch (NSException *exception) {
@@ -153,6 +137,13 @@ RCT_EXPORT_METHOD(remove:(NSString *)key
 RCT_EXPORT_METHOD(migratePreferences:(NSString *)key
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
-{}
+{
+  NSString* data = nil;
+  data = [self readKeychain: key];
+  NSLog(@"data:%@", data);
+  if(data != nil) {
+    [self writeKeychain:key value:data];
+  }
+}
 
 @end

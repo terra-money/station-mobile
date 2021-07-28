@@ -7,11 +7,54 @@
 #import "NSData+AES.h"
 #import <CommonCrypto/CommonCryptor.h>
 
-NSString* const kPrefKey = @"VGhpcyBpcyB0aGUga2V5IGZvciBhIHNlY3VyZSBzdG9yYWdlIEFFUyBLZXkK";
+NSString* const kOldPrefKey = @"VGhpcyBpcyB0aGUga2V5IGZvciBhIHNlY3VyZSBzdG9yYWdlIEFFUyBLZXkK";
+
+NSString* kPrefKey = NULL;
 
 @implementation NSData (AES)
 
+- (void) initPrefKey {
+  uint8_t buffer[64];
+  SecRandomCopyBytes(kSecRandomDefault, 64, buffer);
+  NSData* bufferData = [[NSData alloc] initWithBytes:buffer length:sizeof(buffer)];
+  
+  const uint8_t* input = (const uint8_t*)[bufferData bytes];
+  NSInteger length = [bufferData length];
+
+  static char table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+  NSMutableData* data = [NSMutableData dataWithLength:((length + 2) / 3) * 4];
+  uint8_t* output = (uint8_t*)data.mutableBytes;
+
+  NSInteger i;
+  for (i=0; i < length; i += 3) {
+      NSInteger value = 0;
+      NSInteger j;
+      for (j = i; j < (i + 3); j++) {
+          value <<= 8;
+
+          if (j < length) {
+              value |= (0xFF & input[j]);
+          }
+      }
+
+      NSInteger theIndex = (i / 3) * 4;
+      output[theIndex + 0] =                    table[(value >> 18) & 0x3F];
+      output[theIndex + 1] =                    table[(value >> 12) & 0x3F];
+      output[theIndex + 2] = (i + 1) < length ? table[(value >> 6)  & 0x3F] : '=';
+      output[theIndex + 3] = (i + 2) < length ? table[(value >> 0)  & 0x3F] : '=';
+  }
+
+  kPrefKey = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+  NSLog(@"kPrefKey %@", kPrefKey);
+//  return [[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] autorelease];
+  
+}
+
 - (NSData*) AES256Encrypt {
+  if(kPrefKey == nil) {
+    [self initPrefKey];
+  }
   return [self iAESEncrypt:kPrefKey keySize:kCCKeySizeAES256];
 }
 
@@ -54,6 +97,9 @@ NSString* const kPrefKey = @"VGhpcyBpcyB0aGUga2V5IGZvciBhIHNlY3VyZSBzdG9yYWdlIEF
 }
 
 - (NSData *) AES256Decrypt {
+  if(kPrefKey == NULL) {
+    [self initPrefKey];
+  }
   return [self iAESDecrypt:kPrefKey keySize:kCCKeySizeAES256];
 }
 

@@ -88,7 +88,9 @@ public class Keystore extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void remove(String key) {
-        preferences.edit().remove(key).apply();
+        try {
+            preferences.edit().remove(key).apply();
+        } catch (Exception ignored) {}
     }
 
     private String addPrefixToKey(String key) {

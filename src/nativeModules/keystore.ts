@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from 'react-native'
+import { NativeModules } from 'react-native'
 
 // Warning. To avoid making duplicate key with wallet name,
 // enum string length should NOT be in 5 ~ 20
@@ -43,8 +43,7 @@ export default {
   },
   migratePreferences: async (key: string): Promise<void> => {
     try {
-      Platform.OS === 'android' &&
-        (await Keystore.migratePreferences(key))
+      await Keystore.migratePreferences(key)
     } catch {}
   },
 }
