@@ -157,7 +157,7 @@ export default (): ReactElement => {
     clearKeystoreWhenFirstRun()
 
     try {
-      Platform.OS === 'android' && keystore.migratePreferences('AD')
+      keystore.migratePreferences('AD')
     } catch {}
 
     const init = async (): Promise<void> => {
