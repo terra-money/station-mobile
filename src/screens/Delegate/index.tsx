@@ -6,6 +6,7 @@ import {
   User,
   useDelegate as useStationDelegate,
 } from 'use-station/src'
+import { DelegateType } from 'use-station/src/post/useDelegate'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -22,20 +23,19 @@ type Props = StackScreenProps<RootStackParams, 'Delegate'>
 const Render = ({
   user,
   validatorAddress,
-  isUndelegation,
+  type,
 }: {
   user: User
   validatorAddress: string
-  isUndelegation: boolean
+  type: DelegateType
 }): ReactElement => {
   const { navigateToConfirm } = useConfirm()
   const { loading, form, confirm } = useStationDelegate(user, {
     validatorAddress,
-    isUndelegation,
+    type,
   })
 
-  // Temporary
-  if (isUndelegation && confirm) {
+  if (type === DelegateType.U && confirm) {
     confirm.warning = `Undelegation Warning : Undelegation takes 21 days to complete. Rewards will not be earned during this time.`
   }
 

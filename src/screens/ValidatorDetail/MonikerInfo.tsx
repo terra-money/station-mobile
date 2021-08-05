@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
+import { DelegateType } from 'use-station/src/post/useDelegate'
 
 import { Text, Number, Button } from 'components'
 import { User, ValidatorUI } from 'use-station/src'
@@ -108,7 +109,7 @@ const Top = ({
                   onPress={(): void => {
                     navigate('Delegate', {
                       validatorAddress: operatorAddress.address,
-                      isUndelegation: false,
+                      type: DelegateType.D,
                     })
                   }}
                   containerStyle={{ width: '100%' }}

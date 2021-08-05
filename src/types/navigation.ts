@@ -1,5 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import { BankData, Card, Pairs, VestingItemUI } from 'use-station/src'
+import { DelegateType } from 'use-station/src/post/useDelegate'
 import { TxParam } from './tx'
 
 /* Auth */
@@ -72,7 +73,7 @@ export type RootStackParams = {
   }
   Confirm: undefined
   ConfirmPassword: { feeSelectValue: string }
-  Delegate: { validatorAddress: string; isUndelegation: boolean }
+  Delegate: { validatorAddress: string; type: DelegateType }
   ChangePassword: { walletName: string }
   StakingInformation: undefined
   WalletHistory: undefined

@@ -10,6 +10,7 @@ import {
 } from '@react-navigation/native'
 import { RootStackParams } from 'types'
 import color from 'styles/color'
+import { DelegateType } from 'use-station/src/post/useDelegate'
 
 const Actions = ({
   user,
@@ -21,6 +22,7 @@ const Actions = ({
   const {
     delegate,
     undelegate,
+    redelegate,
     myDelegations,
     myRewards,
     withdraw,
@@ -60,7 +62,7 @@ const Actions = ({
             },
           ]}
         >
-          <View style={{ flex: 1, marginRight: 5 }}>
+          <View style={{ flex: 1 }}>
             <Button
               theme={'sapphire'}
               disabled={delegate.disabled}
@@ -68,13 +70,27 @@ const Actions = ({
               onPress={(): void => {
                 navigate('Delegate', {
                   validatorAddress: operatorAddress.address,
-                  isUndelegation: false,
+                  type: DelegateType.D,
                 })
               }}
               size="sm"
             />
           </View>
-          <View style={{ flex: 1, marginLeft: 5 }}>
+          <View style={{ flex: 1, marginHorizontal: 5 }}>
+            <Button
+              theme={'sapphire'}
+              disabled={redelegate.disabled}
+              title={redelegate.children}
+              onPress={(): void => {
+                navigate('Delegate', {
+                  validatorAddress: operatorAddress.address,
+                  type: DelegateType.R,
+                })
+              }}
+              size="sm"
+            />
+          </View>
+          <View style={{ flex: 1 }}>
             <Button
               theme={'dodgerBlue'}
               disabled={undelegate.disabled}
@@ -82,7 +98,7 @@ const Actions = ({
               onPress={(): void => {
                 navigate('Delegate', {
                   validatorAddress: operatorAddress.address,
-                  isUndelegation: true,
+                  type: DelegateType.U,
                 })
               }}
               size="sm"

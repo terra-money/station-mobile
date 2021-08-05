@@ -21,7 +21,7 @@ import {
 } from '@react-navigation/native'
 import images from 'assets/images'
 import { RootStackParams } from 'types'
-import { getParam, isTerraOrEtherAddress } from 'utils/util'
+import { getParam, isTerraAddress } from 'utils/util'
 import { parseDynamicLinkURL } from 'utils/scheme'
 
 const HeaderLeft = ({ title }: { title: string }): ReactElement => {
@@ -47,8 +47,7 @@ const HeaderRight = (): ReactElement => {
       !!getParam({ url: data, key: 'payload' })
     const readable =
       // if kind of address
-      isTerraOrEtherAddress(data) ||
-      isTerraOrEtherAddress(data.replace('ethereum:', '')) ||
+      isTerraAddress(data) ||
       // if dynamic link
       !!linkUrl ||
       // if app scheme
@@ -64,13 +63,8 @@ const HeaderRight = (): ReactElement => {
             onRead={({ data }): void => {
               if (data.includes('terrastation:')) {
                 Linking.openURL(data)
-              } else if (
-                isTerraOrEtherAddress(data) ||
-                isTerraOrEtherAddress(data.replace('ethereum:', ''))
-              ) {
-                navigate('SelectCoinToSend', {
-                  toAddress: data.replace('ethereum:', ''),
-                })
+              } else if (isTerraAddress(data)) {
+                navigate('SelectCoinToSend', { toAddress: data })
               } else {
                 const linkUrl = parseDynamicLinkURL(data)
                 if (linkUrl) {

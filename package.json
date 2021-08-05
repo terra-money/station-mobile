@@ -43,7 +43,6 @@
     "crypto-js": "^3.3.0",
     "date-fns": "^2.17.0",
     "dns.js": "^1.0.1",
-    "ethers": "^5.0.31",
     "events": "^1.0.0",
     "expo-local-authentication": "^9.5.0",
     "graphql": "^15.5.0",

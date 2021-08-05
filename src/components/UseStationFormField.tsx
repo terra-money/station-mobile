@@ -13,7 +13,7 @@ import { Field, DisplayCoin } from 'use-station/src'
 import { RootStackParams } from 'types/navigation'
 
 import color from 'styles/color'
-import { isTerraOrEtherAddress } from 'utils/util'
+import { isTerraAddress } from 'utils/util'
 import { delComma } from 'utils/math'
 import { schemeUrl } from 'utils/qrCode'
 import { parseDynamicLinkURL } from 'utils/scheme'
@@ -128,11 +128,8 @@ const FormInput = ({ field }: { field: Field }): ReactElement => {
     } else if (schemeUrl.send.test(data)) {
       const payload = data.replace(schemeUrl.send, '')
       dispatchToSend(payload)
-    } else if (
-      isTerraOrEtherAddress(data) ||
-      isTerraOrEtherAddress(data.replace('ethereum:', ''))
-    ) {
-      setValue?.(data.replace('ethereum:', ''))
+    } else if (isTerraAddress(data)) {
+      setValue?.(data)
     } else {
       showNoti({
         message: 'Not a wallet address QR code.',
@@ -145,8 +142,7 @@ const FormInput = ({ field }: { field: Field }): ReactElement => {
     const linkUrl = parseDynamicLinkURL(data)
     const readable =
       // if kind of address
-      isTerraOrEtherAddress(data) ||
-      isTerraOrEtherAddress(data.replace('ethereum:', '')) ||
+      isTerraAddress(data) ||
       // if dynamic link
       !!linkUrl ||
       // if app scheme
@@ -187,8 +183,9 @@ const FormInput = ({ field }: { field: Field }): ReactElement => {
 
 const FormSelect = ({ field }: { field: Field }): ReactElement => {
   const { attrs, setValue } = field
+
   const options: SelectOptionProps[] = _.map(
-    field.options?.filter((x) => !x.disabled),
+    field.options?.filter((x) => !x.disabled || x.value === ''),
     (option) => {
       return {
         label: option.children,
@@ -196,6 +193,7 @@ const FormSelect = ({ field }: { field: Field }): ReactElement => {
       }
     }
   )
+
   return (
     <Select
       disabled={options.length < 1}

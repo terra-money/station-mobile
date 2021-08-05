@@ -7,7 +7,6 @@ import {
   StdFee,
 } from '@terra-money/terra.js'
 import _ from 'lodash'
-import { ethers } from 'ethers'
 
 import { TxParam } from 'types/tx'
 
@@ -65,8 +64,8 @@ export const isNativeTerra = (str: string): boolean =>
 export const isNativeDenom = (str: string): boolean =>
   str === 'uluna' || isNativeTerra(str)
 
-export const isTerraOrEtherAddress = (data: string): boolean =>
-  AccAddress.validate(data) || ethers.utils.isAddress(data)
+export const isTerraAddress = (data: string): boolean =>
+  AccAddress.validate(data)
 
 export const tryNewURL = (str: string): URL | undefined => {
   try {

@@ -10,11 +10,12 @@ import {
   FormUI,
   ConfirmProps,
 } from 'use-station/src'
+import useTokenBalance from 'use-station/src/cw20/useTokenBalance'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import { Text, WarningBox } from 'components'
+import { ExtLink, Icon, Text } from 'components'
 import { RootStackParams } from 'types/navigation'
 import WithAuth from 'components/layout/WithAuth'
 import UseStationForm from 'components/UseStationForm'
@@ -23,9 +24,48 @@ import Loading from 'components/Loading'
 
 import FormLabel from 'components/FormLabel'
 import { useConfirm } from 'hooks/useConfirm'
-import useTokenBalance from 'use-station/src/cw20/useTokenBalance'
+import color from 'styles/color'
 
 type Props = StackScreenProps<RootStackParams, 'Send'>
+
+const CrossChainInfo = (): ReactElement => {
+  return (
+    <View style={styles.crossChainInfoBox}>
+      <Icon
+        name="info"
+        size={17}
+        style={{ paddingRight: 6, color: color.primary._02 }}
+      />
+      <Text style={styles.crossChainInfoText} fontType="book">
+        {'Use '}
+      </Text>
+      <ExtLink
+        url={'https://bridge.terra.money/'}
+        title={
+          <Text
+            style={[
+              styles.crossChainInfoText,
+              {
+                color: color.primary._03,
+                borderBottomWidth: 1,
+                borderBottomColor: color.primary._03,
+              },
+            ]}
+            fontType="medium"
+          >
+            Terra Bridge
+          </Text>
+        }
+        textStyle={{
+          fontSize: 10,
+        }}
+      />
+      <Text style={styles.crossChainInfoText} fontType="book">
+        {' for cross-chain transfers'}
+      </Text>
+    </View>
+  )
+}
 
 // this display recent transactions
 const RenderUi = ({ ui }: { ui: RecentSentUI }): ReactElement => {
@@ -73,16 +113,10 @@ const RenderForm = ({
   defaultAmount?: string
 }): ReactElement => {
   const { navigateToConfirm } = useConfirm()
-  const network = form.fields.find(
-    ({ attrs }) => attrs.id === 'network'
-  )
+
   const toAddress = form.fields.find(({ attrs }) => attrs.id === 'to')
   const memo = form.fields.find(({ attrs }) => attrs.id === 'memo')
   const amount = form.fields.find(({ attrs }) => attrs.id === 'input')
-
-  const networkSelectable =
-    network?.options &&
-    network.options.filter((x) => x.disabled === false).length > 0
 
   useEffect(() => {
     defaultToAddress && toAddress?.setValue?.(defaultToAddress)
@@ -103,18 +137,14 @@ const RenderForm = ({
         }}
       >
         <View>
+          <CrossChainInfo />
           <UseStationForm form={form} />
           {ui && <RenderUi ui={ui} />}
-          {false === networkSelectable && (
-            <WarningBox
-              message={`${network?.attrs.value} doesn't support ${amount?.unit}`}
-            />
-          )}
         </View>
 
         <Button
           theme={'sapphire'}
-          disabled={form.disabled || false === networkSelectable}
+          disabled={form.disabled}
           title={form.submitLabel}
           onPress={(): void => {
             confirm &&
@@ -186,6 +216,19 @@ Send.navigationOptions = navigationHeaderOptions({
 export default Send
 
 const styles = StyleSheet.create({
+  crossChainInfoBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+    paddingVertical: 16,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    backgroundColor: 'rgb(238,240,250)',
+  },
+  crossChainInfoText: {
+    fontSize: 12,
+    lineHeight: 18,
+  },
   recentTxBox: {
     paddingVertical: 7,
     paddingHorizontal: 15,
