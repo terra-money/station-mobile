@@ -168,15 +168,6 @@ const ConnectView = (props: Props): ReactElement => {
       </View>
       <View style={style.buttonView}>
         <Button
-          title={'Allow'}
-          theme={'sapphire'}
-          containerStyle={style.buttonContainer}
-          titleStyle={style.buttonTitle}
-          titleFontType={'medium'}
-          onPress={processConnect}
-        />
-        <View style={{ marginHorizontal: 5 }} />
-        <Button
           title={'Deny'}
           theme={'red'}
           containerStyle={style.buttonContainer}
@@ -185,6 +176,15 @@ const ConnectView = (props: Props): ReactElement => {
           onPress={(): void => {
             restoreApp(returnScheme)
           }}
+        />
+        <View style={{ marginHorizontal: 5 }} />
+        <Button
+          title={'Allow'}
+          theme={'sapphire'}
+          containerStyle={style.buttonContainer}
+          titleStyle={style.buttonTitle}
+          titleFontType={'medium'}
+          onPress={processConnect}
         />
       </View>
       {loading && <TopupLoadingIndicator />}

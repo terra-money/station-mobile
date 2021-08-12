@@ -46,19 +46,11 @@ const AlertScreen = (
       </View>
 
       <View style={styles.buttonGroup}>
-        <TouchableOpacity
-          style={styles.buttonBox}
-          onPress={onPressConfirm}
-        >
-          <Text style={styles.buttonText} fontType={'medium'}>
-            {alertProps.onPressConfirmText || 'Ok'}
-          </Text>
-        </TouchableOpacity>
         {props.alertType === 'confirm' && (
           <TouchableOpacity
             style={[
               styles.buttonBox,
-              { borderLeftWidth: 1, borderColor: '#CED6F1' },
+              { borderRightWidth: 1, borderColor: '#CED6F1' },
             ]}
             onPress={(): void => {
               alertViewProps.close()
@@ -71,6 +63,14 @@ const AlertScreen = (
             </Text>
           </TouchableOpacity>
         )}
+        <TouchableOpacity
+          style={styles.buttonBox}
+          onPress={onPressConfirm}
+        >
+          <Text style={styles.buttonText} fontType={'medium'}>
+            {alertProps.onPressConfirmText || 'Ok'}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   )

@@ -197,20 +197,20 @@ const Render = ({
             <View style={{ flexDirection: 'row', marginBottom: 40 }}>
               <View style={{ flex: 1 }}>
                 <Button
-                  title={'Allow'}
-                  theme="sapphire"
-                  onPress={confirmConnect}
-                />
-              </View>
-              <View style={{ width: 10 }} />
-              <View style={{ flex: 1 }}>
-                <Button
                   title={'Deny'}
                   theme="red"
                   onPress={(): void => {
                     rejectConnect()
                     goBackOrHome()
                   }}
+                />
+              </View>
+              <View style={{ width: 10 }} />
+              <View style={{ flex: 1 }}>
+                <Button
+                  title={'Allow'}
+                  theme="sapphire"
+                  onPress={confirmConnect}
                 />
               </View>
             </View>

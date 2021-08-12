@@ -118,10 +118,9 @@ const TxMessages = ({
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
               <Button
-                theme={'sapphire'}
-                title={'Sign'}
-                disabled={tryConfirm}
-                onPress={onPressAllow}
+                theme={'red'}
+                title={'Cancel'}
+                onPress={onPressGoBack}
                 containerStyle={{
                   marginTop: 20,
                   marginBottom: 40,
@@ -131,9 +130,10 @@ const TxMessages = ({
             <View style={{ width: 10 }} />
             <View style={{ flex: 1 }}>
               <Button
-                theme={'red'}
-                title={'Cancel'}
-                onPress={onPressGoBack}
+                theme={'sapphire'}
+                title={'Sign'}
+                disabled={tryConfirm}
+                onPress={onPressAllow}
                 containerStyle={{
                   marginTop: 20,
                   marginBottom: 40,
