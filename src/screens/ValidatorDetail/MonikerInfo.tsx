@@ -26,6 +26,7 @@ const Top = ({
     selfDelegation,
     commission,
     delegate,
+    redelegate,
     myDelegations,
     operatorAddress,
   } = ui
@@ -101,7 +102,9 @@ const Top = ({
             <View />
           ) : (
             <View style={styles.section}>
-              <View style={styles.infoItem}>
+              <View
+                style={[styles.infoItem, { flexDirection: 'row' }]}
+              >
                 <Button
                   theme={'sapphire'}
                   disabled={delegate.disabled}
@@ -112,7 +115,20 @@ const Top = ({
                       type: DelegateType.D,
                     })
                   }}
-                  containerStyle={{ width: '100%' }}
+                  containerStyle={{ flex: 1 }}
+                />
+                <View style={{ width: 10 }} />
+                <Button
+                  theme={'sapphire'}
+                  disabled={redelegate.disabled}
+                  title={redelegate.children}
+                  onPress={(): void => {
+                    navigate('Delegate', {
+                      validatorAddress: operatorAddress.address,
+                      type: DelegateType.R,
+                    })
+                  }}
+                  containerStyle={{ flex: 1 }}
                 />
               </View>
             </View>
