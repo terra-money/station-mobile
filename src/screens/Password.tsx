@@ -8,7 +8,7 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 
-import { User } from 'use-station/src'
+import { User } from 'lib'
 
 import Body from 'components/layout/Body'
 import WithAuth from 'components/layout/WithAuth'

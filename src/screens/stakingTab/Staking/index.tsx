@@ -8,7 +8,7 @@ import {
   ValidatorUI,
   StakingPersonal,
   useConfig,
-} from 'use-station/src'
+} from 'lib'
 
 import { navigationHeaderOptions } from 'components/layout/TabScreenHeader'
 import Body from 'components/layout/Body'
@@ -18,7 +18,7 @@ import PersonalSummary from './PersonalSummary'
 import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
-import useTerraAssets from 'use-station/src/hooks/useTerraAssets'
+import useTerraAssets from 'lib/hooks/useTerraAssets'
 
 export enum StakingFilterEnum {
   commission = 'commission',

@@ -3,7 +3,7 @@ import {
   StackNavigationOptions,
   StackScreenProps,
 } from '@react-navigation/stack'
-import { User } from 'use-station/src'
+import { User } from 'lib'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'

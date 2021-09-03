@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { View, StyleSheet, Image } from 'react-native'
 import _ from 'lodash'
 
-import { StakingPersonal, ValidatorUI } from 'use-station/src'
+import { StakingPersonal, ValidatorUI } from 'lib'
 
 import { Number, Text } from 'components'
 import color from 'styles/color'

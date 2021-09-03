@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 
 import { Text, Icon, ExtLink } from 'components'
-import { format, MessageUI, TxUI } from 'use-station/src'
+import { format, MessageUI, TxUI } from 'lib'
 import Label from 'components/Badge'
 import color from 'styles/color'
 import { AccAddress } from '@terra-money/terra.js'

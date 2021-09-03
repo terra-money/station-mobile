@@ -9,7 +9,7 @@ import _ from 'lodash'
 import { AreaChart, Path } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 
-import { API } from 'use-station/src'
+import { API } from 'lib'
 
 import Icon from './Icon'
 import Text from './Text'

@@ -33,7 +33,7 @@ import {
   useMarket,
   User,
   useSwap,
-} from 'use-station/src'
+} from 'lib'
 
 import ErrorComponent from 'components/ErrorComponent'
 import {

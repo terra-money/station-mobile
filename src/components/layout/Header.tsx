@@ -14,7 +14,7 @@ import {
   StackHeaderTitleProps,
   StackNavigationOptions,
 } from '@react-navigation/stack'
-import { useAuth } from 'use-station/src'
+import { useAuth } from 'lib'
 
 type HeaderTheme = 'white' | 'sky' | 'sapphire'
 

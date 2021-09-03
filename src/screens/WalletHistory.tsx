@@ -1,11 +1,10 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement } from 'react'
 import {
   StyleSheet,
   TouchableOpacity,
   View,
   FlatList,
 } from 'react-native'
-import _ from 'lodash'
 import {
   CardStyleInterpolators,
   StackNavigationOptions,
@@ -16,39 +15,20 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 
-import {
-  TxType,
-  useMenu,
-  User,
-  useTxs,
-  useTxTypes,
-  TxsUI,
-} from 'use-station/src'
+import { useMenu, User, useTxs, TxsUI } from 'lib'
 
 import ErrorComponent from 'components/ErrorComponent'
 import HistoryItem from 'components/history/HistoryItem'
 import WithAuth from 'components/layout/WithAuth'
-import { Text, Icon, LoadingIcon, Selector } from 'components'
+import { Text, Icon, LoadingIcon } from 'components'
 
 import color from 'styles/color'
 import { RootStackParams } from 'types'
 
-const RenderList = ({
-  ui,
-  type,
-  setType,
-}: {
-  ui: TxsUI
-  type: TxType
-  setType: React.Dispatch<React.SetStateAction<TxType>>
-}): ReactElement => {
-  const tabs = useTxTypes()
+const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
   const { History: title } = useMenu()
-  const selectedTab = tabs.find((x) => x.key === type)
   const { goBack } = useNavigation<NavigationProp<RootStackParams>>()
-  const onSelectTab = (value: TxType): void => {
-    setType(value)
-  }
+
   const insets = useSafeAreaInsets()
 
   return (
@@ -67,33 +47,6 @@ const RenderList = ({
             <Text style={styles.historyTitle} fontType={'bold'}>
               {title}
             </Text>
-            <Selector
-              containerStyle={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-              display={
-                <>
-                  <Text
-                    style={styles.selectedTabLabel}
-                    fontType={'medium'}
-                  >
-                    {selectedTab?.label.toUpperCase()}
-                  </Text>
-                  <Icon
-                    name={'tune'}
-                    size={15}
-                    color={color.sapphire}
-                  />
-                </>
-              }
-              selectedValue={selectedTab?.key || ''}
-              list={_.map(tabs, (item) => ({
-                label: item.label,
-                value: item.key,
-              }))}
-              onSelect={onSelectTab}
-            />
           </View>
 
           <TouchableOpacity onPress={goBack}>
@@ -154,21 +107,13 @@ const RenderList = ({
   )
 }
 
-const History = ({
-  user,
-  type,
-  setType,
-}: {
-  user: User
-  type: TxType
-  setType: React.Dispatch<React.SetStateAction<TxType>>
-}): ReactElement => {
-  const { error, ui } = useTxs(user, { type })
+const History = ({ user }: { user: User }): ReactElement => {
+  const { error, ui } = useTxs(user)
 
   return error ? (
     <ErrorComponent />
   ) : ui ? (
-    <RenderList {...{ ui, type, setType }} />
+    <RenderList {...{ ui }} />
   ) : (
     <View />
   )
@@ -176,14 +121,11 @@ const History = ({
 
 const WalletHistory = (): ReactElement => {
   const insets = useSafeAreaInsets()
-  const [type, setType] = useState<TxType>('')
 
   return (
     <View style={{ marginTop: insets.top }}>
       <WithAuth>
-        {(user): ReactElement => (
-          <History key={type} user={user} {...{ type, setType }} />
-        )}
+        {(user): ReactElement => <History user={user} />}
       </WithAuth>
     </View>
   )
@@ -228,12 +170,5 @@ const styles = StyleSheet.create({
   },
   historyItemBox: {
     paddingVertical: 15,
-  },
-  selectedTabLabel: {
-    fontSize: 10,
-    lineHeight: 15,
-    letterSpacing: 0,
-    paddingLeft: 10,
-    paddingRight: 7,
   },
 })

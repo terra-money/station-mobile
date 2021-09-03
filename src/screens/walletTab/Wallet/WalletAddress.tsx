@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/native'
 
 import { RootStackParams } from 'types/navigation'
-import { User } from 'use-station/src'
+import { User } from 'lib'
 import { Text, CopyButton, Icon } from 'components'
 import color from 'styles/color'
 

@@ -9,7 +9,7 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 
-import { User, ConfirmProps, DisplayCoin } from 'use-station/src'
+import { User, ConfirmProps, DisplayCoin } from 'lib'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'

@@ -1,4 +1,4 @@
-import { ChainOptions } from 'use-station/src'
+import { ChainOptions } from 'lib'
 
 enum NetworkEnum {
   mainnet = 'mainnet',

@@ -2,13 +2,7 @@ import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 
-import {
-  useAssets,
-  AssetsUI,
-  User,
-  AvailableUI,
-  Card,
-} from 'use-station/src'
+import { useAssets, AssetsUI, User, AvailableUI, Card } from 'lib'
 import { Text, Icon } from 'components'
 
 import AvailableItem from './AvailableItem'

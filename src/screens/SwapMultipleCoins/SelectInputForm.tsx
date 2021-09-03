@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { View } from 'react-native'
 import _ from 'lodash'
 
-import { Field } from 'use-station/src'
+import { Field } from 'lib'
 
 import Input from 'components/Input'
 import { SelectOptionProps, Select } from 'components'

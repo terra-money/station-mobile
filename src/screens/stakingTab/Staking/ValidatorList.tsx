@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { ValidatorUI } from 'use-station/src'
+import { ValidatorUI } from 'lib'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
 import FastImage from 'react-native-fast-image'
 

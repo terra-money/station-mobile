@@ -19,7 +19,7 @@ import _ from 'lodash'
 import WalletConnect from '@walletconnect/client'
 import { IClientMeta } from '@walletconnect/types'
 
-import { User, format } from 'use-station/src'
+import { User, format } from 'lib'
 
 import { Button, Icon, LoadingIcon, Text } from 'components'
 import Body from 'components/layout/Body'

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { FormUI } from 'use-station/src'
+import { FormUI } from 'lib'
 
 import UseStationFormField from './UseStationFormField'
 

@@ -1,6 +1,6 @@
 import { atom, selectorFamily } from 'recoil'
 import _ from 'lodash'
-import { Rate } from 'use-station/src'
+import { Rate } from 'lib'
 import { StoreKeyEnum } from './StoreKeyEnum'
 import BigNumber from 'bignumber.js'
 

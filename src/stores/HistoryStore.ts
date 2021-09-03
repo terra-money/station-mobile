@@ -1,5 +1,5 @@
 import { atom } from 'recoil'
-import { TxsUI } from 'use-station/src'
+import { TxsUI } from 'lib'
 import { StoreKeyEnum } from './StoreKeyEnum'
 
 const walletTabUi = atom<TxsUI | undefined>({

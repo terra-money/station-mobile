@@ -6,7 +6,7 @@ import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native'
-import { fcd, format, useBank } from 'use-station/src'
+import { fcd, format, useBank } from 'lib'
 import { MnemonicKey } from '@terra-money/terra.js'
 import _ from 'lodash'
 

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { View } from 'react-native'
-import { useInfo } from 'use-station/src'
+import { useInfo } from 'lib'
 
 import Icon from './Icon'
 import Text from './Text'

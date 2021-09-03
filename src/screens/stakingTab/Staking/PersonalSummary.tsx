@@ -6,7 +6,7 @@ import {
   Image,
 } from 'react-native'
 
-import { StakingPersonal, User } from 'use-station/src'
+import { StakingPersonal, User } from 'lib'
 
 import { Button, Icon, Number, Text } from 'components'
 import color from 'styles/color'

@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { StackScreenProps } from '@react-navigation/stack'
 
 import { RootStackParams } from 'types'
-import { TxsUI, TxType, useMenu, User, useTxs } from 'use-station/src'
+import { TxsUI, useMenu, User, useTxs } from 'lib'
 
 import HistoryItem from 'components/history/HistoryItem'
 import { Text, ErrorComponent, Button } from 'components'
@@ -48,7 +48,7 @@ const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
 }
 
 const History = ({ user }: { user: User } & Props): ReactElement => {
-  const { error, ui, loading } = useTxs(user, { type: '' as TxType })
+  const { error, ui, loading } = useTxs(user)
 
   const [walletTabUi, setWalletTabUi] = useRecoilState(
     HistoryStore.walletTabUi

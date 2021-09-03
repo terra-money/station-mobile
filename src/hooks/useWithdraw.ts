@@ -2,7 +2,7 @@ import {
   User,
   useWithdraw as useStationWithdraw,
   WithdrawProps,
-} from 'use-station/src'
+} from 'lib'
 import { useConfirm } from './useConfirm'
 
 export const useWithdraw = ({

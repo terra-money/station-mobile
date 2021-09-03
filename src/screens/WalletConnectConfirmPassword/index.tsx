@@ -6,7 +6,7 @@ import WalletConnect from '@walletconnect/client'
 
 import { CreateTxOptions } from '@terra-money/terra.js'
 
-import { User } from 'use-station/src'
+import { User } from 'lib'
 
 import Body from 'components/layout/Body'
 import WithAuth from 'components/layout/WithAuth'

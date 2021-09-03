@@ -23,7 +23,7 @@ import WithAuth from 'components/layout/WithAuth'
 import { Button, Icon, LoadingIcon, Text } from 'components'
 
 import color from 'styles/color'
-import { useConfig, User } from 'use-station/src'
+import { useConfig, User } from 'lib'
 import useWalletConnect from 'hooks/useWalletConnect'
 import images from 'assets/images'
 import useTopNoti from 'hooks/useTopNoti'

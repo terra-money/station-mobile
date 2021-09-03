@@ -16,7 +16,7 @@ import color from 'styles/color'
 import layout from 'styles/layout'
 import { createRecoverWalletSchemeUrl } from 'utils/qrCode'
 import { getEncryptedKey } from 'utils/wallet'
-import { User } from 'use-station/src'
+import { User } from 'lib'
 import { useAlert } from 'hooks/useAlert'
 
 type Props = StackScreenProps<RootStackParams, 'ExportWallet'>

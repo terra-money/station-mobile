@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useAuth } from 'use-station/src'
+import { useAuth } from 'lib'
 import {
   NavigationProp,
   useNavigation,

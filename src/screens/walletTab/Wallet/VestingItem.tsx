@@ -5,7 +5,7 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 
-import { VestingItemUI } from 'use-station/src'
+import { VestingItemUI } from 'lib'
 
 import { Text, Icon, Number, AssetIcon } from 'components'
 import color from 'styles/color'

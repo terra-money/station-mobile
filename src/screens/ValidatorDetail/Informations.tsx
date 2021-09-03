@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { View, StyleSheet } from 'react-native'
 import _ from 'lodash'
 
-import { ValidatorUI } from 'use-station/src'
+import { ValidatorUI } from 'lib'
 import { Text, ExtLink } from 'components'
 import color from 'styles/color'
 

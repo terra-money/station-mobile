@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import _ from 'lodash'
 
-import { Field, Option, Options } from 'use-station/src'
+import { Field, Option, Options } from 'lib'
 
 import Input from 'components/Input'
 import { Text, Icon } from 'components'

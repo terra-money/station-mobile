@@ -7,7 +7,7 @@ import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 
-import { useChangePassword, useManageAccounts } from 'use-station/src'
+import { useChangePassword, useManageAccounts } from 'lib'
 
 import {
   getEncryptedKey,

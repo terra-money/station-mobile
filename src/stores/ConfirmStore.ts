@@ -1,5 +1,5 @@
 import { atom } from 'recoil'
-import { ConfirmProps } from 'use-station/src'
+import { ConfirmProps } from 'lib'
 import { StoreKeyEnum } from './StoreKeyEnum'
 
 const confirm = atom<ConfirmProps | undefined>({

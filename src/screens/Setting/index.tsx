@@ -16,7 +16,7 @@ import {
   useAuth,
   useConfig,
   useManageAccounts,
-} from 'use-station/src'
+} from 'lib'
 import color from 'styles/color'
 import {
   NavigationProp,

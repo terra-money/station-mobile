@@ -15,7 +15,7 @@ import {
 import { useRecoilState } from 'recoil'
 import _ from 'lodash'
 
-import { useAuth } from 'use-station/src'
+import { useAuth } from 'lib'
 import AuthNavigator from './AuthNavigator'
 import MainNavigator from './MainNavigator'
 import AutoLogoutStore from 'stores/AutoLogoutStore'

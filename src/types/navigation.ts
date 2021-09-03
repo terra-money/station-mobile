@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import { BankData, Card, Pairs, VestingItemUI } from 'use-station/src'
-import { DelegateType } from 'use-station/src/post/useDelegate'
+import { BankData, Card, Pairs, VestingItemUI } from 'lib'
+import { DelegateType } from 'lib/post/useDelegate'
 import { TxParam } from './tx'
 
 /* Auth */

@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react'
-import { ErrorBoundary as Component, useText } from 'use-station/src'
+import { ErrorBoundary as Component, useText } from 'lib'
 
 interface Props {
   fallback?: ReactNode

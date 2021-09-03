@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import _ from 'lodash'
 
-import { format, Option, Options } from 'use-station/src'
+import { format, Option, Options } from 'lib'
 
 import color from 'styles/color'
 import { Input, Icon, Number } from 'components'

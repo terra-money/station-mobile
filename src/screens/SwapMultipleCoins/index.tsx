@@ -11,7 +11,7 @@ import {
   Field,
   CoinFields,
   format,
-} from 'use-station/src'
+} from 'lib'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'

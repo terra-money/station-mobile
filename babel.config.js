@@ -14,7 +14,7 @@ module.exports = function (api) {
         hooks: './src/hooks',
         stores: './src/stores',
         nativeModules: './src/nativeModules',
-        'use-station': './src/use-station',
+        lib: './src/lib',
       },
     },
   ]

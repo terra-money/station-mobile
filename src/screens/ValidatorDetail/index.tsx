@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { useAuth, User, useValidator } from 'use-station/src'
+import { useAuth, User, useValidator } from 'lib'
 import { StackScreenProps } from '@react-navigation/stack'
 
 import { navigationHeaderOptions } from 'components/layout/Header'

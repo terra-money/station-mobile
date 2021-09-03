@@ -13,7 +13,7 @@ import { Input, Button, FormLabel } from 'components'
 import RecoverWalletStore from 'stores/RecoverWalletStore'
 import NumberStep from 'components/NumberStep'
 import { formatSeedStringToArray } from 'utils/wallet'
-import wordlist from 'use-station/src/auth/wordlist.json'
+import wordlist from 'lib/auth/wordlist.json'
 
 const Step2Seed = (): ReactElement => {
   const [seed, setSeed] = useRecoilState(RecoverWalletStore.seed)

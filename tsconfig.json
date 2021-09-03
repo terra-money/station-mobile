@@ -19,7 +19,7 @@
       "hooks/*": ["./hooks/*"],
       "stores/*": ["./stores/*"],
       "nativeModules/*": ["./nativeModules/*"],
-      "use-station/*": ["./use-station/*"]
+      "lib/*": ["./lib/*"]
     }
   }
 }

@@ -4,7 +4,7 @@ import { StackScreenProps } from '@react-navigation/stack'
 import _ from 'lodash'
 
 import { RootStackParams } from 'types/navigation'
-import { User } from 'use-station/src'
+import { User } from 'lib'
 
 import Body from 'components/layout/Body'
 import SubHeader from 'components/layout/SubHeader'

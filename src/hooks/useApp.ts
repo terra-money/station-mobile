@@ -1,3 +1,3 @@
-import { createContext } from 'use-station/src'
+import { createContext } from 'lib'
 
 export const [useApp, AppProvider] = createContext<App>()

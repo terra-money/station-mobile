@@ -9,8 +9,8 @@ import {
   RecentSentUI,
   FormUI,
   ConfirmProps,
-} from 'use-station/src'
-import useTokenBalance from 'use-station/src/cw20/useTokenBalance'
+} from 'lib'
+import useTokenBalance from 'lib/cw20/useTokenBalance'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'

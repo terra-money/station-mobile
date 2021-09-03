@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { StyleProp, StyleSheet, TextStyle } from 'react-native'
-import { format, DisplayCoin } from 'use-station/src'
+import { format, DisplayCoin } from 'lib'
 
 import Text from './Text'
 import color from 'styles/color'

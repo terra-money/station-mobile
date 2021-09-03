@@ -8,7 +8,7 @@ import {
   TxError,
 } from '@terra-money/terra.js'
 
-import { useConfig } from 'use-station/src'
+import { useConfig } from 'lib'
 
 import { getDecyrptedKey } from 'utils/wallet'
 

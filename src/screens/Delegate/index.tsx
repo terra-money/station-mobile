@@ -2,11 +2,8 @@ import React, { ReactElement } from 'react'
 import { View } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 
-import {
-  User,
-  useDelegate as useStationDelegate,
-} from 'use-station/src'
-import { DelegateType } from 'use-station/src/post/useDelegate'
+import { User, useDelegate as useStationDelegate } from 'lib'
+import { DelegateType } from 'lib/post/useDelegate'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'

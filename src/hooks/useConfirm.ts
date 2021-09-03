@@ -11,7 +11,7 @@ import {
   ConfirmProps,
   useConfirm as useStationConfirm,
   User,
-} from 'use-station/src'
+} from 'lib'
 
 import ConfirmStore from 'stores/ConfirmStore'
 import { RootStackParams } from 'types'

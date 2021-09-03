@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react'
-import { useAuth, User } from 'use-station/src'
+import { useAuth, User } from 'lib'
 
 interface Props {
   children: (user: User) => ReactNode

@@ -4,10 +4,10 @@ import _ from 'lodash'
 
 import { Text, Icon } from 'components'
 import Badge from 'components/Badge'
-import { ValidatorUI } from 'use-station/src'
+import { ValidatorUI } from 'lib'
 import images from 'assets/images'
 import color from 'styles/color'
-import useTerraAssets from 'use-station/src/hooks/useTerraAssets'
+import useTerraAssets from 'lib/hooks/useTerraAssets'
 
 const Top = ({ ui }: { ui: ValidatorUI }): ReactElement => {
   const { profile, moniker, status, operatorAddress } = ui

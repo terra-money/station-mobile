@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect } from 'react'
 import { View } from 'react-native'
 import { useSetRecoilState } from 'recoil'
 import AutoLogoutStore from 'stores/AutoLogoutStore'
-import { useAuth } from 'use-station/src'
+import { useAuth } from 'lib'
 import { settings } from 'utils/storage'
 
 const AutoLogout = (): ReactElement => {

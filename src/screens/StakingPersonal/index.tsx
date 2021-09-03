@@ -1,10 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import {
-  useStaking,
-  useAuth,
-  User,
-  ValidatorUI,
-} from 'use-station/src'
+import { useStaking, useAuth, User, ValidatorUI } from 'lib'
 import { StackScreenProps } from '@react-navigation/stack'
 
 import { navigationHeaderOptions } from 'components/layout/Header'

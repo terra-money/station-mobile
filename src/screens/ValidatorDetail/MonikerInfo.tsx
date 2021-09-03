@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
-import { DelegateType } from 'use-station/src/post/useDelegate'
+import { DelegateType } from 'lib/post/useDelegate'
 
 import { Text, Number, Button } from 'components'
-import { User, ValidatorUI } from 'use-station/src'
+import { User, ValidatorUI } from 'lib'
 import color from 'styles/color'
 import {
   NavigationProp,

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { View, StyleSheet } from 'react-native'
 import _ from 'lodash'
 
-import { StakingPersonal, User } from 'use-station/src'
+import { StakingPersonal, User } from 'lib'
 
 import { Button, Number, Text } from 'components'
 import color from 'styles/color'

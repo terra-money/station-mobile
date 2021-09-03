@@ -2,7 +2,7 @@ import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 
 import { fromBase64, isNativeDenom, jsonTryParse } from 'utils/util'
-import { useConfig } from 'use-station/src'
+import { useConfig } from 'lib'
 import { RootStackParams } from 'types'
 import { TxParam } from 'types/tx'
 

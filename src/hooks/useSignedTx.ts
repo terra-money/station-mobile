@@ -8,7 +8,7 @@ import {
 import { useLoading } from 'hooks/useLoading'
 import { useRecoilValue } from 'recoil'
 import TopupStore from 'stores/TopupStore'
-import { useAuth, useConfig } from 'use-station/src'
+import { useAuth, useConfig } from 'lib'
 import { getDecyrptedKey } from 'utils/wallet'
 import { getLCDClient } from '../screens/topup/TopupUtils'
 

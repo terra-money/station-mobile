@@ -12,7 +12,7 @@ import {
   VestingUI,
   Card,
   useConfig,
-} from 'use-station/src'
+} from 'lib'
 import { Text, Icon } from 'components'
 
 import AvailableItem from './AvailableItem'

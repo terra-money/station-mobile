@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { View, StyleSheet, BackHandler } from 'react-native'
 import { Buffer } from 'buffer'
-import { useAuth } from 'use-station/src'
+import { useAuth } from 'lib'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Button, Icon, Text } from 'components'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'

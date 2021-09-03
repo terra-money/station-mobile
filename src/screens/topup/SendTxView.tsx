@@ -8,7 +8,7 @@ import {
   BackHandler,
 } from 'react-native'
 import { Buffer } from 'buffer'
-import { useAuth, format, useBank } from 'use-station/src'
+import { useAuth, format, useBank } from 'lib'
 import { Text, Button, Select, Icon, FormInput } from 'components'
 
 import { StdSignMsg } from '@terra-money/terra.js'

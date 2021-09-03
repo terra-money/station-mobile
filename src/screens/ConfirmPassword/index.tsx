@@ -9,7 +9,7 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 
-import { ConfirmProps, User } from 'use-station/src'
+import { ConfirmProps, User } from 'lib'
 
 import Body from 'components/layout/Body'
 import WithAuth from 'components/layout/WithAuth'

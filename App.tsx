@@ -11,7 +11,7 @@ import {
   useConfigState,
   ConfigProvider,
   User,
-} from 'use-station/src'
+} from 'lib'
 
 import { Settings } from './src/types'
 import { getSkipOnboarding, settings } from './src/utils/storage'

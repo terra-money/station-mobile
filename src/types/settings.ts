@@ -1,4 +1,4 @@
-import { LangKey, ChainOptions } from 'use-station/src'
+import { LangKey, ChainOptions } from 'lib'
 
 export interface Settings {
   lang?: LangKey

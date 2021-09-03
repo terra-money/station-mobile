@@ -7,7 +7,7 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 
-import { AvailableItem, useConfig } from 'use-station/src'
+import { AvailableItem, useConfig } from 'lib'
 
 import { Text, Icon, Number, AssetIcon } from 'components'
 import SwapRateStore from 'stores/SwapRateStore'

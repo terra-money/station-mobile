@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { View, Image, StyleSheet } from 'react-native'
 
-import { Option } from 'use-station/src'
+import { Option } from 'lib'
 import color from 'styles/color'
 
 import { isNativeDenom } from 'utils/util'

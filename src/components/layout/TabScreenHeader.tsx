@@ -13,7 +13,7 @@ import { navigationHeaderOptions as defaultNHO } from 'components/layout/Header'
 import { QrCodeButton, Text } from 'components'
 
 import color from 'styles/color'
-import { useAuth } from 'use-station/src'
+import { useAuth } from 'lib'
 import {
   NavigationProp,
   useNavigation,

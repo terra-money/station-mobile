@@ -1,5 +1,5 @@
-import { Rate, useConfig } from 'use-station/src'
-import useFCD from 'use-station/src/api/useFCD'
+import { Rate, useConfig } from 'lib'
+import useFCD from 'lib/api/useFCD'
 
 export const useSwapRate = (): {
   loading: boolean

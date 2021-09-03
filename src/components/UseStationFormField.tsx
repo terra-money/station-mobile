@@ -8,7 +8,7 @@ import {
 } from '@react-navigation/native'
 import BigNumber from 'bignumber.js'
 
-import { Field, DisplayCoin } from 'use-station/src'
+import { Field, DisplayCoin } from 'lib'
 
 import { RootStackParams } from 'types/navigation'
 

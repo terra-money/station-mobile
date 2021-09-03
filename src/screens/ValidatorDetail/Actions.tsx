@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import { User, ValidatorUI } from 'use-station/src'
+import { User, ValidatorUI } from 'lib'
 import { Text, Number, Button } from 'components'
 import { useWithdraw } from 'hooks/useWithdraw'
 import {
@@ -10,7 +10,7 @@ import {
 } from '@react-navigation/native'
 import { RootStackParams } from 'types'
 import color from 'styles/color'
-import { DelegateType } from 'use-station/src/post/useDelegate'
+import { DelegateType } from 'lib/post/useDelegate'
 
 const Actions = ({
   user,
