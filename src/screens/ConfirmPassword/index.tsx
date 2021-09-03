@@ -36,7 +36,10 @@ const Render = ({
   const feeSelectValue = route.params.feeSelectValue
   const { getComfirmData, initConfirm } = useConfirm()
   const { showLoading, hideLoading } = useLoading()
-  const { result, form, fee } = getComfirmData({ confirm, user })
+  const { result, form, fee, txhash } = getComfirmData({
+    confirm,
+    user,
+  })
 
   const { navigate, dispatch } = useNavigation<
     NavigationProp<RootStackParams>
@@ -44,12 +47,13 @@ const Render = ({
 
   // during form is submitting, show loading
   useEffect(() => {
-    form.submitting ? showLoading() : hideLoading()
-  }, [form.submitting])
+    txhash && showLoading({ txhash })
+  }, [txhash])
 
   // result will set after form.onSubmit or error
   useEffect(() => {
     if (result) {
+      hideLoading()
       dispatch(StackActions.popToTop())
       navigate('Complete', { result })
       initConfirm()

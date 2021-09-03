@@ -6,6 +6,12 @@ const showLoading = atom<boolean>({
   default: false,
 })
 
+const loadingTxHash = atom<string>({
+  key: StoreKeyEnum.loadingTxHash,
+  default: '',
+})
+
 export default {
   showLoading,
+  loadingTxHash,
 }

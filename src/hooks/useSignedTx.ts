@@ -5,12 +5,12 @@ import {
   StdTx,
   SyncTxBroadcastResult,
 } from '@terra-money/terra.js'
-import { useLoading } from 'hooks/useLoading'
 import { useRecoilValue } from 'recoil'
 import TopupStore from 'stores/TopupStore'
 import { useAuth, useConfig } from 'lib'
 import { getDecyrptedKey } from 'utils/wallet'
 import { getLCDClient } from '../screens/topup/TopupUtils'
+import { useLoading } from './useLoading'
 
 type TopupCreateSignedResult =
   | {
@@ -45,8 +45,8 @@ const useSignedTx = (
 } => {
   const { user } = useAuth()
   const { chain } = useConfig()
-  const { showLoading, hideLoading } = useLoading()
   const { dispatch } = useNavigation()
+  const { showLoading, hideLoading } = useLoading()
 
   const stdSignMsg = useRecoilValue(TopupStore.stdSignMsg)
 
@@ -81,10 +81,15 @@ const useSignedTx = (
     const broadcastSignedTx = async (
       signedTx: StdTx
     ): Promise<SyncTxBroadcastResult> => {
-      const result = await getLCDClient(
+      const lcd = getLCDClient(
         chain.current.chainID,
         chain.current.lcd
-      ).tx.broadcast(signedTx)
+      )
+
+      const txhash = await lcd.tx.hash(signedTx)
+      showLoading({ txhash })
+      const result = await lcd.tx.broadcast(signedTx)
+      hideLoading()
       return result
     }
 
@@ -111,8 +116,6 @@ const useSignedTx = (
 
     let ret: TopupResult
     try {
-      showLoading()
-
       if (signedTx === undefined) {
         throw new Error('No Signed Tx')
       }
@@ -146,8 +149,6 @@ const useSignedTx = (
         title: 'Unexpected Error',
         content: e.toString(),
       }
-    } finally {
-      hideLoading()
     }
     return ret
   }

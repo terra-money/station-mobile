@@ -4,6 +4,7 @@ export enum StoreKeyEnum {
   modalIsVisible = 'modalIsVisible',
   isFromAutoLogout = 'isFromAutoLogout',
   showLoading = 'showLoading',
+  loadingTxHash = 'loadingTxHash',
   newWalletName = 'newWalletName',
   newWalletPassword = 'newWalletPassword',
   newWalletSeed = 'newWalletSeed',

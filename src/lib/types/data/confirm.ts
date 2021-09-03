@@ -42,6 +42,7 @@ export interface ConfirmPage extends Pick<ConfirmProps, 'contents'> {
   }
   form: FormUI
   result?: Card
+  txhash?: string
 }
 
 export interface Base {

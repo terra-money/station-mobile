@@ -16,4 +16,5 @@ export default {
   walletconnect_white: require('../../assets/walletconnect_white.png'),
   wallet_settings: require('../../assets/wallet_settings.png'),
   oops_face: require('../../assets/oops_face.png'),
+  queued: require('../../assets/queued.png'),
 }

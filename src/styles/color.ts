@@ -12,6 +12,7 @@ const qrBackground = 'rgba(12, 54, 148, 0.5)'
 const primary = {
   _02: '#2043b5',
   _03: '#5493f7',
+  _04: '#ebeff8',
 }
 
 export default {

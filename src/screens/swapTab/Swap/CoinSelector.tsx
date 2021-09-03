@@ -28,7 +28,7 @@ const CoinSelector = ({
 }): ReactElement => {
   const [searchInput, setSearchInput] = useState('')
   const searchFiltered = list.filter((x) =>
-    x.children.toLowerCase().includes(searchInput.toLowerCase())
+    x?.children.toLowerCase().includes(searchInput.toLowerCase())
   )
   const nativeTokenList = searchFiltered.filter((x) =>
     isNativeDenom(x.value)

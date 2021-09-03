@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import SplashScreen from 'react-native-splash-screen'
 import { RecoilRoot } from 'recoil'
 import RNExitApp from 'react-native-exit-app'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import {
   useAuthState,
@@ -38,6 +39,8 @@ import color from 'styles/color'
 
 import { showSystemAlert } from 'utils/util'
 import useSecurity from 'hooks/useSecurity'
+
+const queryClient = new QueryClient()
 
 const App = ({
   settings: { lang, chain, currency },
@@ -91,45 +94,47 @@ const App = ({
   return (
     <>
       {ready && (
-        <AppProvider value={{ alertViewProps }}>
-          <ConfigProvider value={config}>
-            <AuthProvider value={auth}>
-              <SafeAreaProvider>
-                <StatusBar theme="white" />
-                <RecoilRoot>
-                  {securityCheckFailed && Platform.OS === 'ios' ? (
-                    <View
-                      style={{
-                        flex: 1,
-                        backgroundColor: color.sapphire,
-                      }}
-                    />
-                  ) : showOnBoarding ? (
-                    <OnBoarding
-                      closeOnBoarding={(): void =>
-                        setshowOnBoarding(false)
-                      }
-                    />
-                  ) : (
-                    <>
-                      <AppNavigator />
-                      <AppModal />
-                      <AlertView alertViewProps={alertViewProps} />
-                      <GlobalTopNotification />
-                      <NoInternet />
-                      <LoadingView />
-                      {config.chain.current.name !== 'mainnet' && (
-                        <DebugBanner
-                          title={config.chain.current.name.toUpperCase()}
-                        />
-                      )}
-                    </>
-                  )}
-                </RecoilRoot>
-              </SafeAreaProvider>
-            </AuthProvider>
-          </ConfigProvider>
-        </AppProvider>
+        <QueryClientProvider client={queryClient}>
+          <AppProvider value={{ alertViewProps }}>
+            <ConfigProvider value={config}>
+              <AuthProvider value={auth}>
+                <SafeAreaProvider>
+                  <StatusBar theme="white" />
+                  <RecoilRoot>
+                    {securityCheckFailed && Platform.OS === 'ios' ? (
+                      <View
+                        style={{
+                          flex: 1,
+                          backgroundColor: color.sapphire,
+                        }}
+                      />
+                    ) : showOnBoarding ? (
+                      <OnBoarding
+                        closeOnBoarding={(): void =>
+                          setshowOnBoarding(false)
+                        }
+                      />
+                    ) : (
+                      <>
+                        <AppNavigator />
+                        <AppModal />
+                        <AlertView alertViewProps={alertViewProps} />
+                        <GlobalTopNotification />
+                        <NoInternet />
+                        <LoadingView />
+                        {config.chain.current.name !== 'mainnet' && (
+                          <DebugBanner
+                            title={config.chain.current.name.toUpperCase()}
+                          />
+                        )}
+                      </>
+                    )}
+                  </RecoilRoot>
+                </SafeAreaProvider>
+              </AuthProvider>
+            </ConfigProvider>
+          </AppProvider>
+        </QueryClientProvider>
       )}
     </>
   )

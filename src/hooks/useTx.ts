@@ -11,6 +11,7 @@ import {
 import { useConfig } from 'lib'
 
 import { getDecyrptedKey } from 'utils/wallet'
+import { useLoading } from './useLoading'
 
 interface Block {
   height: number
@@ -29,6 +30,7 @@ const useTx = (): {
   }) => Promise<TxBroadcastResult<Block, TxSuccess | TxError>>
 } => {
   const { chain } = useConfig()
+  const { showLoading, hideLoading } = useLoading()
 
   const getKey = async (params: {
     name: string
@@ -64,8 +66,12 @@ const useTx = (): {
       password,
     })
     const signed = await key.signTx(unsignedTx)
+    const txhash = await lcd.tx.hash(signed)
+    showLoading({ txhash })
+    const result = await lcd.tx.broadcast(signed)
 
-    return lcd.tx.broadcast(signed)
+    hideLoading()
+    return result
   }
 
   return {

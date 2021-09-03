@@ -12,7 +12,6 @@ import Preferences, {
 } from 'nativeModules/preferences'
 import { jsonTryParse } from 'utils/util'
 import useTx from './useTx'
-import { useLoading } from './useLoading'
 import { CreateTxOptions, isTxError } from '@terra-money/terra.js'
 
 export enum ErrorCodeEnum {
@@ -55,7 +54,6 @@ const useWalletConnect = (): {
   )
 
   const { broadcastTx } = useTx()
-  const { showLoading, hideLoading } = useLoading()
 
   const newWalletConnect = (
     connectorOpts: IWalletConnectOptions,
@@ -193,8 +191,6 @@ const useWalletConnect = (): {
     id: number
   }): Promise<{ title: string; content: string; button: string }> => {
     try {
-      showLoading()
-
       const data = await broadcastTx({
         address,
         walletName,
@@ -225,7 +221,6 @@ const useWalletConnect = (): {
         })
       }
 
-      hideLoading()
       return {
         title,
         content,
@@ -238,7 +233,6 @@ const useWalletConnect = (): {
         errorCode: ErrorCodeEnum.createTxFailed,
         message: _.toString(error),
       })
-      hideLoading()
       return {
         title: 'Error',
         content: _.toString(error),

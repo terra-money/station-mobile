@@ -110,7 +110,7 @@ const Render = ({
   const { confirm: confirmAlert } = useAlert()
   const { showLoading, hideLoading } = useLoading()
   const { getComfirmData, initConfirm } = useConfirm()
-  const { contents, fee, form, result } = getComfirmData({
+  const { contents, fee, form, result, txhash } = getComfirmData({
     confirm,
     user,
   })
@@ -157,8 +157,8 @@ const Render = ({
 
   // during form is submitting, show loading
   useEffect(() => {
-    form.submitting ? showLoading() : hideLoading()
-  }, [form.submitting])
+    txhash && showLoading({ txhash })
+  }, [txhash])
 
   // only password change from bio-auth, except init
   useEffect(() => {
@@ -171,6 +171,7 @@ const Render = ({
   // result will set after form.onSubmit or error
   useEffect(() => {
     if (result) {
+      hideLoading()
       dispatch(StackActions.popToTop())
       navigate('Complete', { result })
       initConfirm()
