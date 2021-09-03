@@ -25,6 +25,7 @@ import WalletConnectButton from './WalletConnectButton'
 import { jsonTryParse } from 'utils/util'
 import security from 'utils/security'
 import { TxParam } from 'types/tx'
+import useLinking from 'hooks/useLinking'
 
 const TerraTheme = {
   ...DefaultTheme,
@@ -37,6 +38,7 @@ const TerraTheme = {
 const Navigator = (): ReactElement => {
   const navigatorRef = useRef<NavigationContainerRef>(null)
   const { user } = useAuth()
+  const { openURL } = useLinking()
   const [linkingUrl, setLinkingUrl] = useState('')
   const [isFromAutoLogout, setIsFromAutoLogout] = useRecoilState(
     AutoLogoutStore.isFromAutoLogout
@@ -101,14 +103,14 @@ const Navigator = (): ReactElement => {
   useEffect(() => {
     if (isFromAutoLogout) {
       setIsFromAutoLogout(false)
-      linkingUrl && Linking.openURL(linkingUrl)
+      linkingUrl && openURL(linkingUrl)
     }
   }, [isFromAutoLogout])
 
   useEffect(() => {
     if (continueSignedTx) {
       setContinueSignedTx(false)
-      linkingUrl && Linking.openURL(linkingUrl)
+      linkingUrl && openURL(linkingUrl)
     }
   }, [continueSignedTx])
 

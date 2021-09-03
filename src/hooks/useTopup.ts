@@ -3,8 +3,8 @@ import {
   StackActions,
   useNavigation,
 } from '@react-navigation/native'
-import { Linking } from 'react-native'
 import { useAlert } from './useAlert'
+import useLinking from './useLinking'
 
 export const useTopup = (): {
   restoreApp: (returnScheme: string) => Promise<void>
@@ -13,6 +13,7 @@ export const useTopup = (): {
 } => {
   const { alert } = useAlert()
   const { dispatch } = useNavigation()
+  const { openURL } = useLinking()
 
   const gotoWallet = (): void => {
     dispatch(StackActions.replace('AuthMenu'))
@@ -29,7 +30,7 @@ export const useTopup = (): {
 
   const restoreApp = async (returnScheme: string): Promise<void> => {
     try {
-      await Linking.openURL(returnScheme)
+      await openURL(returnScheme)
     } catch (e) {
       alert({ title: 'Unexpected Error', desc: e.toString() })
     } finally {

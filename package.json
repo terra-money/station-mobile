@@ -134,7 +134,10 @@
     "typescript": "^4.1.5"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "transformIgnorePatterns": [
+      "node_modules/(?!react-native-url-polyfill)/"
+    ]
   },
   "react-native": {
     "zlib": "browserify-zlib",

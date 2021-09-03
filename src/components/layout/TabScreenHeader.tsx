@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Linking,
 } from 'react-native'
 
 import { StackNavigationOptions } from '@react-navigation/stack'
@@ -23,6 +22,7 @@ import images from 'assets/images'
 import { RootStackParams } from 'types'
 import { getParam, isTerraAddress } from 'utils/util'
 import { parseDynamicLinkURL } from 'utils/scheme'
+import useLinking from 'hooks/useLinking'
 
 const HeaderLeft = ({ title }: { title: string }): ReactElement => {
   return (
@@ -39,6 +39,7 @@ const HeaderRight = (): ReactElement => {
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
+  const { openURL } = useLinking()
 
   const onlyIfScan = ({ data }: { data: string }): string => {
     const linkUrl = parseDynamicLinkURL(data)
@@ -62,7 +63,7 @@ const HeaderRight = (): ReactElement => {
             onlyIfScan={onlyIfScan}
             onRead={({ data }): void => {
               if (data.includes('terrastation:')) {
-                Linking.openURL(data)
+                openURL(data)
               } else if (isTerraAddress(data)) {
                 navigate('SelectCoinToSend', { toAddress: data })
               } else {
@@ -77,7 +78,7 @@ const HeaderRight = (): ReactElement => {
                         navigate('WalletConnect', { uri: payload })
                         break
                       default:
-                        Linking.openURL(
+                        openURL(
                           `terrastation://${action}/?payload=${payload}`
                         )
                         break

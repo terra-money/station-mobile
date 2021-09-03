@@ -1,11 +1,14 @@
 import React, { ReactElement } from 'react'
-import { Linking, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import { navigationHeaderOptions } from 'components/layout/Header'
 import { Button, Text } from 'components'
 import Body from 'components/layout/Body'
+import useLinking from 'hooks/useLinking'
 
 const StakingInformation = (): ReactElement => {
+  const { openURL } = useLinking()
+
   return (
     <Body
       theme={'white'}
@@ -31,9 +34,7 @@ Staking rewards come from three sources:
         title={'Learn more'}
         theme={'sapphire'}
         onPress={(): void => {
-          Linking.openURL(
-            'https://docs.terra.money/luna.html#what-is-luna'
-          )
+          openURL('https://docs.terra.money/luna.html#what-is-luna')
         }}
       />
     </Body>
