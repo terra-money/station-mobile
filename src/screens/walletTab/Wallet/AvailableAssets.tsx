@@ -227,9 +227,9 @@ const AvailableAssets = ({
               >
                 <Icon
                   name={'settings'}
-                  size={14}
+                  size={20}
                   color={color.primary._02}
-                  style={{ paddingLeft: 20 }}
+                  style={{ padding: 4 }}
                 />
               </TouchableOpacity>
             </Row>
@@ -241,7 +241,6 @@ const AvailableAssets = ({
             setIsVisibleModal('add')
           }}
           size="sm"
-          theme="gray"
           title={
             <Row style={{ alignItems: 'center' }}>
               <Icon name="add" size={16} color={color.primary._02} />
@@ -253,7 +252,10 @@ const AvailableAssets = ({
               </Text>
             </Row>
           }
-          containerStyle={{ marginBottom: 30 }}
+          containerStyle={{
+            marginBottom: 30,
+            backgroundColor: '#E8EEFC',
+          }}
         />
         <Modal
           onRequestClose={(): void => {

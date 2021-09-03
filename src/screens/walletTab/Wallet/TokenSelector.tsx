@@ -93,7 +93,7 @@ const TokenSelector = ({
           <Row style={{ alignItems: 'center' }}>
             <AssetIcon uri={item.icon} />
             <View style={{ paddingLeft: 10 }}>
-              <Text style={styles.label} fontType={'medium'}>
+              <Text style={styles.label} fontType={'bold'}>
                 {item.symbol}
               </Text>
               <TouchableOpacity
@@ -123,15 +123,26 @@ const TokenSelector = ({
                 ? removeToken(item.token)
                 : addToken({ [item.token]: item })
             }}
+            style={styles.buttonView}
           >
-            <View
-              style={[
-                styles.addButtonBox,
-                { opacity: added ? 0.3 : 1 },
-              ]}
-            >
-              <Icon name="add" size={16} color={color.primary._02} />
-            </View>
+            {added ? (
+              <View
+                style={[
+                  styles.addButtonBox,
+                  { backgroundColor: color.primary._02 },
+                ]}
+              >
+                <Icon name="done" size={16} color={color.white} />
+              </View>
+            ) : (
+              <View style={styles.addButtonBox}>
+                <Icon
+                  name="add"
+                  size={16}
+                  color={color.primary._02}
+                />
+              </View>
+            )}
           </TouchableOpacity>
         </Row>
       )
@@ -214,7 +225,7 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   item: {
-    height: 60,
+    height: 62,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -233,6 +244,12 @@ const styles = StyleSheet.create({
     lineHeight: 16.5,
     letterSpacing: 0,
     color: color.primary._02,
+  },
+  buttonView: {
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    height: '100%',
+    flex: 1,
   },
   addButtonBox: {
     padding: 6,

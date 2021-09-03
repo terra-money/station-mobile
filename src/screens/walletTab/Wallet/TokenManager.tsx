@@ -39,7 +39,7 @@ const TokenManager = ({
           <Row style={{ alignItems: 'center' }}>
             <AssetIcon uri={item.icon} />
             <View style={{ paddingLeft: 10 }}>
-              <Text style={styles.label} fontType={'medium'}>
+              <Text style={styles.label} fontType={'bold'}>
                 {item.symbol}
               </Text>
               <TouchableOpacity
@@ -67,6 +67,7 @@ const TokenManager = ({
             onPress={(): void => {
               removeToken(item.token)
             }}
+            style={styles.buttonView}
           >
             <View style={styles.addButtonBox}>
               <Icon
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   item: {
-    height: 60,
+    height: 62,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -165,6 +166,12 @@ const styles = StyleSheet.create({
     lineHeight: 16.5,
     letterSpacing: 0,
     color: color.primary._02,
+  },
+  buttonView: {
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    height: '100%',
+    flex: 1,
   },
   addButtonBox: {
     padding: 6,
