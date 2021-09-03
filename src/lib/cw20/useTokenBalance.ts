@@ -1,84 +1,77 @@
-import { useCallback, useEffect, useState } from 'react'
 import { Dictionary } from 'ramda'
+import { useQuery } from 'react-query'
+import _ from 'lodash'
+
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { TokenBalance, Tokens } from '../types'
-import { useConfig } from '../contexts/ConfigContext'
-import useWhitelist from './useWhitelist'
+import { QueryKeyEnum } from 'types'
+import { useCurrentChainName } from '../contexts/ConfigContext'
 import mantleURL from './mantle.json'
 import alias from './alias'
+import useTokens from 'hooks/useTokens'
+import { jsonTryParse } from 'utils/util'
 
 export interface TokenBalanceQuery {
-  loading: boolean
-  whitelist?: Tokens
+  isLoading: boolean
+  tokens?: Tokens
   list?: TokenBalance[]
-  load: () => Promise<void>
+  refetch: () => void
 }
 
 export default (address: string): TokenBalanceQuery => {
-  const [result, setResult] = useState<Dictionary<string>>()
-  const [loading, setLoading] = useState(false)
-  const { chain } = useConfig()
-  const { name: currentChain } = chain.current
-  const { whitelist, loading: loadingWhitelist } = useWhitelist(
-    currentChain
-  )
+  const chainName = useCurrentChainName()
+  const { tokens } = useTokens()
+
   const mantle = (mantleURL as Dictionary<string | undefined>)[
-    currentChain
+    chainName
   ]
 
-  const load = useCallback(async () => {
-    if (whitelist) {
-      setLoading(true)
+  const { data: list = [], isLoading, refetch } = useQuery(
+    [QueryKeyEnum.tokenBalances, address, mantle, tokens],
+    async () => {
+      if (_.some(tokens)) {
+        try {
+          const client = new ApolloClient({
+            uri: mantle,
+            cache: new InMemoryCache(),
+          })
 
-      try {
-        const client = new ApolloClient({
-          uri: mantle,
-          cache: new InMemoryCache(),
-        })
+          const queries = alias(
+            Object.values(tokens).map(({ token }) => ({
+              token,
+              contract: token,
+              msg: { balance: { address } },
+            }))
+          )
 
-        const queries = alias(
-          Object.values(whitelist).map(({ token }) => ({
-            token,
-            contract: token,
-            msg: { balance: { address } },
-          }))
-        )
+          const { data } = await client.query({
+            query: queries,
+            errorPolicy: 'all',
+          })
 
-        const { data } = await client.query({ query: queries })
-        setResult(parseResult(data))
-      } catch (error) {
-        setResult({})
+          return _.reduce<any, TokenBalance[]>(
+            data,
+            (res, curr, key) => {
+              if (curr?.Result) {
+                const balance =
+                  jsonTryParse<{ balance: string }>(curr.Result)
+                    ?.balance || '0'
+                res.push({ ...tokens[key], balance })
+              }
+              return res
+            },
+            []
+          )
+        } catch {}
       }
-
-      setLoading(false)
+      return []
     }
-  }, [address, mantle, whitelist])
-
-  useEffect(() => {
-    address && load()
-  }, [address, whitelist, mantle, load])
+  )
 
   return {
-    load,
-    loading: loading || loadingWhitelist,
-    whitelist,
-    list:
-      result &&
-      whitelist &&
-      Object.entries(result).map(([token, balance]) => ({
-        ...whitelist[token],
-        balance,
-      })),
+    refetch,
+    isLoading,
+    tokens,
+    list,
   }
 }
-
-const parseResult = (
-  data: Dictionary<{ Result: string }>
-): Dictionary<string> =>
-  Object.entries(data).reduce(
-    (acc, [token, { Result }]) => ({
-      ...acc,
-      [token]: JSON.parse(Result).balance,
-    }),
-    {}
-  )

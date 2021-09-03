@@ -6,7 +6,7 @@ export type AssetIconProps = {
   size?: number
   iconSize?: number
   uri?: string
-  name: string
+  name?: string
 }
 
 const AssetIcon = (props: AssetIconProps): ReactElement => {
@@ -32,8 +32,6 @@ const AssetIcon = (props: AssetIconProps): ReactElement => {
             style={{ width: iconSize, height: iconSize }}
           />
         </View>
-      ) : name === 'Terra' ? (
-        <Terra width={size} height={size} />
       ) : name ? (
         <Image
           source={{ uri: src }}
@@ -43,15 +41,7 @@ const AssetIcon = (props: AssetIconProps): ReactElement => {
           }}
         />
       ) : (
-        <Image
-          source={{
-            uri: 'https://dummyimage.com/20x20/000/ffffff&text=+',
-          }}
-          style={{
-            width: size,
-            height: size,
-          }}
-        />
+        <Terra width={size} height={size} />
       )}
     </>
   )

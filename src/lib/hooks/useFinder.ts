@@ -3,7 +3,7 @@ import { useConfig } from '../contexts/ConfigContext'
 
 const FINDER = 'https://finder.terra.money'
 
-export default (): FinderFunction | undefined => {
+export default (): FinderFunction => {
   const { chain } = useConfig()
   const { chainID } = chain.current
   return ({ network, q, v }: FinderParams): string =>

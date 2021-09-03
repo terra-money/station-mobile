@@ -1,35 +1,27 @@
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
+import { QueryKeyEnum } from 'types'
 
 const config = { baseURL: 'https://assets.terra.money' }
 
 const useTerraAssets = <T = any>(
   path: string
 ): {
-  data: T | undefined
+  data?: T
   loading: boolean
-  error: Error | undefined
+  error: unknown
 } => {
-  const [data, setData] = useState<T>()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<Error>()
-
-  useEffect(() => {
-    const fetch = async (): Promise<void> => {
+  const { data, isLoading, error } = useQuery<T>(
+    [QueryKeyEnum.terraAssets, path],
+    async () => {
       try {
-        setLoading(true)
         const { data } = await axios.get(path, config)
-        setData(data)
-      } catch (error) {
-        setError(error)
-      }
-      setLoading(false)
+        return data
+      } catch {}
     }
+  )
 
-    fetch()
-  }, [path])
-
-  return { data, loading, error }
+  return { data, loading: isLoading, error }
 }
 
 export default useTerraAssets

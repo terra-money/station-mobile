@@ -2,20 +2,23 @@ import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 
-import { useAssets, AssetsUI, User, AvailableUI, Card } from 'lib'
+import { useAssets, AssetsUI, User, Card, AvailableItem } from 'lib'
 import { Text, Icon } from 'components'
 
-import AvailableItem from './AvailableItem'
+import AssetItem from './AvailableItem'
 import color from 'styles/color'
 
 const AvailableList = ({
   list,
   toAddress,
-}: { toAddress?: string } & AvailableUI): ReactElement => {
+}: {
+  toAddress?: string
+  list: AvailableItem[]
+}): ReactElement => {
   return (
     <View>
       {_.map(list, (item, index) => (
-        <AvailableItem
+        <AssetItem
           key={`AvailableList-${index}`}
           item={item}
           toAddress={toAddress}
@@ -63,7 +66,6 @@ const AvailableAssets = ({
 }): ReactElement => {
   const { ui } = useAssets(user, {
     hideSmall: false,
-    hideSmallTokens: false,
   })
 
   const render = ({

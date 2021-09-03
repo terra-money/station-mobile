@@ -1,19 +1,20 @@
+import { useCurrentChainName } from 'lib/contexts/ConfigContext'
 import { Dictionary } from 'ramda'
 import useTerraAssets from '../hooks/useTerraAssets'
 import { Whitelist } from '../types'
 
-const useWhitelist = (
-  name: string
-): {
-  whitelist: Whitelist | undefined
-  data: Dictionary<Whitelist> | undefined
+const useWhitelist = (): {
+  whitelist: Whitelist
   loading: boolean
-  error: Error | undefined
 } => {
+  const name = useCurrentChainName()
   const response = useTerraAssets<Dictionary<Whitelist>>(
     'cw20/tokens.json'
   )
-  return { ...response, whitelist: response.data?.[name] }
+  return {
+    loading: response.loading,
+    whitelist: response.data?.[name] || {},
+  }
 }
 
 export default useWhitelist

@@ -18,6 +18,8 @@ import color from 'styles/color'
 LogBox.ignoreLogs([
   // https://reactjs.org/blog/2020/02/26/react-v16.13.0.html#warnings-for-some-updates-during-render
   'Warning: Cannot update a component from inside the function body of a different component.',
+  //https://github.com/tannerlinsley/react-query/issues/1259
+  'Setting a timer',
 ])
 
 const PagerContents = [

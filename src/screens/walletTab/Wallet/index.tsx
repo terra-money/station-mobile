@@ -30,10 +30,6 @@ const Wallet = (props: Props): ReactElement => {
   const setSwapRate = useSetRecoilState(SwapRateStore.swapRate)
   const [loadingComplete, setLoadingComplete] = useState(false)
   const [localHideSmall, setlocalHideSmall] = useState<boolean>()
-  const [
-    localHideSmallTokens,
-    setlocalHideSmallTokens,
-  ] = useState<boolean>()
 
   const [refreshingKey, setRefreshingKey] = useState(0)
   const refreshPage = async (): Promise<void> => {
@@ -45,19 +41,9 @@ const Wallet = (props: Props): ReactElement => {
     const hideSmall = (await Preferences.getString(
       PreferencesEnum.walletHideSmall
     )) as VisibleSmallType
-    const hideSmallTokens = (await Preferences.getString(
-      PreferencesEnum.walletHideSmallTokens
-    )) as VisibleSmallType
 
     setlocalHideSmall(
       hideSmall ? (hideSmall === 'hide' ? true : false) : undefined
-    )
-    setlocalHideSmallTokens(
-      hideSmallTokens
-        ? hideSmallTokens === 'hide'
-          ? true
-          : false
-        : undefined
     )
   }
 
@@ -97,7 +83,6 @@ const Wallet = (props: Props): ReactElement => {
                     user,
                     localHideSmall,
                     setlocalHideSmall,
-                    localHideSmallTokens,
                     refreshingKey,
                   }}
                   {...props}

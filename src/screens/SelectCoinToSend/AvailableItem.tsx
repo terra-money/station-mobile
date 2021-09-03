@@ -14,6 +14,7 @@ import SwapRateStore from 'stores/SwapRateStore'
 import color from 'styles/color'
 import { RootStackParams } from 'types'
 import { setComma } from 'utils/math'
+import { isNativeDenom } from 'utils/util'
 
 const AssetItem = ({
   item,
@@ -26,13 +27,19 @@ const AssetItem = ({
     NavigationProp<RootStackParams>
   >()
   const { currency } = useConfig()
-  const { icon, display } = item
+  const { display } = item
   const swapValue = useRecoilValue(
     SwapRateStore.swapValue({
       denom: item.denom || '',
       value: display.value.replace(/,/g, ''),
     })
   )
+
+  const icon =
+    item.denom && isNativeDenom(item.denom)
+      ? `https://assets.terra.money/icon/60/${item.display.unit}.png`
+      : item.icon
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -46,7 +53,7 @@ const AssetItem = ({
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={styles.iconBox}>
-            <AssetIcon uri={icon} name={display.unit} />
+            <AssetIcon uri={icon} />
           </View>
           <Text style={styles.unit} fontType={'bold'}>
             {display.unit}

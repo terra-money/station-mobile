@@ -6,10 +6,10 @@ export enum PreferencesEnum {
   useBioAuth = 'useBioAuth',
   firstRun = 'firstRun',
   walletHideSmall = 'walletHideSmall',
-  walletHideSmallTokens = 'walletHideSmallTokens',
   scheme = 'scheme',
   walletConnectSession = 'walletConnectSession',
   stakingFilter = 'stakingFilter',
+  tokens = 'tokens',
 }
 
 export type PreferencesType = {

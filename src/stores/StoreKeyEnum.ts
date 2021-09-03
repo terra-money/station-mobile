@@ -19,4 +19,5 @@ export enum StoreKeyEnum {
   connectAddress = 'connectAddress',
   continueSignedTx = 'continueSignedTx',
   walletTabUi = 'walletTabUi',
+  tokensState = 'tokensState',
 }

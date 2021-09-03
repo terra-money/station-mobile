@@ -60,6 +60,9 @@ const History = ({ user }: { user: User } & Props): ReactElement => {
     }
 
     setWalletTabUi(ui)
+    return (): void => {
+      setWalletTabUi(undefined)
+    }
   }, [loading])
 
   return error ? (

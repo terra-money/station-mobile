@@ -94,31 +94,50 @@ const CoinSelector = ({
             onChangeText={setSearchInput}
           />
         </View>
-        <ScrollView
-          style={{ paddingHorizontal: 20, marginBottom: 20 }}
-        >
-          {_.some(nativeTokenList) && (
-            <>
-              <Text style={styles.listTitle} fontType="medium">
-                NATIVE
-              </Text>
-              <View style={styles.listBox}>
-                {_.map(nativeTokenList, renderItem)}
-              </View>
-            </>
-          )}
+        {_.some(nativeTokenList) || _.some(contractTokenList) ? (
+          <ScrollView
+            style={{ paddingHorizontal: 20, marginBottom: 20 }}
+          >
+            {_.some(nativeTokenList) && (
+              <>
+                <Text style={styles.listTitle} fontType="medium">
+                  NATIVE
+                </Text>
+                <View style={styles.listBox}>
+                  {_.map(nativeTokenList, renderItem)}
+                </View>
+              </>
+            )}
 
-          {_.some(contractTokenList) && (
-            <>
-              <Text style={styles.listTitle} fontType="medium">
-                TOKEN
-              </Text>
-              <View style={styles.listBox}>
-                {_.map(contractTokenList, renderItem)}
-              </View>
-            </>
-          )}
-        </ScrollView>
+            {_.some(contractTokenList) && (
+              <>
+                <Text style={styles.listTitle} fontType="medium">
+                  TOKEN
+                </Text>
+                <View style={styles.listBox}>
+                  {_.map(contractTokenList, renderItem)}
+                </View>
+              </>
+            )}
+          </ScrollView>
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: '10%',
+            }}
+          >
+            <Icon
+              name="inbox"
+              size={56}
+              color={color.primary._02}
+              style={{ marginBottom: 8 }}
+            />
+            <Text fontType="medium">No results found.</Text>
+          </View>
+        )}
       </View>
     </View>
   )

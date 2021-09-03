@@ -47,6 +47,7 @@ import { getTerraswapURL, simulateTerraswap } from './terraswap'
 import * as routeswap from './routeswap'
 import useCalcTax from './useCalcTax'
 import { useCalcFee } from './txHelpers'
+import useWhitelist from 'lib/cw20/useWhitelist'
 
 const { findPair, getRouteMessage } = routeswap
 const {
@@ -87,12 +88,17 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
 
   /* ready: balance */
   const bank = useBank(user)
-  const cw20Tokens = useTokenBalance(user.address)
+  const cw20TokenBalance = useTokenBalance(user.address)
+  const { whitelist, loading: loadingWhitelist } = useWhitelist()
+
   const { pairs, loading: loadingPairs } = usePairs(
     chain.current.name
   )
-  const { whitelist } = cw20Tokens
-  const loadingUI = bank.loading || cw20Tokens.loading || loadingPairs
+  const loadingUI =
+    bank.loading ||
+    loadingWhitelist ||
+    cw20TokenBalance.isLoading ||
+    loadingPairs
 
   // tokens
   const nativeTokensOptions = ['uluna', ...actives].map((denom) => ({
@@ -104,13 +110,16 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
     )}.png`,
   }))
 
-  const cw20TokensList =
-    cw20Tokens.list?.map(({ token, symbol, balance, icon }) => ({
-      value: token,
-      children: symbol,
-      balance,
-      icon,
-    })) ?? []
+  const cw20TokensList = whitelist
+    ? Object.values(whitelist).map(({ token, symbol, icon }) => ({
+        value: token,
+        children: symbol,
+        balance:
+          cw20TokenBalance.list?.find((x) => x.token === token)
+            ?.balance ?? '0',
+        icon,
+      }))
+    : []
 
   const tokens = [...nativeTokensOptions, ...cw20TokensList]
   const getBalance = (from: string): string =>
@@ -130,7 +139,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   const load = async (): Promise<void> => {
     init()
     await bank.execute()
-    await cw20Tokens.load()
+    await cw20TokenBalance.refetch()
   }
 
   /* form */

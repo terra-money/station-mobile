@@ -1,35 +1,49 @@
-import React, { ReactElement, useEffect } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import React, { ReactElement, useEffect, useState } from 'react'
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Modal,
+} from 'react-native'
 import _ from 'lodash'
 import { StackScreenProps } from '@react-navigation/stack'
+import { useNavigation } from '@react-navigation/native'
 
 import { RootStackParams } from 'types'
 import {
   useAssets,
   AssetsUI,
   User,
-  AvailableUI,
   VestingUI,
   Card,
-  useConfig,
+  AvailableItem,
+  AvailableNativeUI,
+  useCurrentChainName,
 } from 'lib'
-import { Text, Icon } from 'components'
+import { Text, Icon, Row, Button } from 'components'
 
-import AvailableItem from './AvailableItem'
-import VestingItem from './VestingItem'
 import color from 'styles/color'
 import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 import CardComp from 'components/Card'
 
+import AssetItem from './AssetItem'
+import VestingItem from './VestingItem'
+import TokenSelector from './TokenSelector'
+import TokenManager from './TokenManager'
+
 type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
-const AvailableList = ({ list }: AvailableUI): ReactElement => {
+const AvailableList = ({
+  list,
+}: {
+  list: AvailableItem[]
+}): ReactElement => {
   return (
     <View>
       {_.map(list, (item, index) => (
-        <AvailableItem key={`AvailableList-${index}`} item={item} />
+        <AssetItem key={`AvailableList-${index}`} item={item} />
       ))}
     </View>
   )
@@ -52,9 +66,8 @@ const VestingList = ({ list, title }: VestingUI): ReactElement => {
 const EmptyWallet = ({ card }: { card?: Card }): ReactElement => {
   return card ? (
     <View style={styles.emptyWalletCard}>
-      <View
+      <Row
         style={{
-          flexDirection: 'row',
           marginBottom: 5,
           alignItems: 'center',
         }}
@@ -67,8 +80,7 @@ const EmptyWallet = ({ card }: { card?: Card }): ReactElement => {
         <Text style={styles.emptyWalletCardTitle} fontType={'bold'}>
           {card.title}
         </Text>
-      </View>
-
+      </Row>
       <Text
         style={{ lineHeight: 21 }}
       >{`This wallet does not hold any coins.`}</Text>
@@ -78,26 +90,62 @@ const EmptyWallet = ({ card }: { card?: Card }): ReactElement => {
   )
 }
 
+const NativeTokenHideSmallCheckBox = ({
+  available,
+}: {
+  available?: AvailableNativeUI
+}): ReactElement => {
+  return (
+    <>
+      {available && (
+        <TouchableOpacity
+          onPress={async (): Promise<void> => {
+            Preferences.setString(
+              PreferencesEnum.walletHideSmall,
+              available.hideSmall.checked ? 'show' : 'hide'
+            )
+            available.hideSmall.toggle()
+          }}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={styles.hideSmallLabel}>
+            {available.hideSmall.label}
+          </Text>
+          <View style={styles.hideSmallCheckBox}>
+            {!!available.hideSmall.checked && (
+              <View style={styles.hideSmallChecked} />
+            )}
+          </View>
+        </TouchableOpacity>
+      )}
+    </>
+  )
+}
+
 const AvailableAssets = ({
   user,
   navigation,
   localHideSmall,
   setlocalHideSmall,
-  localHideSmallTokens,
   refreshingKey,
 }: {
   user: User
   localHideSmall?: boolean
   setlocalHideSmall: (value: boolean) => void
-  localHideSmallTokens?: boolean
   refreshingKey: number
 } & Props): ReactElement => {
   const { ui, load, setHideSmall } = useAssets(user, {
     hideSmall: localHideSmall,
-    hideSmallTokens: localHideSmallTokens,
   })
+  const [isVisibleModal, setIsVisibleModal] = useState<
+    'add' | 'manage' | false
+  >(false)
+  const { addListener, removeListener } = useNavigation()
 
-  const { chain } = useConfig()
+  const chainName = useCurrentChainName()
 
   // If list length is 0 on hiding small-balance-assets, then show small-balance-assets.
   useEffect(() => {
@@ -119,8 +167,18 @@ const AvailableAssets = ({
     const unsubscribe = navigation.addListener('focus', () => {
       load()
     })
-    return unsubscribe
-  }, [chain.current?.name])
+
+    addListener('blur', (): void => {
+      setIsVisibleModal(false)
+    })
+
+    return (): void => {
+      unsubscribe()
+      removeListener('blur', (): void => {
+        setIsVisibleModal(false)
+      })
+    }
+  }, [chainName])
 
   const render = ({
     available,
@@ -135,97 +193,89 @@ const AvailableAssets = ({
             <CardComp {...card} style={{ marginHorizontal: 0 }} />
           )}
           {(available || vesting) && (
-            <View
+            <Row
               style={{
-                flexDirection: 'row',
                 justifyContent: 'space-between',
                 marginBottom: 10,
               }}
             >
-              <Text style={styles.assetListTitle} fontType="medium">
+              <Text style={styles.assetListTitle} fontType="bold">
                 AVAILABLE
               </Text>
-              {available && (
-                <TouchableOpacity
-                  onPress={async (): Promise<void> => {
-                    Preferences.setString(
-                      PreferencesEnum.walletHideSmall,
-                      available.hideSmall.checked ? 'show' : 'hide'
-                    )
-                    available.hideSmall.toggle()
-                  }}
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={styles.hideSmallLabel}>
-                    {available.hideSmall.label}
-                  </Text>
-                  <View style={styles.hideSmallCheckBox}>
-                    {!!available.hideSmall.checked && (
-                      <View
-                        style={{
-                          width: 8,
-                          height: 8,
-                          borderRadius: 1,
-                          backgroundColor: '#0c3694',
-                        }}
-                      />
-                    )}
-                  </View>
-                </TouchableOpacity>
-              )}
-            </View>
+              <NativeTokenHideSmallCheckBox available={available} />
+            </Row>
           )}
           {available && <AvailableList {...available} />}
           {vesting && <VestingList {...vesting} />}
         </View>
-        {tokens && (
+        {tokens.list.length > 0 && (
           <View style={styles.section}>
-            <View
+            <Row
               style={{
-                flexDirection: 'row',
                 justifyContent: 'space-between',
+                alignItems: 'center',
                 marginBottom: 10,
               }}
             >
-              <Text style={styles.assetListTitle} fontType="medium">
+              <Text style={styles.assetListTitle} fontType="bold">
                 TOKENS
               </Text>
               <TouchableOpacity
-                onPress={async (): Promise<void> => {
-                  Preferences.setString(
-                    PreferencesEnum.walletHideSmallTokens,
-                    tokens.hideSmall.checked ? 'show' : 'hide'
-                  )
-                  tokens.hideSmall.toggle()
-                }}
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                onPress={(): void => {
+                  setIsVisibleModal('manage')
                 }}
               >
-                <Text style={styles.hideSmallLabel}>
-                  {tokens.hideSmall.label}
-                </Text>
-                <View style={styles.hideSmallCheckBox}>
-                  {!!tokens.hideSmall.checked && (
-                    <View
-                      style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: 1,
-                        backgroundColor: '#0c3694',
-                      }}
-                    />
-                  )}
-                </View>
+                <Icon
+                  name={'settings'}
+                  size={14}
+                  color={color.primary._02}
+                  style={{ paddingLeft: 20 }}
+                />
               </TouchableOpacity>
-            </View>
+            </Row>
             <AvailableList {...tokens} />
           </View>
         )}
+        <Button
+          onPress={(): void => {
+            setIsVisibleModal('add')
+          }}
+          size="sm"
+          theme="gray"
+          title={
+            <Row style={{ alignItems: 'center' }}>
+              <Icon name="add" size={16} color={color.primary._02} />
+              <Text
+                style={{ color: color.primary._02 }}
+                fontType="medium"
+              >
+                Add Token
+              </Text>
+            </Row>
+          }
+          containerStyle={{ marginBottom: 30 }}
+        />
+        <Modal
+          onRequestClose={(): void => {
+            setIsVisibleModal(false)
+          }}
+          transparent
+          visible={!!isVisibleModal}
+        >
+          {isVisibleModal === 'add' ? (
+            <TokenSelector
+              closeModal={(): void => {
+                setIsVisibleModal(false)
+              }}
+            />
+          ) : (
+            <TokenManager
+              closeModal={(): void => {
+                setIsVisibleModal(false)
+              }}
+            />
+          )}
+        </Modal>
       </>
     ) : (
       <EmptyWallet card={card} />
@@ -279,5 +329,11 @@ const styles = StyleSheet.create({
     borderColor: '#cfd8ea',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  hideSmallChecked: {
+    width: 8,
+    height: 8,
+    borderRadius: 1,
+    backgroundColor: '#0c3694',
   },
 })

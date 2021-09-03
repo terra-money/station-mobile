@@ -14,3 +14,8 @@ export const useConfigState = (
   const currency = useCurrency(initial.currency)
   return { lang, currency, chain }
 }
+
+export const useCurrentChainName = (): string => {
+  const { chain } = useConfig()
+  return chain.current.name
+}

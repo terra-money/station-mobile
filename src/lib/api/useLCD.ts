@@ -1,9 +1,15 @@
 import { LCDClient } from '@terra-money/terra.js'
+import { useMemo } from 'react'
 import { useConfig } from '../contexts/ConfigContext'
 
 const useLCD = (): LCDClient => {
   const { chain } = useConfig()
-  return new LCDClient({ ...chain.current, URL: chain.current.lcd })
+  const { chainID, lcd: URL } = chain.current
+  const lcd = useMemo(() => new LCDClient({ chainID, URL }), [
+    chainID,
+    URL,
+  ])
+  return lcd
 }
 
 export default useLCD
