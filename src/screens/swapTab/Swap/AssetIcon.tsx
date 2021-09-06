@@ -4,8 +4,6 @@ import { View, Image, StyleSheet } from 'react-native'
 import { Option } from 'lib'
 import color from 'styles/color'
 
-import { isNativeDenom } from 'utils/util'
-
 import Terra from 'assets/svg/Terra'
 import layout from 'styles/layout'
 
@@ -13,15 +11,12 @@ const ICON_SIZE = 18
 
 const AssetIcon = ({ option }: { option: Option }): ReactElement => {
   const uri = option.icon
-  const isToken = false === isNativeDenom(option.value)
 
   return uri ? (
     <View
       style={[
         styles.assetIcon,
         {
-          backgroundColor: isToken ? '#131A2F' : 'transparent',
-          padding: isToken ? 2 : 0,
           width: ICON_SIZE,
           height: ICON_SIZE,
         },
