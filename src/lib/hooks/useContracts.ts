@@ -5,10 +5,10 @@ import { Contracts } from '../types'
 const useContracts = (
   name: string
 ): {
-  contracts?: Contracts
-  data?: Dictionary<Contracts>
+  contracts: Contracts | undefined
+  data?: Dictionary<Contracts> | undefined
   loading: boolean
-  error?: Error
+  error: unknown
 } => {
   const response = useTerraAssets<Dictionary<Contracts>>(
     'cw20/contracts.json'
