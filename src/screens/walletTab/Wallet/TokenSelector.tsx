@@ -185,24 +185,24 @@ const TokenSelector = ({
             <View>{_.map(filteredList, renderItem)}</View>
           </ScrollView>
         ) : (
-          searchInput !== '' && (
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingBottom: '10%',
-              }}
-            >
-              <Icon
-                name="inbox"
-                size={56}
-                color={color.primary._02}
-                style={{ marginBottom: 8 }}
-              />
-              <Text fontType="medium">No results found.</Text>
-            </View>
-          )
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: '10%',
+            }}
+          >
+            <Icon
+              name={searchInput ? 'inbox' : 'add-circle-outline'}
+              size={56}
+              color={color.primary._02}
+              style={{ marginBottom: 8 }}
+            />
+            <Text fontType="medium">
+              {searchInput ? 'No results found.' : 'Search tokens.'}
+            </Text>
+          </View>
         )}
       </View>
     </View>
