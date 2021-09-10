@@ -72,7 +72,7 @@ const TokenSelector = ({
         }
       }
 
-      return _.map(whitelist, (item) => item)
+      return [] //_.map(whitelist, (item) => item)
     },
     {
       keepPreviousData: true,
@@ -185,22 +185,24 @@ const TokenSelector = ({
             <View>{_.map(filteredList, renderItem)}</View>
           </ScrollView>
         ) : (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingBottom: '10%',
-            }}
-          >
-            <Icon
-              name="inbox"
-              size={56}
-              color={color.primary._02}
-              style={{ marginBottom: 8 }}
-            />
-            <Text fontType="medium">No results found.</Text>
-          </View>
+          searchInput !== '' && (
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingBottom: '10%',
+              }}
+            >
+              <Icon
+                name="inbox"
+                size={56}
+                color={color.primary._02}
+                style={{ marginBottom: 8 }}
+              />
+              <Text fontType="medium">No results found.</Text>
+            </View>
+          )
         )}
       </View>
     </View>
