@@ -3,22 +3,9 @@ import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 
 import { Text, Icon, ExtLink } from 'components'
-import { format, MessageUI, TxUI } from 'lib'
+import { MessageUI, TxUI } from 'lib'
 import Label from 'components/Badge'
 import color from 'styles/color'
-import { AccAddress } from '@terra-money/terra.js'
-
-const messageAddressParser = (message: string): string => {
-  if (message) {
-    return _.map(message.split(' '), (word) => {
-      if (AccAddress.validate(word)) {
-        return format.truncate(word, [6, 6])
-      }
-      return word
-    }).join(' ')
-  }
-  return ''
-}
 
 const Message = ({
   messages,
@@ -26,7 +13,6 @@ const Message = ({
   messages: MessageUI[]
 }): ReactElement => {
   const message = messages[0]
-  const messageText = messageAddressParser(message.text)
 
   return (
     <View
@@ -43,27 +29,28 @@ const Message = ({
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text
-            style={{
-              fontSize: 10,
-              textTransform: 'uppercase',
-              lineHeight: 15,
-            }}
-            fontType={'bold'}
-          >
-            {message.tag}
-          </Text>
-          {messages.length > 1 && (
-            <Text style={styles.moreMsg} fontType={'medium'}>
-              +{messages.length - 1} MSG{messages.length > 2 && 'S'}
-            </Text>
-          )}
-          {false === message.success && (
+          {message.success ? (
+            <>
+              <Text
+                style={{
+                  fontSize: 10,
+                  textTransform: 'uppercase',
+                  lineHeight: 15,
+                }}
+                fontType={'bold'}
+              >
+                {message.tag}
+              </Text>
+              {messages.length > 1 && (
+                <Text style={styles.moreMsg} fontType={'medium'}>
+                  +{messages.length - 1} MSG
+                  {messages.length > 2 && 'S'}
+                </Text>
+              )}
+            </>
+          ) : (
             <Label
-              containerStyle={{
-                marginLeft: 5,
-                backgroundColor: color.red,
-              }}
+              containerStyle={{ backgroundColor: color.red }}
               text={'Failed'}
             />
           )}
@@ -77,15 +64,20 @@ const Message = ({
           }}
         >
           <View style={{ flex: 1, marginVertical: 3 }}>
-            <Text
-              style={{
-                fontSize: 14,
-                lineHeight: 19,
-                letterSpacing: -0.1,
-              }}
-            >
-              {messageText}
-            </Text>
+            {_.map(message.summary, (item, index) => {
+              return (
+                <Text
+                  key={`message.summary-${index}`}
+                  style={{
+                    fontSize: 14,
+                    lineHeight: 19,
+                    letterSpacing: -0.1,
+                  }}
+                >
+                  {item}
+                </Text>
+              )
+            })}
           </View>
           <View style={{ paddingLeft: 20 }}>
             <Icon size={20} color={'#d8d8d8'} name={'open-in-new'} />

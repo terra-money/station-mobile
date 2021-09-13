@@ -123,7 +123,7 @@ export const date = (
 
 export const truncate = (
   address: string,
-  [h, t]: number[]
+  [h, t] = [6, 6]
 ): string => {
   if (!address) return ''
 
