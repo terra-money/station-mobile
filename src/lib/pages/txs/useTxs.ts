@@ -3,15 +3,17 @@ import { useTranslation } from 'react-i18next'
 import { isTxError } from '@terra-money/terra.js'
 import _ from 'lodash'
 
-import { createActionRuleSet } from '../../../ruleset/create'
-import { createLogMatcherForActions } from '../../../ruleset/execute'
-import { getTxCanonicalMsgs } from '../../../ruleset/format'
 import { TxsPage, User, Tx, TxUI } from '../../types'
 import { format } from '../../utils'
 import useFCD from '../../api/useFCD'
 import { useConfig } from '../../contexts/ConfigContext'
 import useFinder from '../../hooks/useFinder'
 import useParseTxText from './useParseTxText'
+import {
+  createActionRuleSet,
+  createLogMatcherForActions,
+  getTxCanonicalMsgs,
+} from '../../../ruleset'
 import { Action } from 'ruleset/types'
 
 interface Response {
