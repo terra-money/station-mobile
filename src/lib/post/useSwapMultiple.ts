@@ -7,7 +7,12 @@ import {
   MsgExecuteContract,
   MsgSwap,
 } from '@terra-money/terra.js'
-import { PostPage, Coin as StationCoin, User, Field } from '../types'
+import {
+  PostPage,
+  CoinItem as StationCoin,
+  User,
+  Field,
+} from '../types'
 import { BankData, Pairs, ConfirmProps } from '../types'
 import { format, gt, minus, sum } from '../utils'
 import { toInput } from '../utils/format'

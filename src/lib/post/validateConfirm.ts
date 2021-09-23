@@ -1,11 +1,11 @@
-import { Coin, Balance } from '..'
+import { CoinItem, Balance } from '..'
 import { find, plus, lte } from '../utils'
 
 interface Params {
   amount: string
   denom: string
-  fee: Coin
-  tax?: Coin
+  fee: CoinItem
+  tax?: CoinItem
 }
 
 type Validate = (params: Params, balance: Balance[]) => boolean
@@ -33,7 +33,7 @@ export const isDelegatable: Validate = (params, balance) => {
 }
 
 export const isFeeAvailable = (
-  fee: Coin,
+  fee: CoinItem,
   balance: Balance[]
 ): boolean => {
   const available = find(`${fee.denom}:available`, balance) || '0'

@@ -2,9 +2,9 @@ import { Dictionary } from 'ramda'
 import useTerraAssets from '../hooks/useTerraAssets'
 
 const useValidators = (): {
-  data: Dictionary<string> | undefined
+  data?: Dictionary<string>
   loading: boolean
-  error: Error | undefined
+  error: unknown
 } => {
   return useTerraAssets<Dictionary<string>>('validators.json')
 }

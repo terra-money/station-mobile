@@ -12,7 +12,7 @@ import {
 } from '../types'
 import {
   User,
-  Coin as StationCoin,
+  CoinItem as StationCoin,
   Rate,
   Field,
   FormUI,

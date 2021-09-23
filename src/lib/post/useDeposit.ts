@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PostPage, Coin, User, Field, BankData } from '../types'
+import { PostPage, CoinItem, User, Field, BankData } from '../types'
 import { ConfirmProps } from '../types'
 import { format, find } from '../utils'
 import { toAmount, toInput } from '../utils/format'
@@ -8,6 +8,7 @@ import useBank from '../api/useBank'
 import useForm from '../hooks/useForm'
 import validateForm from './validateForm'
 import { isAvailable, getFeeDenomList } from './validateConfirm'
+import { Coins, MsgDeposit } from '@terra-money/terra.js'
 
 interface Values {
   input: string
@@ -81,11 +82,13 @@ export default (
   }
 
   const getConfirm = (bank: BankData): ConfirmProps => ({
-    url: `/gov/proposals/${id}/deposits`,
-    payload: {
-      depositor: user.address,
-      amount: [{ denom: 'uluna', amount }],
-    },
+    msgs: [
+      new MsgDeposit(
+        Number(id),
+        user.address,
+        new Coins({ uluna: amount })
+      ),
+    ],
     contents: [
       {
         name: t('Page:Governance:Deposit'),
@@ -93,7 +96,7 @@ export default (
       },
     ],
     feeDenom: { list: getFeeDenomList(bank.balance) },
-    validate: (fee: Coin): boolean =>
+    validate: (fee: CoinItem): boolean =>
       isAvailable({ amount, denom, fee }, bank.balance),
     submitLabels: [
       t('Post:Governance:Deposit'),

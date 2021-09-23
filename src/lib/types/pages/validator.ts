@@ -2,7 +2,7 @@ import {
   API,
   DisplayCoin,
   Pagination,
-  Coin,
+  CoinItem,
   TablePage,
   TableUI,
 } from '..'
@@ -217,7 +217,7 @@ export interface DelegatorsData extends Pagination {
 export interface Claim {
   txhash: string
   type: string
-  amounts?: Coin[]
+  amounts?: CoinItem[]
   timestamp: string
 }
 
@@ -225,7 +225,7 @@ export interface Event {
   txhash: string
   height: string
   type: string
-  amount: Coin
+  amount: CoinItem
   timestamp: string
 }
 

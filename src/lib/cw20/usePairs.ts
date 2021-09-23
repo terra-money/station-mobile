@@ -5,10 +5,10 @@ import { Pairs } from '../types'
 const usePairs = (
   name: string
 ): {
-  pairs: Pairs | undefined
-  data: Dictionary<Pairs> | undefined
+  pairs?: Pairs
+  data?: Dictionary<Pairs>
   loading: boolean
-  error: Error | undefined
+  error: unknown
 } => {
   const response = useTerraAssets<Dictionary<Pairs>>(
     'cw20/pairs.json'

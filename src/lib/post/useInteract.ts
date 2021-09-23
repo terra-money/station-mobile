@@ -6,7 +6,12 @@ import {
   MsgExecuteContract,
 } from '@terra-money/terra.js'
 import { BankData, CoinFields } from '../types'
-import { PostPage, Coin as TerraCoin, User, Field } from '../types'
+import {
+  PostPage,
+  CoinItem as TerraCoin,
+  User,
+  Field,
+} from '../types'
 import { ConfirmProps } from '../types'
 import { is } from '../utils'
 import useBank from '../api/useBank'

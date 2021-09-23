@@ -1,5 +1,5 @@
 import { Dictionary } from 'ramda'
-import { API, Coin, DisplayCoin, Voter, Article } from '..'
+import { API, CoinItem, DisplayCoin, Voter, Article } from '..'
 
 export interface GovernancePage extends API<ProposalsData> {
   ui?: GovernanceUI
@@ -51,7 +51,7 @@ export interface VoteOption {
 export interface ProposalsData {
   proposals: ProposalItemData[]
   votingPeriod: string
-  minDeposit: Coin[]
+  minDeposit: CoinItem[]
   maxDepositPeriod: string
 }
 
@@ -76,8 +76,8 @@ export type ProposalStatus =
 
 export interface Deposit {
   depositEndTime: string
-  totalDeposit: Coin[]
-  minDeposit: Coin[]
+  totalDeposit: CoinItem[]
+  minDeposit: CoinItem[]
 }
 
 export interface Vote {

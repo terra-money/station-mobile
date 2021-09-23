@@ -8,7 +8,7 @@ import {
   ValidatorData,
   StakingDelegation,
 } from '../types'
-import { Coin, User, Field, FieldElement } from '../types'
+import { CoinItem, User, Field, FieldElement } from '../types'
 import { format } from '../utils'
 import { toAmount, toInput } from '../utils/format'
 import useFCD from '../api/useFCD'
@@ -17,6 +17,12 @@ import useForm from '../hooks/useForm'
 import validateForm from './validateForm'
 import { isDelegatable, isFeeAvailable } from './validateConfirm'
 import { getFeeDenomList } from './validateConfirm'
+import {
+  Coin,
+  MsgBeginRedelegate,
+  MsgDelegate,
+  MsgUndelegate,
+} from '@terra-money/terra.js'
 
 interface Values {
   from: string
@@ -74,7 +80,7 @@ export default (
     staking?.validators?.find((d) => d.operatorAddress === address)
 
   /* max */
-  const getMax = (address: string): Coin => {
+  const getMax = (address: string): CoinItem => {
     const amount =
       findDelegationFromSources(address)?.amountDelegated ??
       staking?.availableLuna
@@ -198,13 +204,14 @@ export default (
         contents,
         feeDenom,
         cancel,
-        url: `/staking/delegators/${from}/delegations`,
-        payload: {
-          delegator_address: from,
-          validator_address: validatorAddress,
-          amount: { amount, denom },
-        },
-        validate: (fee: Coin): boolean =>
+        msgs: [
+          new MsgDelegate(
+            from,
+            validatorAddress,
+            new Coin(denom, amount)
+          ),
+        ],
+        validate: (fee: CoinItem): boolean =>
           isDelegatable({ amount, denom, fee }, bank.balance) &&
           isFeeAvailable(fee, bank.balance),
         submitLabels: [
@@ -223,14 +230,15 @@ export default (
         contents,
         feeDenom,
         cancel,
-        url: `/staking/delegators/${from}/redelegations`,
-        payload: {
-          delegator_address: address,
-          validator_src_address: from,
-          validator_dst_address: validatorAddress,
-          amount: { amount, denom },
-        },
-        validate: (fee: Coin): boolean =>
+        msgs: [
+          new MsgBeginRedelegate(
+            address,
+            from,
+            validatorAddress,
+            new Coin(denom, amount)
+          ),
+        ],
+        validate: (fee: CoinItem): boolean =>
           isFeeAvailable(fee, bank.balance),
         submitLabels: [
           t('Post:Staking:Redelegate'),
@@ -250,13 +258,14 @@ export default (
         contents,
         feeDenom,
         cancel,
-        url: `/staking/delegators/${from}/unbonding_delegations`,
-        payload: {
-          delegator_address: from,
-          validator_address: validatorAddress,
-          amount: { amount, denom },
-        },
-        validate: (fee: Coin): boolean =>
+        msgs: [
+          new MsgUndelegate(
+            from,
+            validatorAddress,
+            new Coin(denom, amount)
+          ),
+        ],
+        validate: (fee: CoinItem): boolean =>
           isFeeAvailable(fee, bank.balance),
         submitLabels: [
           t('Post:Staking:Undelegate'),

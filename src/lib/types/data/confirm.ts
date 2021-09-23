@@ -1,17 +1,15 @@
 import { Coin, Coins, Key, Msg } from '@terra-money/terra.js'
 import { FormUI, FieldAttrs, Options } from '..'
-import { Card, Coin as StationCoin, DisplayCoin } from '..'
+import { Card, CoinItem, DisplayCoin } from '..'
 import { PostResult } from './post'
 
 export interface ConfirmProps {
-  url?: string
-  msgs?: Msg[]
+  msgs: Msg[]
   tax?: Coin | Coins
-  payload?: Record<string, unknown>
   memo?: string
   contents: ConfirmContent[]
   feeDenom: { defaultValue?: string; list: string[] }
-  validate: (fee: StationCoin) => boolean
+  validate: (fee: CoinItem) => boolean
   submitLabels: string[]
   message: string
   parseResult?: (result: PostResult) => string

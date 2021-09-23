@@ -4,7 +4,12 @@ import _ from 'lodash'
 import { MsgExecuteContract, MsgSend } from '@terra-money/terra.js'
 import { Coin } from '@terra-money/terra.js'
 import { BankData, Whitelist } from '../types'
-import { PostPage, Coin as StationCoin, User, Field } from '../types'
+import {
+  PostPage,
+  CoinItem as StationCoin,
+  User,
+  Field,
+} from '../types'
 import { ConfirmContent, ConfirmProps } from '../types'
 import { is, format, find } from '../utils'
 import { gt, max, minus } from '../utils/math'
