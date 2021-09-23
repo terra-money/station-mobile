@@ -51,6 +51,7 @@
     "https-browserify": "~0.0.0",
     "i18next": "^19.8.7",
     "i18next-browser-languagedetector": "^6.0.1",
+    "is-base64": "^1.1.0",
     "luxon": "^1.26.0",
     "node-libs-react-native": "^1.2.1",
     "numeral": "^2.0.6",

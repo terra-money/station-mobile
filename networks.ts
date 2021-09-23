@@ -21,7 +21,7 @@ const network: Record<NetworkEnum, ChainOptions> = {
   },
   bombay: {
     name: 'bombay',
-    chainID: 'bombay-10',
+    chainID: 'bombay-11',
     lcd: 'https://bombay-lcd.terra.dev',
     fcd: 'https://bombay-fcd.terra.dev',
   },
