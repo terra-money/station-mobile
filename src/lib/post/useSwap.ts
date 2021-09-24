@@ -645,26 +645,26 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
       })
     : undefined
 
+  const msgs = !mode
+    ? []
+    : {
+        Market: assertLimitOrder ? [assertLimitOrder, swap] : [swap],
+        Terraswap: terraswap?.msgs,
+        Route: [
+          new MsgExecuteContract(
+            user.address,
+            executeRoute.contract,
+            executeRoute.msg,
+            executeRoute.coins
+          ),
+        ],
+      }[mode] || []
+
   const getConfirm = (
     bank: BankData,
     whitelist: Whitelist
   ): ConfirmProps => ({
-    msgs: !mode
-      ? undefined
-      : {
-          Market: assertLimitOrder
-            ? [assertLimitOrder, swap]
-            : [swap],
-          Terraswap: terraswap?.msgs,
-          Route: [
-            new MsgExecuteContract(
-              user.address,
-              executeRoute.contract,
-              executeRoute.msg,
-              executeRoute.coins
-            ),
-          ],
-        }[mode],
+    msgs,
     tax: shouldTax ? new Coin(from, tax) : undefined,
     contents: [
       {

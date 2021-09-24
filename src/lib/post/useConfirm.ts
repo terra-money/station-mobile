@@ -4,10 +4,12 @@ import { useQuery } from 'react-query'
 import {
   Coins,
   LCDClient,
-  StdFee,
+  Fee,
+  Tx,
   TxInfo,
+  Wallet,
 } from '@terra-money/terra.js'
-import { StdSignMsg, StdTx } from '@terra-money/terra.js'
+import { SignMode } from '@terra-money/terra.proto/cosmos/tx/signing/v1beta1/signing'
 import {
   ConfirmProps,
   ConfirmPage,
@@ -92,7 +94,7 @@ export default (
   /* simulate */
   const [simulating, setSimulating] = useState(true)
   const [simulated, setSimulated] = useState(false)
-  const [unsignedTx, setUnsignedTx] = useState<StdSignMsg>()
+  const [unsignedTx, setUnsignedTx] = useState<Tx>()
   const [gas, setGas] = useState('0')
   const isGasEstimated = gt(gas, 0)
 
@@ -122,7 +124,7 @@ export default (
         const unsignedTx = await lcd.tx.create([{ address }], options)
         setUnsignedTx(unsignedTx)
 
-        const gas = String(unsignedTx.fee.gas)
+        const gas = String(unsignedTx.auth_info.fee.gas_limit)
         const estimatedFee = calcFee!.feeFromGas(gas, denom)
         setGas(gas)
         setInput(toInput(estimatedFee ?? '0'))
@@ -167,7 +169,7 @@ export default (
       setSubmitting(true)
       setErrorMessage(undefined)
 
-      const broadcast = async (signedTx: StdTx): Promise<void> => {
+      const broadcast = async (signedTx: Tx): Promise<void> => {
         const { gasPrices } = calcFee!
         const lcd = new LCDClient({ chainID, URL, gasPrices })
 
@@ -181,10 +183,25 @@ export default (
 
       const gasFee = new Coins({ [fee.denom]: fee.amount })
       const fees = tax ? gasFee.add(tax) : gasFee
-      unsignedTx.fee = new StdFee(unsignedTx.fee.gas, fees)
+      unsignedTx.auth_info.fee = new Fee(
+        unsignedTx.auth_info.fee.gas_limit,
+        fees
+      )
 
+      const { gasPrices } = calcFee!
+      const lcd = new LCDClient({ chainID, URL, gasPrices })
       const key = await getKey(name ? { name, password } : undefined)
-      const signed = await key.signTx(unsignedTx)
+      const wallet = new Wallet(lcd, key)
+      const {
+        account_number,
+        sequence,
+      } = await wallet.accountNumberAndSequence()
+      const signed = await key.signTx(unsignedTx, {
+        accountNumber: account_number,
+        sequence,
+        chainID,
+        signMode: SignMode.SIGN_MODE_DIRECT,
+      })
       await broadcast(signed)
     } catch (error) {
       const { message } = error as PostError

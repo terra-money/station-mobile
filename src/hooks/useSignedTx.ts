@@ -2,9 +2,11 @@ import { StackActions, useNavigation } from '@react-navigation/native'
 import {
   isTxError,
   RawKey,
-  StdTx,
+  Tx,
   SyncTxBroadcastResult,
+  Wallet,
 } from '@terra-money/terra.js'
+import { SignMode } from '@terra-money/terra.proto/cosmos/tx/signing/v1beta1/signing'
 import { useRecoilValue } from 'recoil'
 import { StackNavigationProp } from '@react-navigation/stack'
 
@@ -18,7 +20,7 @@ import { RootStackParams } from 'types'
 type TopupCreateSignedResult =
   | {
       success: true
-      signedTx: StdTx
+      signedTx: Tx
     }
   | {
       success: false
@@ -41,7 +43,7 @@ const useSignedTx = (
   createSignedTx: (
     password: string
   ) => Promise<TopupCreateSignedResult>
-  processTransaction: (signedTx: StdTx) => Promise<TopupResult>
+  processTransaction: (signedTx: Tx) => Promise<TopupResult>
   confirm: (
     password: string,
     returnScheme: string
@@ -62,6 +64,10 @@ const useSignedTx = (
         throw new Error('Tx is undefined')
       }
 
+      const lcd = getLCDClient(
+        chain.current.chainID,
+        chain.current.lcd
+      )
       const decyrptedKey = await getDecyrptedKey(
         user?.name || '',
         password
@@ -81,7 +87,7 @@ const useSignedTx = (
         signMode: SignMode.SIGN_MODE_DIRECT,
       })
       return { success: true, signedTx }
-    } catch (e) {
+    } catch (e: any) {
       return {
         success: false,
         title: 'Unexpected Error',
@@ -91,10 +97,10 @@ const useSignedTx = (
   }
 
   const processTransaction = async (
-    signedTx: StdTx
+    signedTx: Tx
   ): Promise<TopupResult> => {
     const broadcastSignedTx = async (
-      signedTx: StdTx
+      signedTx: Tx
     ): Promise<SyncTxBroadcastResult> => {
       const lcd = getLCDClient(
         chain.current.chainID,
@@ -158,7 +164,7 @@ const useSignedTx = (
                 content: JSON.stringify(await putResult.json()),
               }
       }
-    } catch (e) {
+    } catch (e: any) {
       ret = {
         success: false,
         title: 'Unexpected Error',

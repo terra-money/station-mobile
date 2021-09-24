@@ -4,10 +4,12 @@ import {
   RawKey,
   Key,
   TxInfo,
+  Wallet,
 } from '@terra-money/terra.js'
+import { SignMode } from '@terra-money/terra.proto/cosmos/tx/signing/v1beta1/signing'
 import { StackNavigationProp } from '@react-navigation/stack'
 
-import { User } from 'lib'
+import { useConfig, User } from 'lib'
 import { usePollTxHash } from 'lib/post/useConfirm'
 
 import { getDecyrptedKey } from 'utils/wallet'

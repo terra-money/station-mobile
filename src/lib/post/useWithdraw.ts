@@ -1,4 +1,4 @@
-import { MsgWithdrawDelegationReward } from '@terra-money/terra.js'
+import { MsgWithdrawDelegatorReward } from '@terra-money/terra.js'
 import { useTranslation } from 'react-i18next'
 import { User, WithdrawProps, PostPage } from '../types'
 import useBank from '../api/useBank'
@@ -11,7 +11,7 @@ export default (user: User, props: WithdrawProps): PostPage => {
   const { address: to } = user
 
   const msgs = validators?.map(
-    (addr) => new MsgWithdrawDelegationReward(to, addr)
+    (addr) => new MsgWithdrawDelegatorReward(to, addr)
   )
 
   return {
