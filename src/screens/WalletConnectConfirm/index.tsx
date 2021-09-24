@@ -366,23 +366,35 @@ const Render = ({
 }
 
 const WalletConnectConfirm = (props: Props): ReactElement => {
+  const { dispatch } = useNavigation()
   const _handshakeTopic = props.route.params?.handshakeTopic
   const id = props.route.params?.id
   const walletConnectors = useRecoilValue(
     WalletConnectStore.walletConnectors
   )
+  const walletConnectRecoverComplete = useRecoilValue(
+    WalletConnectStore.walletConnectRecoverComplete
+  )
+
   const connector = walletConnectors[_handshakeTopic]
+  useEffect(() => {
+    if (walletConnectRecoverComplete) {
+      if (!connector) {
+        dispatch(StackActions.replace('WalletConnectDisconnected'))
+      }
+    }
+  }, [walletConnectRecoverComplete])
 
   return (
     <WithAuth>
       {(user): ReactElement =>
-        connector ? (
+        walletConnectRecoverComplete && connector ? (
           <Render
             {...{
               ...props,
               user,
               id,
-              connector: walletConnectors[_handshakeTopic],
+              connector,
             }}
           />
         ) : (

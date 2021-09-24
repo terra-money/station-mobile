@@ -9,6 +9,7 @@ export type AuthStackParams = {
   SelectWallet: undefined
   NewWallet: undefined
   RecoverWallet: undefined
+  WalletConnectDisconnected: undefined
 }
 
 export const AuthStack = createStackNavigator<AuthStackParams>()
@@ -106,6 +107,7 @@ export type RootStackParams = {
   LinkingWalletConnectConfirm: {
     payload: string
   }
+  WalletConnectDisconnected: undefined
 }
 
 export const RootStack = createStackNavigator<RootStackParams>()

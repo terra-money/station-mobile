@@ -12,6 +12,11 @@ const walletConnectors = atom<
   dangerouslyAllowMutability: true,
 })
 
+const walletConnectRecoverComplete = atom<boolean>({
+  key: 'walletConnectRecoverComplete',
+  default: false,
+})
+
 const getWalletConnector = selectorFamily<
   WalletConnect,
   { handshakeTopic: string }
@@ -32,6 +37,7 @@ const isListenConfirmRemove = atom<boolean>({
 
 export default {
   walletConnectors,
+  walletConnectRecoverComplete,
   getWalletConnector,
   isListenConfirmRemove,
 }

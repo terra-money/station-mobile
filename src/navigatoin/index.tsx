@@ -91,6 +91,9 @@ const Navigator = (): ReactElement => {
             },
           },
         },
+        WalletConnectDisconnected: {
+          path: 'walletconnect_confirm',
+        },
       }
 
   const linking: LinkingOptions = {

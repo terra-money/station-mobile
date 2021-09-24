@@ -5,6 +5,7 @@ import AuthMenu from '../screens/auth/AuthMenu'
 import SelectWallet from '../screens/auth/SelectWallet'
 import NewWalletStack from './NewWalletStack'
 import RecoverWalletStack from './RecoverWalletStack'
+import WalletConnectDisconnected from '../screens/WalletConnectDisconnected'
 
 const AppNavigator = (): ReactElement => {
   return (
@@ -27,6 +28,11 @@ const AppNavigator = (): ReactElement => {
       <AuthStack.Screen
         name="RecoverWallet"
         component={RecoverWalletStack}
+        options={{ headerShown: false }}
+      />
+      <AuthStack.Screen
+        name="WalletConnectDisconnected"
+        component={WalletConnectDisconnected}
         options={{ headerShown: false }}
       />
     </AuthStack.Navigator>

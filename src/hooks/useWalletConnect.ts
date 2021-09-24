@@ -1,4 +1,4 @@
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import {
   IWalletConnectOptions,
   IPushServerOptions,
@@ -52,6 +52,9 @@ const useWalletConnect = (): {
   const [walletConnectors, setWalletConnectors] = useRecoilState(
     WalletConnectStore.walletConnectors
   )
+  const setWalletConnectRecoverComplete = useSetRecoilState(
+    WalletConnectStore.walletConnectRecoverComplete
+  )
 
   const { broadcastTx } = useTx()
 
@@ -94,6 +97,7 @@ const useWalletConnect = (): {
       )
       setWalletConnectors(connectors)
     }
+    setWalletConnectRecoverComplete(true)
   }
 
   const saveWalletConnector = (connector: WalletConnect): void => {

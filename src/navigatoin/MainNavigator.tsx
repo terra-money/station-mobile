@@ -38,6 +38,7 @@ import LinkingError from '../screens/LinkingError'
 import LinkingSend from '../screens/LinkingSend'
 import LinkingWalletConnect from '../screens/LinkingWalletConnect'
 import LinkingWalletConnectConfirm from '../screens/LinkingWalletConnectConfirm'
+import WalletConnectDisconnected from '../screens/WalletConnectDisconnected'
 
 const AppNavigator = (): ReactElement => {
   return (
@@ -198,6 +199,11 @@ const AppNavigator = (): ReactElement => {
       <RootStack.Screen
         name="LinkingWalletConnectConfirm"
         component={LinkingWalletConnectConfirm}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen
+        name="WalletConnectDisconnected"
+        component={WalletConnectDisconnected}
         options={{ headerShown: false }}
       />
     </RootStack.Navigator>
