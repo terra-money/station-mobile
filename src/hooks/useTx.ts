@@ -1,36 +1,32 @@
+import { useState, useEffect } from 'react'
 import {
   CreateTxOptions,
   LCDClient,
   RawKey,
   Key,
-  TxBroadcastResult,
-  TxSuccess,
-  TxError,
+  TxInfo,
 } from '@terra-money/terra.js'
 
 import { useConfig } from 'lib'
+import { usePollTxHash } from 'lib/post/useConfirm'
 
 import { getDecyrptedKey } from 'utils/wallet'
 import { useLoading } from './useLoading'
 
-interface Block {
-  height: number
-  txhash: string
-  raw_log: string
-  gas_wanted: number
-  gas_used: number
-}
-
 const useTx = (): {
-  broadcastTx: (props: {
+  broadcastResult?: TxInfo
+  broadcastSync: (props: {
     address: string
     walletName: string
     password: string
     tx: CreateTxOptions
-  }) => Promise<TxBroadcastResult<Block, TxSuccess | TxError>>
+  }) => Promise<void>
 } => {
   const { chain } = useConfig()
   const { showLoading, hideLoading } = useLoading()
+  const [txhash, setTxHash] = useState<string>('')
+  const [broadcastResult, setBroadcastResult] = useState<TxInfo>()
+  const tsInfo = usePollTxHash(txhash)
 
   const getKey = async (params: {
     name: string
@@ -41,7 +37,7 @@ const useTx = (): {
     return new RawKey(Buffer.from(decyrptedKey, 'hex'))
   }
 
-  const broadcastTx = async ({
+  const broadcastSync = async ({
     address,
     walletName,
     password,
@@ -51,7 +47,7 @@ const useTx = (): {
     walletName: string
     password: string
     tx: CreateTxOptions
-  }): Promise<TxBroadcastResult<Block, TxSuccess | TxError>> => {
+  }): Promise<void> => {
     const lcd = new LCDClient({
       chainID: chain.current.chainID,
       URL: chain.current.lcd,
@@ -60,22 +56,30 @@ const useTx = (): {
 
     // fee + tax
     const unsignedTx = await lcd.tx.create(address, tx)
-
     const key = await getKey({
       name: walletName,
       password,
     })
     const signed = await key.signTx(unsignedTx)
-    const txhash = await lcd.tx.hash(signed)
-    showLoading({ txhash })
-    const result = await lcd.tx.broadcast(signed)
 
-    hideLoading()
-    return result
+    const result = await lcd.tx.broadcastSync(signed)
+    showLoading({ txhash: result.txhash })
+    setTxHash(result.txhash)
   }
 
+  useEffect(() => {
+    if (tsInfo) {
+      setBroadcastResult(tsInfo)
+      hideLoading()
+    }
+    return (): void => {
+      setBroadcastResult(undefined)
+    }
+  }, [tsInfo])
+
   return {
-    broadcastTx,
+    broadcastResult,
+    broadcastSync,
   }
 }
 

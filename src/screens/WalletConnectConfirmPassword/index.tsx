@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
@@ -18,7 +18,7 @@ import { RootStackParams } from 'types/navigation'
 
 import { testPassword } from 'utils/wallet'
 import WalletConnectStore from 'stores/WalletConnectStore'
-import useWalletConnect from 'hooks/useWalletConnect'
+import useWalletConnectConfirm from 'hooks/useWalletConnectConfirm'
 import { txParamParser } from 'utils/util'
 import {
   NavigationProp,
@@ -53,7 +53,10 @@ const Render = ({
   const { dispatch } = useNavigation<
     NavigationProp<RootStackParams>
   >()
-  const { confirmSign } = useWalletConnect()
+  const { confirmSign, confirmResult } = useWalletConnectConfirm({
+    connector,
+    id,
+  })
 
   const onPressAllow = async (): Promise<void> => {
     setErrorMessage('')
@@ -63,21 +66,26 @@ const Render = ({
       password: inputPassword,
     })
     if (result.isSuccess) {
-      const result = await confirmSign({
-        connector,
+      confirmSign({
         address: user.address,
         walletName,
         tx,
         password: inputPassword,
-        id,
       })
-      dispatch(StackActions.popToTop())
-      dispatch(StackActions.replace('Complete', { result }))
     } else {
       setErrorMessage('Incorrect password')
       setIsListenConfirmRemove(true)
     }
   }
+
+  useEffect(() => {
+    if (confirmResult) {
+      dispatch(StackActions.popToTop())
+      dispatch(
+        StackActions.replace('Complete', { result: confirmResult })
+      )
+    }
+  }, [confirmResult])
 
   return (
     <>

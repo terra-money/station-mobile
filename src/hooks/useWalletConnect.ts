@@ -3,24 +3,14 @@ import {
   IWalletConnectOptions,
   IPushServerOptions,
 } from '@walletconnect/types'
+import WalletConnect from '@walletconnect/client'
 import _ from 'lodash'
 
 import WalletConnectStore from 'stores/WalletConnectStore'
-import WalletConnect from '@walletconnect/client'
 import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 import { jsonTryParse } from 'utils/util'
-import useTx from './useTx'
-import { CreateTxOptions, isTxError } from '@terra-money/terra.js'
-
-export enum ErrorCodeEnum {
-  userDenied = 1, // User Denied
-  createTxFailed = 2, // CreateTxFailed (no Txhash)
-  txFailed = 3, // TxFailed (Broadcast with Txhash with fail)
-  timeOut = 4, // Timeout
-  etc = 99,
-}
 
 const useWalletConnect = (): {
   newWalletConnect: (
@@ -31,23 +21,7 @@ const useWalletConnect = (): {
   saveWalletConnector: (connector: WalletConnect) => void
   removeWalletConnect: (handshakeTopic: string) => void
   disconnectWalletConnect: (handshakeTopic: string) => void
-  rejectWalletConnectRequest: (props: {
-    handshakeTopic: string
-    id: number
-    errorCode?: ErrorCodeEnum
-    message: string
-    txHash?: string
-    raw_message?: any
-  }) => void
   disconnectAllWalletConnect: () => void
-  confirmSign: (props: {
-    connector: WalletConnect
-    password: string
-    address: string
-    walletName: string
-    tx: CreateTxOptions
-    id: number
-  }) => Promise<{ title: string; content: string; button: string }>
 } => {
   const [walletConnectors, setWalletConnectors] = useRecoilState(
     WalletConnectStore.walletConnectors
@@ -55,8 +29,6 @@ const useWalletConnect = (): {
   const setWalletConnectRecoverComplete = useSetRecoilState(
     WalletConnectStore.walletConnectRecoverComplete
   )
-
-  const { broadcastTx } = useTx()
 
   const newWalletConnect = (
     connectorOpts: IWalletConnectOptions,
@@ -148,111 +120,13 @@ const useWalletConnect = (): {
     })
   }
 
-  const rejectWalletConnectRequest = ({
-    handshakeTopic,
-    id,
-    errorCode = ErrorCodeEnum.etc,
-    message,
-    txHash,
-    raw_message,
-  }: {
-    handshakeTopic: string
-    id: number
-    errorCode?: ErrorCodeEnum
-    message: string
-    txHash?: string
-    raw_message?: any
-  }): void => {
-    const connector = walletConnectors[handshakeTopic]
-    if (connector) {
-      connector.rejectRequest({
-        id,
-        error: {
-          message: JSON.stringify({
-            code: errorCode,
-            message,
-            txHash,
-            raw_message,
-          }),
-        },
-      })
-    }
-  }
-
-  const confirmSign = async ({
-    connector,
-    password,
-    address,
-    walletName,
-    tx,
-    id,
-  }: {
-    connector: WalletConnect
-    password: string
-    address: string
-    walletName: string
-    tx: CreateTxOptions
-    id: number
-  }): Promise<{ title: string; content: string; button: string }> => {
-    try {
-      const data = await broadcastTx({
-        address,
-        walletName,
-        password,
-        tx,
-      })
-
-      let title = ''
-      let content = ''
-      if (isTxError(data)) {
-        title = 'Error!'
-        content = `Oops! Something went wrong\n${data.raw_log}`
-        rejectWalletConnectRequest({
-          handshakeTopic: connector.handshakeTopic,
-          id,
-          errorCode: ErrorCodeEnum.txFailed,
-          message: data.raw_log,
-          txHash: data.txhash,
-          raw_message: data,
-        })
-      } else {
-        title = 'Success!'
-        content =
-          'Your transaction has been successfully processed. Return to your browser and continue.'
-        connector.approveRequest({
-          id,
-          result: data,
-        })
-      }
-
-      return {
-        title,
-        content,
-        button: 'Continue',
-      }
-    } catch (error) {
-      rejectWalletConnectRequest({
-        handshakeTopic: connector.handshakeTopic,
-        id,
-        errorCode: ErrorCodeEnum.createTxFailed,
-        message: _.toString(error),
-      })
-      return {
-        title: 'Error',
-        content: _.toString(error),
-        button: 'Continue',
-      }
-    }
-  }
   return {
     newWalletConnect,
     recoverWalletConnect,
     saveWalletConnector,
     removeWalletConnect,
-    rejectWalletConnectRequest,
     disconnectWalletConnect,
     disconnectAllWalletConnect,
-    confirmSign,
   }
 }
 

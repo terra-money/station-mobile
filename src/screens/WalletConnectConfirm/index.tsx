@@ -34,9 +34,9 @@ import { authenticateBiometric } from 'utils/bio'
 
 import WalletConnectStore from 'stores/WalletConnectStore'
 
-import useWalletConnect, {
+import useWalletConnectConfirm, {
   ErrorCodeEnum,
-} from 'hooks/useWalletConnect'
+} from 'hooks/useWalletConnectConfirm'
 
 import color from 'styles/color'
 
@@ -180,7 +180,10 @@ const ConfirmForm = ({
     }
   }
 
-  const { confirmSign } = useWalletConnect()
+  const { confirmSign, confirmResult } = useWalletConnectConfirm({
+    connector,
+    id,
+  })
 
   const onPressAllow = async (): Promise<void> => {
     autoCloseTimer.current && clearTimeout(autoCloseTimer.current)
@@ -193,16 +196,12 @@ const ConfirmForm = ({
         const password = await getBioAuthPassword({
           walletName: user.name || '',
         })
-
-        const result = await confirmSign({
-          connector,
+        confirmSign({
           address: user.address,
           walletName,
           tx,
-          id,
           password,
         })
-        dispatch(StackActions.replace('Complete', { result }))
       } else {
         setIsListenConfirmRemove(true)
         confirm({
@@ -226,6 +225,14 @@ const ConfirmForm = ({
     }
     setTryConfirm(false)
   }
+
+  useEffect(() => {
+    if (confirmResult) {
+      dispatch(
+        StackActions.replace('Complete', { result: confirmResult })
+      )
+    }
+  }, [confirmResult])
 
   return (
     <TxMessages
@@ -272,12 +279,13 @@ const Render = ({
       dispatch(StackActions.replace('Tabs'))
     }
   }
-  const { rejectWalletConnectRequest } = useWalletConnect()
+  const { rejectWalletConnectRequest } = useWalletConnectConfirm({
+    connector,
+    id,
+  })
 
   const denySign = (): void => {
     rejectWalletConnectRequest({
-      handshakeTopic: connector.handshakeTopic,
-      id,
       errorCode: ErrorCodeEnum.userDenied,
       message: 'Denied by user',
     })
@@ -291,8 +299,6 @@ const Render = ({
 
     autoCloseTimer.current = setTimeout(() => {
       rejectWalletConnectRequest({
-        handshakeTopic: connector.handshakeTopic,
-        id,
         errorCode: ErrorCodeEnum.timeOut,
         // TIMEOUT_DELAY is 1 minute
         message: `Connection timed out. 1 minute`,

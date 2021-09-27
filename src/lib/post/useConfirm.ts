@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
-import { Coins, LCDClient, StdFee } from '@terra-money/terra.js'
+import {
+  Coins,
+  LCDClient,
+  StdFee,
+  TxInfo,
+} from '@terra-money/terra.js'
 import { StdSignMsg, StdTx } from '@terra-money/terra.js'
 import {
   ConfirmProps,
@@ -313,7 +318,7 @@ export default (
 }
 
 /* hooks */
-export const usePollTxHash = (txhash: string): any => {
+export const usePollTxHash = (txhash: string): TxInfo => {
   const [refetchInterval, setRefetchInterval] = useState<
     number | false
   >(false)
