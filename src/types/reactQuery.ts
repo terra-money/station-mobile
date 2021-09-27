@@ -3,4 +3,5 @@ export enum QueryKeyEnum {
   tokens = 'tokens',
   tokenBalances = 'tokenBalances',
   addToken_filteredList = 'addToken_filteredList',
+  assetChainsJson = 'assetChainsJson',
 }

@@ -26,7 +26,6 @@ import AlertView, {
 } from 'components/onlyForApp.tsx/AlertView'
 import { LoadingView } from 'components/onlyForApp.tsx/LoadingView'
 import GlobalTopNotification from 'components/onlyForApp.tsx/GlobalTopNotification'
-import networks from './networks'
 import StatusBar from 'components/StatusBar'
 import { getWallet } from 'utils/wallet'
 import preferences, {
@@ -39,6 +38,9 @@ import color from 'styles/color'
 
 import { showSystemAlert } from 'utils/util'
 import useSecurity from 'hooks/useSecurity'
+import useNetworks from 'hooks/useNetworks'
+
+const isDev = false
 
 const queryClient = new QueryClient()
 
@@ -51,11 +53,11 @@ const App = ({
 }): ReactElement => {
   /* drawer */
   const alertViewProps = useAlertViewState()
-
+  const { networks } = useNetworks()
   /* provider */
   const config = useConfigState({
     lang,
-    chain: chain || networks.mainnet,
+    chain: chain || (isDev ? networks.testnet : networks.mainnet),
     currency,
   })
   const { current: currentLang = '' } = config.lang
@@ -94,47 +96,45 @@ const App = ({
   return (
     <>
       {ready && (
-        <QueryClientProvider client={queryClient}>
-          <AppProvider value={{ alertViewProps }}>
-            <ConfigProvider value={config}>
-              <AuthProvider value={auth}>
-                <SafeAreaProvider>
-                  <StatusBar theme="white" />
-                  <RecoilRoot>
-                    {securityCheckFailed && Platform.OS === 'ios' ? (
-                      <View
-                        style={{
-                          flex: 1,
-                          backgroundColor: color.sapphire,
-                        }}
-                      />
-                    ) : showOnBoarding ? (
-                      <OnBoarding
-                        closeOnBoarding={(): void =>
-                          setshowOnBoarding(false)
-                        }
-                      />
-                    ) : (
-                      <>
-                        <AppNavigator />
-                        <AppModal />
-                        <AlertView alertViewProps={alertViewProps} />
-                        <GlobalTopNotification />
-                        <NoInternet />
-                        <LoadingView />
-                        {config.chain.current.name !== 'mainnet' && (
-                          <DebugBanner
-                            title={config.chain.current.name.toUpperCase()}
-                          />
-                        )}
-                      </>
-                    )}
-                  </RecoilRoot>
-                </SafeAreaProvider>
-              </AuthProvider>
-            </ConfigProvider>
-          </AppProvider>
-        </QueryClientProvider>
+        <AppProvider value={{ alertViewProps }}>
+          <ConfigProvider value={config}>
+            <AuthProvider value={auth}>
+              <SafeAreaProvider>
+                <StatusBar theme="white" />
+                <RecoilRoot>
+                  {securityCheckFailed && Platform.OS === 'ios' ? (
+                    <View
+                      style={{
+                        flex: 1,
+                        backgroundColor: color.sapphire,
+                      }}
+                    />
+                  ) : showOnBoarding ? (
+                    <OnBoarding
+                      closeOnBoarding={(): void =>
+                        setshowOnBoarding(false)
+                      }
+                    />
+                  ) : (
+                    <>
+                      <AppNavigator />
+                      <AppModal />
+                      <AlertView alertViewProps={alertViewProps} />
+                      <GlobalTopNotification />
+                      <NoInternet />
+                      <LoadingView />
+                      {config.chain.current.name !== 'mainnet' && (
+                        <DebugBanner
+                          title={config.chain.current.name.toUpperCase()}
+                        />
+                      )}
+                    </>
+                  )}
+                </RecoilRoot>
+              </SafeAreaProvider>
+            </AuthProvider>
+          </ConfigProvider>
+        </AppProvider>
       )}
     </>
   )
@@ -185,7 +185,9 @@ export default (): ReactElement => {
   return (
     <>
       {local && initComplete ? (
-        <App settings={local} user={user} />
+        <QueryClientProvider client={queryClient}>
+          <App settings={local} user={user} />
+        </QueryClientProvider>
       ) : null}
     </>
   )

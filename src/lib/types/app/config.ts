@@ -1,3 +1,5 @@
+import { NetworkEnum } from 'types'
+
 export interface Config {
   lang: LangConfig
   currency: CurrencyConfig
@@ -34,15 +36,12 @@ export interface CurrencyConfig {
 }
 
 /* chain */
-export interface DefaultChainOptions {
-  name: string
+export interface ChainOptions {
+  name: NetworkEnum
   chainID: string
   lcd: string
-}
-
-export interface ChainOptions extends DefaultChainOptions {
   fcd: string
-  localterra?: boolean
+  walletconnectID: number
 }
 
 export interface ChainConfig {

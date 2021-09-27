@@ -119,23 +119,12 @@ const Render = ({
     })
   }
 
-  const getChainId = (chainName: string): number => {
-    switch (chainName) {
-      case 'testnet':
-        return 0
-      case 'bombay':
-        return 2
-      default:
-        return 1
-    }
-  }
-
   const confirmConnect = (): void => {
     if (localWalletConnector) {
       const { peerMeta } = localWalletConnector
 
       localWalletConnector.approveSession({
-        chainId: getChainId(chain.current.name),
+        chainId: chain.current.walletconnectID,
         accounts: [user.address],
       })
       saveWalletConnector(localWalletConnector)

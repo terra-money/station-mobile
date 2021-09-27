@@ -33,14 +33,15 @@ import {
   authenticateBiometric,
   isSupportedBiometricAuthentication,
 } from 'utils/bio'
-import networks from '../../../networks'
 import StatusBar from 'components/StatusBar'
 import useWalletConnect from 'hooks/useWalletConnect'
+import useNetworks from 'hooks/useNetworks'
 
 const Setting = (): ReactElement => {
   const { user, signOut } = useAuth()
   const { alert } = useAlert()
   const { chain, currency } = useConfig()
+  const { networks } = useNetworks()
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
