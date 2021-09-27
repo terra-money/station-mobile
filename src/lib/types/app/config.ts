@@ -41,6 +41,7 @@ export interface ChainOptions {
   chainID: string
   lcd: string
   fcd: string
+  mantle: string
   walletconnectID: number
 }
 

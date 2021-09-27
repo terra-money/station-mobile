@@ -1,12 +1,10 @@
-import { Dictionary } from 'ramda'
 import { useQuery } from 'react-query'
 import _ from 'lodash'
 
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { TokenBalance, Tokens } from '../types'
 import { QueryKeyEnum } from 'types'
-import { useCurrentChainName } from '../contexts/ConfigContext'
-import mantleURL from './mantle.json'
+import { useConfig } from '../contexts/ConfigContext'
 import alias from './alias'
 import useTokens from 'hooks/useTokens'
 import { jsonTryParse } from 'utils/util'
@@ -19,20 +17,21 @@ export interface TokenBalanceQuery {
 }
 
 export default (address: string): TokenBalanceQuery => {
-  const chainName = useCurrentChainName()
   const { tokens } = useTokens()
-
-  const mantle = (mantleURL as Dictionary<string | undefined>)[
-    chainName
-  ]
+  const { chain } = useConfig()
 
   const { data: list = [], isLoading, refetch } = useQuery(
-    [QueryKeyEnum.tokenBalances, address, mantle, tokens],
+    [
+      QueryKeyEnum.tokenBalances,
+      address,
+      chain.current.mantle,
+      tokens,
+    ],
     async () => {
       if (_.some(tokens)) {
         try {
           const client = new ApolloClient({
-            uri: mantle,
+            uri: chain.current.mantle,
             cache: new InMemoryCache(),
           })
 

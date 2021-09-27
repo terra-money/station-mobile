@@ -10,6 +10,7 @@ const defaultNetworks: Record<NetworkEnum, ChainOptions> = {
     chainID: 'columbus-4',
     lcd: 'https://lcd.terra.dev',
     fcd: 'https://fcd.terra.dev',
+    mantle: 'https://mantle.terra.dev',
     walletconnectID: 1,
   },
   testnet: {
@@ -17,6 +18,7 @@ const defaultNetworks: Record<NetworkEnum, ChainOptions> = {
     chainID: 'tequila-0004',
     lcd: 'https://tequila-lcd.terra.dev',
     fcd: 'https://tequila-fcd.terra.dev',
+    mantle: 'https://tequila-mantle.terra.dev',
     walletconnectID: 0,
   },
   bombay: {
@@ -24,6 +26,7 @@ const defaultNetworks: Record<NetworkEnum, ChainOptions> = {
     chainID: 'bombay-11',
     lcd: 'https://bombay-lcd.terra.dev',
     fcd: 'https://bombay-fcd.terra.dev',
+    mantle: 'https://bombay-mantle.terra.dev',
     walletconnectID: 2,
   },
 }

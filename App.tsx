@@ -40,8 +40,6 @@ import { showSystemAlert } from 'utils/util'
 import useSecurity from 'hooks/useSecurity'
 import useNetworks from 'hooks/useNetworks'
 
-const isDev = false
-
 const queryClient = new QueryClient()
 
 const App = ({
@@ -54,10 +52,11 @@ const App = ({
   /* drawer */
   const alertViewProps = useAlertViewState()
   const { networks } = useNetworks()
+
   /* provider */
   const config = useConfigState({
     lang,
-    chain: chain || (isDev ? networks.testnet : networks.mainnet),
+    chain: chain ? networks[chain.name] : networks.mainnet,
     currency,
   })
   const { current: currentLang = '' } = config.lang
