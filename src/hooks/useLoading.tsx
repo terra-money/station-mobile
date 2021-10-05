@@ -1,20 +1,53 @@
-import { useSetRecoilState } from 'recoil'
-import AppStore from 'stores/AppStore'
+import { useEffect } from 'react'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { StackNavigationProp } from '@react-navigation/stack'
 
-export const useLoading = (): {
+import AppStore from 'stores/AppStore'
+import { RootStackParams } from 'types'
+
+export const useLoading = ({
+  navigation,
+}: {
+  navigation: StackNavigationProp<
+    RootStackParams,
+    keyof RootStackParams
+  >
+}): {
   showLoading: ({ txhash }: { txhash?: string }) => void
-  hideLoading: () => void
+  hideLoading: () => Promise<void>
 } => {
   const setShowLoading = useSetRecoilState(AppStore.showLoading)
-  const setLoadingTxHash = useSetRecoilState(AppStore.loadingTxHash)
+  const [loadingTxHash, setLoadingTxHash] = useRecoilState(
+    AppStore.loadingTxHash
+  )
+
   const showLoading = ({ txhash }: { txhash?: string }): void => {
     setShowLoading(true)
     setLoadingTxHash(txhash || '')
   }
-  const hideLoading = (): void => {
-    setShowLoading(false)
+  const hideLoading = async (): Promise<void> => {
     setLoadingTxHash('')
+    return await new Promise((resolve) => {
+      setTimeout(() => {
+        setShowLoading(false)
+        resolve()
+      }, 300)
+    })
   }
+
+  useEffect(() => {
+    let unsubscribe: any
+    if (loadingTxHash) {
+      unsubscribe = navigation.addListener('beforeRemove', (e) =>
+        e.preventDefault()
+      )
+    }
+
+    return (): void => {
+      unsubscribe?.()
+    }
+  }, [loadingTxHash])
+
   return {
     showLoading,
     hideLoading,

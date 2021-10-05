@@ -6,14 +6,18 @@ import {
   Key,
   TxInfo,
 } from '@terra-money/terra.js'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 import { useConfig } from 'lib'
 import { usePollTxHash } from 'lib/post/useConfirm'
 
 import { getDecyrptedKey } from 'utils/wallet'
 import { useLoading } from './useLoading'
+import { RootStackParams } from 'types'
 
-const useTx = (): {
+const useTx = (
+  navigation: StackNavigationProp<RootStackParams>
+): {
   broadcastResult?: TxInfo
   broadcastSync: (props: {
     address: string
@@ -23,7 +27,7 @@ const useTx = (): {
   }) => Promise<void>
 } => {
   const { chain } = useConfig()
-  const { showLoading, hideLoading } = useLoading()
+  const { showLoading, hideLoading } = useLoading({ navigation })
   const [txhash, setTxHash] = useState<string>('')
   const [broadcastResult, setBroadcastResult] = useState<TxInfo>()
   const tsInfo = usePollTxHash(txhash)
@@ -63,14 +67,18 @@ const useTx = (): {
     const signed = await key.signTx(unsignedTx)
 
     const result = await lcd.tx.broadcastSync(signed)
+    if ('code' in result && Number(result.code) !== 0) {
+      throw new Error(result.raw_log)
+    }
     showLoading({ txhash: result.txhash })
     setTxHash(result.txhash)
   }
 
   useEffect(() => {
     if (tsInfo) {
-      setBroadcastResult(tsInfo)
-      hideLoading()
+      hideLoading().then(() => {
+        setBroadcastResult(tsInfo)
+      })
     }
     return (): void => {
       setBroadcastResult(undefined)

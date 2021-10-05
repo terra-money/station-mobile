@@ -1,7 +1,7 @@
 import { API, Options } from '..'
 
 export interface Card {
-  title?: string
+  title: string
   content?: string
   i18nKey?: string
   button?: string

@@ -7,7 +7,7 @@ import { NetworkEnum } from 'types'
 const defaultNetworks: Record<NetworkEnum, ChainOptions> = {
   mainnet: {
     name: NetworkEnum.mainnet,
-    chainID: 'columbus-4',
+    chainID: 'columbus-5',
     lcd: 'https://lcd.terra.dev',
     fcd: 'https://fcd.terra.dev',
     mantle: 'https://mantle.terra.dev',
@@ -15,19 +15,11 @@ const defaultNetworks: Record<NetworkEnum, ChainOptions> = {
   },
   testnet: {
     name: NetworkEnum.testnet,
-    chainID: 'tequila-0004',
-    lcd: 'https://tequila-lcd.terra.dev',
-    fcd: 'https://tequila-fcd.terra.dev',
-    mantle: 'https://tequila-mantle.terra.dev',
-    walletconnectID: 0,
-  },
-  bombay: {
-    name: NetworkEnum.bombay,
-    chainID: 'bombay-11',
+    chainID: 'bombay-12',
     lcd: 'https://bombay-lcd.terra.dev',
     fcd: 'https://bombay-fcd.terra.dev',
     mantle: 'https://bombay-mantle.terra.dev',
-    walletconnectID: 2,
+    walletconnectID: 0,
   },
 }
 
@@ -46,7 +38,6 @@ const useNetworks = (): {
     return {
       [NetworkEnum.mainnet]: getOptions(NetworkEnum.mainnet),
       [NetworkEnum.testnet]: getOptions(NetworkEnum.testnet),
-      [NetworkEnum.bombay]: getOptions(NetworkEnum.bombay),
     }
   }, [data])
 

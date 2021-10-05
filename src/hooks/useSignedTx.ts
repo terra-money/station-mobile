@@ -6,11 +6,14 @@ import {
   SyncTxBroadcastResult,
 } from '@terra-money/terra.js'
 import { useRecoilValue } from 'recoil'
+import { StackNavigationProp } from '@react-navigation/stack'
+
 import TopupStore from 'stores/TopupStore'
 import { useAuth, useConfig } from 'lib'
 import { getDecyrptedKey } from 'utils/wallet'
 import { getLCDClient } from '../screens/topup/TopupUtils'
 import { useLoading } from './useLoading'
+import { RootStackParams } from 'types'
 
 type TopupCreateSignedResult =
   | {
@@ -32,7 +35,8 @@ type TopupResult =
     }
 
 const useSignedTx = (
-  endpointAddress: string
+  endpointAddress: string,
+  navigation: StackNavigationProp<RootStackParams>
 ): {
   createSignedTx: (
     password: string
@@ -46,7 +50,7 @@ const useSignedTx = (
   const { user } = useAuth()
   const { chain } = useConfig()
   const { dispatch } = useNavigation()
-  const { showLoading, hideLoading } = useLoading()
+  const { showLoading, hideLoading } = useLoading({ navigation })
 
   const stdSignMsg = useRecoilValue(TopupStore.stdSignMsg)
 
@@ -89,7 +93,7 @@ const useSignedTx = (
       const txhash = await lcd.tx.hash(signedTx)
       showLoading({ txhash })
       const result = await lcd.tx.broadcast(signedTx)
-      hideLoading()
+      await hideLoading()
       return result
     }
 

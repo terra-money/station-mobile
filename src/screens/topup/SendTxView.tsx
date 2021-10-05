@@ -73,7 +73,7 @@ const SendTxView = (props: Props): ReactElement => {
   const [bioAvailable, setBioAvailable] = useState(false)
 
   const { restoreApp } = useTopup()
-  const { confirm } = useSignedTx(endpointAddress)
+  const { confirm } = useSignedTx(endpointAddress, props.navigation)
 
   useEffect(() => {
     // parse param

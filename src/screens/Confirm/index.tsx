@@ -100,6 +100,7 @@ const Displays = ({
 const Render = ({
   user,
   confirm,
+  navigation,
 }: {
   user: User
   confirm: ConfirmProps
@@ -108,7 +109,7 @@ const Render = ({
     NavigationProp<RootStackParams>
   >()
   const { confirm: confirmAlert } = useAlert()
-  const { showLoading, hideLoading } = useLoading()
+  const { showLoading, hideLoading } = useLoading({ navigation })
   const { getComfirmData, initConfirm } = useConfirm()
   const { contents, fee, form, result, txhash } = getComfirmData({
     confirm,
@@ -171,12 +172,13 @@ const Render = ({
   // result will set after form.onSubmit or error
   useEffect(() => {
     if (result) {
-      hideLoading()
-      dispatch(StackActions.popToTop())
-      navigate('Complete', { result })
-      initConfirm()
+      hideLoading().then(() => {
+        dispatch(StackActions.popToTop())
+        navigate('Complete', { result })
+        initConfirm()
+      })
     }
-  }, [result])
+  }, [result?.title])
 
   const initPage = async (): Promise<void> => {
     formPassword?.setValue && formPassword.setValue(INIT_PASSWORD)

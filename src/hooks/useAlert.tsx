@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import Text from '../components/Text'
-import { useApp } from './useApp'
+import { useApp } from '../App/useApp'
 import color from 'styles/color'
 
 type AlertProps = {

@@ -22,7 +22,10 @@ type Props = StackScreenProps<RootStackParams, 'SendTxPasswordView'>
 const SendTxPasswordView = (props: Props): ReactElement => {
   const insets = useSafeAreaInsets()
   const { goBack } = useNavigation()
-  const { confirm } = useSignedTx(props.route.params.endpointAddress)
+  const { confirm } = useSignedTx(
+    props.route.params.endpointAddress,
+    props.navigation
+  )
 
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')

@@ -4,6 +4,8 @@ import WalletConnect from '@walletconnect/client'
 import { useEffect, useState } from 'react'
 
 import useTx from './useTx'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { RootStackParams } from 'types'
 
 export enum ErrorCodeEnum {
   userDenied = 1, // User Denied
@@ -19,13 +21,7 @@ export type ConfirmResultType = {
   button: string
 }
 
-const useWalletConnectConfirm = ({
-  id,
-  connector,
-}: {
-  id: number
-  connector: WalletConnect
-}): {
+export type UseWalletConnectConfirmReturn = {
   rejectWalletConnectRequest: (props: {
     errorCode?: ErrorCodeEnum
     message: string
@@ -39,13 +35,23 @@ const useWalletConnectConfirm = ({
     tx: CreateTxOptions
   }) => Promise<void>
   confirmResult?: ConfirmResultType
-} => {
+}
+
+const useWalletConnectConfirm = ({
+  id,
+  connector,
+  navigation,
+}: {
+  id: number
+  connector: WalletConnect
+  navigation: StackNavigationProp<RootStackParams>
+}): UseWalletConnectConfirmReturn => {
   const [
     confirmResult,
     setConfirmResult,
   ] = useState<ConfirmResultType>()
 
-  const { broadcastSync, broadcastResult } = useTx()
+  const { broadcastSync, broadcastResult } = useTx(navigation)
 
   const rejectWalletConnectRequest = ({
     errorCode = ErrorCodeEnum.etc,
@@ -82,14 +88,12 @@ const useWalletConnectConfirm = ({
     walletName: string
     tx: CreateTxOptions
   }): Promise<void> => {
-    try {
-      broadcastSync({
-        address,
-        walletName,
-        password,
-        tx,
-      })
-    } catch (error) {
+    broadcastSync({
+      address,
+      walletName,
+      password,
+      tx,
+    }).catch((error) => {
       rejectWalletConnectRequest({
         errorCode: ErrorCodeEnum.createTxFailed,
         message: _.toString(error),
@@ -99,7 +103,7 @@ const useWalletConnectConfirm = ({
         content: _.toString(error),
         button: 'Continue',
       })
-    }
+    })
   }
 
   useEffect(() => {

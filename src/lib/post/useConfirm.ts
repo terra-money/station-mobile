@@ -172,6 +172,10 @@ export default (
         const lcd = new LCDClient({ chainID, URL, gasPrices })
 
         const data = await lcd.tx.broadcastSync(signedTx)
+
+        if ('code' in data && Number(data.code) !== 0) {
+          throw new Error(data.raw_log)
+        }
         setTxHash(data.txhash)
       }
 

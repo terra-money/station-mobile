@@ -40,7 +40,7 @@ import LinkingWalletConnect from '../screens/LinkingWalletConnect'
 import LinkingWalletConnectConfirm from '../screens/LinkingWalletConnectConfirm'
 import WalletConnectDisconnected from '../screens/WalletConnectDisconnected'
 
-const AppNavigator = (): ReactElement => {
+const MainNavigator = (): ReactElement => {
   return (
     <RootStack.Navigator>
       <RootStack.Screen
@@ -210,4 +210,4 @@ const AppNavigator = (): ReactElement => {
   )
 }
 
-export default AppNavigator
+export default MainNavigator

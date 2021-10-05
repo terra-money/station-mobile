@@ -36,6 +36,7 @@ import WalletConnectStore from 'stores/WalletConnectStore'
 
 import useWalletConnectConfirm, {
   ErrorCodeEnum,
+  UseWalletConnectConfirmReturn,
 } from 'hooks/useWalletConnectConfirm'
 
 import color from 'styles/color'
@@ -154,12 +155,14 @@ const ConfirmForm = ({
   id,
   tx,
   route,
+  walletConnectConfirmReturn,
 }: {
   connector: WalletConnect
   isUseBioAuth: boolean
   user: User
   id: number
   tx: CreateTxOptions
+  walletConnectConfirmReturn: UseWalletConnectConfirmReturn
 } & Props): ReactElement => {
   const autoCloseTimer = React.useRef<NodeJS.Timeout>()
   const setIsListenConfirmRemove = useSetRecoilState(
@@ -180,10 +183,7 @@ const ConfirmForm = ({
     }
   }
 
-  const { confirmSign, confirmResult } = useWalletConnectConfirm({
-    connector,
-    id,
-  })
+  const { confirmSign, confirmResult } = walletConnectConfirmReturn
 
   const onPressAllow = async (): Promise<void> => {
     autoCloseTimer.current && clearTimeout(autoCloseTimer.current)
@@ -279,10 +279,13 @@ const Render = ({
       dispatch(StackActions.replace('Tabs'))
     }
   }
-  const { rejectWalletConnectRequest } = useWalletConnectConfirm({
+
+  const walletConnectConfirmReturn = useWalletConnectConfirm({
     connector,
     id,
+    navigation,
   })
+  const { rejectWalletConnectRequest } = walletConnectConfirmReturn
 
   const denySign = (): void => {
     rejectWalletConnectRequest({
@@ -351,6 +354,7 @@ const Render = ({
               tx,
               route,
               navigation,
+              walletConnectConfirmReturn,
             }}
           />
         ) : initComplete ? (

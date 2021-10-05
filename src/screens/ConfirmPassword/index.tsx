@@ -29,13 +29,14 @@ const Render = ({
   confirm,
   user,
   route,
+  navigation,
 }: {
   user: User
   confirm: ConfirmProps
 } & Props): ReactElement => {
   const feeSelectValue = route.params.feeSelectValue
   const { getComfirmData, initConfirm } = useConfirm()
-  const { showLoading, hideLoading } = useLoading()
+  const { showLoading, hideLoading } = useLoading({ navigation })
   const { result, form, fee, txhash } = getComfirmData({
     confirm,
     user,
@@ -53,12 +54,13 @@ const Render = ({
   // result will set after form.onSubmit or error
   useEffect(() => {
     if (result) {
-      hideLoading()
-      dispatch(StackActions.popToTop())
-      navigate('Complete', { result })
-      initConfirm()
+      hideLoading().then(() => {
+        dispatch(StackActions.popToTop())
+        navigate('Complete', { result })
+        initConfirm()
+      })
     }
-  }, [result])
+  }, [result?.title])
 
   useEffect(() => {
     if (_.some(fee.select.options)) {

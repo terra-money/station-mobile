@@ -16,10 +16,10 @@ import useFinder from 'lib/hooks/useFinder'
 import { truncate } from 'lib/utils/format'
 import color from 'styles/color'
 
-export const LoadingView = (): ReactElement => {
+const LoadingView = (): ReactElement => {
   const showLoading = useRecoilValue(AppStore.showLoading)
   const txhash = useRecoilValue(AppStore.loadingTxHash)
-
+  const [displayTxhash, setDisplayTxhash] = useState(txhash)
   const start = useMemo(() => new Date(), [txhash])
 
   const [now, setNow] = useState(new Date())
@@ -29,6 +29,7 @@ export const LoadingView = (): ReactElement => {
   useEffect(() => {
     let interval: NodeJS.Timeout
     if (txhash) {
+      setDisplayTxhash(txhash)
       interval = setInterval(() => setNow(new Date()), 1000)
     }
     return (): void => {
@@ -43,27 +44,20 @@ export const LoadingView = (): ReactElement => {
     .map((str) => String(str).padStart(2, '0'))
     .join(':')
 
-  return showLoading ? (
-    <View style={styles.container}>
-      <Image
-        source={images.loading_image}
-        style={{ width: 160, height: 160, marginBottom: 5 }}
-      />
-      <Text style={styles.title} fontType={'bold'}>
-        Broadcasting transaction
-      </Text>
+  if (showLoading) {
+    return (
+      <View style={styles.container}>
+        <Image
+          source={images.loading_image}
+          style={{ width: 160, height: 160, marginBottom: 5 }}
+        />
+        <Text style={styles.title} fontType={'bold'}>
+          Broadcasting transaction
+        </Text>
 
-      {_.some(txhash) && (
-        <>
+        {_.some(displayTxhash) && (
           <View style={styles.infoBox}>
-            <Row
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingHorizontal: 26,
-                paddingTop: 10,
-              }}
-            >
+            <Row style={styles.queuedBox}>
               <Text
                 style={{ fontSize: 16, paddingRight: 5 }}
                 fontType="bold"
@@ -78,26 +72,14 @@ export const LoadingView = (): ReactElement => {
             <Text style={styles.timer} fontType="medium">
               {fromNow}
             </Text>
-            <Text
-              style={{
-                textAlign: 'center',
-                paddingBottom: 20,
-                borderBottomColor: 'rgba(32, 67, 181, 0.2)',
-                borderBottomWidth: 1,
-              }}
-            >
+            <Text style={styles.txStatusText}>
               This transaction is in process.
             </Text>
             {link && (
               <ExtLink
                 url={link}
                 title={
-                  <Row
-                    style={{
-                      justifyContent: 'space-between',
-                      paddingTop: 20,
-                    }}
-                  >
+                  <Row style={styles.txhashBox}>
                     <Text
                       style={{ color: color.primary._02 }}
                       fontType="medium"
@@ -106,13 +88,10 @@ export const LoadingView = (): ReactElement => {
                     </Text>
                     <Row>
                       <Text
-                        style={{
-                          color: color.primary._03,
-                          paddingRight: 5,
-                        }}
+                        style={styles.txhashText}
                         fontType="medium"
                       >
-                        {truncate(txhash, [6, 6])}
+                        {truncate(displayTxhash, [6, 6])}
                       </Text>
                       <Icon
                         size={18}
@@ -125,13 +104,15 @@ export const LoadingView = (): ReactElement => {
               />
             )}
           </View>
-        </>
-      )}
-    </View>
-  ) : (
-    <View />
-  )
+        )}
+      </View>
+    )
+  }
+
+  return <View />
 }
+
+export default LoadingView
 
 const styles = StyleSheet.create({
   container: {
@@ -162,5 +143,25 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 8,
     backgroundColor: color.primary._04,
+  },
+  queuedBox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 26,
+    paddingTop: 10,
+  },
+  txStatusText: {
+    textAlign: 'center',
+    paddingBottom: 20,
+    borderBottomColor: 'rgba(32, 67, 181, 0.2)',
+    borderBottomWidth: 1,
+  },
+  txhashBox: {
+    justifyContent: 'space-between',
+    paddingTop: 20,
+  },
+  txhashText: {
+    color: color.primary._03,
+    paddingRight: 5,
   },
 })

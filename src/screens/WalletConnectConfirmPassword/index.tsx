@@ -36,6 +36,7 @@ const Render = ({
   connector,
   id,
   tx,
+  navigation,
 }: {
   user: User
   connector: WalletConnect
@@ -56,6 +57,7 @@ const Render = ({
   const { confirmSign, confirmResult } = useWalletConnectConfirm({
     connector,
     id,
+    navigation,
   })
 
   const onPressAllow = async (): Promise<void> => {
