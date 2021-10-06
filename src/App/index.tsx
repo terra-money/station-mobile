@@ -54,10 +54,14 @@ const App = ({
   const alertViewProps = useAlertViewState()
   const { networks } = useNetworks()
 
+  const chainOption =
+    (chain ? networks[chain.name] : networks.mainnet) ||
+    networks.mainnet
+
   /* provider */
   const config = useConfigState({
     lang,
-    chain: chain ? networks[chain.name] : networks.mainnet,
+    chain: chainOption,
     currency,
   })
   const { current: currentLang = '' } = config.lang
