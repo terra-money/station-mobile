@@ -38,7 +38,7 @@ const Render = ({
   const onPressNext = async (): Promise<void> => {
     setErrorMessage('')
     const result = await testPassword({
-      name: user.name || '',
+      name: user.name,
       password: inputPassword,
     })
     if (result.isSuccess) {

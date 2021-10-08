@@ -43,7 +43,7 @@ const Render = ({
   id: number
   tx: CreateTxOptions
 } & Props): ReactElement => {
-  const walletName = user.name || ''
+  const walletName = user.name
   const setIsListenConfirmRemove = useSetRecoilState(
     WalletConnectStore.isListenConfirmRemove
   )
@@ -58,13 +58,14 @@ const Render = ({
     connector,
     id,
     navigation,
+    user,
   })
 
   const onPressAllow = async (): Promise<void> => {
     setErrorMessage('')
     setIsListenConfirmRemove(false)
     const result = await testPassword({
-      name: user.name || '',
+      name: user.name,
       password: inputPassword,
     })
     if (result.isSuccess) {

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import useTx from './useTx'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
+import { User } from 'lib'
 
 export enum ErrorCodeEnum {
   userDenied = 1, // User Denied
@@ -40,10 +41,12 @@ export type UseWalletConnectConfirmReturn = {
 const useWalletConnectConfirm = ({
   id,
   connector,
+  user,
   navigation,
 }: {
   id: number
   connector: WalletConnect
+  user: User
   navigation: StackNavigationProp<RootStackParams>
 }): UseWalletConnectConfirmReturn => {
   const [
@@ -51,7 +54,10 @@ const useWalletConnectConfirm = ({
     setConfirmResult,
   ] = useState<ConfirmResultType>()
 
-  const { broadcastSync, broadcastResult } = useTx(navigation)
+  const { broadcastSync, broadcastResult } = useTx({
+    user,
+    navigation,
+  })
 
   const rejectWalletConnectRequest = ({
     errorCode = ErrorCodeEnum.etc,

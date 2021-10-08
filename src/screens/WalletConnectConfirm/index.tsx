@@ -168,7 +168,7 @@ const ConfirmForm = ({
   const setIsListenConfirmRemove = useSetRecoilState(
     WalletConnectStore.isListenConfirmRemove
   )
-  const walletName = user.name || ''
+  const walletName = user.name
   const [tryConfirm, setTryConfirm] = useState(false)
   const { dispatch, goBack, canGoBack, navigate } = useNavigation<
     NavigationProp<RootStackParams>
@@ -194,7 +194,7 @@ const ConfirmForm = ({
       const isSuccess = await authenticateBiometric()
       if (isSuccess) {
         const password = await getBioAuthPassword({
-          walletName: user.name || '',
+          walletName,
         })
         confirmSign({
           address: user.address,
@@ -284,6 +284,7 @@ const Render = ({
     connector,
     id,
     navigation,
+    user,
   })
   const { rejectWalletConnectRequest } = walletConnectConfirmReturn
 

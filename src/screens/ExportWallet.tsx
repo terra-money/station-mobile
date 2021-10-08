@@ -27,7 +27,7 @@ const Render = ({ user }: { user: User }): ReactElement => {
   const { alert } = useAlert()
 
   const makeQrCodeValue = async (): Promise<void> => {
-    const name = user.name || ''
+    const name = user.name
     const encrypted_key = await getEncryptedKey(name)
     if (encrypted_key) {
       const value = createRecoverWalletSchemeUrl({

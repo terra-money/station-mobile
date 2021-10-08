@@ -67,7 +67,7 @@ export const useConfirm = (): {
       password: '',
       sign: async ({ tx, base, password }) => {
         const decyrptedKey = await getDecyrptedKey(
-          user.name || '',
+          user.name,
           password
         )
         if (_.isEmpty(decyrptedKey)) {

@@ -8,16 +8,20 @@ import {
 } from '@terra-money/terra.js'
 import { StackNavigationProp } from '@react-navigation/stack'
 
-import { useConfig } from 'lib'
+import { useConfig, User } from 'lib'
 import { usePollTxHash } from 'lib/post/useConfirm'
 
 import { getDecyrptedKey } from 'utils/wallet'
 import { useLoading } from './useLoading'
 import { RootStackParams } from 'types'
 
-const useTx = (
+const useTx = ({
+  user,
+  navigation,
+}: {
+  user: User
   navigation: StackNavigationProp<RootStackParams>
-): {
+}): {
   broadcastResult?: TxInfo
   broadcastSync: (props: {
     address: string
@@ -32,23 +36,19 @@ const useTx = (
   const [broadcastResult, setBroadcastResult] = useState<TxInfo>()
   const tsInfo = usePollTxHash(txhash)
 
-  const getKey = async (params: {
-    name: string
+  const getKey = async ({
+    password,
+  }: {
     password: string
   }): Promise<Key> => {
-    const { name, password } = params
-    const decyrptedKey = await getDecyrptedKey(name, password)
+    const decyrptedKey = await getDecyrptedKey(user.name, password)
     return new RawKey(Buffer.from(decyrptedKey, 'hex'))
   }
 
   const broadcastSync = async ({
-    address,
-    walletName,
     password,
     tx,
   }: {
-    address: string
-    walletName: string
     password: string
     tx: CreateTxOptions
   }): Promise<void> => {
@@ -59,11 +59,8 @@ const useTx = (
     })
 
     // fee + tax
-    const unsignedTx = await lcd.tx.create(address, tx)
-    const key = await getKey({
-      name: walletName,
-      password,
-    })
+    const unsignedTx = await lcd.tx.create(user.address, tx)
+    const key = await getKey({ password })
     const signed = await key.signTx(unsignedTx)
 
     const result = await lcd.tx.broadcastSync(signed)

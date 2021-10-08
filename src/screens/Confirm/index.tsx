@@ -132,7 +132,7 @@ const Render = ({
       const isSuccess = await authenticateBiometric()
       if (isSuccess) {
         const password = await getBioAuthPassword({
-          walletName: user.name || '',
+          walletName: user.name,
         })
 
         if (formPassword?.setValue) {

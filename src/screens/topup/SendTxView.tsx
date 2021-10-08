@@ -270,7 +270,7 @@ const SendTxView = (props: Props): ReactElement => {
         const bioResult = await authenticateBiometric()
         if (bioResult) {
           const password = await getBioAuthPassword({
-            walletName: user?.name || '',
+            walletName: user?.name,
           })
           await confirm(password, returnScheme)
         } else {
