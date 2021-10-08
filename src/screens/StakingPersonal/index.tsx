@@ -11,7 +11,8 @@ import { RootStackParams } from 'types'
 import Rewards from './Rewards'
 import Delegated from './Delegated'
 import UnDelegated from './UnDelegated'
-import { Text } from 'components'
+import { Loading, Text } from 'components'
+import layout from 'styles/layout'
 
 type Props = StackScreenProps<RootStackParams, 'Staking'>
 
@@ -44,7 +45,14 @@ const Render = ({
       <UnDelegated personal={personal} findMoniker={findMoniker} />
     </>
   ) : (
-    <View />
+    <View
+      style={{
+        height: layout.getWindowHeight(),
+        justifyContent: 'center',
+      }}
+    >
+      <Loading />
+    </View>
   )
 }
 

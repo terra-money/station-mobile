@@ -7,7 +7,7 @@ const Loading = (): ReactElement => {
     <View style={{ alignItems: 'center' }}>
       <Image
         source={images.loading_circle}
-        style={{ width: 30, height: 30, marginBottom: 20 }}
+        style={{ width: 38, height: 38, marginBottom: 20 }}
       />
     </View>
   )

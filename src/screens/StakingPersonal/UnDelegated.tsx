@@ -42,7 +42,7 @@ const Rewards = ({
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
-                  paddingRight: 20,
+                  maxWidth: '50%',
                 }}
               >
                 <Image
@@ -55,7 +55,7 @@ const Rewards = ({
                 />
                 <Text>{content.name}</Text>
               </View>
-              <View style={{ alignItems: 'flex-end' }}>
+              <View style={{ alignItems: 'flex-end', flex: 1 }}>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
                   decimalFontStyle={{ fontSize: 10.5 }}

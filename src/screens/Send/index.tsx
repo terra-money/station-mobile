@@ -1,15 +1,8 @@
 import React, { ReactElement, useEffect } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import _ from 'lodash'
+import { StyleSheet, View } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 
-import {
-  User,
-  useSend,
-  RecentSentUI,
-  FormUI,
-  ConfirmProps,
-} from 'lib'
+import { User, useSend, FormUI, ConfirmProps } from 'lib'
 import useTokenBalance from 'lib/cw20/useTokenBalance'
 
 import Body from 'components/layout/Body'
@@ -22,7 +15,6 @@ import UseStationForm from 'components/UseStationForm'
 import Button from 'components/Button'
 import Loading from 'components/Loading'
 
-import FormLabel from 'components/FormLabel'
 import { useConfirm } from 'hooks/useConfirm'
 import color from 'styles/color'
 
@@ -67,46 +59,14 @@ const CrossChainInfo = (): ReactElement => {
   )
 }
 
-// this display recent transactions
-const RenderUi = ({ ui }: { ui: RecentSentUI }): ReactElement => {
-  return (
-    <View>
-      <FormLabel text={ui.title} />
-      {_.map(ui.contents, ({ contents, onClick }, i) => (
-        <TouchableOpacity
-          key={`ui.contents-${i}`}
-          style={styles.recentTxBox}
-          onPress={onClick}
-        >
-          {_.map(contents, (content, j) => (
-            <View
-              key={`ui.contents-contents-${j}`}
-              style={styles.recentTxRow}
-            >
-              <Text style={styles.recentTxTh} fontType="medium">
-                {content.title}
-              </Text>
-              <Text style={styles.recentTxTd} numberOfLines={1}>
-                {content.content}
-              </Text>
-            </View>
-          ))}
-        </TouchableOpacity>
-      ))}
-    </View>
-  )
-}
-
 const RenderForm = ({
   form,
-  ui,
   confirm,
   defaultToAddress,
   defaultMemo,
   defaultAmount,
 }: {
   form: FormUI
-  ui?: RecentSentUI
   confirm?: ConfirmProps
   defaultToAddress?: string
   defaultMemo?: string
@@ -139,7 +99,6 @@ const RenderForm = ({
         <View>
           <CrossChainInfo />
           <UseStationForm form={form} />
-          {ui && <RenderUi ui={ui} />}
         </View>
 
         <Button
@@ -170,7 +129,7 @@ const Render = ({
 
   const tokenBalance = useTokenBalance(user.address)
 
-  const { loading, form, ui, submitted, confirm } = useSend(
+  const { loading, form, submitted, confirm } = useSend(
     user,
     denom,
     tokenBalance
@@ -186,7 +145,6 @@ const Render = ({
             <RenderForm
               {...{
                 form,
-                ui,
                 confirm,
                 denom,
                 defaultToAddress,
@@ -228,25 +186,5 @@ const styles = StyleSheet.create({
   crossChainInfoText: {
     fontSize: 12,
     lineHeight: 18,
-  },
-  recentTxBox: {
-    paddingVertical: 7,
-    paddingHorizontal: 15,
-    marginBottom: 10,
-    borderRadius: 8,
-    backgroundColor: 'rgb(238,240,250)',
-  },
-  recentTxRow: {
-    flexDirection: 'row',
-  },
-  recentTxTh: {
-    minWidth: 70,
-    fontSize: 10,
-    lineHeight: 20,
-  },
-  recentTxTd: {
-    flex: 1,
-    fontSize: 10,
-    lineHeight: 20,
   },
 })

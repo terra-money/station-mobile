@@ -11,6 +11,9 @@ import Top from './Top'
 import Actions from './Actions'
 import MonikerInfo from './MonikerInfo'
 import Informations from './Informations'
+import { Loading } from 'components'
+import { View } from 'react-native'
+import layout from 'styles/layout'
 
 type Props = StackScreenProps<RootStackParams, 'ValidatorDetail'>
 
@@ -29,9 +32,19 @@ const Render = ({
       setLoadingComplete(true)
     }
   }, [loading])
+
   return (
     <>
-      {loading ? null : (
+      {loading ? (
+        <View
+          style={{
+            height: layout.getWindowHeight(),
+            justifyContent: 'center',
+          }}
+        >
+          <Loading />
+        </View>
+      ) : (
         <>
           {ui && (
             <>
