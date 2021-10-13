@@ -29,7 +29,7 @@ const Step2Seed = (): ReactElement => {
     return (
       _.some(seed) &&
       _.every(seed, _.some) &&
-      seed.length === 24 &&
+      (seed.length === 24 || seed.length === 12) &&
       _.isEmpty(invalidWord)
     )
   }
