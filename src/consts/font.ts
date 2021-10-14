@@ -5,11 +5,6 @@ const gotham = {
   bold: 'Gotham-Bold',
 }
 
-const variant = {
-  tabularNums: 'tabular-nums',
-}
-
 export default {
   gotham,
-  variant,
 }

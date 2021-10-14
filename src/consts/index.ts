@@ -1,3 +1,5 @@
 export { default as UTIL } from './util'
 export { default as COMMON } from './common'
 export { default as COLOR } from './color'
+export { default as FONT } from './font'
+export { default as LAYOUT } from './layout'

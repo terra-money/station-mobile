@@ -9,10 +9,10 @@ import {
 } from 'react-native'
 import _ from 'lodash'
 
+import { COLOR, LAYOUT } from 'consts'
+
 import { useModal } from 'hooks/useModal'
-import { COLOR } from 'consts'
 import Text from './Text'
-import layout from 'styles/layout'
 
 const SelectItemList = <T,>({
   list,
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     maxHeight: 400,
     marginHorizontal: 20,
-    marginBottom: layout.getNotchCoverPaddingBottom,
+    marginBottom: LAYOUT.getNotchCoverPaddingBottom,
   },
   item: {
     paddingHorizontal: 30,

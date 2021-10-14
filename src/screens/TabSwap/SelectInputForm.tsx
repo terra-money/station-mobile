@@ -10,14 +10,12 @@ import {
 import _ from 'lodash'
 import { useNavigation } from '@react-navigation/core'
 
-import { COLOR } from 'consts'
+import { COLOR, LAYOUT } from 'consts'
 
 import { Field, Option, Options } from 'lib'
 
 import Input from 'components/Input'
 import { Text, Icon } from 'components'
-
-import layout from 'styles/layout'
 
 import AssetIcon from './AssetIcon'
 import CoinSelector from './CoinSelector'
@@ -201,7 +199,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    flex: layout.getScreenWideType() === 'narrow' ? 2 : 1,
+    flex: LAYOUT.getScreenWideType() === 'narrow' ? 2 : 1,
     borderWidth: 0,
     borderRadius: 0,
     borderTopLeftRadius: 8,

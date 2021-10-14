@@ -4,7 +4,7 @@ import _ from 'lodash'
 import WalletConnect from '@walletconnect/client'
 import { useRecoilValue } from 'recoil'
 
-import { COLOR } from 'consts'
+import { COLOR, LAYOUT } from 'consts'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -18,7 +18,6 @@ import useTopNoti from 'hooks/useTopNoti'
 import { useModal } from 'hooks/useModal'
 
 import ConnectorSettingModal from './ConnectorSettingModal'
-import layout from 'styles/layout'
 
 const Render = (): ReactElement => {
   // after connected then set connector
@@ -99,7 +98,7 @@ const Render = (): ReactElement => {
           paddingTop: 20,
           justifyContent: 'space-between',
           flexGrow: 1,
-          paddingBottom: layout.getNotchCoverPaddingBottom,
+          paddingBottom: LAYOUT.getNotchCoverPaddingBottom,
         }}
         scrollable
       >

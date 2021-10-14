@@ -9,13 +9,12 @@ import _ from 'lodash'
 import { AreaChart, Path } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 
-import { COLOR } from 'consts'
+import { COLOR, LAYOUT } from 'consts'
 
 import { API } from 'lib'
 
 import Icon from './Icon'
 import Text from './Text'
-import layout from 'styles/layout'
 
 interface Props extends Partial<API<any>> {
   style?: ViewStyle
@@ -69,7 +68,7 @@ const Card = ({
           </Text>
           {action ??
             (badge ? (
-              layout.getScreenWideType() !== 'narrow' && (
+              LAYOUT.getScreenWideType() !== 'narrow' && (
                 <View style={styles.badge}>
                   <Text style={[textStyle, styles.badge_text]}>
                     {badge}
@@ -100,7 +99,7 @@ const Card = ({
                 styles.value,
                 {
                   fontSize:
-                    layout.getScreenWideType() === 'narrow' ? 12 : 14,
+                    LAYOUT.getScreenWideType() === 'narrow' ? 12 : 14,
                 },
               ]}
             >

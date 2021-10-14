@@ -1,9 +1,12 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { useAuth, User, useValidator } from 'lib'
+import { View } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
+
+import { LAYOUT } from 'consts'
 
 import { navigationHeaderOptions } from 'components/layout/Header'
 import Body from 'components/layout/Body'
+import { useAuth, User, useValidator } from 'lib'
 
 import { RootStackParams } from '../../types/navigation'
 
@@ -12,8 +15,6 @@ import Actions from './Actions'
 import MonikerInfo from './MonikerInfo'
 import Informations from './Informations'
 import { Loading } from 'components'
-import { View } from 'react-native'
-import layout from 'styles/layout'
 
 type Props = StackScreenProps<RootStackParams, 'ValidatorDetail'>
 
@@ -38,7 +39,7 @@ const Render = ({
       {loading ? (
         <View
           style={{
-            height: layout.getWindowHeight(),
+            height: LAYOUT.getWindowHeight(),
             justifyContent: 'center',
           }}
         >

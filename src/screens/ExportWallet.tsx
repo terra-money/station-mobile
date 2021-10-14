@@ -4,7 +4,7 @@ import QRCode from 'react-native-qrcode-svg'
 import { StackScreenProps } from '@react-navigation/stack'
 import _ from 'lodash'
 
-import { COLOR } from 'consts'
+import { COLOR, LAYOUT } from 'consts'
 
 import { RootStackParams } from 'types/navigation'
 
@@ -14,7 +14,6 @@ import { navigationHeaderOptions } from 'components/layout/Header'
 import WithAuth from 'components/layout/WithAuth'
 import { Text } from 'components'
 
-import layout from 'styles/layout'
 import { createRecoverWalletSchemeUrl } from 'utils/qrCode'
 import { getEncryptedKey } from 'utils/wallet'
 import { User } from 'lib'
@@ -24,7 +23,7 @@ type Props = StackScreenProps<RootStackParams, 'ExportWallet'>
 
 const Render = ({ user }: { user: User }): ReactElement => {
   const [qrCodeValue, setQrCodeValue] = useState('')
-  const [size, setSize] = useState(layout.getWindowWidth() - 200)
+  const [size, setSize] = useState(LAYOUT.getWindowWidth() - 200)
   const { alert } = useAlert()
 
   const makeQrCodeValue = async (): Promise<void> => {
@@ -48,7 +47,7 @@ const Render = ({ user }: { user: User }): ReactElement => {
   useEffect(() => {
     makeQrCodeValue()
     if (size < 300) {
-      setSize(layout.getWindowWidth() - 50)
+      setSize(LAYOUT.getWindowWidth() - 50)
     }
   }, [])
 

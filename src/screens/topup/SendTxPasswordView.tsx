@@ -10,11 +10,10 @@ import { useNavigation } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { StackScreenProps } from '@react-navigation/stack'
 
-import { COLOR } from 'consts'
+import { COLOR, FONT } from 'consts'
 
 import SubHeader from 'components/layout/SubHeader'
 
-import font from 'styles/font'
 import { Button, FormInput, Icon, Text } from 'components'
 import { RootStackParams } from 'types'
 import StatusBar from 'components/StatusBar'
@@ -131,7 +130,7 @@ const style = StyleSheet.create({
     marginBottom: 5,
   },
   formInputText: {
-    fontFamily: font.gotham.book,
+    fontFamily: FONT.gotham.book,
   },
 
   buttonContainer: {

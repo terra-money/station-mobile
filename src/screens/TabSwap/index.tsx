@@ -19,7 +19,7 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 
-import { COLOR } from 'consts'
+import { COLOR, FONT } from 'consts'
 
 import { RootStackParams } from 'types'
 import { navigationHeaderOptions } from 'components/layout/TabScreenHeader'
@@ -48,7 +48,6 @@ import {
 } from 'components'
 
 import { useConfirm } from 'hooks/useConfirm'
-import font from 'styles/font'
 
 import SelectInputForm from './SelectInputForm'
 import Card from 'components/Card'
@@ -108,7 +107,7 @@ const SwapTypeSelect = ({
               textStyle={{
                 lineHeight: 15,
                 fontSize: 10,
-                fontFamily: font.gotham.medium,
+                fontFamily: FONT.gotham.medium,
               }}
               icon={
                 Platform.OS === 'ios'

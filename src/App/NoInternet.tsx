@@ -5,9 +5,8 @@ import NetInfo, {
   NetInfoState,
 } from '@react-native-community/netinfo'
 
-import { COLOR } from 'consts'
+import { COLOR, LAYOUT } from 'consts'
 import { Icon, Text, StatusBar } from 'components'
-import layout from 'styles/layout'
 
 const NoInternet = (): ReactElement => {
   const [isNetworkUnavailable, setNetworkUnavailable] = useState(
@@ -52,8 +51,8 @@ const NoInternet = (): ReactElement => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    width: layout.getWindowWidth(),
-    height: layout.getWindowHeight(),
+    width: LAYOUT.getWindowWidth(),
+    height: LAYOUT.getWindowHeight(),
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,

@@ -6,13 +6,14 @@ import {
 } from '@react-navigation/bottom-tabs'
 import _ from 'lodash'
 
+import { LAYOUT } from 'consts'
+
 import Wallet from '../screens/TabWallet'
 import Swap from '../screens/TabSwap'
 import Staking from '../screens/TabStaking'
 
 import { RootStack } from 'types/navigation'
 import { Text, Icon } from 'components'
-import layout from 'styles/layout'
 
 const WalletStack = (): ReactElement => (
   <RootStack.Navigator initialRouteName="Wallet">
@@ -82,7 +83,7 @@ const tabScreenItemList: {
 
 const Tabs = (): ReactElement => {
   const labelPosition =
-    layout.getScreenWideType() === 'wide'
+    LAYOUT.getScreenWideType() === 'wide'
       ? 'beside-icon'
       : 'below-icon'
   return (

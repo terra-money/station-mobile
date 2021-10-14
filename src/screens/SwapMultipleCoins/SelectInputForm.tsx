@@ -2,12 +2,12 @@ import React, { ReactElement } from 'react'
 import { View } from 'react-native'
 import _ from 'lodash'
 
+import { LAYOUT } from 'consts'
+
 import { Field } from 'lib'
 
 import Input from 'components/Input'
 import { SelectOptionProps, Select } from 'components'
-
-import layout from 'styles/layout'
 
 const SelectInputForm = ({
   selectField,
@@ -46,7 +46,7 @@ const SelectInputForm = ({
           }}
           optionList={[{ label: 'SELECT', value: '' }, ...options]}
           containerStyle={{
-            flex: layout.getScreenWideType() === 'narrow' ? 2 : 1,
+            flex: LAYOUT.getScreenWideType() === 'narrow' ? 2 : 1,
             marginRight: 10,
             backgroundColor: 'white',
           }}

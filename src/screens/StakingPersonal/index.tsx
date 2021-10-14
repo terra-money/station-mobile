@@ -6,13 +6,14 @@ import { navigationHeaderOptions } from 'components/layout/Header'
 import Body from 'components/layout/Body'
 import { View } from 'react-native'
 
+import { LAYOUT } from 'consts'
+
 import { RootStackParams } from 'types'
 
 import Rewards from './Rewards'
 import Delegated from './Delegated'
 import UnDelegated from './UnDelegated'
 import { Loading, Text } from 'components'
-import layout from 'styles/layout'
 
 type Props = StackScreenProps<RootStackParams, 'Staking'>
 
@@ -47,7 +48,7 @@ const Render = ({
   ) : (
     <View
       style={{
-        height: layout.getWindowHeight(),
+        height: LAYOUT.getWindowHeight(),
         justifyContent: 'center',
       }}
     >

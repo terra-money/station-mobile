@@ -3,8 +3,7 @@ import { TouchableOpacity, StyleSheet, View } from 'react-native'
 
 import { Button } from 'components'
 
-import { COLOR } from 'consts'
-import layout from 'styles/layout'
+import { COLOR, LAYOUT } from 'consts'
 
 const ConnectorSettingModal = ({
   modal,
@@ -39,7 +38,7 @@ export default ConnectorSettingModal
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    paddingBottom: layout.getNotchCoverPaddingBottom,
+    paddingBottom: LAYOUT.getNotchCoverPaddingBottom,
     backgroundColor: COLOR.white,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,

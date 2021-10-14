@@ -12,12 +12,11 @@ import { StdSignMsg } from '@terra-money/terra.js'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import _ from 'lodash'
 
-import { COLOR } from 'consts'
+import { COLOR, FONT } from 'consts'
 
 import { useAuth, format, useBank } from 'lib'
 import { Text, Button, Select, Icon, FormInput } from 'components'
 
-import font from 'styles/font'
 import BigNumber from 'bignumber.js'
 import SubHeader from 'components/layout/SubHeader'
 import { DEBUG_TOPUP } from './TopupUtils'
@@ -449,7 +448,7 @@ const style = StyleSheet.create({
   },
   amountText: {
     color: COLOR.primary._02,
-    fontFamily: font.gotham.book,
+    fontFamily: FONT.gotham.book,
     fontVariant: ['tabular-nums'],
   },
 

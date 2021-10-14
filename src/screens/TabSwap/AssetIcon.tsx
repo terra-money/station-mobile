@@ -2,10 +2,9 @@ import React, { ReactElement } from 'react'
 import { View, Image, StyleSheet } from 'react-native'
 
 import { Option } from 'lib'
-import { COLOR } from 'consts'
+import { COLOR, LAYOUT } from 'consts'
 
 import Terra from 'assets/svg/Terra'
-import layout from 'styles/layout'
 
 const ICON_SIZE = 18
 
@@ -40,7 +39,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,
     paddingTop: 25,
-    paddingBottom: layout.getNotchCoverPaddingBottom,
+    paddingBottom: LAYOUT.getNotchCoverPaddingBottom,
   },
   header: {
     flexDirection: 'row',
