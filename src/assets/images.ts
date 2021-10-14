@@ -1,5 +1,4 @@
 export default {
-  orb_fill: require('../../assets/orb_fill.png'),
   on_boarding_0: require('../../assets/on_boarding_0.png'),
   on_boarding_1: require('../../assets/on_boarding_1.png'),
   on_boarding_2: require('../../assets/on_boarding_2.png'),
