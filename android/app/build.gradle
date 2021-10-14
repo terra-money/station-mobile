@@ -216,8 +216,8 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     // for gif
-    implementation 'com.facebook.fresco:fresco:1.+'
-    implementation 'com.facebook.fresco:animated-gif:1.+'
+    implementation 'com.facebook.fresco:fresco:2.5.0'
+    implementation 'com.facebook.fresco:animated-gif:2.6.0'
 
     addUnimodulesDependencies([
       exclude: [
