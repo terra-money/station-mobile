@@ -4,7 +4,10 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 
 target 'TerraStation' do
-  use_unimodules!
+  use_unimodules!(exclude: [
+    'expo-file-system',
+    'unimodules-file-system-interface',
+  ])
 
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"

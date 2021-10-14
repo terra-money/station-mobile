@@ -1,6 +1,6 @@
 {
   "name": "TerraStation",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.10",
-    "@mirror-protocol/mirror.js": "^1.1.4",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/checkbox": "^0.5.6",
     "@react-native-community/clipboard": "^1.5.1",
@@ -47,7 +46,7 @@
     "date-fns": "^2.23.0",
     "dns.js": "^1.0.1",
     "events": "^1.0.0",
-    "expo-local-authentication": "^9.5.0",
+    "expo-local-authentication": "^11.1.1",
     "graphql": "^15.5.0",
     "https-browserify": "~0.0.0",
     "i18next": "^19.8.7",
@@ -62,7 +61,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-i18next": "^11.8.6",
-    "react-native": "^0.64.1",
+    "react-native": "^0.66.0",
     "react-native-camera": "^3.42.2",
     "react-native-crypto": "^2.2.0",
     "react-native-device-info": "^7.3.1",
@@ -89,7 +88,7 @@
     "react-native-svg-charts": "^5.4.0",
     "react-native-svg-transformer": "^0.14.3",
     "react-native-swiper": "^1.6.0",
-    "react-native-unimodules": "^0.13.3",
+    "react-native-unimodules": "^0.14.8",
     "react-native-url-polyfill": "^1.2.0",
     "react-native-vector-icons": "^7.1.0",
     "react-native-walkthrough-tooltip": "^1.1.11",
