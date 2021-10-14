@@ -13,8 +13,8 @@ import {
   createActionRuleSet,
   createLogMatcherForActions,
   getTxCanonicalMsgs,
-} from '../../../ruleset'
-import { Action } from 'ruleset/types'
+} from '@terra-money/log-finder-ruleset'
+import { Action } from '@terra-money/log-finder-ruleset/dist/types'
 
 interface Response {
   txs: Tx[]

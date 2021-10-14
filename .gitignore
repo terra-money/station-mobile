@@ -67,5 +67,3 @@ android/*.hprof
 android/app/src/main/java/money/terra/station/generated/BasePackageList.java
 
 .scannerwork
-
-src/ruleset
