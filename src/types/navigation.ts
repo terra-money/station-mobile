@@ -39,7 +39,6 @@ export const RecoverWalletStack = createStackNavigator<RecoverWalletStackParams>
 /* Root */
 export type RootStackParams = {
   Tabs: undefined
-  // Dashboard: undefined
   Wallet: undefined
   Staking: undefined
   StakingPersonal: undefined

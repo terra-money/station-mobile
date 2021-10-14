@@ -14,8 +14,6 @@ import Staking from '../screens/stakingTab/Staking'
 import { Text, Icon } from 'components'
 import layout from 'styles/layout'
 
-export const INITIAL = 'Dashboard'
-
 const WalletStack = (): ReactElement => (
   <RootStack.Navigator initialRouteName="Wallet">
     <RootStack.Screen
@@ -89,7 +87,6 @@ const Tabs = (): ReactElement => {
       : 'below-icon'
   return (
     <Tab.Navigator
-      initialRouteName={INITIAL}
       tabBarOptions={{
         activeTintColor: '#2043B5',
         inactiveTintColor: '#C1C7D0',
