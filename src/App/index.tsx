@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactElement } from 'react'
-import { Platform, View } from 'react-native'
+import { Linking, LogBox, Platform, View } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import SplashScreen from 'react-native-splash-screen'
 import { RecoilRoot } from 'recoil'
@@ -40,6 +40,8 @@ import AlertView, { useAlertViewState } from './AlertView'
 import LoadingView from './LoadingView'
 import GlobalTopNotification from './GlobalTopNotification'
 import UnderMaintenance from './UnderMaintenance'
+
+LogBox.ignoreLogs(['EventEmitter.removeListener'])
 
 const queryClient = new QueryClient()
 
