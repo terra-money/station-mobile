@@ -1,8 +1,8 @@
-import { BankAPI, BankData, User, Balance } from '../types'
+import { BankAPI, BankData, Balance } from '../types'
 import { lt } from '../utils'
 import useFCD from './useFCD'
 
-export default ({ address }: User): BankAPI => {
+export default ({ address }: { address: string }): BankAPI => {
   const { data, ...rest } = useFCD<BankData>({
     url: `/v1/bank/${address}`,
   })
