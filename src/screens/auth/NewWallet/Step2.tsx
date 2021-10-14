@@ -1,7 +1,10 @@
 import React, { ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useRecoilState } from 'recoil'
-import { useNavigation } from '@react-navigation/native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -21,7 +24,11 @@ import terraWallet from 'nativeModules/terraWallet'
 const Step2 = (): ReactElement => {
   const [seed, setSeed] = useRecoilState(NewWalletStore.seed)
 
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<
+    NavigationProp<{
+      NewWalletStep3: undefined
+    }>
+  >()
   const onPressNext = (): void => {
     navigate('NewWalletStep3')
   }

@@ -62,19 +62,19 @@ const tabScreenItemList: {
   iconName: string
 }[] = [
   {
-    name: 'Wallet',
+    name: 'WalletStack',
     component: WalletStack,
     label: 'WALLET',
     iconName: 'account-balance-wallet',
   },
   {
-    name: 'Swap',
+    name: 'SwapStack',
     component: SwapStack,
     label: 'SWAP',
     iconName: 'swap-horiz',
   },
   {
-    name: 'Staking',
+    name: 'StakingStack',
     component: StakingStack,
     label: 'STAKING',
     iconName: 'layers',
@@ -82,16 +82,17 @@ const tabScreenItemList: {
 ]
 
 const Tabs = (): ReactElement => {
-  const labelPosition =
+  const tabBarLabelPosition =
     LAYOUT.getScreenWideType() === 'wide'
       ? 'beside-icon'
       : 'below-icon'
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: '#2043B5',
-        inactiveTintColor: '#C1C7D0',
-        labelPosition,
+      screenOptions={{
+        tabBarActiveTintColor: '#2043B5',
+        tabBarInactiveTintColor: '#C1C7D0',
+        tabBarLabelPosition,
+        headerShown: false,
       }}
     >
       {_.map(tabScreenItemList, (item, index) => (
@@ -101,7 +102,7 @@ const Tabs = (): ReactElement => {
           component={item.component}
           options={(): BottomTabNavigationOptions => ({
             tabBarLabel:
-              labelPosition === 'below-icon'
+              tabBarLabelPosition === 'below-icon'
                 ? ({ color }: { color: string }): ReactElement => (
                     <Text
                       style={[styles.tabbar_text, { color }]}
@@ -117,7 +118,9 @@ const Tabs = (): ReactElement => {
                 color={color}
                 size={26}
                 style={
-                  labelPosition === 'below-icon' && { marginTop: 5 }
+                  tabBarLabelPosition === 'below-icon' && {
+                    marginTop: 5,
+                  }
                 }
               />
             ),

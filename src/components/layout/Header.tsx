@@ -1,5 +1,15 @@
-import { StackActions, useNavigation } from '@react-navigation/native'
 import React, { ReactElement } from 'react'
+import {
+  NavigationProp,
+  StackActions,
+  useNavigation,
+} from '@react-navigation/native'
+import { StackNavigationOptions } from '@react-navigation/stack'
+import type {
+  HeaderBackButtonProps,
+  HeaderTitleProps,
+} from '@react-navigation/elements'
+
 import {
   StyleSheet,
   StyleProp,
@@ -9,12 +19,8 @@ import {
 import { Icon } from 'components'
 
 import { COLOR } from 'consts'
-import {
-  StackHeaderLeftButtonProps,
-  StackHeaderTitleProps,
-  StackNavigationOptions,
-} from '@react-navigation/stack'
 import { useAuth } from 'lib'
+import { RootStackParams } from 'types'
 
 type HeaderTheme = 'white' | 'sky' | 'sapphire'
 
@@ -22,10 +28,10 @@ export type HeaderProps = {
   theme?: HeaderTheme
   goBackIconType?: 'arrow' | 'close'
   headerStyle?: StyleProp<ViewStyle>
-  headerLeft?: (props: StackHeaderLeftButtonProps) => React.ReactNode
+  headerLeft?: (props: HeaderBackButtonProps) => React.ReactNode
   headerTitle?:
     | string
-    | ((props: StackHeaderTitleProps) => React.ReactNode)
+    | ((props: HeaderTitleProps) => React.ReactNode)
   headerRight?: (props: {
     tintColor?: string | undefined
   }) => React.ReactNode
@@ -39,7 +45,9 @@ const HeaderLeft = ({
   goBackIconType?: 'arrow' | 'close'
 }): ReactElement => {
   const { user } = useAuth()
-  const { goBack, canGoBack, dispatch } = useNavigation()
+  const { goBack, canGoBack, dispatch } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
 
   const onPressGoBack = (): void => {
     if (canGoBack()) {

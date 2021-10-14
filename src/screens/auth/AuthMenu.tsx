@@ -1,7 +1,11 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import _ from 'lodash'
 import { View, StyleSheet, Image } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
+import { useRecoilValue } from 'recoil'
 
 import Body from 'components/layout/Body'
 
@@ -12,17 +16,17 @@ import { COLOR } from 'consts'
 import images from 'assets/images'
 import StatusBar from 'components/StatusBar'
 import { navigationHeaderOptions } from 'components/layout/Header'
-import { useRecoilState } from 'recoil'
+
+import { AuthStackParams } from 'types'
 import TopupStore from 'stores/TopupStore'
 
 const AuthMenu = (): ReactElement => {
   const [initPageComplete, setInitPageComplete] = useState(false)
   const [wallets, setWallets] = useState<LocalWallet[]>()
-  const { navigate } = useNavigation()
-
-  const [connectAddress, setConnectAddress] = useRecoilState(
-    TopupStore.connectAddress
-  )
+  const connectAddress = useRecoilValue(TopupStore.connectAddress)
+  const { navigate } = useNavigation<
+    NavigationProp<AuthStackParams>
+  >()
 
   const initPage = async (): Promise<void> => {
     setWallets(await getWallets())
@@ -35,7 +39,7 @@ const AuthMenu = (): ReactElement => {
 
   useEffect(() => {
     if (initPageComplete && connectAddress) {
-      navigate('SelectWallet', { connectAddress })
+      navigate('SelectWallet')
     }
   }, [initPageComplete, connectAddress])
 
@@ -88,7 +92,6 @@ const AuthMenu = (): ReactElement => {
               theme={_.some(wallets) ? 'transparent' : 'white'}
               title={'New wallet'}
               onPress={(): void => {
-                setConnectAddress(undefined)
                 navigate('NewWallet')
               }}
             />
@@ -100,7 +103,6 @@ const AuthMenu = (): ReactElement => {
               theme={'transparent'}
               title={'Recover wallet'}
               onPress={(): void => {
-                setConnectAddress(undefined)
                 navigate('RecoverWallet')
               }}
             />

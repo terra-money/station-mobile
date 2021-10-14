@@ -8,7 +8,10 @@ import { TxsUI, useMenu, User, useTxs } from 'lib'
 
 import HistoryItem from 'components/history/HistoryItem'
 import { Text, ErrorComponent, Button } from 'components'
-import { useNavigation } from '@react-navigation/native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 import { useRecoilState } from 'recoil'
 import HistoryStore from 'stores/HistoryStore'
 
@@ -17,7 +20,9 @@ type Props = StackScreenProps<RootStackParams, 'Wallet'>
 const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
   const { History: title } = useMenu()
   const { list } = ui
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
 
   return list ? (
     <View style={styles.container}>

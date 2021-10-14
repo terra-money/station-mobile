@@ -2,7 +2,10 @@ import React, { useState, ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { useRecoilState } from 'recoil'
-import { useNavigation } from '@react-navigation/native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -13,7 +16,11 @@ import { useValueValidator } from 'hooks/useValueValidator'
 import NewWalletStore from 'stores/NewWalletStore'
 
 const Step1 = (): ReactElement => {
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<
+    NavigationProp<{
+      NewWalletStep2: undefined
+    }>
+  >()
 
   const [name, setName] = useRecoilState(NewWalletStore.name)
   const [inputName, setinputName] = useState('')

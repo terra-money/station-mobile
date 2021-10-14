@@ -2,7 +2,10 @@ import React, { ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { useNavigation } from '@react-navigation/native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 import { AccAddress } from '@terra-money/terra.js'
 import { StackScreenProps } from '@react-navigation/stack'
 
@@ -29,7 +32,9 @@ const Step1 = ({ navigation }: Props): ReactElement => {
   const setName = useSetRecoilState(RecoverWalletStore.name)
   const setQRData = useSetRecoilState(RecoverWalletStore.qrData)
   const [seed, setSeed] = useRecoilState(RecoverWalletStore.seed)
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<
+    NavigationProp<RecoverWalletStackParams>
+  >()
   const { alert } = useAlert()
 
   const stepConfirmed = _.every(seed, _.some)

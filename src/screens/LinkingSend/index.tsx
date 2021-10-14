@@ -23,7 +23,7 @@ const LinkingSend = ({ route, navigation }: Props): ReactElement => {
     let alreadySend = false
     let noParentRoute = false
     try {
-      const currRoutes = navigation.dangerouslyGetState().routes
+      const currRoutes = navigation.getState().routes
       noParentRoute = currRoutes.length === 1
       alreadySend = currRoutes[currRoutes.length - 2].name === 'Send'
     } catch {}

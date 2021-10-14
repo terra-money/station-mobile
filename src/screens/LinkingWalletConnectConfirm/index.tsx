@@ -30,7 +30,7 @@ const LinkingWalletConnectConfirm = ({
     let noParentRoute = false
 
     try {
-      const currRoutes = navigation.dangerouslyGetState().routes
+      const currRoutes = navigation.getState().routes
       noParentRoute = currRoutes.length === 1
       alreadyWcConfirm =
         currRoutes.length > 1 &&

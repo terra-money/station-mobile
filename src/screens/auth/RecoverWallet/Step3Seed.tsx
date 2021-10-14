@@ -2,7 +2,10 @@ import React, { useState, ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { useRecoilState } from 'recoil'
-import { useNavigation } from '@react-navigation/native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -15,7 +18,11 @@ import NumberStep from 'components/NumberStep'
 import FormLabel from 'components/FormLabel'
 
 const Step3Seed = (): ReactElement => {
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<
+    NavigationProp<{
+      Step4Seed: undefined
+    }>
+  >()
   const [name, setName] = useRecoilState(RecoverWalletStore.name)
   const [inputName, setinputName] = useState('')
 

@@ -1,6 +1,9 @@
 import React, { ReactElement } from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 import { ValidatorUI } from 'lib'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
 import FastImage from 'react-native-fast-image'
@@ -16,6 +19,7 @@ import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 import { StakingFilterEnum } from './index'
+import { RootStackParams } from 'types'
 
 const ValidatorList = ({
   contents,
@@ -28,7 +32,9 @@ const ValidatorList = ({
   currentFilter: StakingFilterEnum
   setCurrentFilter: (value: StakingFilterEnum) => void
 }): ReactElement => {
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
 
   const validatorTitle = 'Validators'
 

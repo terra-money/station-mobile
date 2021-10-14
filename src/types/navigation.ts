@@ -27,7 +27,7 @@ export const CreateWalletStack = createStackNavigator<CreateWalletStackParams>()
 /* RecoverWallet */
 export type RecoverWalletStackParams = {
   Step1: undefined
-  Step2QR: { payload?: string }
+  Step2QR?: { payload?: string }
   Step2Seed: undefined
   Step3Seed: undefined
   Step4Seed: undefined

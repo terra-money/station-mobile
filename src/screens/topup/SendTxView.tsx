@@ -34,7 +34,10 @@ import {
 } from 'utils/bio'
 import { getBioAuthPassword, getIsUseBioAuth } from 'utils/storage'
 import useSignedTx from 'hooks/useSignedTx'
-import { useNavigation } from '@react-navigation/native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 import { getWallets } from 'utils/wallet'
 import { whitelist } from 'utils/whitelist'
 
@@ -50,7 +53,9 @@ const SendTxView = (props: Props): ReactElement => {
   const { user } = useAuth()
   const { data: bank } = useBank(user!)
   const { alert } = useAlert()
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<
+    NavigationProp<RootStackParams>
+  >()
   const insets = useSafeAreaInsets()
 
   const [walletAddress, setWalletAddress] = useState('')

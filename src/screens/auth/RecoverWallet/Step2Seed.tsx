@@ -2,7 +2,10 @@ import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import { useRecoilState } from 'recoil'
-import { useNavigation } from '@react-navigation/native'
+import {
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -18,7 +21,11 @@ import wordlist from 'lib/auth/wordlist.json'
 const Step2Seed = (): ReactElement => {
   const [seed, setSeed] = useRecoilState(RecoverWalletStore.seed)
 
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<
+    NavigationProp<{
+      Step3Seed: undefined
+    }>
+  >()
   const onPressNext = (): void => {
     navigate('Step3Seed')
   }
