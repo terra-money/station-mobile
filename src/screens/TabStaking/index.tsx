@@ -1,6 +1,8 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { ActivityIndicator, View } from 'react-native'
+import { View } from 'react-native'
+import { StackScreenProps } from '@react-navigation/stack'
 
+import { RootStackParams } from 'types'
 import {
   useStaking,
   useAuth,
@@ -19,6 +21,8 @@ import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 import useTerraAssets from 'lib/hooks/useTerraAssets'
+import { LAYOUT } from 'consts'
+import { Loading } from 'components'
 
 export enum StakingFilterEnum {
   commission = 'commission',
@@ -34,7 +38,7 @@ const Render = ({
   personal,
   contents,
 }: {
-  currentFilter?: StakingFilterEnum
+  currentFilter: StakingFilterEnum
   setCurrentFilter: (value: StakingFilterEnum) => void
   validatorList?: Dictionary<string>
   user?: User
@@ -43,30 +47,26 @@ const Render = ({
 }): ReactElement => {
   return (
     <>
-      {!contents || !currentFilter ? (
-        <View
-          style={{
-            flex: 1,
-            height: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <ActivityIndicator size="large" color="#000" />
-        </View>
-      ) : (
+      {contents ? (
         <View>
           {personal && user && (
             <PersonalSummary personal={personal} user={user} />
           )}
-          {contents && currentFilter && (
-            <ValidatorList
-              validatorList={validatorList}
-              currentFilter={currentFilter}
-              setCurrentFilter={setCurrentFilter}
-              contents={contents}
-            />
-          )}
+          <ValidatorList
+            validatorList={validatorList}
+            currentFilter={currentFilter}
+            setCurrentFilter={setCurrentFilter}
+            contents={contents}
+          />
+        </View>
+      ) : (
+        <View
+          style={{
+            height: LAYOUT.getWindowHeight() - 100,
+            justifyContent: 'center',
+          }}
+        >
+          <Loading />
         </View>
       )}
     </>
@@ -82,44 +82,28 @@ const Staking = (): ReactElement => {
     setRefreshingKey((ori) => ori + 1)
     stakingProps.execute()
   }
-
   const bodyProps = stakingProps.ui ? { scrollable: true } : {}
 
   useEffect(() => {
     refreshPage()
   }, [chain.current])
 
-  const [validatorList, setValidatorList] = useState<
-    Dictionary<string>
-  >()
-
   const [
     currentFilter,
     setCurrentFilter,
-  ] = useState<StakingFilterEnum>()
+  ] = useState<StakingFilterEnum>(StakingFilterEnum.uptime)
 
-  useEffect(() => {
-    if (!validatorList) {
-      Preferences.getString(PreferencesEnum.stakingFilter).then(
-        (v: string): void => {
-          if (v) {
-            setCurrentFilter(v as StakingFilterEnum)
-          } else {
-            setCurrentFilter(StakingFilterEnum.uptime)
-          }
-        }
-      )
-    }
-  }, [])
-
-  const { data, loading, error } = useTerraAssets<Dictionary<string>>(
+  const { data: validatorList } = useTerraAssets<Dictionary<string>>(
     'validators.json'
   )
-  data &&
-    !loading &&
-    !error &&
-    !validatorList &&
-    setValidatorList(data)
+
+  useEffect(() => {
+    Preferences.getString(PreferencesEnum.stakingFilter).then(
+      (v: string): void => {
+        v && setCurrentFilter(v as StakingFilterEnum)
+      }
+    )
+  }, [])
 
   const [reverseContents, setReverseContents] = useState(false)
 

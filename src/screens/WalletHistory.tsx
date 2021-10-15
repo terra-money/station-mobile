@@ -22,7 +22,7 @@ import { useMenu, User, useTxs, TxsUI } from 'lib'
 import ErrorComponent from 'components/ErrorComponent'
 import HistoryItem from 'components/history/HistoryItem'
 import WithAuth from 'components/layout/WithAuth'
-import { Text, Icon, LoadingIcon } from 'components'
+import { Text, Icon, Loading } from 'components'
 
 import { RootStackParams } from 'types'
 
@@ -80,7 +80,7 @@ const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
           <>
             {ui.more && (
               <View style={{ height: 40 }}>
-                <LoadingIcon />
+                <Loading />
               </View>
             )}
           </>

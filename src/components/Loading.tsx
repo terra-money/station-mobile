@@ -1,13 +1,17 @@
 import React, { ReactElement } from 'react'
-import { View, Image } from 'react-native'
+import { View, Image, StyleProp, ViewStyle } from 'react-native'
 import images from 'assets/images'
 
-const Loading = (): ReactElement => {
+const Loading = (props: {
+  size?: number
+  style?: StyleProp<ViewStyle>
+}): ReactElement => {
+  const size = props.size || 38
   return (
-    <View style={{ alignItems: 'center' }}>
+    <View style={[{ alignItems: 'center' }, props.style]}>
       <Image
         source={images.loading_circle}
-        style={{ width: 38, height: 38, marginBottom: 20 }}
+        style={{ width: size, height: size, marginBottom: 20 }}
       />
     </View>
   )

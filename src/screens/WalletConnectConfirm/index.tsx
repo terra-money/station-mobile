@@ -21,7 +21,7 @@ import { IClientMeta } from '@walletconnect/types'
 
 import { User, format } from 'lib'
 
-import { Button, Icon, LoadingIcon, Text } from 'components'
+import { Button, Icon, Loading, Text } from 'components'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
@@ -372,7 +372,7 @@ const Render = ({
             }}
           />
         ) : (
-          <LoadingIcon size={24} style={{ paddingTop: 40 }} />
+          <Loading style={{ paddingTop: 40 }} />
         )}
       </Body>
     </>
@@ -413,7 +413,7 @@ const WalletConnectConfirm = (props: Props): ReactElement => {
           />
         ) : (
           <View style={{ marginTop: 20 }}>
-            <LoadingIcon size={24} />
+            <Loading />
           </View>
         )
       }

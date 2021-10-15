@@ -22,7 +22,7 @@ import { RootStackParams } from 'types/navigation'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import WithAuth from 'components/layout/WithAuth'
-import { Button, Icon, LoadingIcon, Text } from 'components'
+import { Button, Icon, Loading, Text } from 'components'
 
 import { useConfig, User } from 'lib'
 import useWalletConnect from 'hooks/useWalletConnect'
@@ -219,7 +219,7 @@ const Render = ({
         ) : (
           <View>
             <View style={{ marginBottom: 30 }}>
-              <LoadingIcon />
+              <Loading />
             </View>
             <Text style={styles.title} fontType="medium">
               Ready to Connect

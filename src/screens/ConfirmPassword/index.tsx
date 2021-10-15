@@ -15,7 +15,7 @@ import Body from 'components/layout/Body'
 import WithAuth from 'components/layout/WithAuth'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import { UseStationForm, Button, LoadingIcon } from 'components'
+import { UseStationForm, Button, Loading } from 'components'
 
 import { RootStackParams } from 'types/navigation'
 
@@ -80,7 +80,7 @@ const Render = ({
       >
         {_.some(fee.status) ? (
           <View style={{ marginTop: 20 }}>
-            <LoadingIcon size={24} />
+            <Loading size={24} />
           </View>
         ) : (
           <UseStationForm form={form} />
