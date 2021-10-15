@@ -20,7 +20,7 @@ module.exports = function (api) {
     },
   ]
 
-  const plugins = [moduleResolver]
+  const plugins = [moduleResolver, 'react-native-reanimated/plugin']
   return {
     presets: ['module:metro-react-native-babel-preset'],
     plugins,

@@ -31,6 +31,9 @@ import money.terra.station.UtilLib.RootCheckerPackage;
 import money.terra.station.UtilLib.TamperCheckerPackage;
 import money.terra.station.generated.BasePackageList;
 
+import com.facebook.react.bridge.JSIModulePackage;
+import com.swmansion.reanimated.ReanimatedJSIModulePackage;
+
 public class MainApplication extends MultiDexApplication implements ReactApplication {
   private final ReactModuleRegistryProvider mModuleRegistryProvider =
           new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
@@ -68,6 +71,10 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
               return "index";
             }
 
+            @Override
+            protected JSIModulePackage getJSIModulePackage() {
+              return new ReanimatedJSIModulePackage(); 
+            }
           };
 
   @Override
