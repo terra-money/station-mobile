@@ -147,8 +147,8 @@ android {
         applicationId "money.terra.station"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 10400000
-        versionName "1.4.0"
+        versionCode 10500000
+        versionName "1.5.0"
         multiDexEnabled true
         setProperty('archivesBaseName', renameArtifact())
         missingDimensionStrategy 'react-native-camera', 'general'
