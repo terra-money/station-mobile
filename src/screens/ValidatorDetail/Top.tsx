@@ -43,7 +43,10 @@ const Top = ({ ui }: { ui: ValidatorUI }): ReactElement => {
         )}
         <Badge
           text={status.toUpperCase()}
-          containerStyle={{ backgroundColor: '#1daa8e' }}
+          containerStyle={{
+            backgroundColor:
+              status === 'active' ? '#1daa8e' : '#fd9a02',
+          }}
         />
       </View>
     </View>
