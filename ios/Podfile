@@ -16,7 +16,10 @@ target 'TerraStation' do
   pod 'IOSSecuritySuite'  
 
   config = use_native_modules!
-  use_react_native!(:path => config["reactNativePath"])
+  use_react_native!(
+    :path => config["reactNativePath"],
+    :hermes_enabled => true
+  )
 
   target 'TerraStationTests' do
     inherit! :complete
@@ -31,6 +34,11 @@ target 'TerraStation' do
 
   post_install do |installer|
     flipper_post_install(installer)
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['OTHER_CPLUSPLUSFLAGS'] = '-DDONT_AUTOINSTALL_REANIMATED'
+      end
+    end
   end
 end
 
