@@ -4,12 +4,7 @@ import React, {
   useState,
   Fragment,
 } from 'react'
-import {
-  View,
-  StyleSheet,
-  Platform,
-  ActivityIndicator,
-} from 'react-native'
+import { View, StyleSheet, Platform } from 'react-native'
 import _ from 'lodash'
 import Tooltip from 'react-native-walkthrough-tooltip'
 import { StackScreenProps } from '@react-navigation/stack'
@@ -45,6 +40,7 @@ import {
   Button,
   SelectOptionProps,
   Select,
+  Loading,
 } from 'components'
 
 import { useConfirm } from 'hooks/useConfirm'
@@ -508,7 +504,7 @@ const Swap = (props: Props): ReactElement => {
                   alignItems: 'center',
                 }}
               >
-                <ActivityIndicator size="large" color="#000" />
+                <Loading />
               </View>
             )}
           </Fragment>

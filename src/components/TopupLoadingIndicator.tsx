@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react'
-import { ActivityIndicator, View } from 'react-native'
+import { View } from 'react-native'
+import { Loading } from 'components'
 
 const TopupLoadingIndicator = (): ReactElement => (
   <View
@@ -12,7 +13,7 @@ const TopupLoadingIndicator = (): ReactElement => (
       justifyContent: 'center',
     }}
   >
-    <ActivityIndicator size="large" color="#000" />
+    <Loading />
   </View>
 )
 
