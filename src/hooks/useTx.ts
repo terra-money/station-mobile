@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react'
 import {
   CreateTxOptions,
-  LCDClient,
   RawKey,
   Key,
   TxInfo,
 } from '@terra-money/terra.js'
 import { StackNavigationProp } from '@react-navigation/stack'
 
-import { useConfig, User } from 'lib'
+import { User } from 'lib'
 import { usePollTxHash } from 'lib/post/useConfirm'
 
 import { getDecyrptedKey } from 'utils/wallet'
 import { useLoading } from './useLoading'
 import { RootStackParams } from 'types'
+import useLCD from './useLCD'
 
 const useTx = ({
   user,
@@ -30,7 +30,7 @@ const useTx = ({
     tx: CreateTxOptions
   }) => Promise<void>
 } => {
-  const { chain } = useConfig()
+  const lcd = useLCD()
   const { showLoading, hideLoading } = useLoading({ navigation })
   const [txhash, setTxHash] = useState<string>('')
   const [broadcastResult, setBroadcastResult] = useState<TxInfo>()
@@ -52,12 +52,6 @@ const useTx = ({
     password: string
     tx: CreateTxOptions
   }): Promise<void> => {
-    const lcd = new LCDClient({
-      chainID: chain.current.chainID,
-      URL: chain.current.lcd,
-      gasPrices: tx.gasPrices,
-    })
-
     // fee + tax
     const unsignedTx = await lcd.tx.create(user.address, tx)
     const key = await getKey({ password })
