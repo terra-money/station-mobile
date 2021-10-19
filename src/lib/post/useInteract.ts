@@ -88,7 +88,7 @@ export default (
         user.address,
         address,
         parse(values.json),
-        Coins.fromData(coinsFields.coins)
+        Coins.fromAmino(coinsFields.coins)
       ),
     ],
     tax: new Coins(

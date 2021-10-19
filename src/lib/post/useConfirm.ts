@@ -119,7 +119,7 @@ export default (
           memo,
           gasAdjustment,
         }
-        const unsignedTx = await lcd.tx.create(address, options)
+        const unsignedTx = await lcd.tx.create([{ address }], options)
         setUnsignedTx(unsignedTx)
 
         const gas = String(unsignedTx.fee.gas)

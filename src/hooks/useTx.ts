@@ -30,6 +30,7 @@ const useTx = ({
     tx: CreateTxOptions
   }) => Promise<void>
 } => {
+  const { chain } = useConfig()
   const lcd = useLCD()
   const { showLoading, hideLoading } = useLoading({ navigation })
   const [txhash, setTxHash] = useState<string>('')
@@ -52,11 +53,27 @@ const useTx = ({
     password: string
     tx: CreateTxOptions
   }): Promise<void> => {
-    // fee + tax
-    const unsignedTx = await lcd.tx.create(user.address, tx)
-    const key = await getKey({ password })
-    const signed = await key.signTx(unsignedTx)
+    const chainID = chain.current.chainID
 
+    // fee + tax
+    const unsignedTx = await lcd.tx.create(
+      [{ address: user.address }],
+      tx
+    )
+    const key = await getKey({
+      password,
+    })
+    const wallet = new Wallet(lcd, key)
+    const {
+      account_number,
+      sequence,
+    } = await wallet.accountNumberAndSequence()
+    const signed = await key.signTx(unsignedTx, {
+      accountNumber: account_number,
+      sequence,
+      chainID,
+      signMode: SignMode.SIGN_MODE_DIRECT,
+    })
     const result = await lcd.tx.broadcastSync(signed)
     if ('code' in result && Number(result.code) !== 0) {
       throw new Error(result.raw_log)

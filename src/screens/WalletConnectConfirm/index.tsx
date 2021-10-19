@@ -65,7 +65,8 @@ const TxMessages = ({
   onPressAllow: () => Promise<void>
   onPressGoBack: () => void
 }): ReactElement => {
-  const feeList = (tx?.fee && tx.fee.amount.toArray()) || []
+  const feeList =
+    tx?.fee && tx.fee.amount ? tx.fee.amount.toArray() : []
 
   return (
     <>
