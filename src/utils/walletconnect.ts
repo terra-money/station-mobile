@@ -8,6 +8,7 @@ import dev from './dev'
 export const createTxOptionsToTxParam = (
   txOptions: CreateTxOptions
 ): TxParam => {
+  console.log('createTxOptionsToTxParam', txOptions)
   const msgs =
     txOptions.msgs && typeof txOptions.msgs !== 'string'
       ? txOptions.msgs.map((msg) => msg.toJSON())
@@ -31,8 +32,15 @@ export const createTxOptionsToTxParam = (
 }
 
 export const txParamParser = (txParam: TxParam): CreateTxOptions => {
-  const parse = UTIL.jsonTryParse<{ type: string }>(txParam.msgs[0])
-  const isAmino = (parse && 'type' in parse) || false
+  console.log('txParamParser', txParam)
+  let isAmino = false
+  try {
+    const parse = JSON.parse(txParam.msgs[0])
+    isAmino = parse.type !== undefined // amino: type, proto: @type
+  } catch (e: any) {
+    dev.log(e)
+  }
+  console.log('isAmino', isAmino)
 
   // parse msgs
   const msgs = _.reduce(

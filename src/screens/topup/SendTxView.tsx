@@ -8,11 +8,10 @@ import {
   BackHandler,
 } from 'react-native'
 import { Buffer } from 'buffer'
-import { StdSignMsg } from '@terra-money/terra.js'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import _ from 'lodash'
 
-import { COLOR, FONT } from 'consts'
+import { COLOR, FONT, UTIL } from 'consts'
 
 import { useAuth, format, useBank } from 'lib'
 import { Text, Button, Select, Icon, FormInput } from 'components'
@@ -40,6 +39,14 @@ import {
 } from '@react-navigation/native'
 import { getWallets } from 'utils/wallet'
 import { whitelist } from 'utils/whitelist'
+import {
+  AuthInfo,
+  Coin,
+  Fee,
+  Msg,
+  Tx,
+  TxBody,
+} from '@terra-money/terra.js'
 
 type Props = StackScreenProps<RootStackParams, 'SendTxView'>
 
@@ -62,8 +69,8 @@ const SendTxView = (props: Props): ReactElement => {
   const [returnScheme, setReturnScheme] = useState('')
   const [endpointAddress, setEndpointAddress] = useState('')
 
-  const [stdSignMsg, setStdSignMsg] = useRecoilState(
-    TopupStore.stdSignMsg
+  const [unsignedTx, setUnsignedTx] = useRecoilState(
+    TopupStore.unsignedTx
   )
 
   const [, setConnectAddress] = useRecoilState(
@@ -91,7 +98,7 @@ const SendTxView = (props: Props): ReactElement => {
         setEndpointAddress(payload.endpoint_address)
         setReturnScheme(payload.return_scheme)
       }
-    } catch (e) {
+    } catch (e: any) {
       alert({
         title: 'Unexpected Error',
         desc: e.toString(),
@@ -125,59 +132,85 @@ const SendTxView = (props: Props): ReactElement => {
   }, [returnScheme])
 
   useEffect(() => {
-    const validateMsg = (signMsg: StdSignMsg): void => {
+    const validateMsg = (tx: Tx): void => {
       // length check - only one message
-      if (signMsg.msgs.length > 1) {
-        throw new Error(`Wrong msg count: ${signMsg.msgs.length}`)
+      if (tx.body.messages.length > 1) {
+        throw new Error(`Wrong msg count: ${tx.body.messages.length}`)
       }
 
       const { topupGranteeAddress, topupMessageType } = whitelist()
-      const msg = signMsg.msgs[0].toData()
+      const msg = tx.body.messages[0].toData() as any
 
       // type check - whitelist
+      const type = msg['@type']
       if (!!msg) {
-        if (!_.includes(topupMessageType, msg.type)) {
-          throw new Error(`Wrong msg type: ${msg.type}`)
+        if (!_.includes(topupMessageType, type)) {
+          throw new Error(`Wrong msg type: ${type}`)
         }
       } else {
         throw new Error(`Could not find msg`)
       }
 
       // address check - whitelist
-      if (
-        !!msg &&
-        typeof msg.value === 'object' &&
-        'grantee' in msg.value
-      ) {
-        if (!_.includes(topupGranteeAddress, msg.value.grantee)) {
-          throw new Error(
-            `Wrong grantee address: ${msg.value.grantee}`
-          )
+      if (!!msg && !!msg.grantee) {
+        if (!_.includes(topupGranteeAddress, msg.grantee)) {
+          throw new Error(`Wrong grantee address: ${msg.grantee}`)
         }
       } else {
         throw new Error(`Could not find grantee address`)
       }
+
+      console.log('pass validate message')
     }
 
     const getUnsignedMessage = async (): Promise<void> => {
       try {
         setLoading(true)
-        const unsignedTx = await getUnsignedTx(endpointAddress)
+        const tx = (await getUnsignedTx(endpointAddress)).txData
+        console.log('tx', tx)
 
-        const signMsg = StdSignMsg.fromData(unsignedTx.stdSignMsg)
+        const isAmino = tx.msgs[0].type !== undefined
+        console.log('isAmino', isAmino)
 
-        if (signMsg) {
-          const target = signMsg.fee.amount
-
-          const amount = target.toArray()[0]?.amount.toString()
-          amount && setFeeAmount(amount)
-
-          const denom = target.toArray()[0]?.denom
-          denom && setFeeDenom(denom)
+        let msgs = undefined
+        if (isAmino) {
+          msgs = _.map(tx.msgs, (i) => Msg.fromAmino(i))
+        } else {
+          msgs = _.map(tx.msgs, (i) => Msg.fromData(i))
         }
-        validateMsg(signMsg)
-        setStdSignMsg(signMsg)
-      } catch (e) {
+        console.log('msgs', msgs)
+
+        const txBody = new TxBody(msgs, tx.memo, undefined)
+        console.log('txBody', txBody)
+        const authInfo = new AuthInfo(
+          [],
+          new Fee(
+            parseInt(tx.fee.gas),
+            _.map(tx.fee.amount, (i) =>
+              Coin.fromData({ amount: i.amount, denom: i.denom })
+            )
+          )
+        )
+        console.log('authInfo', authInfo)
+        const unsignedTx = new Tx(txBody, authInfo, [])
+        console.log('unsignedTx', unsignedTx)
+
+        if (unsignedTx) {
+          const fee = unsignedTx.auth_info.fee.amount
+          console.log('fee', typeof fee, fee)
+
+          const amount = fee.get('ukrw')?.amount
+          console.log('amount', amount)
+          amount && setFeeAmount(amount.toString())
+
+          const denom = fee.get('ukrw')?.denom
+          console.log('denom', denom)
+          denom && setFeeDenom(denom.toString())
+        }
+        validateMsg(unsignedTx)
+        setUnsignedTx(unsignedTx)
+      } catch (e: any) {
+        console.error(e)
         somethingWrong(e.toString())
       } finally {
         setLoading(false)
@@ -268,8 +301,8 @@ const SendTxView = (props: Props): ReactElement => {
       })
     }
 
-    if (stdSignMsg === undefined) {
-      somethingWrong('Undefined StdSignMsg')
+    if (unsignedTx === undefined) {
+      somethingWrong('Tx is undefined')
     } else {
       if (bioAvailable) {
         const bioResult = await authenticateBiometric()
@@ -393,7 +426,9 @@ const SendTxView = (props: Props): ReactElement => {
             >{`endpointAddress: ${endpointAddress}`}</Text>
             <Text
               style={style.debugText}
-            >{`stdSignMsg: ${stdSignMsg?.toJSON()}`}</Text>
+            >{`unsignedTx: ${JSON.stringify(
+              unsignedTx?.toData()
+            )}`}</Text>
           </ScrollView>
         )}
       </View>

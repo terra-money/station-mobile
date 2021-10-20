@@ -52,14 +52,14 @@ const useSignedTx = (
   const { dispatch } = useNavigation()
   const { showLoading, hideLoading } = useLoading({ navigation })
 
-  const stdSignMsg = useRecoilValue(TopupStore.stdSignMsg)
+  const unsignedTx = useRecoilValue(TopupStore.unsignedTx)
 
   const createSignedTx = async (
     password: string
   ): Promise<TopupCreateSignedResult> => {
     try {
-      if (stdSignMsg === undefined) {
-        throw new Error('No Sign Msg')
+      if (unsignedTx === undefined) {
+        throw new Error('Tx is undefined')
       }
 
       const decyrptedKey = await getDecyrptedKey(
@@ -67,8 +67,19 @@ const useSignedTx = (
         password
       )
 
-      const rk = new RawKey(Buffer.from(decyrptedKey, 'hex'))
-      const signedTx = await rk.signTx(stdSignMsg)
+      const key = new RawKey(Buffer.from(decyrptedKey, 'hex'))
+
+      const wallet = new Wallet(lcd, key)
+      const {
+        account_number,
+        sequence,
+      } = await wallet.accountNumberAndSequence()
+      const signedTx = await key.signTx(unsignedTx, {
+        accountNumber: account_number,
+        sequence,
+        chainID: chain.current.chainID,
+        signMode: SignMode.SIGN_MODE_DIRECT,
+      })
       return { success: true, signedTx }
     } catch (e) {
       return {
@@ -125,6 +136,7 @@ const useSignedTx = (
       }
 
       const broadcastResult = await broadcastSignedTx(signedTx)
+      console.log('broadcastResult', broadcastResult)
 
       const putResult = await putTxResult(
         endpointAddress,

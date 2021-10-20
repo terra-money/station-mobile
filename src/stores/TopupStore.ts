@@ -1,9 +1,9 @@
-import { StdSignMsg } from '@terra-money/terra.js'
+import { Tx } from '@terra-money/terra.js'
 import { atom } from 'recoil'
 import { StoreKeyEnum } from './StoreKeyEnum'
 
-const stdSignMsg = atom<StdSignMsg | undefined>({
-  key: StoreKeyEnum.stdSignMsg,
+const unsignedTx = atom<Tx | undefined>({
+  key: StoreKeyEnum.unsignedTx,
   default: undefined,
 })
 
@@ -18,7 +18,7 @@ const continueSignedTx = atom<boolean | undefined>({
 })
 
 export default {
-  stdSignMsg,
+  unsignedTx,
   connectAddress,
   continueSignedTx,
 }

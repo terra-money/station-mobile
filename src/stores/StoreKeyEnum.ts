@@ -13,7 +13,7 @@ export enum StoreKeyEnum {
   recoverWalletSeed = 'recoverWalletSeed',
   recoverQRData = 'recoverQRData',
   confirm = 'confirm',
-  stdSignMsg = 'stdSignMsg',
+  unsignedTx = 'unsignedTx',
   connectAddress = 'connectAddress',
   continueSignedTx = 'continueSignedTx',
   walletTabUi = 'walletTabUi',
