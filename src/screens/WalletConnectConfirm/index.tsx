@@ -203,7 +203,7 @@ const ConfirmForm = ({
         confirmSign({
           address: user.address,
           walletName,
-          tx,
+          txOptions: tx,
           password,
         })
       } else {

@@ -5,4 +5,5 @@ export enum QueryKeyEnum {
   addToken_filteredList = 'addToken_filteredList',
   assetChainsJson = 'assetChainsJson',
   swapAmount = 'swapAmount',
+  gasPrices = 'gasPrices',
 }

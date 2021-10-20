@@ -31,13 +31,8 @@ export const createTxOptionsToTxParam = (
 }
 
 export const txParamParser = (txParam: TxParam): CreateTxOptions => {
-  let isAmino = false
-  try {
-    const parse = JSON.parse(txParam.msgs[0])
-    isAmino = parse.type !== undefined // amino: type, proto: @type
-  } catch (e: any) {
-    dev.log(e)
-  }
+  const parse = UTIL.jsonTryParse<{ type: string }>(txParam.msgs[0])
+  const isAmino = (parse && 'type' in parse) || false
 
   // parse msgs
   const msgs = _.reduce(
@@ -53,14 +48,13 @@ export const txParamParser = (txParam: TxParam): CreateTxOptions => {
           result.push(convertMsg)
         }
       } catch (e: any) {
-        dev.log(e)
+        dev.log('txParamParser msgs:' + e)
       }
 
       return result
     },
     []
   )
-
   // parse fee
   let fee = undefined
   try {
@@ -69,7 +63,7 @@ export const txParamParser = (txParam: TxParam): CreateTxOptions => {
       fee = isAmino ? Fee.fromAmino(jsonFee) : Fee.fromData(jsonFee)
     }
   } catch (e: any) {
-    dev.log(e)
+    dev.log('txParamParser fee:' + e)
   }
 
   return {

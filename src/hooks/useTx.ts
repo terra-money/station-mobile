@@ -27,7 +27,7 @@ const useTx = ({
     address: string
     walletName: string
     password: string
-    tx: CreateTxOptions
+    txOptions: CreateTxOptions
   }) => Promise<void>
 } => {
   const { chain } = useConfig()
@@ -48,26 +48,42 @@ const useTx = ({
 
   const broadcastSync = async ({
     password,
-    tx,
+    txOptions,
   }: {
     password: string
-    tx: CreateTxOptions
+    txOptions: CreateTxOptions
   }): Promise<void> => {
     const chainID = chain.current.chainID
-
-    // fee + tax
-    const unsignedTx = await lcd.tx.create(
-      [{ address: user.address }],
-      tx
-    )
     const key = await getKey({
       password,
     })
+
     const wallet = new Wallet(lcd, key)
     const {
       account_number,
       sequence,
     } = await wallet.accountNumberAndSequence()
+
+    const fee =
+      txOptions.fee ||
+      (await lcd.tx.estimateFee(
+        [
+          {
+            sequenceNumber: await wallet.sequence(),
+            publicKey: wallet.key.publicKey,
+          },
+        ],
+        { ...txOptions, feeDenoms: ['uusd'] }
+      ))
+
+    const newTxOptions: CreateTxOptions = { ...txOptions, fee }
+
+    // fee + tax
+    const unsignedTx = await lcd.tx.create(
+      [{ address: user.address }],
+      newTxOptions
+    )
+
     const signed = await key.signTx(unsignedTx, {
       accountNumber: account_number,
       sequence,

@@ -33,7 +33,7 @@ export type UseWalletConnectConfirmReturn = {
     password: string
     address: string
     walletName: string
-    tx: CreateTxOptions
+    txOptions: CreateTxOptions
   }) => Promise<void>
   confirmResult?: ConfirmResultType
 }
@@ -87,18 +87,18 @@ const useWalletConnectConfirm = ({
     password,
     address,
     walletName,
-    tx,
+    txOptions,
   }: {
     password: string
     address: string
     walletName: string
-    tx: CreateTxOptions
+    txOptions: CreateTxOptions
   }): Promise<void> => {
     broadcastSync({
       address,
       walletName,
       password,
-      tx,
+      txOptions,
     }).catch((error) => {
       rejectWalletConnectRequest({
         errorCode: ErrorCodeEnum.createTxFailed,

@@ -35,13 +35,13 @@ const Render = ({
   user,
   connector,
   id,
-  tx,
+  txOptions,
   navigation,
 }: {
   user: User
   connector: WalletConnect
   id: number
-  tx: CreateTxOptions
+  txOptions: CreateTxOptions
 } & Props): ReactElement => {
   const walletName = user.name
   const setIsListenConfirmRemove = useSetRecoilState(
@@ -72,7 +72,7 @@ const Render = ({
       confirmSign({
         address: user.address,
         walletName,
-        tx,
+        txOptions,
         password: inputPassword,
       })
     } else {
@@ -140,7 +140,7 @@ const ConfirmPassword = (props: Props): ReactElement => {
             ...props,
             user,
             id,
-            tx: txParamParser(tx),
+            txOptions: txParamParser(tx),
             connector,
           }}
         />
