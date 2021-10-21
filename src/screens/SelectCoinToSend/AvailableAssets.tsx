@@ -70,6 +70,7 @@ const AvailableAssets = ({
 
   const render = ({
     available,
+    ibc,
     tokens,
     vesting,
     card,
@@ -86,7 +87,7 @@ const AvailableAssets = ({
               }}
             >
               <Text style={styles.assetListTitle} fontType="medium">
-                AVAILABLE
+                {available?.title}
               </Text>
             </View>
           )}
@@ -94,6 +95,20 @@ const AvailableAssets = ({
             <AvailableList {...available} toAddress={toAddress} />
           )}
         </View>
+        {ibc && (
+          <View>
+            <View
+              style={{
+                marginBottom: 10,
+              }}
+            >
+              <Text style={styles.assetListTitle} fontType="bold">
+                {ibc.title}
+              </Text>
+            </View>
+            <AvailableList {...ibc} toAddress={toAddress} />
+          </View>
+        )}
         {tokens && (
           <View style={styles.section}>
             <View
@@ -104,7 +119,7 @@ const AvailableAssets = ({
               }}
             >
               <Text style={styles.assetListTitle} fontType="medium">
-                TOKENS
+                {tokens.title}
               </Text>
             </View>
             <AvailableList {...tokens} toAddress={toAddress} />
