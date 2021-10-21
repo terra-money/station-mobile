@@ -50,6 +50,8 @@ const isNativeTerra = (str: string): boolean =>
 const isNativeDenom = (str: string): boolean =>
   str === 'uluna' || isNativeTerra(str)
 
+const isIbcDenom = (string = ''): boolean => string.startsWith('ibc/')
+
 const isNumberString = (value: number | string): boolean =>
   false === new BigNumber(value || '').isNaN()
 
@@ -175,6 +177,7 @@ export default {
   extractNumber,
   isNativeTerra,
   isNativeDenom,
+  isIbcDenom,
   isNumberString,
   toBn,
   isEven,

@@ -16,4 +16,5 @@ export default {
   wallet_settings: require('../../assets/wallet_settings.png'),
   oops_face: require('../../assets/oops_face.png'),
   queued: require('../../assets/queued.png'),
+  IBC: require('../../assets/IBC.png'),
 }

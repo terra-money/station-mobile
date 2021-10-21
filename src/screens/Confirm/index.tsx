@@ -32,6 +32,7 @@ import { getBioAuthPassword, getIsUseBioAuth } from 'utils/storage'
 import { authenticateBiometric } from 'utils/bio'
 import { useAlert } from 'hooks/useAlert'
 import { useLoading } from 'hooks/useLoading'
+import { UTIL } from 'consts'
 
 type Props = StackScreenProps<RootStackParams, 'Confirm'>
 
@@ -124,7 +125,10 @@ const Render = ({
   const [isUseBioAuth, setIsUseBioAuth] = useState(false)
   const [initPageComplete, setinitPageComplete] = useState(false)
 
-  const options = fee.select.options || []
+  const options =
+    fee.select.options.filter((option) =>
+      UTIL.isNativeDenom(option.value)
+    ) || []
 
   const onPressNextButton = async (): Promise<void> => {
     setPressedNextButton(true)

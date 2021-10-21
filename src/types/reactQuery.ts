@@ -6,4 +6,5 @@ export enum QueryKeyEnum {
   assetChainsJson = 'assetChainsJson',
   swapAmount = 'swapAmount',
   gasPrices = 'gasPrices',
+  denomTrace = 'denomTrace',
 }

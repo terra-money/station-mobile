@@ -9,15 +9,22 @@ export interface AssetsPage extends BankAPI {
 
 export interface AssetsUI {
   card?: Card
-  available?: AvailableNativeUI
+  available?: TerraNativeUI
+  ibc?: IbcNativeUI
   tokens: AvailableTokenUI
   vesting?: VestingUI
 }
 
-export interface AvailableNativeUI {
+export interface TerraNativeUI {
   title: string
   list: AvailableItem[]
   hideSmall: HideSmallUI
+  send: string
+}
+
+export interface IbcNativeUI {
+  title: string
+  list: AvailableItem[]
   send: string
 }
 

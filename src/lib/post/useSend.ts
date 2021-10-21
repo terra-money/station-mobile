@@ -20,6 +20,7 @@ import {
 } from './validateConfirm'
 import { useCalcFee } from './txHelpers'
 import useCalcTax from './useCalcTax'
+import { useDenomTrace } from 'hooks/useDenomTrace'
 
 interface Values {
   to: string
@@ -37,10 +38,12 @@ export default (
   const { list, isLoading: tokenLoading, tokens } = tokenBalance
   const loading = bankLoading || tokenLoading
   const v = validateForm(t)
+  const { data: denomTrace } = useDenomTrace(denom)
+  const ibcDenom = denomTrace?.base_denom
 
   /* form */
   const getBalance = (): string =>
-    (is.nativeDenom(denom)
+    (is.nativeDenom(denom) || is.ibcDenom(denom)
       ? find(`${denom}:available`, bank?.balance)
       : list?.find(({ token }) => token === denom)?.balance) ?? '0'
 
@@ -162,7 +165,12 @@ export default (
       {
         name: t('Common:Tx:Amount'),
         displays: [
-          is.nativeDenom(denom)
+          is.ibcDenom(denom)
+            ? {
+                value: format.amount(amount),
+                unit: format.denom(ibcDenom) || ibcDenom || denom,
+              }
+            : is.nativeDenom(denom)
             ? format.display({ amount, denom })
             : { value: input, unit: tokens?.[denom].symbol ?? '' },
         ],
@@ -182,13 +190,14 @@ export default (
     bank: BankData,
     whitelist: Whitelist
   ): ConfirmProps => ({
-    msgs: is.nativeDenom(denom)
-      ? [new MsgSend(user.address, to, amount + denom)]
-      : [
-          new MsgExecuteContract(user.address, denom, {
-            transfer: { recipient: to, amount },
-          }),
-        ],
+    msgs:
+      is.nativeDenom(denom) || is.ibcDenom(denom)
+        ? [new MsgSend(user.address, to, [new Coin(denom, amount)])]
+        : [
+            new MsgExecuteContract(user.address, denom, {
+              transfer: { recipient: to, amount },
+            }),
+          ],
     tax: shouldTax ? new Coin(denom, taxAmount) : undefined,
     memo,
     contents,

@@ -1,8 +1,14 @@
-import React, { ReactElement } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import React, { ReactElement, useState } from 'react'
+import {
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { useSwapRate } from 'hooks/useSwapRate'
 import { Coin } from '@terra-money/terra.js'
 import { useQuery } from 'react-query'
+import Tooltip from 'react-native-walkthrough-tooltip'
 import {
   NavigationProp,
   useNavigation,
@@ -10,11 +16,75 @@ import {
 
 import { UTIL } from 'consts'
 
-import { AvailableItem, useConfig } from 'lib'
+import { AvailableItem, format, useConfig } from 'lib'
 
-import { Text, Icon, Number, AssetIcon } from 'components'
+import { Text, Icon, Number, AssetIcon, Row } from 'components'
 import { COLOR } from 'consts'
-import { QueryKeyEnum, RootStackParams, Token } from 'types'
+import { QueryKeyEnum, RootStackParams, Token, uToken } from 'types'
+import images from 'assets/images'
+import { useDenomTrace } from 'hooks/useDenomTrace'
+
+const IBCUnit = ({ unit }: { unit: string }): ReactElement => {
+  const [
+    isVisibleSpreadTooltip,
+    setisVisibleSpreadTooltip,
+  ] = useState(false)
+
+  const hash = unit.replace('ibc/', '')
+  const { data } = useDenomTrace(unit)
+
+  if (!data) return <Text>{UTIL.truncate(hash)}</Text>
+
+  const { base_denom, path } = data
+
+  return (
+    <Row>
+      <Tooltip
+        isVisible={isVisibleSpreadTooltip}
+        content={
+          <View>
+            <Text fontType="medium" style={{ color: COLOR.white }}>
+              {UTIL.truncate(hash)}
+            </Text>
+            <Text style={{ color: COLOR.white, fontSize: 12 }}>
+              ({path.replace('transfer/', '')})
+            </Text>
+          </View>
+        }
+        placement="top"
+        onClose={(): void => setisVisibleSpreadTooltip(false)}
+        contentStyle={{
+          backgroundColor: COLOR.primary._02,
+        }}
+      >
+        <TouchableOpacity
+          onPress={(e): void => {
+            e.stopPropagation()
+            setisVisibleSpreadTooltip(true)
+          }}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingVertical: 10,
+            paddingRight: 15,
+          }}
+        >
+          <Text>
+            {format.denom(base_denom as uToken) || base_denom}
+          </Text>
+
+          <Icon
+            name={'info'}
+            color={COLOR.primary._02}
+            size={14}
+            style={{ marginLeft: 5 }}
+          />
+        </TouchableOpacity>
+      </Tooltip>
+    </Row>
+  )
+}
 
 const AssetItem = ({
   item,
@@ -27,6 +97,8 @@ const AssetItem = ({
   const { getSwapAmount } = useSwapRate()
   const { currency } = useConfig()
   const { display } = item
+  const isIbcDenom = UTIL.isIbcDenom(item.denom)
+
   const { data: swapValue } = useQuery(
     [QueryKeyEnum.swapAmount, item, currency.current],
     async () => {
@@ -41,7 +113,6 @@ const AssetItem = ({
         : ''
     }
   )
-
   const icon =
     item.denom && UTIL.isNativeDenom(item.denom)
       ? `https://assets.terra.money/icon/60/${item.display.unit}.png`
@@ -59,11 +130,22 @@ const AssetItem = ({
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={styles.iconBox}>
-            <AssetIcon uri={icon} />
+            {isIbcDenom ? (
+              <Image
+                source={images.IBC}
+                style={{ width: 18, height: 18 }}
+              />
+            ) : (
+              <AssetIcon uri={icon} />
+            )}
           </View>
-          <Text style={styles.unit} fontType={'bold'}>
-            {display.unit}
-          </Text>
+          {isIbcDenom ? (
+            <IBCUnit unit={display.unit} />
+          ) : (
+            <Text style={styles.unit} fontType={'bold'}>
+              {display.unit}
+            </Text>
+          )}
         </View>
         <View
           style={{

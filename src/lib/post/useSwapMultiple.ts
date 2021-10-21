@@ -23,6 +23,7 @@ import useCalcTaxes from './useCalcTaxes'
 import { simulateMarket } from './useSwap'
 import { getTerraswapURL, simulateTerraswap } from './terraswap'
 import { findPair, getRouteMessage, simulateRoute } from './routeswap'
+import { UTIL } from 'consts'
 
 interface Values {
   to: string
@@ -37,13 +38,17 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
   const { t } = useTranslation()
   const { chain } = useConfig()
   const activeDenoms = useActiveDenoms()
-  const balanceDenoms = bank.balance.map(({ denom }) => denom)
+  const validBankBalanceList = bank.balance.filter(
+    (x) => !UTIL.isIbcDenom(x.denom)
+  )
+
+  const balanceDenoms = validBankBalanceList.map(({ denom }) => denom)
   const { getTax, loading: loadingTaxes } = useCalcTaxes(
     balanceDenoms
   )
 
   type OptionItem = { key: string; label: string; available: string }
-  const options: OptionItem[] = bank.balance.map(
+  const options: OptionItem[] = validBankBalanceList.map(
     ({ denom, available }) => ({
       key: denom,
       label: format.denom(denom),
@@ -51,7 +56,9 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
     })
   )
 
-  const availableList = bank.balance.reduce<Dictionary<string>>(
+  const availableList = validBankBalanceList.reduce<
+    Dictionary<string>
+  >(
     (acc, { denom, available }) => ({ ...acc, [denom]: available }),
     {}
   )
@@ -61,7 +68,8 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
 
   /* form */
   const hasLunaOnly =
-    bank.balance.length === 1 && bank.balance[0].denom === 'uluna'
+    validBankBalanceList.length === 1 &&
+    validBankBalanceList[0].denom === 'uluna'
   const initial = { to: hasLunaOnly ? 'uusd' : 'uluna' }
   const validate = (): {
     to: string
@@ -330,7 +338,7 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
     ? to
     : feeDenomList[0]
 
-  const getConfirm = (bank: BankData): ConfirmProps => ({
+  const getConfirm = (): ConfirmProps => ({
     msgs,
     tax:
       to === 'uluna'
@@ -380,7 +388,7 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
       list: feeDenomList,
     },
     validate: (fee: StationCoin): boolean =>
-      isFeeAvailable(fee, bank.balance),
+      isFeeAvailable(fee, validBankBalanceList),
     submitLabels: [t('Post:Swap:Swap'), t('Post:Swap:Swapping...')],
     message: t('Post:Swap:Swapped {{coin}} to {{unit}}', {
       coin: checked.map((denom) => format.denom(denom)).join(', '),
@@ -396,7 +404,7 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
   return {
     submitted,
     form: formUI,
-    confirm: bank ? getConfirm(bank) : undefined,
+    confirm: bank ? getConfirm() : undefined,
     ui: { checkboxes, group },
   }
 }

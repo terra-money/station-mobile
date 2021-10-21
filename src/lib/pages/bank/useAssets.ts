@@ -9,7 +9,7 @@ import {
   TokenBalance,
   User,
 } from '../../types'
-import { format } from '../../utils'
+import { format, is } from '../../utils'
 import { percent, gte } from '../../utils/math'
 import useBank from '../../api/useBank'
 import useTokenBalance from '../../cw20/useTokenBalance'
@@ -55,11 +55,12 @@ export default (user: User, config?: Config): AssetsPage => {
     available: !balance.length
       ? undefined
       : {
-          title: t('Page:Bank:Available'),
+          title: 'Terra Native',
           list: balance
             .filter(
               ({ available }) => !hideSmall || gte(available, SMALL)
             )
+            .filter(({ denom }) => !is.ibcDenom(denom))
             .map(({ available, denom }) => ({
               denom,
               display: format.display({ amount: available, denom }),
@@ -71,8 +72,25 @@ export default (user: User, config?: Config): AssetsPage => {
           },
           send: t('Post:Send:Send'),
         },
+    ibc: !balance.filter(({ denom }) => is.ibcDenom(denom)).length
+      ? undefined
+      : {
+          title: 'IBC Tokens',
+          list: balance
+            .filter(({ denom }) => is.ibcDenom(denom))
+            .map(({ available, denom }) => {
+              return {
+                denom,
+                display: {
+                  value: format.amount(available),
+                  unit: denom,
+                },
+              }
+            }),
+          send: t('Post:Send:Send'),
+        },
     tokens: {
-      title: 'Tokens',
+      title: 'CW20 Tokens',
       list:
         tokenList?.map(
           ({ token, symbol, icon, balance, decimals }) => {

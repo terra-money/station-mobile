@@ -19,7 +19,7 @@ import {
   VestingUI,
   Card,
   AvailableItem,
-  AvailableNativeUI,
+  TerraNativeUI,
   useCurrentChainName,
 } from 'lib'
 import { Text, Icon, Row, Button } from 'components'
@@ -91,10 +91,10 @@ const EmptyWallet = ({ card }: { card?: Card }): ReactElement => {
   )
 }
 
-const NativeTokenHideSmallCheckBox = ({
+const TerraNativeHideSmallCheckBox = ({
   available,
 }: {
-  available?: AvailableNativeUI
+  available?: TerraNativeUI
 }): ReactElement => {
   return (
     <>
@@ -183,11 +183,12 @@ const AvailableAssets = ({
 
   const render = ({
     available,
+    ibc,
     tokens,
     vesting,
     card,
   }: AssetsUI): ReactElement => {
-    return tokens || available || vesting ? (
+    return tokens || available || vesting || ibc ? (
       <>
         <View style={styles.section}>
           {card && (
@@ -201,14 +202,29 @@ const AvailableAssets = ({
               }}
             >
               <Text style={styles.assetListTitle} fontType="bold">
-                AVAILABLE
+                {available?.title}
               </Text>
-              <NativeTokenHideSmallCheckBox available={available} />
+              <TerraNativeHideSmallCheckBox available={available} />
             </Row>
           )}
           {available && <AvailableList {...available} />}
           {vesting && <VestingList {...vesting} />}
         </View>
+        {ibc && (
+          <View>
+            <View
+              style={{
+                marginBottom: 10,
+              }}
+            >
+              <Text style={styles.assetListTitle} fontType="bold">
+                {ibc.title}
+              </Text>
+            </View>
+            <AvailableList {...ibc} />
+          </View>
+        )}
+
         {tokens.list.length > 0 && (
           <View style={styles.section}>
             <Row
@@ -219,7 +235,7 @@ const AvailableAssets = ({
               }}
             >
               <Text style={styles.assetListTitle} fontType="bold">
-                TOKENS
+                {tokens.title}
               </Text>
               <TouchableOpacity
                 onPress={(): void => {
