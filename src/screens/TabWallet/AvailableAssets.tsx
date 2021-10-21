@@ -29,10 +29,10 @@ import Preferences, {
 } from 'nativeModules/preferences'
 import CardComp from 'components/Card'
 
-import AssetItem from './AssetItem'
 import VestingItem from './VestingItem'
 import TokenSelector from './TokenSelector'
 import TokenManager from './TokenManager'
+import AssetItem from '../../components/wallet/AssetItem'
 
 type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
@@ -210,13 +210,10 @@ const AvailableAssets = ({
           {available && <AvailableList {...available} />}
           {vesting && <VestingList {...vesting} />}
         </View>
+
         {ibc && (
-          <View>
-            <View
-              style={{
-                marginBottom: 10,
-              }}
-            >
+          <View style={styles.section}>
+            <View style={{ marginBottom: 10 }}>
               <Text style={styles.assetListTitle} fontType="bold">
                 {ibc.title}
               </Text>
@@ -307,7 +304,7 @@ const AvailableAssets = ({
 export default AvailableAssets
 
 const styles = StyleSheet.create({
-  section: { marginBottom: 20 },
+  section: { marginBottom: 10 },
   assetListTitle: {
     fontSize: 10,
     lineHeight: 15,

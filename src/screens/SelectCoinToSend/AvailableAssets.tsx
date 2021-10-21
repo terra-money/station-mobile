@@ -5,7 +5,8 @@ import _ from 'lodash'
 import { useAssets, AssetsUI, User, Card, AvailableItem } from 'lib'
 import { Text, Icon } from 'components'
 
-import AssetItem from './AvailableItem'
+import AssetItem from '../../components/wallet/AssetItem'
+
 import { COLOR } from 'consts'
 
 const AvailableList = ({
@@ -96,12 +97,8 @@ const AvailableAssets = ({
           )}
         </View>
         {ibc && (
-          <View>
-            <View
-              style={{
-                marginBottom: 10,
-              }}
-            >
+          <View style={styles.section}>
+            <View style={{ marginBottom: 10 }}>
               <Text style={styles.assetListTitle} fontType="bold">
                 {ibc.title}
               </Text>
@@ -137,7 +134,7 @@ const AvailableAssets = ({
 export default AvailableAssets
 
 const styles = StyleSheet.create({
-  section: { marginBottom: 20 },
+  section: { marginBottom: 10 },
   assetListTitle: {
     fontSize: 10,
     lineHeight: 15,

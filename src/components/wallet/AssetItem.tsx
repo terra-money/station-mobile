@@ -5,22 +5,22 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { useSwapRate } from 'hooks/useSwapRate'
-import { Coin } from '@terra-money/terra.js'
-import { useQuery } from 'react-query'
-import Tooltip from 'react-native-walkthrough-tooltip'
 import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native'
-
-import { UTIL } from 'consts'
+import { Coin } from '@terra-money/terra.js'
+import { useQuery } from 'react-query'
+import Tooltip from 'react-native-walkthrough-tooltip'
 
 import { AvailableItem, format, useConfig } from 'lib'
+
+import { UTIL } from 'consts'
 
 import { Text, Icon, Number, AssetIcon, Row } from 'components'
 import { COLOR } from 'consts'
 import { QueryKeyEnum, RootStackParams, Token, uToken } from 'types'
+import { useSwapRate } from 'hooks/useSwapRate'
 import images from 'assets/images'
 import { useDenomTrace } from 'hooks/useDenomTrace'
 
@@ -70,7 +70,7 @@ const IBCUnit = ({ unit }: { unit: string }): ReactElement => {
             paddingRight: 15,
           }}
         >
-          <Text>
+          <Text style={styles.unit} fontType={'bold'}>
             {format.denom(base_denom as uToken) || base_denom}
           </Text>
 
@@ -88,8 +88,10 @@ const IBCUnit = ({ unit }: { unit: string }): ReactElement => {
 
 const AssetItem = ({
   item,
+  toAddress,
 }: {
   item: AvailableItem
+  toAddress?: string
 }): ReactElement => {
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
@@ -99,24 +101,27 @@ const AssetItem = ({
   const { display } = item
   const isIbcDenom = UTIL.isIbcDenom(item.denom)
 
-  const { data: swapValue } = useQuery(
-    [QueryKeyEnum.swapAmount, item, currency.current],
-    async () => {
-      return currency.current && item.denom
-        ? getSwapAmount(
-            new Coin(
-              item.denom,
-              UTIL.microfy(UTIL.delComma(display.value) as Token)
-            ),
-            currency.current.key
-          )
-        : ''
-    }
-  )
   const icon =
     item.denom && UTIL.isNativeDenom(item.denom)
       ? `https://assets.terra.money/icon/60/${item.display.unit}.png`
       : item.icon
+
+  const { data: swapValue = '' } = useQuery(
+    [QueryKeyEnum.swapAmount, item, currency.current],
+    async () => {
+      return (
+        currency.current &&
+        item.denom &&
+        getSwapAmount(
+          new Coin(
+            item.denom,
+            UTIL.microfy(UTIL.delComma(display.value) as Token)
+          ),
+          currency.current.key
+        )
+      )
+    }
+  )
 
   return (
     <View style={styles.container}>
@@ -125,6 +130,7 @@ const AssetItem = ({
         onPress={(): void => {
           navigate('Send', {
             denomOrToken: item.denom || item.token || '',
+            toAddress,
           })
         }}
       >
