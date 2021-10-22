@@ -9,10 +9,11 @@ import {
   TokenBalance,
   User,
 } from '../../types'
-import { format, is } from '../../utils'
+import { format } from '../../utils'
 import { percent, gte } from '../../utils/math'
 import useBank from '../../api/useBank'
 import useTokenBalance from '../../cw20/useTokenBalance'
+import { UTIL } from 'consts'
 
 const SMALL = '1000000'
 
@@ -60,7 +61,7 @@ export default (user: User, config?: Config): AssetsPage => {
             .filter(
               ({ available }) => !hideSmall || gte(available, SMALL)
             )
-            .filter(({ denom }) => !is.ibcDenom(denom))
+            .filter(({ denom }) => !UTIL.isIbcDenom(denom))
             .map(({ available, denom }) => ({
               denom,
               display: format.display({ amount: available, denom }),
@@ -72,12 +73,12 @@ export default (user: User, config?: Config): AssetsPage => {
           },
           send: t('Post:Send:Send'),
         },
-    ibc: !balance.filter(({ denom }) => is.ibcDenom(denom)).length
+    ibc: !balance.filter(({ denom }) => UTIL.isIbcDenom(denom)).length
       ? undefined
       : {
           title: 'IBC Tokens',
           list: balance
-            .filter(({ denom }) => is.ibcDenom(denom))
+            .filter(({ denom }) => UTIL.isIbcDenom(denom))
             .map(({ available, denom }) => {
               return {
                 denom,

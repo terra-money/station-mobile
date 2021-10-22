@@ -37,7 +37,7 @@ const TerraTheme = {
 }
 
 const Navigator = (): ReactElement => {
-  const navigatorRef = useRef<NavigationContainerRef>(null)
+  const navigatorRef = useRef<NavigationContainerRef<any>>(null)
   const { user } = useAuth()
   const { openURL } = useLinking()
   const [linkingUrl, setLinkingUrl] = useState('')
@@ -48,7 +48,7 @@ const Navigator = (): ReactElement => {
     TopupStore.continueSignedTx
   )
 
-  const screens: PathConfigMap = user
+  const screens: PathConfigMap<any> = user
     ? {
         ConnectView: {
           path: 'connect',
@@ -97,7 +97,7 @@ const Navigator = (): ReactElement => {
         },
       }
 
-  const linking: LinkingOptions = {
+  const linking: LinkingOptions<any> = {
     prefixes: ['terrastation://'],
     config: {
       screens,

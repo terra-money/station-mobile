@@ -45,6 +45,7 @@ const extractNumber = (str: string): string => str.replace(/\D+/g, '')
 
 const isNativeTerra = (str: string): boolean =>
   str.startsWith('u') &&
+  str.length === 4 &&
   currency.currencies.includes(str.slice(1).toUpperCase())
 
 const isNativeDenom = (str: string): boolean =>

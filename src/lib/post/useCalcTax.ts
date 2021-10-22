@@ -1,7 +1,9 @@
 import { useCallback, useMemo } from 'react'
 import { useQuery } from 'react-query'
-import { TFunction } from 'i18next'
+import { useTranslation } from 'react-i18next'
 import BigNumber from 'bignumber.js'
+import _ from 'lodash'
+
 import { percent } from 'lib/utils/math'
 import fcd from 'lib/api/fcd'
 import { format, is } from 'lib/utils'
@@ -9,14 +11,14 @@ import { Result } from 'lib/types'
 
 type Response = Result<string>
 const useCalcTax = (
-  denom: string,
-  t: TFunction
+  denom: string
 ): {
   loading: boolean
   getMax: (balance: string) => string
   getTax: (amount: string) => string
   label: string
 } => {
+  const { t } = useTranslation()
   const { data: rate = '0', isLoading: loadingRate } = useQuery(
     'taxRate',
     async () => {
@@ -29,16 +31,15 @@ const useCalcTax = (
     ['taxCap', denom],
     async () => {
       const { data } = await fcd.get<Response>(
-        `/treasury/tax_cap/${denom}`
+        `/treasury/tax_cap/${encodeURIComponent(
+          encodeURIComponent(denom)
+        )}`
       )
       return data.result
     },
     {
-      enabled: !(
-        denom === 'uluna' ||
-        is.ibcDenom(denom) ||
-        is.address(denom)
-      ),
+      enabled:
+        _.some(denom) && !(denom === 'uluna' || is.address(denom)),
     }
   )
 
@@ -55,12 +56,10 @@ const useCalcTax = (
 
   const getTax = useCallback(
     (amount: string) => {
-      const bn = is.ibcDenom(denom)
-        ? new BigNumber(amount).times(rate)
-        : BigNumber.min(
-            new BigNumber(amount).times(rate),
-            new BigNumber(cap)
-          )
+      const bn = BigNumber.min(
+        new BigNumber(amount).times(rate),
+        new BigNumber(cap)
+      )
 
       return bn.integerValue(BigNumber.ROUND_CEIL).toString()
     },
@@ -73,7 +72,7 @@ const useCalcTax = (
         percent: percent(rate, 3),
         max: format.coin({ amount: cap, denom }),
       }),
-    [cap, rate, denom, t]
+    [cap, rate, denom]
   )
 
   return { loading, getMax, getTax, label }

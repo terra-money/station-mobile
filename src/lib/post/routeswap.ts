@@ -1,8 +1,8 @@
 import { Coin } from '@terra-money/terra.js'
 import axios from 'axios'
+import { UTIL } from 'consts'
 import { Dictionary } from 'ramda'
 import { ChainOptions, Pairs } from '../types'
-import { is } from '../utils'
 import { toBase64, toTokenInfo, ToTokenInfoType } from './terraswap'
 
 const RouteContracts: Dictionary<string> = {
@@ -65,7 +65,8 @@ type ExecuteType =
 export const isMarketAvailable = ({
   from,
   to,
-}: SwapParams): boolean => is.nativeDenom(from) && is.nativeDenom(to)
+}: SwapParams): boolean =>
+  UTIL.isNativeDenom(from) && UTIL.isNativeDenom(to)
 
 export const findPair = (
   { from, to }: SwapParams,
@@ -73,7 +74,7 @@ export const findPair = (
 ): string | undefined => {
   if (!pairs) return
 
-  const shouldBurnLuna = from === 'uluna' && is.nativeTerra(from)
+  const shouldBurnLuna = from === 'uluna' && UTIL.isNativeTerra(from)
   const pair = Object.entries(pairs).find(([, tokens]) =>
     [from, to].every((token) => tokens.includes(token))
   )?.[0]
@@ -178,7 +179,7 @@ export const getRouteMessage = (
   }
   const msgSimulate = { simulate_swap_operations: swapOperations }
   const msgExecute = { execute_swap_operations: swapOperations }
-  const execute: ExecuteType = is.nativeDenom(from)
+  const execute: ExecuteType = UTIL.isNativeDenom(from)
     ? {
         contract: path,
         msg: msgExecute,

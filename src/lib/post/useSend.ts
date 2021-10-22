@@ -6,7 +6,7 @@ import { Coin } from '@terra-money/terra.js'
 import { BankData, Whitelist } from '../types'
 import { PostPage, CoinItem, User, Field } from '../types'
 import { ConfirmContent, ConfirmProps } from '../types'
-import { is, format, find } from '../utils'
+import { format, find } from '../utils'
 import { gt, max, minus } from '../utils/math'
 import { toAmount, toInput } from '../utils/format'
 import { TokenBalanceQuery } from '../cw20/useTokenBalance'
@@ -21,6 +21,7 @@ import {
 import { useCalcFee } from './txHelpers'
 import useCalcTax from './useCalcTax'
 import { useDenomTrace } from 'hooks/useDenomTrace'
+import { UTIL } from 'consts'
 
 interface Values {
   to: string
@@ -43,7 +44,7 @@ export default (
 
   /* form */
   const getBalance = (): string =>
-    (is.nativeDenom(denom) || is.ibcDenom(denom)
+    (UTIL.isNativeDenom(denom) || UTIL.isIbcDenom(denom)
       ? find(`${denom}:available`, bank?.balance)
       : list?.find(({ token }) => token === denom)?.balance) ?? '0'
 
@@ -77,8 +78,9 @@ export default (
 
   /* tax */
   const [submitted, setSubmitted] = useState(false)
-  const shouldTax = is.nativeTerra(denom) || is.ibcDenom(denom)
-  const calcTax = useCalcTax(denom, t)
+  const shouldTax =
+    UTIL.isNativeTerra(denom) || UTIL.isIbcDenom(denom)
+  const calcTax = useCalcTax(denom)
   const calcFee = useCalcFee()
   const balance = getBalance()
 
@@ -165,12 +167,12 @@ export default (
       {
         name: t('Common:Tx:Amount'),
         displays: [
-          is.ibcDenom(denom)
+          UTIL.isIbcDenom(denom)
             ? {
                 value: format.amount(amount),
                 unit: format.denom(ibcDenom) || ibcDenom || denom,
               }
-            : is.nativeDenom(denom)
+            : UTIL.isNativeDenom(denom)
             ? format.display({ amount, denom })
             : { value: input, unit: tokens?.[denom].symbol ?? '' },
         ],
@@ -191,7 +193,7 @@ export default (
     whitelist: Whitelist
   ): ConfirmProps => ({
     msgs:
-      is.nativeDenom(denom) || is.ibcDenom(denom)
+      UTIL.isNativeDenom(denom) || UTIL.isIbcDenom(denom)
         ? [new MsgSend(user.address, to, [new Coin(denom, amount)])]
         : [
             new MsgExecuteContract(user.address, denom, {
@@ -203,7 +205,7 @@ export default (
     contents,
     feeDenom: { list: getFeeDenomList(bank.balance) },
     validate: (fee: CoinItem): boolean =>
-      is.nativeDenom(denom)
+      UTIL.isNativeDenom(denom)
         ? isAvailable(
             { amount, denom, fee, tax: { amount: taxAmount, denom } },
             bank.balance

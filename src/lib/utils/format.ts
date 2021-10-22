@@ -1,8 +1,8 @@
 import { AccAddress } from '@terra-money/terra.js'
 import BigNumber from 'bignumber.js'
+import { UTIL } from 'consts'
 import { DateTime } from 'luxon'
 import { CoinItem, DisplayCoin, Whitelist } from '../types'
-import is from './is'
 import currencies from './currencies.json'
 
 interface Config {
@@ -44,7 +44,7 @@ export const amountN = (
 export const denom = (denom = '', whitelist?: Whitelist): string => {
   const unit = denom.slice(1).toUpperCase()
   const isValidTerra =
-    is.nativeTerra(denom) && currencies.includes(unit)
+    UTIL.isNativeTerra(denom) && currencies.includes(unit)
   const symbol =
     AccAddress.validate(denom) && whitelist?.[denom]?.symbol
 

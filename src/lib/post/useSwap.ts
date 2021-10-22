@@ -17,7 +17,7 @@ import {
   Field,
   FormUI,
 } from '../types'
-import { find, format, is } from '../utils'
+import { find, format } from '../utils'
 import {
   gt,
   gte,
@@ -48,6 +48,7 @@ import * as routeswap from './routeswap'
 import useCalcTax from './useCalcTax'
 import { useCalcFee } from './txHelpers'
 import useWhitelist from 'lib/cw20/useWhitelist'
+import { UTIL } from 'consts'
 
 const { findPair, getRouteMessage } = routeswap
 const {
@@ -290,8 +291,8 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   const expectedPrice = div(amount, simulated)
 
   // simulate: Max & Tax
-  const shouldTax = is.nativeTerra(from) && mode !== 'Market'
-  const calcTax = useCalcTax(from, t)
+  const shouldTax = UTIL.isNativeTerra(from) && mode !== 'Market'
+  const calcTax = useCalcTax(from)
   const calcFee = useCalcFee()
   const {
     getMax,
@@ -423,7 +424,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
       price && setPrice(price)
     }
 
-    is.nativeDenom(from) && fetchPrice()
+    UTIL.isNativeDenom(from) && fetchPrice()
     // eslint-disable-next-line
   }, [from, to])
 
@@ -689,7 +690,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
       }),
     feeDenom: { list: getFeeDenomList(bank.balance) },
     validate: (fee: StationCoin): boolean =>
-      is.nativeDenom(from)
+      UTIL.isNativeDenom(from)
         ? isAvailable(
             { amount: plus(amount, tax), denom: from, fee },
             bank.balance
