@@ -11,11 +11,14 @@ const getDl = (
   object: Record<string, any>
 ): { dt: string; dd: string }[] =>
   Object.entries(object).map(([k, v]) => {
-    const dd = v.toJSON
-      ? v.toJSON()
-      : typeof v === 'object'
-      ? JSON.stringify(v, null, 2)
-      : v
+    const dd =
+      v === undefined
+        ? 'undefined'
+        : v.toJSON
+        ? v.toJSON()
+        : typeof v === 'object'
+        ? JSON.stringify(v, null, 2)
+        : v
 
     return {
       dt: k,
