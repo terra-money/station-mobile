@@ -6,13 +6,15 @@ import { useAuth } from '../../contexts/AuthContext'
 import { useCurrentChainName } from '../../contexts/ConfigContext'
 import useWhitelist from '../../cw20/useWhitelist'
 import useContracts from '../../hooks/useContracts'
+import BigNumber from 'bignumber.js'
+import { getTraceDenom } from 'hooks/useDenomTrace'
 
 const REGEXP = {
   ADDRESS: /(terra1[a-z0-9]{38})|(terravaloper[a-z0-9]{39})/g,
   COIN: /^\d+((terra1[a-z0-9]{38})|(u[a-z]{1,4}))/g,
 }
 
-const useParseTxText = (): ((text?: string) => string) => {
+const useParseTxText = (): ((text?: string) => Promise<string>) => {
   const chainName = useCurrentChainName()
   const { user } = useAuth()
   const { whitelist } = useWhitelist()
@@ -61,15 +63,30 @@ const useParseTxText = (): ((text?: string) => string) => {
     )
   }
 
-  const parseWord = (word: string): string =>
+  const splitIbcWord = async (word: string): Promise<string> => {
+    const idx = word.indexOf('ibc/')
+
+    const coin = new BigNumber(word.slice(0, idx)).dividedBy(1e6)
+    const denom = word.slice(idx)
+    const baseDenom = await getTraceDenom(lcd, denom)
+
+    return coin + ' ' + format.denom(baseDenom)
+  }
+
+  const parseWord = async (word: string): Promise<string> =>
     word.split(',').length > 1
       ? 'multiple coins'
+      : word.includes('ibc/')
+      ? await splitIbcWord(word)
       : word
           .replace(REGEXP.COIN, replaceCoin)
           .replace(REGEXP.ADDRESS, replaceAddress)
 
-  return (text = ''): string =>
-    text.split(' ').map(parseWord).join(' ')
+  return async (text = ''): Promise<string> => {
+    return (await Promise.all(text.split(' ').map(parseWord))).join(
+      ' '
+    )
+  }
 }
 
 export default useParseTxText

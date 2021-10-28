@@ -8,6 +8,8 @@ import { percent } from 'lib/utils/math'
 import fcd from 'lib/api/fcd'
 import { format, is } from 'lib/utils'
 import { Result } from 'lib/types'
+import { UTIL } from 'consts'
+import { useDenomTrace } from 'hooks/useDenomTrace'
 
 type Response = Result<string>
 const useCalcTax = (
@@ -18,6 +20,10 @@ const useCalcTax = (
   getTax: (amount: string) => string
   label: string
 } => {
+  const isIbcDenom = UTIL.isIbcDenom(denom)
+  const { data: denomTrace } = useDenomTrace(denom)
+  const ibcDenom = denomTrace?.base_denom
+
   const { t } = useTranslation()
   const { data: rate = '0', isLoading: loadingRate } = useQuery(
     'taxRate',
@@ -70,7 +76,10 @@ const useCalcTax = (
     () =>
       t('Post:Send:Tax ({{percent}}, Max {{max}})', {
         percent: percent(rate, 3),
-        max: format.coin({ amount: cap, denom }),
+        max: format.coin({
+          amount: cap,
+          denom: isIbcDenom ? ibcDenom || '' : denom,
+        }),
       }),
     [cap, rate, denom]
   )

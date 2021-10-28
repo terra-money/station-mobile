@@ -5,6 +5,7 @@ import { UTIL } from 'consts'
 
 import { QueryKeyEnum } from 'types'
 import useLCD from './useLCD'
+import { LCDClient } from '@terra-money/terra.js'
 
 export const useDenomTrace = (
   denom = ''
@@ -24,4 +25,20 @@ export const useDenomTrace = (
     },
     { enabled: UTIL.isIbcDenom(denom) }
   )
+}
+
+export const getTraceDenom = async (
+  lcd: LCDClient,
+  denom = ''
+): Promise<string> => {
+  try {
+    const hash = denom.replace('ibc/', '')
+    const { denom_trace } = ((await lcd.ibcTransfer.denomTrace(
+      hash
+    )) as unknown) as { denom_trace: DenomTrace }
+
+    return denom_trace.base_denom ?? denom
+  } catch (e) {
+    return denom
+  }
 }

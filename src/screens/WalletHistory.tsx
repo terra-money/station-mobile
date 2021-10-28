@@ -26,7 +26,13 @@ import { Text, Icon, Loading } from 'components'
 
 import { RootStackParams } from 'types'
 
-const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
+const RenderList = ({
+  ui,
+  loading,
+}: {
+  ui: TxsUI
+  loading: boolean
+}): ReactElement => {
   const { History: title } = useMenu()
   const { goBack } = useNavigation<NavigationProp<RootStackParams>>()
 
@@ -86,25 +92,33 @@ const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
           </>
         }
         ListEmptyComponent={
-          ui.card && (
-            <View
-              style={{
-                paddingVertical: 20,
-                alignItems: 'flex-start',
-                flexDirection: 'row',
-                flexShrink: 1,
-              }}
-            >
-              <Icon name="info" color={COLOR.primary._02} size={40} />
-              <View style={{ paddingLeft: 10, flex: 1 }}>
-                <Text style={{ fontSize: 16 }} fontType={'bold'}>
-                  {ui.card.title}
-                </Text>
-                <Text style={{ fontSize: 13, lineHeight: 20 }}>
-                  {ui.card.content}
-                </Text>
+          loading ? (
+            <Loading />
+          ) : (
+            ui.card && (
+              <View
+                style={{
+                  paddingVertical: 20,
+                  alignItems: 'flex-start',
+                  flexDirection: 'row',
+                  flexShrink: 1,
+                }}
+              >
+                <Icon
+                  name="info"
+                  color={COLOR.primary._02}
+                  size={40}
+                />
+                <View style={{ paddingLeft: 10, flex: 1 }}>
+                  <Text style={{ fontSize: 16 }} fontType={'bold'}>
+                    {ui.card.title}
+                  </Text>
+                  <Text style={{ fontSize: 13, lineHeight: 20 }}>
+                    {ui.card.content}
+                  </Text>
+                </View>
               </View>
-            </View>
+            )
           )
         }
       />
@@ -113,12 +127,12 @@ const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
 }
 
 const History = ({ user }: { user: User }): ReactElement => {
-  const { error, ui } = useTxs(user)
+  const { error, ui, loading } = useTxs(user)
 
   return error ? (
     <ErrorComponent />
   ) : ui ? (
-    <RenderList {...{ ui }} />
+    <RenderList ui={ui} loading={loading} />
   ) : (
     <View />
   )

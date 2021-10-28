@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { isTxError } from '@terra-money/terra.js'
 import _ from 'lodash'
@@ -30,6 +30,8 @@ export default ({ address }: User): TxsPage => {
   const parseTxText = useParseTxText()
 
   /* api */
+  const [list, setList] = useState<TxUI[]>([])
+  const [isParse, setParse] = useState<boolean>(false)
   const [txs, setTxs] = useState<Tx[]>([])
   const [next, setNext] = useState<number>()
   const [offset, setOffset] = useState<number>()
@@ -42,14 +44,15 @@ export default ({ address }: User): TxsPage => {
 
   useEffect(() => {
     if (data) {
-      setTxs((txs) => [...txs, ...data.txs])
+      setTxs(data.txs)
       setNext(data.next)
       setDone(data.txs.length < data.limit)
+      setParse(true)
     }
   }, [data])
 
   const more =
-    txs.length && !done ? (): void => setOffset(next) : undefined
+    list.length && !done ? (): void => setOffset(next) : undefined
 
   /* parse */
   const ruleset = createActionRuleSet(currentChain)
@@ -81,61 +84,78 @@ export default ({ address }: User): TxsPage => {
     return []
   }
 
-  const list: TxUI[] = useMemo(
-    () =>
-      txs.map((txItem) => {
-        const { txhash, chainId, timestamp, raw_log, tx } = txItem
-        const { fee, memo } = tx.value
+  useEffect(() => {
+    const promises = txs.map(async (txItem) => {
+      const { txhash, chainId, timestamp, raw_log, tx } = txItem
+      const { fee, memo } = tx.value
 
-        const success = !isTxError(txItem)
-        const msgs = getCanonicalMsgs(txItem)
-        const successMessage =
-          msgs.length > 0
-            ? msgs.map((msg) => {
+      const success = !isTxError(txItem)
+      const msgs = getCanonicalMsgs(txItem)
+      const successMessage =
+        msgs.length > 0
+          ? await Promise.all(
+              msgs.map(async (msg) => {
                 const tag = msg.msgType
                   .split('/')[1]
                   .replace(/-/g, ' ')
-                const summary = msg.canonicalMsg.map(parseTxText)
+                const summary = await Promise.all(
+                  msg.canonicalMsg.map(
+                    async (i) => await parseTxText(i)
+                  )
+                )
 
                 return { tag, summary, success }
               })
-            : [
-                {
-                  tag: 'Unknown',
-                  summary: ['Unknown tx'],
-                  success,
-                },
-              ]
-        const messages = success
-          ? successMessage
-          : [{ tag: 'Failed', summary: [raw_log], success }]
+            )
+          : [
+              {
+                tag: 'Unknown',
+                summary: ['Unknown tx'],
+                success,
+              },
+            ]
+      const messages = success
+        ? successMessage
+        : [{ tag: 'Failed', summary: [raw_log], success }]
 
-        return {
-          link: getLink({
-            network: chainId,
-            q: 'tx',
-            v: txhash,
-          }),
-          hash: txhash,
-          date: format.date(timestamp, { toLocale: true }),
-          messages,
-          details: [
-            {
-              title: t('Common:Tx:Tx fee'),
-              content: fee.amount
-                ?.map((coin) => format.coin(coin))
-                .join(', '),
-            },
-            { title: t('Common:Tx:Memo'), content: memo },
-          ].filter(({ content }) => !!content),
-        }
-      }),
-    [txs]
-  )
+      return {
+        link: getLink({
+          network: chainId,
+          q: 'tx',
+          v: txhash,
+        }),
+        hash: txhash,
+        date: format.date(timestamp, { toLocale: true }),
+        messages,
+        details: [
+          {
+            title: t('Common:Tx:Tx fee'),
+            content: fee.amount
+              ?.map((coin) => format.coin(coin))
+              .join(', '),
+          },
+          { title: t('Common:Tx:Memo'), content: memo },
+        ].filter(({ content }) => !!content),
+      }
+    })
+
+    const ret: TxUI[] = []
+    promises
+      .reduce(async (prev, next) => {
+        await prev
+        ret.push(await next)
+      }, Promise.resolve())
+      .then(() => {
+        setList((list) => [...list, ...ret])
+      })
+      .finally(() => {
+        setParse(false)
+      })
+  }, [txs])
 
   /* render */
   const ui =
-    !response.loading && !txs.length
+    !response.loading && !isParse && !list.length
       ? {
           card: {
             title: t('Page:Txs:No transaction history'),
@@ -146,5 +166,9 @@ export default ({ address }: User): TxsPage => {
         }
       : { more, list }
 
-  return { ...response, ui }
+  return {
+    ...response,
+    loading: response.loading || isParse,
+    ui,
+  }
 }

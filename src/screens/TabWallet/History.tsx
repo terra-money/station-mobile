@@ -7,7 +7,7 @@ import { RootStackParams } from 'types'
 import { TxsUI, useMenu, User, useTxs } from 'lib'
 
 import HistoryItem from 'components/history/HistoryItem'
-import { Text, ErrorComponent, Button } from 'components'
+import { Text, ErrorComponent, Button, Loading } from 'components'
 import {
   NavigationProp,
   useNavigation,
@@ -70,7 +70,9 @@ const History = ({ user }: { user: User } & Props): ReactElement => {
     }
   }, [loading])
 
-  return error ? (
+  return loading ? (
+    <Loading />
+  ) : error ? (
     <ErrorComponent />
   ) : walletTabUi ? (
     <RenderList ui={walletTabUi} />

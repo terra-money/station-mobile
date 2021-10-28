@@ -54,7 +54,9 @@ export const denom = (denom = '', whitelist?: Whitelist): string => {
       ? 'Luna'
       : isValidTerra
       ? unit.slice(0, 2) + 'T'
-      : '')
+      : denom.startsWith('u')
+      ? denom.slice(1).toUpperCase()
+      : denom)
   )
 }
 

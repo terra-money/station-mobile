@@ -19,23 +19,26 @@ import { UTIL } from 'consts'
 
 import { Text, Icon, Number, AssetIcon, Row } from 'components'
 import { COLOR } from 'consts'
-import { QueryKeyEnum, RootStackParams, Token, uToken } from 'types'
+import { QueryKeyEnum, RootStackParams, Token } from 'types'
 import { useSwapRate } from 'hooks/useSwapRate'
 import images from 'assets/images'
 import { useDenomTrace } from 'hooks/useDenomTrace'
 
-const IBCUnit = ({ unit }: { unit: string }): ReactElement => {
+const IBCUnit = ({
+  base_denom,
+  path,
+  hash,
+}: {
+  base_denom?: string
+  path?: string
+  hash?: string
+}): ReactElement => {
   const [
     isVisibleSpreadTooltip,
     setisVisibleSpreadTooltip,
   ] = useState(false)
 
-  const hash = unit.replace('ibc/', '')
-  const { data } = useDenomTrace(unit)
-
-  if (!data) return <Text>{UTIL.truncate(hash)}</Text>
-
-  const { base_denom, path } = data
+  if (!hash) return <Text>{UTIL.truncate(hash)}</Text>
 
   return (
     <Row>
@@ -47,7 +50,7 @@ const IBCUnit = ({ unit }: { unit: string }): ReactElement => {
               {UTIL.truncate(hash)}
             </Text>
             <Text style={{ color: COLOR.white, fontSize: 12 }}>
-              ({path.replace('transfer/', '')})
+              ({path?.replace('transfer/', '')})
             </Text>
           </View>
         }
@@ -71,7 +74,7 @@ const IBCUnit = ({ unit }: { unit: string }): ReactElement => {
           }}
         >
           <Text style={styles.unit} fontType={'bold'}>
-            {format.denom(base_denom as uToken) || base_denom}
+            {format.denom(base_denom)}
           </Text>
 
           <Icon
@@ -100,6 +103,7 @@ const AssetItem = ({
   const { currency } = useConfig()
   const { display } = item
   const isIbcDenom = UTIL.isIbcDenom(item.denom)
+  const ibcDenom = useDenomTrace(item.denom)
 
   const icon =
     item.denom && UTIL.isNativeDenom(item.denom)
@@ -146,7 +150,11 @@ const AssetItem = ({
             )}
           </View>
           {isIbcDenom ? (
-            <IBCUnit unit={display.unit} />
+            <IBCUnit
+              base_denom={ibcDenom.data?.base_denom}
+              path={ibcDenom.data?.path}
+              hash={item.denom?.replace('ibc/', '')}
+            />
           ) : (
             <Text style={styles.unit} fontType={'bold'}>
               {display.unit}

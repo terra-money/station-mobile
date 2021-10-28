@@ -39,12 +39,13 @@ export default (
   const { list, isLoading: tokenLoading, tokens } = tokenBalance
   const loading = bankLoading || tokenLoading
   const v = validateForm(t)
+  const isIbcDenom = UTIL.isIbcDenom(denom)
   const { data: denomTrace } = useDenomTrace(denom)
   const ibcDenom = denomTrace?.base_denom
 
   /* form */
   const getBalance = (): string =>
-    (UTIL.isNativeDenom(denom) || UTIL.isIbcDenom(denom)
+    (UTIL.isNativeDenom(denom) || isIbcDenom
       ? find(`${denom}:available`, bank?.balance)
       : list?.find(({ token }) => token === denom)?.balance) ?? '0'
 
@@ -78,8 +79,7 @@ export default (
 
   /* tax */
   const [submitted, setSubmitted] = useState(false)
-  const shouldTax =
-    UTIL.isNativeTerra(denom) || UTIL.isIbcDenom(denom)
+  const shouldTax = UTIL.isNativeTerra(denom) || isIbcDenom
   const calcTax = useCalcTax(denom)
   const calcFee = useCalcFee()
   const balance = getBalance()
@@ -97,7 +97,7 @@ export default (
       : calculatedMaxAmount
   const taxAmount = calcTax.getTax(amount)
 
-  const unit = format.denom(denom, tokens)
+  const unit = format.denom(isIbcDenom ? ibcDenom : denom, tokens)
 
   /* render */
   const fields: Field[] = [
@@ -182,7 +182,12 @@ export default (
       shouldTax
         ? {
             name: calcTax.label,
-            displays: [format.display({ amount: taxAmount, denom })],
+            displays: [
+              format.display({
+                amount: taxAmount,
+                denom: unit,
+              }),
+            ],
           }
         : []
     )
@@ -214,7 +219,7 @@ export default (
     submitLabels: [t('Post:Send:Send'), t('Post:Send:Sending...')],
     message: t('Post:Send:Sent {{coin}} to {{address}}', {
       coin: format.coin(
-        { amount, denom },
+        { amount, denom: ibcDenom || denom },
         whitelist?.[denom]?.decimals,
         undefined,
         whitelist
