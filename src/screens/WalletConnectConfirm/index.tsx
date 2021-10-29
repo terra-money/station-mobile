@@ -14,14 +14,14 @@ import {
   StackActions,
   useNavigation,
 } from '@react-navigation/native'
-import { CreateTxOptions } from '@terra-money/terra.js'
+import { CreateTxOptions, Msg } from '@terra-money/terra.js'
 import _ from 'lodash'
 import WalletConnect from '@walletconnect/client'
 import { IClientMeta } from '@walletconnect/types'
 
-import { User, format } from 'lib'
+import { User, format, useConfig } from 'lib'
 
-import { Button, Icon, Loading, Text } from 'components'
+import { Button, Icon, Loading, Text, WarningBox } from 'components'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
@@ -47,6 +47,7 @@ import {
   createTxOptionsToTxParam,
   txParamParser,
 } from 'utils/walletconnect'
+import useTerraAssets from 'lib/hooks/useTerraAssets'
 
 type Props = StackScreenProps<RootStackParams, 'WalletConnectConfirm'>
 
@@ -55,13 +56,15 @@ const TIMEOUT_DELAY = 1000 * 60
 const TxMessages = ({
   tx,
   peerMeta,
-  tryConfirm,
+  confirmDisable,
+  isDangerousTx,
   onPressAllow,
   onPressGoBack,
 }: {
   tx: CreateTxOptions
   peerMeta: IClientMeta | null
-  tryConfirm: boolean
+  confirmDisable: boolean
+  isDangerousTx: boolean
   onPressAllow: () => Promise<void>
   onPressGoBack: () => void
 }): ReactElement => {
@@ -117,8 +120,10 @@ const TxMessages = ({
                 </View>
               )}
             </View>
-
             <MessageBox msgs={tx.msgs} />
+            {isDangerousTx && (
+              <WarningBox message="This transaction is classified as dangerous and cannot be signed on Terra Station." />
+            )}
           </View>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
@@ -137,7 +142,7 @@ const TxMessages = ({
               <Button
                 theme={'sapphire'}
                 title={'Sign'}
-                disabled={tryConfirm}
+                disabled={confirmDisable}
                 onPress={onPressAllow}
                 containerStyle={{
                   marginTop: 20,
@@ -173,10 +178,16 @@ const ConfirmForm = ({
     WalletConnectStore.isListenConfirmRemove
   )
   const walletName = user.name
-  const [tryConfirm, setTryConfirm] = useState(false)
+  const [confirmDisable, setConfirmDisable] = useState(true)
+  const [isDangerousTx, setDangerousTx] = useState(false)
   const { dispatch, goBack, canGoBack, navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
+  const { chain } = useConfig()
+  const { data: allowedMsgGrantAuthorization } = useTerraAssets<
+    Dictionary<Dictionary<{ url: string; types: string[] }>>
+  >('/msgs/MsgGrantAuthorization.json')
+
   const { confirm } = useAlert()
 
   const onPressGoBack = (): void => {
@@ -191,7 +202,7 @@ const ConfirmForm = ({
 
   const onPressAllow = async (): Promise<void> => {
     autoCloseTimer.current && clearTimeout(autoCloseTimer.current)
-    setTryConfirm(true)
+    setConfirmDisable(true)
     setIsListenConfirmRemove(false)
 
     if (isUseBioAuth) {
@@ -227,8 +238,36 @@ const ConfirmForm = ({
         handshakeTopic: route.params?.handshakeTopic,
       })
     }
-    setTryConfirm(false)
+    setConfirmDisable(false)
   }
+
+  useEffect(() => {
+    if (!allowedMsgGrantAuthorization) return
+
+    const checkDangerousTx = (): boolean => {
+      const checkMsgGrantAuthorization = (): boolean => {
+        const grantAllowed =
+          allowedMsgGrantAuthorization?.[chain.current.name]
+        return _.some(tx.msgs, (msg: Msg) => {
+          const data = msg.toData()
+
+          if (data['@type'] !== '/cosmos.authz.v1beta1.MsgGrant') {
+            return false
+          }
+          if (!grantAllowed) return true
+
+          const { grant, granter } = data
+          const { authorization } = grant
+          const allowedTypes = grantAllowed[granter]?.types
+          return !allowedTypes?.includes(authorization['@type'])
+        })
+      }
+      return checkMsgGrantAuthorization()
+    }
+    const ret = checkDangerousTx()
+    ret && setDangerousTx(true)
+    setConfirmDisable(ret)
+  }, [allowedMsgGrantAuthorization])
 
   useEffect(() => {
     if (confirmResult) {
@@ -242,7 +281,8 @@ const ConfirmForm = ({
     <TxMessages
       {...{
         tx,
-        tryConfirm,
+        confirmDisable,
+        isDangerousTx,
         onPressGoBack,
         onPressAllow,
         peerMeta: connector.peerMeta,
