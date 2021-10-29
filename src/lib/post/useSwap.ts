@@ -573,7 +573,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
                   t
                 ),
               value: format.amount(minus(principal, simulated)),
-              unit: format.denom(to),
+              unit: format.denom(to, whitelist),
             },
             Terraswap: {
               title: 'Trading Fee',
@@ -581,7 +581,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
                 tradingFeeTerraswap,
                 whitelist?.[to]?.decimals
               ),
-              unit: format.denom(to),
+              unit: format.denom(to, whitelist),
             },
             Route: {
               title: 'Route',
