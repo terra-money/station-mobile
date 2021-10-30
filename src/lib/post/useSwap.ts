@@ -351,10 +351,17 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
             { from, to, amount, result: times(amount, rate!) },
           ])
 
-          setSimulationsMarket([
-            ...simulationsMarket,
-            { from, to, amount, result: swapped },
-          ])
+          setSimulationsMarket((ori) => {
+            const filtered = ori.filter(
+              (x) =>
+                x.from !== from || x.to !== to || x.amount !== amount
+            )
+
+            return [
+              ...filtered,
+              { from, to, amount, result: swapped },
+            ]
+          })
         }
 
         if (availableModes.includes('Terraswap')) {
@@ -367,10 +374,19 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
           if (result) {
             resultTerraswap = result.return_amount
 
-            setSimulationsTerraswap([
-              ...simulationsTerraswap,
-              { from, to, amount, result: resultTerraswap },
-            ])
+            setSimulationsTerraswap((ori) => {
+              const filtered = ori.filter(
+                (x) =>
+                  x.from !== from ||
+                  x.to !== to ||
+                  x.amount !== amount
+              )
+
+              return [
+                ...filtered,
+                { from, to, amount, result: resultTerraswap },
+              ]
+            })
 
             setTradingFeeTerraswap(result.commission_amount)
           }
@@ -378,10 +394,14 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
 
         if (availableModes.includes('Route')) {
           const result = await simulateRoute(routeParams)
-          setSimulationsRoute([
-            ...simulationsRoute,
-            { from, to, amount, result },
-          ])
+          setSimulationsRoute((ori) => {
+            const filtered = ori.filter(
+              (x) =>
+                x.from !== from || x.to !== to || x.amount !== amount
+            )
+
+            return [...filtered, { from, to, amount, result }]
+          })
         }
 
         // Set mode after simulation
