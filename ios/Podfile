@@ -11,6 +11,7 @@ target 'TerraStation' do
 
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID"
 
   pod 'TrezorCrypto'
   pod 'IOSSecuritySuite'  

@@ -33,3 +33,11 @@ export const checkCameraPermission = async (): Promise<PermissionResult> => {
   const statuses = await checkMultiple([permissions.CAMERA])
   return statuses[permissions.CAMERA]
 }
+
+export const checkFaceIdPermission = async (): Promise<PermissionResult> => {
+  if (Platform.OS !== 'ios') {
+    return 'granted'
+  }
+  const statuses = await checkMultiple([PERMISSIONS.IOS.FACE_ID])
+  return statuses[PERMISSIONS.IOS.FACE_ID]
+}

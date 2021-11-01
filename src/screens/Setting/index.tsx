@@ -36,6 +36,10 @@ import {
 import StatusBar from 'components/StatusBar'
 import useWalletConnect from 'hooks/useWalletConnect'
 import useNetworks from 'hooks/useNetworks'
+import {
+  checkFaceIdPermission,
+  openPermissionSettings,
+} from 'utils/permission'
 
 const Setting = (): ReactElement => {
   const { user, signOut } = useAuth()
@@ -84,6 +88,19 @@ const Setting = (): ReactElement => {
       if (isSuccess) {
         setUseBioAuth({ isUse: value })
         setIsUseBioAuth(value)
+      } else {
+        const isBlockedFaceId =
+          (await checkFaceIdPermission()) === 'blocked'
+
+        if (isBlockedFaceId) {
+          confirm({
+            title: 'FaceID not authorized',
+            desc: 'Move to settings to enable FaceID permissions?',
+            onPressConfirm: (): void => {
+              openPermissionSettings()
+            },
+          })
+        }
       }
     } else {
       setUseBioAuth({ isUse: value })

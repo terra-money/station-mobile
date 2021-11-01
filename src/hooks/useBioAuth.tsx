@@ -22,6 +22,8 @@ import {
   authenticateBiometric,
 } from 'utils/bio'
 import images from 'assets/images'
+import { checkFaceIdPermission } from 'utils/permission'
+import { useAlert } from './useAlert'
 
 type BioAuthType = {
   bioType: BiometricType
@@ -67,6 +69,10 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
             const isSuccess = await authenticateBiometric()
             if (isSuccess) {
               setUseBioAuth({ isUse: true })
+              close()
+            } else if (
+              (await checkFaceIdPermission()) === 'blocked'
+            ) {
               close()
             }
           }}

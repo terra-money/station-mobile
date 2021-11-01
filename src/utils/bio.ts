@@ -1,4 +1,6 @@
 import * as LocalAuthentication from 'expo-local-authentication'
+import { Platform } from 'react-native'
+import { checkFaceIdPermission } from './permission'
 
 export enum BiometricType {
   NONE,
@@ -12,9 +14,14 @@ export const isSupportedBiometricAuthentication = async (): Promise<boolean> => 
   const isEnrolled = await LocalAuthentication.isEnrolledAsync()
 
   return (
-    hasHardware &&
-    supportedAuthenticationTypes.length > 0 &&
-    isEnrolled
+    (hasHardware &&
+      supportedAuthenticationTypes.length > 0 &&
+      isEnrolled) ||
+    (Platform.OS === 'ios' &&
+      supportedAuthenticationTypes.includes(
+        LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION
+      ) &&
+      (await checkFaceIdPermission()) === 'blocked')
   )
 }
 
