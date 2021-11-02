@@ -1,12 +1,16 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import _ from 'lodash'
 
-import { StakingPersonal, User } from 'lib'
+import { format, StakingPersonal, User } from 'lib'
 
 import { Button, Number, Text } from 'components'
 import { COLOR } from 'consts'
 import { useWithdraw } from 'hooks/useWithdraw'
+import useLCD from 'hooks/useLCD'
+import { getTraceDenom } from 'hooks/useDenomTrace'
+
+type RewardContents = { unit: string; value: string }
 
 const Rewards = ({
   personal,
@@ -15,7 +19,37 @@ const Rewards = ({
   personal: StakingPersonal
   user: User
 }): ReactElement => {
+  const lcd = useLCD()
   const { rewards, withdrawAll } = personal
+
+  // Parse IBC Token
+  const [rewardContents, setRewardsContents] = useState<
+    RewardContents[]
+  >([])
+  useEffect(() => {
+    const promises = _.map(rewards.table?.contents, async (item) => {
+      return {
+        unit: item.unit.includes('ibc/')
+          ? format.denom(await getTraceDenom(lcd, item.unit))
+          : item.unit,
+        value: item.value,
+      }
+    })
+
+    const ret: RewardContents[] = []
+    promises
+      .reduce(async (prev, next) => {
+        await prev
+        ret.push(await next)
+      }, Promise.resolve())
+      .then(() => {
+        setRewardsContents(ret)
+      })
+
+    return (): void => {
+      setRewardsContents([])
+    }
+  }, [rewards])
 
   const { runWithdraw } = useWithdraw({
     user,
@@ -37,7 +71,7 @@ const Rewards = ({
         />
       </View>
       <View style={{ marginBottom: 8 }}>
-        {_.map(rewards.table?.contents, (content, i) => {
+        {_.map(rewardContents, (content, i) => {
           return (
             <View
               key={`rewards.table.contents-${i}`}

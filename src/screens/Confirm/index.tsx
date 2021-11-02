@@ -9,7 +9,7 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 
-import { User, ConfirmProps, DisplayCoin } from 'lib'
+import { User, ConfirmProps, DisplayCoin, format } from 'lib'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -33,20 +33,53 @@ import { authenticateBiometric } from 'utils/bio'
 import { useAlert } from 'hooks/useAlert'
 import { useLoading } from 'hooks/useLoading'
 import { UTIL } from 'consts'
+import useLCD from 'hooks/useLCD'
+import { getTraceDenom } from 'hooks/useDenomTrace'
+import { LCDClient } from '@terra-money/terra.js'
 
 type Props = StackScreenProps<RootStackParams, 'Confirm'>
 
 const INIT_PASSWORD = '1'
 
 const Displays = ({
+  lcd,
   displays,
 }: {
+  lcd: LCDClient
   displays: DisplayCoin[]
 }): ReactElement => {
+  // Parse IBC Token
+  const [displayCoins, setDisplayCoins] = useState<DisplayCoin[]>([])
+  useEffect(() => {
+    const promises = _.map(displays, async (item) => {
+      const unit = item.unit.includes('ibc/')
+        ? format.denom(await getTraceDenom(lcd, item.unit))
+        : item.unit
+      return {
+        unit,
+        value: item.value,
+      }
+    })
+
+    const ret: DisplayCoin[] = []
+    promises
+      .reduce(async (prev, next) => {
+        await prev
+        ret.push(await next)
+      }, Promise.resolve())
+      .then(() => {
+        setDisplayCoins(ret)
+      })
+
+    return (): void => {
+      setDisplayCoins([])
+    }
+  }, [displays])
+
   return (
     <>
-      {displays.length > 1 ? (
-        _.map(displays, ({ value, unit }, j) => (
+      {displayCoins.length > 1 ? (
+        _.map(displayCoins, ({ value, unit }, j) => (
           <View
             key={`dispalay-${j}`}
             style={[
@@ -106,6 +139,7 @@ const Render = ({
   user: User
   confirm: ConfirmProps
 } & Props): ReactElement => {
+  const lcd = useLCD()
   const { navigate, dispatch } = useNavigation<
     NavigationProp<RootStackParams>
   >()
@@ -211,7 +245,9 @@ const Render = ({
             return (
               <View key={`dispalay-${i}`} style={styles.section}>
                 <FormLabel text={name} />
-                {displays && <Displays displays={displays} />}
+                {displays && (
+                  <Displays lcd={lcd} displays={displays} />
+                )}
                 {_.some(text) && (
                   <Text style={{ fontSize: 16, lineHeight: 24 }}>
                     {text}
