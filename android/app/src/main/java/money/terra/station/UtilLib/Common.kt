@@ -11,6 +11,10 @@ import io.michaelrocks.paranoid.Obfuscate
 import java.io.UnsupportedEncodingException
 import java.util.*
 
+import android.content.pm.PackageManager
+import money.terra.station.UtilLib.Consts.GOOGLE_PLAY_STORE_PACKAGE_NEW
+import money.terra.station.UtilLib.Consts.GOOGLE_PLAY_STORE_PACKAGE_OLD
+
 @Obfuscate
 class Common(reactContext: ReactApplicationContext?) : ReactContextBaseJavaModule(reactContext) {
     private val context = reactContext
@@ -56,5 +60,22 @@ class Common(reactContext: ReactApplicationContext?) : ReactContextBaseJavaModul
             e.printStackTrace()
             promise.reject(e)
         }
+    }
+
+    @SuppressLint("QueryPermissionsNeeded")
+    @ReactMethod
+    fun getGooglePlayStoreInstalled(promise: Promise) {
+        val packageManager = context?.packageManager
+
+        packageManager?.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES)?.let {
+            it.find { packageInfo ->
+                packageInfo.packageName == GOOGLE_PLAY_STORE_PACKAGE_OLD ||
+                        packageInfo.packageName == GOOGLE_PLAY_STORE_PACKAGE_NEW
+            }.let { packageInfo ->
+                promise.resolve(packageInfo != null)
+                return
+            }
+        }
+        promise.resolve(false)
     }
 }

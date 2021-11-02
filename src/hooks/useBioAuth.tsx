@@ -23,7 +23,6 @@ import {
 } from 'utils/bio'
 import images from 'assets/images'
 import { checkFaceIdPermission } from 'utils/permission'
-import { useAlert } from './useAlert'
 
 type BioAuthType = {
   bioType: BiometricType

@@ -25,4 +25,8 @@ class Common: NSObject {
       resolver(value)
     }
   }
+  
+  @objc func getGooglePlayStoreInstalled(_ resolver: RCTPromiseResolveBlock, rejecter:RCTPromiseRejectBlock) {
+    resolver(false)
+  }
 }

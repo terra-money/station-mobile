@@ -17,4 +17,6 @@
 RCT_EXTERN_METHOD(getAppIdentifier: (RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getGooglePlayStoreInstalled: (RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
 @end
