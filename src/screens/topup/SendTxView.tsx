@@ -11,7 +11,7 @@ import { Buffer } from 'buffer'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import _ from 'lodash'
 
-import { COLOR, FONT, UTIL } from 'consts'
+import { COLOR, FONT } from 'consts'
 
 import { useAuth, format, useBank } from 'lib'
 import { Text, Button, Select, Icon, FormInput } from 'components'
@@ -159,18 +159,14 @@ const SendTxView = (props: Props): ReactElement => {
       } else {
         throw new Error(`Could not find grantee address`)
       }
-
-      console.log('pass validate message')
     }
 
     const getUnsignedMessage = async (): Promise<void> => {
       try {
         setLoading(true)
         const tx = (await getUnsignedTx(endpointAddress)).txData
-        console.log('tx', tx)
 
         const isAmino = tx.msgs[0].type !== undefined
-        console.log('isAmino', isAmino)
 
         let msgs = undefined
         if (isAmino) {
@@ -178,10 +174,8 @@ const SendTxView = (props: Props): ReactElement => {
         } else {
           msgs = _.map(tx.msgs, (i) => Msg.fromData(i))
         }
-        console.log('msgs', msgs)
 
         const txBody = new TxBody(msgs, tx.memo, undefined)
-        console.log('txBody', txBody)
         const authInfo = new AuthInfo(
           [],
           new Fee(
@@ -191,26 +185,20 @@ const SendTxView = (props: Props): ReactElement => {
             )
           )
         )
-        console.log('authInfo', authInfo)
         const unsignedTx = new Tx(txBody, authInfo, [])
-        console.log('unsignedTx', unsignedTx)
 
         if (unsignedTx) {
           const fee = unsignedTx.auth_info.fee.amount
-          console.log('fee', typeof fee, fee)
 
           const amount = fee.get('ukrw')?.amount
-          console.log('amount', amount)
           amount && setFeeAmount(amount.toString())
 
           const denom = fee.get('ukrw')?.denom
-          console.log('denom', denom)
           denom && setFeeDenom(denom.toString())
         }
         validateMsg(unsignedTx)
         setUnsignedTx(unsignedTx)
       } catch (e: any) {
-        console.error(e)
         somethingWrong(e.toString())
       } finally {
         setLoading(false)

@@ -136,7 +136,6 @@ const useSignedTx = (
       }
 
       const broadcastResult = await broadcastSignedTx(signedTx)
-      console.log('broadcastResult', broadcastResult)
 
       const putResult = await putTxResult(
         endpointAddress,

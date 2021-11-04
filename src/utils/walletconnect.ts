@@ -8,7 +8,6 @@ import dev from './dev'
 export const createTxOptionsToTxParam = (
   txOptions: CreateTxOptions
 ): TxParam => {
-  console.log('createTxOptionsToTxParam', txOptions)
   const msgs =
     txOptions.msgs && typeof txOptions.msgs !== 'string'
       ? txOptions.msgs.map((msg) => msg.toJSON())
