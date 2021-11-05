@@ -32,6 +32,7 @@ class TamperChecker(reactContext: ReactApplicationContext?) : ReactContextBaseJa
                         "1CB29467831EAB042F8B60497BAA749C51DBE339", // Upload
                         "7C574BE46C2A0F0FFC00515E971C19D87E5D3DD4", // Sign
                         "633C879C5D4E96E33F572C2DCA641F1114DE0A07", // Firebase
+                        "9BF5F16CAF7488EBA0FBA3CA332D53F2237F6517", // APK
                 )
 
                 for (i in f) {
