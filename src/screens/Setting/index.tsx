@@ -54,7 +54,7 @@ const Setting = (): ReactElement => {
 
   const { disconnectAllWalletConnect } = useWalletConnect()
 
-  const displayVersion = `v.${getVersion()}`
+  const displayVersion = `v${getVersion()}`
 
   const onPressDeleteWallet = async (): Promise<void> => {
     confirm({
@@ -157,7 +157,6 @@ const Setting = (): ReactElement => {
   const initPage = async (): Promise<void> => {
     setIsUseBioAuth(await getIsUseBioAuth())
     setSupportBioAuth(await isSupportedBiometricAuthentication())
-
     setInitComplete(true)
   }
 
