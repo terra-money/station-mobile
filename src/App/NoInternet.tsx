@@ -28,7 +28,7 @@ const NoInternet = (): ReactElement => {
 
   return (
     <>
-      {false && isNetworkUnavailable && (
+      {isNetworkUnavailable && (
         <SafeAreaView style={styles.container}>
           <StatusBar theme="white" />
           <Icon
