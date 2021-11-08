@@ -1,9 +1,4 @@
-import {
-  fromBase64,
-  jsonTryParse,
-  jsonTryStringify,
-  toBase64,
-} from './util'
+import { UTIL } from 'consts'
 import _ from 'lodash'
 
 export const schemeUrl = {
@@ -14,8 +9,8 @@ export const schemeUrl = {
 export const getRecoverWalletDataFromPayload = (
   payload: string
 ): RecoverWalletSchemeDataType | undefined => {
-  const bufferString = fromBase64(payload)
-  return jsonTryParse<RecoverWalletSchemeDataType>(bufferString)
+  const bufferString = UTIL.fromBase64(payload)
+  return UTIL.jsonTryParse<RecoverWalletSchemeDataType>(bufferString)
 }
 
 export const checkIfRecoverWalletQrCodeDataType = (
@@ -32,7 +27,7 @@ export const checkIfRecoverWalletQrCodeDataType = (
 
 export const createRecoverWalletPayload = (
   props: RecoverWalletSchemeDataType
-): string => toBase64(jsonTryStringify(props))
+): string => UTIL.toBase64(UTIL.jsonTryStringify(props))
 
 export const createRecoverWalletSchemeUrl = (
   props: RecoverWalletSchemeDataType

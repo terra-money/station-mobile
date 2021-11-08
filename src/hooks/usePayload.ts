@@ -1,10 +1,10 @@
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 
-import { fromBase64, isNativeDenom, jsonTryParse } from 'utils/util'
 import { useConfig } from 'lib'
 import { RootStackParams } from 'types'
 import { TxParam } from 'types/tx'
+import { UTIL } from 'consts'
 
 type SendPayloadType = {
   address?: string // terra, ethereum, bsc
@@ -60,7 +60,7 @@ const usePayload = (): {
 
   const parsePayload = <T extends PayloadType>(
     value: string
-  ): T | undefined => jsonTryParse<T>(fromBase64(value))
+  ): T | undefined => UTIL.jsonTryParse<T>(UTIL.fromBase64(value))
   /**
    * @returns errorMessage
    */
@@ -91,7 +91,7 @@ const usePayload = (): {
       ).json()
       const whitelist = fetchList[chain.current.name]
       const token = params?.token || ''
-      isCorrectDenom = isNativeDenom(token) || whitelist[token]
+      isCorrectDenom = UTIL.isNativeDenom(token) || whitelist[token]
     } catch {
       return {
         success: false,

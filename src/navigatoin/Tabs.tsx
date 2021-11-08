@@ -6,11 +6,11 @@ import {
 } from '@react-navigation/bottom-tabs'
 import _ from 'lodash'
 
-import Wallet from '../screens/walletTab/Wallet'
-import Swap from '../screens/swapTab/Swap'
+import Wallet from '../screens/TabWallet'
+import Swap from '../screens/TabSwap'
+import Staking from '../screens/TabStaking'
 
 import { RootStack } from 'types/navigation'
-import Staking from '../screens/stakingTab/Staking'
 import { Text, Icon } from 'components'
 import layout from 'styles/layout'
 

@@ -1,3 +1,4 @@
+import { UTIL } from 'consts'
 import React, { ReactElement } from 'react'
 import {
   Keyboard,
@@ -10,7 +11,6 @@ import {
 } from 'react-native'
 
 import color from 'styles/color'
-import { setComma } from 'utils/math'
 
 type InputProps = {
   containerStyle?: StyleProp<ViewStyle>
@@ -47,7 +47,9 @@ const Input = (props: InputProps): ReactElement => {
         onSubmitEditing={(): void => Keyboard.dismiss()} // To prevent strong password in IOS
         style={[defaultStyle, style]}
         {...rest}
-        value={keyboardType === 'numeric' ? setComma(value) : value}
+        value={
+          keyboardType === 'numeric' ? UTIL.setComma(value) : value
+        }
         underlineColorAndroid={'#ffffff00'}
         placeholderTextColor="rgba(32,67,181,.5)"
         textContentType={'none'}

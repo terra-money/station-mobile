@@ -1,13 +1,14 @@
 import { useQuery } from 'react-query'
 import _ from 'lodash'
-
 import { ApolloClient, InMemoryCache } from '@apollo/client'
+
+import { UTIL } from 'consts'
+
 import { TokenBalance, Tokens } from '../types'
 import { QueryKeyEnum } from 'types'
 import { useConfig } from '../contexts/ConfigContext'
 import alias from './alias'
 import useTokens from 'hooks/useTokens'
-import { jsonTryParse } from 'utils/util'
 
 export interface TokenBalanceQuery {
   isLoading: boolean
@@ -53,7 +54,7 @@ export default (address: string): TokenBalanceQuery => {
             (res, curr, key) => {
               if (curr?.Result) {
                 const balance =
-                  jsonTryParse<{ balance: string }>(curr.Result)
+                  UTIL.jsonTryParse<{ balance: string }>(curr.Result)
                     ?.balance || '0'
                 res.push({ ...tokens[key], balance })
               }

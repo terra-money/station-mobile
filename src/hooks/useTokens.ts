@@ -4,11 +4,12 @@ import { useMemo } from 'react'
 import { QueryKeyEnum } from 'types/reactQuery'
 import _ from 'lodash'
 
+import { UTIL } from 'consts'
+
 import { useCurrentChainName, Whitelist } from 'lib'
 import preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
-import { jsonTryParse } from 'utils/util'
 
 const useTokens = (): {
   tokens: Whitelist
@@ -23,7 +24,7 @@ const useTokens = (): {
       const strData = await preferences.getString(
         PreferencesEnum.tokens
       )
-      return jsonTryParse<Dictionary<Whitelist>>(strData || '{}')
+      return UTIL.jsonTryParse<Dictionary<Whitelist>>(strData || '{}')
     }
   )
 

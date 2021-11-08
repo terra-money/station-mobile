@@ -7,14 +7,15 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 import BigNumber from 'bignumber.js'
+import { AccAddress } from '@terra-money/terra.js'
+
+import { UTIL } from 'consts'
 
 import { Field, DisplayCoin } from 'lib'
 
 import { RootStackParams } from 'types/navigation'
 
 import color from 'styles/color'
-import { isTerraAddress } from 'utils/util'
-import { delComma } from 'utils/math'
 import { schemeUrl } from 'utils/qrCode'
 import { parseDynamicLinkURL } from 'utils/scheme'
 import usePayload from 'hooks/usePayload'
@@ -88,7 +89,7 @@ const FormInput = ({ field }: { field: Field }): ReactElement => {
   const onChangeText = (text: string): void => {
     let value = text
     if (field.attrs.type === 'number') {
-      const onlyNumber = delComma(text)
+      const onlyNumber = UTIL.delComma(text)
       const bn = new BigNumber(onlyNumber).dp(6, BigNumber.ROUND_DOWN)
       if (bn.isNaN()) {
         value = ''
@@ -128,7 +129,7 @@ const FormInput = ({ field }: { field: Field }): ReactElement => {
     } else if (schemeUrl.send.test(data)) {
       const payload = data.replace(schemeUrl.send, '')
       dispatchToSend(payload)
-    } else if (isTerraAddress(data)) {
+    } else if (AccAddress.validate(data)) {
       setValue?.(data)
     } else {
       showNoti({
@@ -142,7 +143,7 @@ const FormInput = ({ field }: { field: Field }): ReactElement => {
     const linkUrl = parseDynamicLinkURL(data)
     const readable =
       // if kind of address
-      isTerraAddress(data) ||
+      AccAddress.validate(data) ||
       // if dynamic link
       !!linkUrl ||
       // if app scheme

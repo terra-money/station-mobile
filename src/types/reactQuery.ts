@@ -4,4 +4,5 @@ export enum QueryKeyEnum {
   tokenBalances = 'tokenBalances',
   addToken_filteredList = 'addToken_filteredList',
   assetChainsJson = 'assetChainsJson',
+  swapAmount = 'swapAmount',
 }

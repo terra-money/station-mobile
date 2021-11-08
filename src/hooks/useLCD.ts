@@ -1,6 +1,6 @@
 import { LCDClient } from '@terra-money/terra.js'
 import { useMemo } from 'react'
-import { useConfig } from '../contexts/ConfigContext'
+import { useConfig } from '../lib/contexts/ConfigContext'
 
 const useLCD = (): LCDClient => {
   const { chain } = useConfig()

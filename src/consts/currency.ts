@@ -138,7 +138,7 @@ const currencies = [
   'TOP',
   'TRY',
   'TTD',
-  'TWD',
+  'OZ',
   'TZS',
   'UAH',
   'UGX',

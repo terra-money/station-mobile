@@ -12,12 +12,12 @@ import { Button, Icon, Text } from 'components'
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
 import color from 'styles/color'
-import { jsonTryStringify } from 'utils/util'
+import { UTIL } from 'consts'
 
 type Props = StackScreenProps<RootStackParams, 'WalletConnectConfirm'>
 
 const Details = ({ route }: Props): ReactElement => {
-  const params = jsonTryStringify(route.params, null, 2)
+  const params = UTIL.jsonTryStringify(route.params, null, 2)
   const [isOpen, setIsOpen] = useState(false)
   return (
     <View style={styles.openBox}>

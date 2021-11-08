@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactElement } from 'react'
-import { Linking, LogBox, Platform, View } from 'react-native'
+import { LogBox, Platform, View } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import SplashScreen from 'react-native-splash-screen'
 import { RecoilRoot } from 'recoil'
@@ -13,6 +13,8 @@ import {
   ConfigProvider,
   User,
 } from 'lib'
+
+import { UTIL } from 'consts'
 
 import { Settings } from 'types'
 import { AppProvider } from './useApp'
@@ -30,7 +32,6 @@ import useSecurity from 'hooks/useSecurity'
 import useNetworks from 'hooks/useNetworks'
 import { getWallet } from 'utils/wallet'
 import { getSkipOnboarding, settings } from 'utils/storage'
-import { showSystemAlert } from 'utils/util'
 
 import NoInternet from './NoInternet'
 import DebugBanner from './DebugBanner'
@@ -88,7 +89,7 @@ const App = ({
       if (securityCheckFailed) {
         const message = getSecurityErrorMessage()
 
-        showSystemAlert(message, 'OK', () => RNExitApp.exitApp())
+        UTIL.showSystemAlert(message, 'OK', () => RNExitApp.exitApp())
       }
     }
   }, [securityCheckFailed])

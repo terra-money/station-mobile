@@ -4,7 +4,6 @@ import React, {
   useState,
   Fragment,
 } from 'react'
-import { useSetRecoilState } from 'recoil'
 import { StackScreenProps } from '@react-navigation/stack'
 
 import { RootStackParams } from 'types'
@@ -14,8 +13,6 @@ import WithAuth from 'components/layout/WithAuth'
 
 import WalletAddress from './WalletAddress'
 import AvailableAssets from './AvailableAssets'
-import { useSwapRate } from 'hooks/useSwapRate'
-import SwapRateStore from 'stores/SwapRateStore'
 import History from './History'
 import Preferences, {
   PreferencesEnum,
@@ -26,8 +23,6 @@ type VisibleSmallType = 'show' | 'hide'
 type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
 const Wallet = (props: Props): ReactElement => {
-  const { loading, data } = useSwapRate()
-  const setSwapRate = useSetRecoilState(SwapRateStore.swapRate)
   const [loadingComplete, setLoadingComplete] = useState(false)
   const [localHideSmall, setlocalHideSmall] = useState<boolean>()
 
@@ -50,12 +45,6 @@ const Wallet = (props: Props): ReactElement => {
   const initPage = async (): Promise<void> => {
     await getWalletSettings()
   }
-
-  useEffect(() => {
-    if (false === loading && data) {
-      setSwapRate(data)
-    }
-  }, [loading, data?.length])
 
   useEffect(() => {
     initPage().then((): void => {

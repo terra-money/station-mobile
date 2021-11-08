@@ -15,6 +15,8 @@ import {
 import { useRecoilState } from 'recoil'
 import _ from 'lodash'
 
+import { UTIL } from 'consts'
+
 import { useAuth } from 'lib'
 import AuthNavigator from './AuthNavigator'
 import MainNavigator from './MainNavigator'
@@ -22,7 +24,6 @@ import AutoLogoutStore from 'stores/AutoLogoutStore'
 import TopupStore from 'stores/TopupStore'
 
 import WalletConnectButton from './WalletConnectButton'
-import { jsonTryParse } from 'utils/util'
 import security from 'utils/security'
 import { TxParam } from 'types/tx'
 import useLinking from 'hooks/useLinking'
@@ -65,7 +66,7 @@ const Navigator = (): ReactElement => {
           path: 'wallet_connect_confirm',
           parse: {
             params: (value): TxParam | undefined => {
-              const txParamArr = jsonTryParse<TxParam[]>(value)
+              const txParamArr = UTIL.jsonTryParse<TxParam[]>(value)
               if (txParamArr && txParamArr.length > 0) {
                 return txParamArr[0]
               }

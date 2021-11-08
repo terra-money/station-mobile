@@ -6,11 +6,12 @@ import {
 import WalletConnect from '@walletconnect/client'
 import _ from 'lodash'
 
+import { UTIL } from 'consts'
+
 import WalletConnectStore from 'stores/WalletConnectStore'
 import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
-import { jsonTryParse } from 'utils/util'
 
 const useWalletConnect = (): {
   newWalletConnect: (
@@ -53,7 +54,7 @@ const useWalletConnect = (): {
       PreferencesEnum.walletConnectSession
     )
     if (_.some(sessionData)) {
-      const sessions = jsonTryParse<any[]>(sessionData)
+      const sessions = UTIL.jsonTryParse<any[]>(sessionData)
       const connectors = _.reduce(
         sessions,
         (result, session) => {

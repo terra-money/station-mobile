@@ -1,20 +1,20 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import _ from 'lodash'
-import { useRecoilValue } from 'recoil'
 import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native'
+import { Coin } from '@terra-money/terra.js'
+import { useQuery } from 'react-query'
 
 import { AvailableItem, useConfig } from 'lib'
 
+import { UTIL } from 'consts'
+
 import { Text, Icon, Number, AssetIcon } from 'components'
-import SwapRateStore from 'stores/SwapRateStore'
 import color from 'styles/color'
-import { RootStackParams } from 'types'
-import { setComma } from 'utils/math'
-import { isNativeDenom } from 'utils/util'
+import { QueryKeyEnum, RootStackParams, Token } from 'types'
+import { useSwapRate } from 'hooks/useSwapRate'
 
 const AssetItem = ({
   item,
@@ -26,19 +26,31 @@ const AssetItem = ({
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
+  const { getSwapAmount } = useSwapRate()
   const { currency } = useConfig()
   const { display } = item
-  const swapValue = useRecoilValue(
-    SwapRateStore.swapValue({
-      denom: item.denom || '',
-      value: display.value.replace(/,/g, ''),
-    })
-  )
 
   const icon =
-    item.denom && isNativeDenom(item.denom)
+    item.denom && UTIL.isNativeDenom(item.denom)
       ? `https://assets.terra.money/icon/60/${item.display.unit}.png`
       : item.icon
+
+  const { data: swapValue = '' } = useQuery(
+    [QueryKeyEnum.swapAmount, item, currency.current],
+    async () => {
+      return (
+        currency.current &&
+        item.denom &&
+        getSwapAmount(
+          new Coin(
+            item.denom,
+            UTIL.microfy(UTIL.delComma(display.value) as Token)
+          ),
+          currency.current.key
+        )
+      )
+    }
+  )
 
   return (
     <View style={styles.container}>
@@ -80,7 +92,7 @@ const AssetItem = ({
             >
               {display.value}
             </Number>
-            {_.some(swapValue) && (
+            {!!swapValue && (
               <Number
                 numberFontStyle={{
                   opacity: 0.5,
@@ -92,7 +104,7 @@ const AssetItem = ({
                   fontSize: 10,
                   marginTop: 2,
                 }}
-                value={setComma(swapValue)}
+                value={UTIL.formatAmount(swapValue)}
                 unit={currency.current?.value}
               />
             )}

@@ -28,7 +28,6 @@ import SubHeader from 'components/layout/SubHeader'
 import WithAuth from 'components/layout/WithAuth'
 
 import { RootStackParams } from 'types/navigation'
-import { createTxOptionsToTxParam, txParamParser } from 'utils/util'
 import { getBioAuthPassword, getIsUseBioAuth } from 'utils/storage'
 import { authenticateBiometric } from 'utils/bio'
 
@@ -44,6 +43,10 @@ import color from 'styles/color'
 import MessageBox from './MessageBox'
 import { useAlert } from 'hooks/useAlert'
 import ErrorBox from './ErrorBox'
+import {
+  createTxOptionsToTxParam,
+  txParamParser,
+} from 'utils/walletconnect'
 
 type Props = StackScreenProps<RootStackParams, 'WalletConnectConfirm'>
 

@@ -7,6 +7,8 @@ import {
 } from 'react-native'
 import _ from 'lodash'
 
+import { UTIL } from 'consts'
+
 import { format, Option, Options } from 'lib'
 
 import color from 'styles/color'
@@ -14,7 +16,6 @@ import { Input, Icon, Number } from 'components'
 import Text from 'components/Text'
 
 import AssetIcon from './AssetIcon'
-import { isNativeDenom } from 'utils/util'
 
 const CoinSelector = ({
   closeModal,
@@ -31,10 +32,10 @@ const CoinSelector = ({
     x?.children.toLowerCase().includes(searchInput.toLowerCase())
   )
   const nativeTokenList = searchFiltered.filter((x) =>
-    isNativeDenom(x.value)
+    UTIL.isNativeDenom(x.value)
   )
   const contractTokenList = searchFiltered.filter(
-    (x) => false === isNativeDenom(x.value)
+    (x) => false === UTIL.isNativeDenom(x.value)
   )
 
   const renderItem = (item: Option, index: number): ReactElement => {

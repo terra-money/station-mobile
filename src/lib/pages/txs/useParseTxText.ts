@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
 import { format } from '../../utils'
-import useLCD from '../../api/useLCD'
+import useLCD from '../../../hooks/useLCD'
 import { truncate } from '../../utils/format'
 import { useAuth } from '../../contexts/AuthContext'
 import { useCurrentChainName } from '../../contexts/ConfigContext'

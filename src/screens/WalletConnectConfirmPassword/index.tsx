@@ -19,12 +19,12 @@ import { RootStackParams } from 'types/navigation'
 import { testPassword } from 'utils/wallet'
 import WalletConnectStore from 'stores/WalletConnectStore'
 import useWalletConnectConfirm from 'hooks/useWalletConnectConfirm'
-import { txParamParser } from 'utils/util'
 import {
   NavigationProp,
   StackActions,
   useNavigation,
 } from '@react-navigation/native'
+import { txParamParser } from 'utils/walletconnect'
 
 type Props = StackScreenProps<
   RootStackParams,

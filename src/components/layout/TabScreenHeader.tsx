@@ -20,9 +20,10 @@ import {
 } from '@react-navigation/native'
 import images from 'assets/images'
 import { RootStackParams } from 'types'
-import { getParam, isTerraAddress } from 'utils/util'
 import { parseDynamicLinkURL } from 'utils/scheme'
 import useLinking from 'hooks/useLinking'
+import { UTIL } from 'consts'
+import { AccAddress } from '@terra-money/terra.js'
 
 const HeaderLeft = ({ title }: { title: string }): ReactElement => {
   return (
@@ -45,10 +46,10 @@ const HeaderRight = (): ReactElement => {
     const linkUrl = parseDynamicLinkURL(data)
     const appSheme =
       data.includes('terrastation:') &&
-      !!getParam({ url: data, key: 'payload' })
+      !!UTIL.getParam({ url: data, key: 'payload' })
     const readable =
       // if kind of address
-      isTerraAddress(data) ||
+      AccAddress.validate(data) ||
       // if dynamic link
       !!linkUrl ||
       // if app scheme
@@ -64,7 +65,7 @@ const HeaderRight = (): ReactElement => {
             onRead={({ data }): void => {
               if (data.includes('terrastation:')) {
                 openURL(data)
-              } else if (isTerraAddress(data)) {
+              } else if (AccAddress.validate(data)) {
                 navigate('SelectCoinToSend', { toAddress: data })
               } else {
                 const linkUrl = parseDynamicLinkURL(data)

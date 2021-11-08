@@ -1,16 +1,26 @@
-import { Rate, useConfig } from 'lib'
-import useFCD from 'lib/api/useFCD'
+import { Coin } from '@terra-money/terra.js'
+import { uToken } from 'types'
+import useLCD from './useLCD'
 
 export const useSwapRate = (): {
-  loading: boolean
-  error?: Error | undefined
-  data?: Rate[] | undefined
-  execute: () => Promise<void>
+  getSwapAmount: (
+    offerCoin: Coin,
+    askDenom: string
+  ) => Promise<uToken>
 } => {
-  const { currency } = useConfig()
-  const swapRateApi = useFCD<Rate[]>({
-    url: `/v1/market/swaprate/${currency.current?.key}`,
-  })
+  const lcd = useLCD()
 
-  return { ...swapRateApi }
+  const getSwapAmount = async (
+    offerCoin: Coin,
+    askDenom: string
+  ): Promise<uToken> => {
+    if (offerCoin.denom === askDenom) {
+      return '' as uToken
+    }
+
+    const result = await lcd.market.swapRate(offerCoin, askDenom)
+    return result.amount.toString() as uToken
+  }
+
+  return { getSwapAmount }
 }

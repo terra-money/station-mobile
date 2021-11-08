@@ -1,17 +1,17 @@
+import { Linking } from 'react-native'
+
+import { UTIL } from 'consts'
 import preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
-import { Linking } from 'react-native'
-
-import { tryNewURL } from './util'
 
 export const parseDynamicLinkURL = (
   value: string
 ): URL | undefined => {
-  const url = tryNewURL(value)
+  const url = UTIL.tryNewURL(value)
   const link = url?.searchParams.get('link')
   if (link) {
-    return tryNewURL(link)
+    return UTIL.tryNewURL(link)
   }
 }
 

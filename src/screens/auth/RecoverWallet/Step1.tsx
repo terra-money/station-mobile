@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native'
 import { AccAddress } from '@terra-money/terra.js'
 import { StackScreenProps } from '@react-navigation/stack'
 
+import { UTIL } from 'consts'
+
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
@@ -15,7 +17,7 @@ import RecoverWalletStore from 'stores/RecoverWalletStore'
 import color from 'styles/color'
 import { useAlert } from 'hooks/useAlert'
 import { RecoverWalletStackParams } from 'types'
-import { getParam } from 'utils/util'
+
 import {
   checkIfRecoverWalletQrCodeDataType,
   getRecoverWalletDataFromPayload,
@@ -34,7 +36,7 @@ const Step1 = ({ navigation }: Props): ReactElement => {
   const stepConfirmed = _.every(seed, _.some)
 
   const onRead = ({ data }: { data: string }): void => {
-    const payload = getParam({ url: data, key: 'payload' })
+    const payload = UTIL.getParam({ url: data, key: 'payload' })
 
     const walletData = getRecoverWalletDataFromPayload(payload)
 
@@ -115,7 +117,7 @@ const Step1 = ({ navigation }: Props): ReactElement => {
               if (AccAddress.validate(data)) {
                 return 'This QR code is for copying addresses.\nTo recover wallets, use the \n"Export wallet with QR code"\nfunction.'
               }
-              const payload = getParam({
+              const payload = UTIL.getParam({
                 url: data,
                 key: 'payload',
               })

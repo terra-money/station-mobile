@@ -7,6 +7,7 @@ module.exports = function (api) {
       root: './src',
       alias: {
         components: './src/components',
+        consts: './src/consts',
         types: './src/types',
         styles: './src/styles',
         utils: './src/utils',
