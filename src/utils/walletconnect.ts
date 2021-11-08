@@ -31,15 +31,8 @@ export const createTxOptionsToTxParam = (
 }
 
 export const txParamParser = (txParam: TxParam): CreateTxOptions => {
-  console.log('txParamParser', txParam)
-  let isAmino = false
-  try {
-    const parse = JSON.parse(txParam.msgs[0])
-    isAmino = parse.type !== undefined // amino: type, proto: @type
-  } catch (e: any) {
-    dev.log(e)
-  }
-  console.log('isAmino', isAmino)
+  const parse = UTIL.jsonTryParse<{ type: string }>(txParam.msgs[0])
+  const isAmino = (parse && 'type' in parse) || false
 
   // parse msgs
   const msgs = _.reduce(

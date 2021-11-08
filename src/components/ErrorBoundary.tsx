@@ -8,7 +8,15 @@ interface Props {
 const ErrorBoundary: FC<Props> = ({ fallback, children }) => {
   const { OOPS } = useText()
 
-  return <Component fallback={fallback ?? OOPS}>{children}</Component>
+  const handleError = (): void => {
+    // TODO: report
+  }
+
+  return (
+    <Component fallback={fallback ?? OOPS} handleError={handleError}>
+      {children}
+    </Component>
+  )
 }
 
 export default ErrorBoundary

@@ -73,7 +73,7 @@ const Render = ({
   )
 }
 
-const Staking = (): ReactElement => {
+const Staking = ({}: Props): ReactElement => {
   const { user } = useAuth()
   const stakingProps = useStaking(user)
   const { chain } = useConfig()

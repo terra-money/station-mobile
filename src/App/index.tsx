@@ -21,14 +21,15 @@ import { AppProvider } from './useApp'
 
 import AppNavigator from '../navigatoin'
 
+import useSecurity from 'hooks/useSecurity'
+import useNetworks from 'hooks/useNetworks'
+
 import StatusBar from 'components/StatusBar'
 import preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 import keystore, { KeystoreEnum } from 'nativeModules/keystore'
 
-import useSecurity from 'hooks/useSecurity'
-import useNetworks from 'hooks/useNetworks'
 import { getWallet } from 'utils/wallet'
 import { getSkipOnboarding, settings } from 'utils/storage'
 
