@@ -560,7 +560,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
             onClick: (): void =>
               setValue(
                 'input',
-                toInput(maxAmount, whitelist?.[to]?.decimals)
+                toInput(maxAmount, whitelist?.[from]?.decimals)
               ),
           },
         },
