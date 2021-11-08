@@ -15,8 +15,9 @@ import { useRecoilState } from 'recoil'
 import { NavigationContainerRef } from '@react-navigation/native'
 import _ from 'lodash'
 
+import { COLOR } from 'consts'
+
 import WalletConnectStore from 'stores/WalletConnectStore'
-import color from 'styles/color'
 import { Text } from 'components'
 import images from 'assets/images'
 import useWalletConnect from 'hooks/useWalletConnect'
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
-    backgroundColor: color.dodgerBlue,
+    backgroundColor: COLOR.primary._03,
     shadowColor: 'rgba(0, 0, 0, 0.15)',
     shadowOffset: {
       width: 0,

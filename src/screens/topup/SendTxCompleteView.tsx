@@ -3,10 +3,11 @@ import { View, StyleSheet } from 'react-native'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { StackScreenProps } from '@react-navigation/stack'
 
+import { COLOR } from 'consts'
+
 import { Text, Button } from 'components'
 import StatusBar from 'components/StatusBar'
 import Body from 'components/layout/Body'
-import color from 'styles/color'
 import { RootStackParams } from 'types'
 import { useTopup } from 'hooks/useTopup'
 
@@ -24,13 +25,13 @@ const SendTxCompleteView = (props: Props): ReactElement => {
           props.route.params.success === true ? (
             <MaterialCommunityIcon
               size={60}
-              color={color.sapphire}
+              color={COLOR.primary._02}
               name={'check-circle-outline'}
             />
           ) : (
             <MaterialCommunityIcon
               size={60}
-              color={color.sapphire}
+              color={COLOR.primary._02}
               name={'alert-circle-outline'}
             />
           )}

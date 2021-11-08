@@ -7,14 +7,15 @@ import React, {
 import { Image, View, StyleSheet } from 'react-native'
 import { intervalToDuration } from 'date-fns'
 import _ from 'lodash'
+import { useRecoilValue } from 'recoil'
+
+import { COLOR } from 'consts'
 
 import { ExtLink, Icon, Row, Text } from 'components'
 import images from 'assets/images'
-import { useRecoilValue } from 'recoil'
 import AppStore from 'stores/AppStore'
 import useFinder from 'lib/hooks/useFinder'
 import { truncate } from 'lib/utils/format'
-import color from 'styles/color'
 
 const LoadingView = (): ReactElement => {
   const showLoading = useRecoilValue(AppStore.showLoading)
@@ -81,7 +82,7 @@ const LoadingView = (): ReactElement => {
                 title={
                   <Row style={styles.txhashBox}>
                     <Text
-                      style={{ color: color.primary._02 }}
+                      style={{ color: COLOR.primary._02 }}
                       fontType="medium"
                     >
                       Tx Hash
@@ -95,7 +96,7 @@ const LoadingView = (): ReactElement => {
                       </Text>
                       <Icon
                         size={18}
-                        color={color.primary._03}
+                        color={COLOR.primary._03}
                         name={'open-in-new'}
                       />
                     </Row>
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 20,
     borderRadius: 8,
-    backgroundColor: color.primary._04,
+    backgroundColor: COLOR.primary._04,
   },
   queuedBox: {
     alignItems: 'center',
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   txhashText: {
-    color: color.primary._03,
+    color: COLOR.primary._03,
     paddingRight: 5,
   },
 })

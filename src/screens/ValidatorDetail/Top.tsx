@@ -6,7 +6,7 @@ import { Text, Icon } from 'components'
 import Badge from 'components/Badge'
 import { ValidatorUI } from 'lib'
 import images from 'assets/images'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import useTerraAssets from 'lib/hooks/useTerraAssets'
 
 const Top = ({ ui }: { ui: ValidatorUI }): ReactElement => {
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomColor: '#edf1f7',
     borderBottomWidth: 1,
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
   },
   profileImage: {
     borderRadius: 12,

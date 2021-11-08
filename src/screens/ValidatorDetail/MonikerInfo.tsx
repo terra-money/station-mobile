@@ -5,7 +5,7 @@ import { DelegateType } from 'lib/post/useDelegate'
 
 import { Text, Number, Button } from 'components'
 import { User, ValidatorUI } from 'lib'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import {
   NavigationProp,
   useNavigation,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomColor: '#edf1f7',
     borderBottomWidth: 1,
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
   },
   section: {
     flexDirection: 'row',

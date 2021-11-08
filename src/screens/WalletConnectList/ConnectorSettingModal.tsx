@@ -3,7 +3,7 @@ import { TouchableOpacity, StyleSheet, View } from 'react-native'
 
 import { Button } from 'components'
 
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import layout from 'styles/layout'
 
 const ConnectorSettingModal = ({
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     paddingBottom: layout.getNotchCoverPaddingBottom,
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
   },

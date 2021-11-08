@@ -16,7 +16,7 @@ import Button from 'components/Button'
 import Loading from 'components/Loading'
 
 import { useConfirm } from 'hooks/useConfirm'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 
 type Props = StackScreenProps<RootStackParams, 'Send'>
 
@@ -26,7 +26,7 @@ const CrossChainInfo = (): ReactElement => {
       <Icon
         name="info"
         size={17}
-        style={{ paddingRight: 6, color: color.primary._02 }}
+        style={{ paddingRight: 6, color: COLOR.primary._02 }}
       />
       <Text style={styles.crossChainInfoText} fontType="book">
         {'Use '}
@@ -38,9 +38,9 @@ const CrossChainInfo = (): ReactElement => {
             style={[
               styles.crossChainInfoText,
               {
-                color: color.primary._03,
+                color: COLOR.primary._03,
                 borderBottomWidth: 1,
-                borderBottomColor: color.primary._03,
+                borderBottomColor: COLOR.primary._03,
               },
             ]}
             fontType="medium"

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { View, Image, StyleSheet } from 'react-native'
 
 import { Option } from 'lib'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 
 import Terra from 'assets/svg/Terra'
 import layout from 'styles/layout'
@@ -36,7 +36,7 @@ export default AssetIcon
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,
     paddingTop: 25,

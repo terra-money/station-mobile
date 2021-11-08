@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import Text from './Text'
 
 export type ButtonProps = {
@@ -39,35 +39,35 @@ const Button = (props: ButtonProps): ReactElement => {
 
   switch (theme) {
     case 'sapphire':
-      titleStyle.color = color.white
-      containerStyle.backgroundColor = color.sapphire
-      containerStyle.borderColor = color.sapphire
+      titleStyle.color = COLOR.white
+      containerStyle.backgroundColor = COLOR.primary._02
+      containerStyle.borderColor = COLOR.primary._02
       break
     case 'dodgerBlue':
-      titleStyle.color = color.white
-      containerStyle.backgroundColor = color.dodgerBlue
-      containerStyle.borderColor = color.dodgerBlue
+      titleStyle.color = COLOR.white
+      containerStyle.backgroundColor = COLOR.primary._03
+      containerStyle.borderColor = COLOR.primary._03
       break
     case 'red':
-      titleStyle.color = color.white
-      containerStyle.backgroundColor = color.red
-      containerStyle.borderColor = color.red
+      titleStyle.color = COLOR.white
+      containerStyle.backgroundColor = COLOR.red
+      containerStyle.borderColor = COLOR.red
       break
     case 'gray':
-      titleStyle.color = color.sapphire
-      containerStyle.backgroundColor = color.gray
-      containerStyle.borderColor = color.gray
+      titleStyle.color = COLOR.primary._02
+      containerStyle.backgroundColor = COLOR.gray
+      containerStyle.borderColor = COLOR.gray
       break
     case 'transparent':
-      titleStyle.color = color.white
+      titleStyle.color = COLOR.white
       containerStyle.backgroundColor = '#ffffff1a'
       containerStyle.borderColor = '#ffffff1a'
       break
     case 'white':
     default:
-      titleStyle.color = color.sapphire
-      containerStyle.backgroundColor = color.white
-      containerStyle.borderColor = color.white
+      titleStyle.color = COLOR.primary._02
+      containerStyle.backgroundColor = COLOR.white
+      containerStyle.borderColor = COLOR.white
       break
   }
 

@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 
 import { Text } from 'components'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import StatusBar from 'components/StatusBar'
 
 type HeaderTheme = 'sapphire' | 'white'
@@ -28,13 +28,13 @@ const SubHeader = ({
   const textStyle: StyleProp<TextStyle> = {}
   switch (theme) {
     case 'sapphire':
-      textStyle.color = color.white
-      containerStyle.backgroundColor = color.sapphire
+      textStyle.color = COLOR.white
+      containerStyle.backgroundColor = COLOR.primary._02
       break
     case 'white':
     default:
-      textStyle.color = color.sapphire
-      containerStyle.backgroundColor = color.white
+      textStyle.color = COLOR.primary._02
+      containerStyle.backgroundColor = COLOR.white
       break
   }
 

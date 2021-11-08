@@ -8,18 +8,19 @@ import {
   Modal,
 } from 'react-native'
 import _ from 'lodash'
+import { useNavigation } from '@react-navigation/core'
+
+import { COLOR } from 'consts'
 
 import { Field, Option, Options } from 'lib'
 
 import Input from 'components/Input'
 import { Text, Icon } from 'components'
 
-import color from 'styles/color'
 import layout from 'styles/layout'
 
 import AssetIcon from './AssetIcon'
 import CoinSelector from './CoinSelector'
-import { useNavigation } from '@react-navigation/core'
 
 const SelectCoin = ({
   selectField,
@@ -79,7 +80,7 @@ const SelectCoin = ({
           <Icon
             name={'arrow-drop-down'}
             size={18}
-            color={color.sapphire}
+            color={COLOR.primary._02}
           />
         </View>
       </TouchableOpacity>
@@ -173,7 +174,7 @@ const SelectInputForm = ({
         _.some(selectField.attrs.value) &&
         _.some(error) && (
           <View style={styles.errorMessageBox}>
-            <Icon name={'info'} color={color.red} size={12} />
+            <Icon name={'info'} color={COLOR.red} size={12} />
             <Text style={styles.errorMessage} fontType={'medium'}>
               {error}
             </Text>
@@ -192,7 +193,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   errorMessage: {
-    color: color.red,
+    color: COLOR.red,
     fontSize: 10,
     paddingLeft: 5,
   },

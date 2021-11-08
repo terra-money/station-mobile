@@ -11,7 +11,7 @@ import _ from 'lodash'
 import Text from './Text'
 import Icon from './Icon'
 import Input from './Input'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 
 export type FormInputProps = {
   errorMessage?: string
@@ -23,7 +23,7 @@ const FormInput = (props: FormInputProps): ReactElement => {
 
   const inputContainerStyle = _.some(errorMessage)
     ? {
-        borderColor: color.red,
+        borderColor: COLOR.red,
         marginBottom: 5,
       }
     : {}
@@ -37,7 +37,7 @@ const FormInput = (props: FormInputProps): ReactElement => {
       />
       {_.some(errorMessage) && (
         <View style={styles.errorMessageBox}>
-          <Icon name={'info'} color={color.red} size={12} />
+          <Icon name={'info'} color={COLOR.red} size={12} />
           <Text style={styles.errorMessage} fontType={'medium'}>
             {errorMessage}
           </Text>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   errorMessage: {
-    color: color.red,
+    color: COLOR.red,
     fontSize: 10,
     paddingLeft: 5,
   },

@@ -6,7 +6,8 @@ import {
   TextProps as DefaultTextProps,
   TextStyle,
 } from 'react-native'
-import color from 'styles/color'
+
+import { COLOR } from 'consts'
 
 export type TextProps = {
   fontType?: 'light' | 'book' | 'medium' | 'bold'
@@ -43,7 +44,7 @@ export default Text
 
 const styles = StyleSheet.create({
   font: {
-    color: color.sapphire,
+    color: COLOR.primary._02,
     fontVariant: ['tabular-nums'],
   },
 })

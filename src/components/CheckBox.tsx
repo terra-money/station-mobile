@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 
+import { COLOR } from 'consts'
+
 import Text from './Text'
-import color from 'styles/color'
 
 const CheckBox = ({
   label,
@@ -51,6 +52,6 @@ const styles = StyleSheet.create({
   checked: {
     width: 7,
     height: 7,
-    backgroundColor: color.sapphire,
+    backgroundColor: COLOR.primary._02,
   },
 })

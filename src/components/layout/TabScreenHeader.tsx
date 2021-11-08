@@ -5,25 +5,24 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native'
-
 import { StackNavigationOptions } from '@react-navigation/stack'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
-
-import { navigationHeaderOptions as defaultNHO } from 'components/layout/Header'
-import { QrCodeButton, Text } from 'components'
-
-import color from 'styles/color'
-import { useAuth } from 'lib'
+import { AccAddress } from '@terra-money/terra.js'
 import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native'
+
+import { UTIL, COLOR } from 'consts'
+
+import { navigationHeaderOptions as defaultNHO } from 'components/layout/Header'
+import { QrCodeButton, Text } from 'components'
+
+import { useAuth } from 'lib'
 import images from 'assets/images'
 import { RootStackParams } from 'types'
 import { parseDynamicLinkURL } from 'utils/scheme'
 import useLinking from 'hooks/useLinking'
-import { UTIL } from 'consts'
-import { AccAddress } from '@terra-money/terra.js'
 
 const HeaderLeft = ({ title }: { title: string }): ReactElement => {
   return (
@@ -133,7 +132,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 36,
     letterSpacing: -0.4,
-    color: color.sapphire,
+    color: COLOR.primary._02,
     height: 36,
   },
   headerRight: {

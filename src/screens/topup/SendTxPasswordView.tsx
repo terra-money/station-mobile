@@ -6,15 +6,18 @@ import {
   StyleSheet,
   Keyboard,
 } from 'react-native'
-import SubHeader from 'components/layout/SubHeader'
-import color from 'styles/color'
-import font from 'styles/font'
-import { Button, FormInput, Icon, Text } from 'components'
+import { useNavigation } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { StackScreenProps } from '@react-navigation/stack'
+
+import { COLOR } from 'consts'
+
+import SubHeader from 'components/layout/SubHeader'
+
+import font from 'styles/font'
+import { Button, FormInput, Icon, Text } from 'components'
 import { RootStackParams } from 'types'
 import StatusBar from 'components/StatusBar'
-import { useNavigation } from '@react-navigation/native'
 import useSignedTx from 'hooks/useSignedTx'
 
 type Props = StackScreenProps<RootStackParams, 'SendTxPasswordView'>
@@ -60,14 +63,14 @@ const SendTxPasswordView = (props: Props): ReactElement => {
           <View
             style={{
               height: insets.top,
-              backgroundColor: color.sapphire,
+              backgroundColor: COLOR.primary._02,
             }}
           />
           <View style={style.headerContainer}>
             <TouchableOpacity onPress={goBack}>
               <Icon
                 name={'arrow-back-ios'}
-                color={color.white}
+                color={COLOR.white}
                 size={24}
               />
             </TouchableOpacity>
@@ -79,7 +82,7 @@ const SendTxPasswordView = (props: Props): ReactElement => {
             </Text>
             <FormInput
               style={style.formInputText}
-              placeholderTextColor={color.sapphire_op50}
+              placeholderTextColor={COLOR.primary._02_op50}
               placeholder={'Must be at least 10 characters'}
               secureTextEntry={true}
               onChangeText={(text): void => {
@@ -113,7 +116,7 @@ const style = StyleSheet.create({
     flexDirection: 'column',
   },
   headerContainer: {
-    backgroundColor: color.sapphire,
+    backgroundColor: COLOR.primary._02,
     height: 60,
     paddingLeft: 20,
     justifyContent: 'center',
@@ -123,7 +126,7 @@ const style = StyleSheet.create({
   passwordText: {
     fontSize: 14,
     lineHeight: 21,
-    color: color.sapphire,
+    color: COLOR.primary._02,
     marginTop: 20,
     marginBottom: 5,
   },

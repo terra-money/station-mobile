@@ -8,13 +8,15 @@ import {
   BackHandler,
 } from 'react-native'
 import { Buffer } from 'buffer'
+import { StdSignMsg } from '@terra-money/terra.js'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import _ from 'lodash'
+
+import { COLOR } from 'consts'
+
 import { useAuth, format, useBank } from 'lib'
 import { Text, Button, Select, Icon, FormInput } from 'components'
 
-import { StdSignMsg } from '@terra-money/terra.js'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-
-import color from 'styles/color'
 import font from 'styles/font'
 import BigNumber from 'bignumber.js'
 import SubHeader from 'components/layout/SubHeader'
@@ -36,7 +38,6 @@ import useSignedTx from 'hooks/useSignedTx'
 import { useNavigation } from '@react-navigation/native'
 import { getWallets } from 'utils/wallet'
 import { whitelist } from 'utils/whitelist'
-import _ from 'lodash'
 
 type Props = StackScreenProps<RootStackParams, 'SendTxView'>
 
@@ -270,7 +271,7 @@ const SendTxView = (props: Props): ReactElement => {
         const bioResult = await authenticateBiometric()
         if (bioResult) {
           const password = await getBioAuthPassword({
-            walletName: user?.name,
+            walletName: user?.name || '',
           })
           await confirm(password, returnScheme)
         } else {
@@ -290,7 +291,7 @@ const SendTxView = (props: Props): ReactElement => {
             width: 40,
             height: 40,
             backgroundColor: 'transparent',
-            borderColor: color.sapphire,
+            borderColor: COLOR.primary._02,
             borderWidth: 5,
             borderRadius: 20,
           }}
@@ -301,7 +302,7 @@ const SendTxView = (props: Props): ReactElement => {
           width: 40,
           height: 40,
           backgroundColor: 'transparent',
-          borderColor: color.sapphire,
+          borderColor: COLOR.primary._02,
           borderWidth: 5,
           borderRadius: 20,
         }}
@@ -322,7 +323,7 @@ const SendTxView = (props: Props): ReactElement => {
       <View
         style={{
           height: insets.top,
-          backgroundColor: color.sapphire,
+          backgroundColor: COLOR.primary._02,
         }}
       />
       <View style={style.headerContainer}>
@@ -331,7 +332,7 @@ const SendTxView = (props: Props): ReactElement => {
             restoreApp(returnScheme)
           }}
         >
-          <Icon name={'clear'} color={color.white} size={24} />
+          <Icon name={'clear'} color={COLOR.white} size={24} />
         </TouchableOpacity>
       </View>
       <SubHeader theme={'sapphire'} title={'Confirm'} />
@@ -410,7 +411,7 @@ const SendTxView = (props: Props): ReactElement => {
 const style = StyleSheet.create({
   container: { flex: 1, flexDirection: 'column' },
   headerContainer: {
-    backgroundColor: color.sapphire,
+    backgroundColor: COLOR.primary._02,
     height: 60,
     paddingLeft: 20,
     justifyContent: 'center',
@@ -426,7 +427,7 @@ const style = StyleSheet.create({
   titleText: {
     fontSize: 16,
     lineHeight: 24,
-    color: color.sapphire,
+    color: COLOR.primary._02,
     marginBottom: 60,
   },
 
@@ -436,18 +437,18 @@ const style = StyleSheet.create({
   feeContainer: { flexDirection: 'row' },
   denomText: {
     fontSize: 14,
-    color: color.sapphire,
+    color: COLOR.primary._02,
     paddingLeft: 15,
   },
   denomContainer: {
     flex: 1,
-    backgroundColor: color.disabled,
+    backgroundColor: COLOR.disabled,
   },
   amountContainer: {
     flex: 2,
   },
   amountText: {
-    color: color.sapphire,
+    color: COLOR.primary._02,
     fontFamily: font.gotham.book,
     fontVariant: ['tabular-nums'],
   },

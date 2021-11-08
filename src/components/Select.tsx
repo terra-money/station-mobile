@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react'
 import { TextStyle, View, ViewStyle } from 'react-native'
 
-import color from 'styles/color'
+import { COLOR } from 'consts'
+
 import Selector from './Selector'
 import Text from './Text'
 import Icon from './Icon'
@@ -31,7 +32,7 @@ const Select = (props: SelectProps): ReactElement => {
         borderRadius: 8,
         borderWidth: 1,
         borderColor: '#cfd8ea',
-        backgroundColor: color.white,
+        backgroundColor: COLOR.white,
         justifyContent: 'center',
         paddingLeft: 5,
         ...props.containerStyle,
@@ -54,7 +55,7 @@ const Select = (props: SelectProps): ReactElement => {
             <Icon
               name={'arrow-drop-down'}
               size={18}
-              color={color.sapphire}
+              color={COLOR.primary._02}
             />
           </View>
         </View>

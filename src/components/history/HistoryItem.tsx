@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { Text, Icon, ExtLink } from 'components'
 import { MessageUI, TxUI } from 'lib'
 import Label from 'components/Badge'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 
 const Message = ({
   messages,
@@ -50,7 +50,7 @@ const Message = ({
             </>
           ) : (
             <Label
-              containerStyle={{ backgroundColor: color.red }}
+              containerStyle={{ backgroundColor: COLOR.red }}
               text={'Failed'}
             />
           )}

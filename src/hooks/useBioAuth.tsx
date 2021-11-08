@@ -7,6 +7,8 @@ import {
   ImageSourcePropType,
 } from 'react-native'
 
+import { COLOR } from 'consts'
+
 import Button from 'components/Button'
 import Body from 'components/layout/Body'
 import { Text } from 'components'
@@ -20,7 +22,6 @@ import {
   authenticateBiometric,
 } from 'utils/bio'
 import images from 'assets/images'
-import color from 'styles/color'
 
 type BioAuthType = {
   bioType: BiometricType
@@ -52,7 +53,7 @@ const BioAuth = ({ close, bioType }: BioAuthType): ReactElement => {
             {`Use ${getBiometricName()}`}
           </Text>
           <Text
-            style={{ color: color.sapphire, textAlign: 'center' }}
+            style={{ color: COLOR.primary._02, textAlign: 'center' }}
           >
             {`Use your ${getBiometricName()} for faster, easier access to your acount.`}
           </Text>
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
     lineHeight: 36,
     letterSpacing: 0,
     textAlign: 'center',
-    color: color.sapphire,
+    color: COLOR.primary._02,
     marginVertical: 5,
   },
 })

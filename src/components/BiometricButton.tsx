@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react'
 import { View, Image } from 'react-native'
 
+import { COLOR } from 'consts'
+
 import { authenticateBiometric } from 'utils/bio'
 import Text from './Text'
 import Button from './Button'
 
-import color from 'styles/color'
 import images from 'assets/images'
 import { getBioAuthPassword } from 'utils/storage'
 
@@ -18,7 +19,7 @@ const BiometricButtonTitle = (): ReactElement => {
       />
       <Text
         style={{
-          color: color.sapphire,
+          color: COLOR.primary._02,
         }}
         fontType="medium"
       >

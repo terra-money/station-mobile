@@ -12,7 +12,7 @@ import { AvailableItem, useConfig } from 'lib'
 import { UTIL } from 'consts'
 
 import { Text, Icon, Number, AssetIcon } from 'components'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import { QueryKeyEnum, RootStackParams, Token } from 'types'
 import { useSwapRate } from 'hooks/useSwapRate'
 
@@ -113,7 +113,7 @@ const AssetItem = ({
           <View style={styles.coinMenu}>
             <Icon
               size={16}
-              style={{ color: color.sapphire }}
+              style={{ color: COLOR.primary._02 }}
               name={'chevron-right'}
             />
           </View>
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   coinMenu: {
     width: 14,
     height: 14,
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 10,

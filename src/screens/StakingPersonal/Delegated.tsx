@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { StakingPersonal, ValidatorUI } from 'lib'
 
 import { Number, Text } from 'components'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import images from 'assets/images'
 
 const Rewards = ({
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
     paddingTop: 20,
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
     borderRadius: 20,
     shadowColor: 'rgba(0, 0, 0, 0.05)',
     shadowOffset: {

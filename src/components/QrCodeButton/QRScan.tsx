@@ -10,7 +10,7 @@ import TopNotification from 'components/TopNotification'
 import Text from '../Text'
 import Icon from '../Icon'
 import NumberStep from '../NumberStep'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 
 const MARKER_FULL_WIDTH = 260
 const MARKER_FULL_HEIGHT = 260
@@ -100,7 +100,7 @@ const QRScan = ({
         style={style.backContainer}
         onPress={closeModal}
       >
-        <Icon name={'close'} color={color.white} size={28} />
+        <Icon name={'close'} color={COLOR.white} size={28} />
       </TouchableOpacity>
       {_.isNumber(stepNo) && (
         <NumberStep stepSize={2} nowStep={stepNo} />
@@ -190,12 +190,12 @@ const style = StyleSheet.create({
     backgroundColor: 'transparent',
   },
 
-  verticalContainer: { flex: 1, backgroundColor: color.qrBackground },
+  verticalContainer: { flex: 1, backgroundColor: COLOR.qrBackground },
   horizontalContainer: {
     flex: 1,
     flexDirection: 'row',
     height: '100%',
-    backgroundColor: color.qrBackground,
+    backgroundColor: COLOR.qrBackground,
   },
 
   markerContainer: {
@@ -215,12 +215,12 @@ const style = StyleSheet.create({
     paddingVertical: 18,
   },
 
-  titleContainer: { backgroundColor: color.qrBackground },
+  titleContainer: { backgroundColor: COLOR.qrBackground },
   titleText: {
     marginTop: 8,
     fontSize: 16,
     lineHeight: 24,
-    color: color.white,
+    color: COLOR.white,
     alignSelf: 'center',
   },
   horizontalFrameContainer: {
@@ -236,7 +236,7 @@ const style = StyleSheet.create({
   verticalFrameContainer: {
     width: '100%',
     height: FRAME_BORDER,
-    backgroundColor: color.qrBackground,
+    backgroundColor: COLOR.qrBackground,
     alignSelf: 'center',
   },
   verticalFrameSubContainer: {

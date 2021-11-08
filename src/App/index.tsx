@@ -14,7 +14,7 @@ import {
   User,
 } from 'lib'
 
-import { UTIL } from 'consts'
+import { COLOR, COMMON, UTIL } from 'consts'
 
 import { Settings } from 'types'
 import { AppProvider } from './useApp'
@@ -26,7 +26,6 @@ import preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 import keystore, { KeystoreEnum } from 'nativeModules/keystore'
-import color from 'styles/color'
 
 import useSecurity from 'hooks/useSecurity'
 import useNetworks from 'hooks/useNetworks'
@@ -113,7 +112,7 @@ const App = ({
                   <View
                     style={{
                       flex: 1,
-                      backgroundColor: color.sapphire,
+                      backgroundColor: COLOR.primary._02,
                     }}
                   />
                 ) : showOnBoarding ? (

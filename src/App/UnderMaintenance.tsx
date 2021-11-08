@@ -1,10 +1,11 @@
 import React, { ReactElement, useState } from 'react'
 import { View, StyleSheet, Animated, Easing } from 'react-native'
 
+import { COLOR } from 'consts'
+
 import { Button, Text } from 'components'
 import { useCurrentChainName } from 'lib'
 import useTerraAssets from 'lib/hooks/useTerraAssets'
-import color from 'styles/color'
 import Body from 'components/layout/Body'
 import Maintenance from 'assets/svg/Maintenance'
 
@@ -49,7 +50,7 @@ const UnderMaintenance = (): ReactElement => {
           <View style={{ marginBottom: 5 }}>
             <Animated.View style={{ transform: [{ rotate: spin }] }}>
               <Maintenance
-                color={color.primary._02}
+                color={COLOR.primary._02}
                 width="60"
                 height="60"
               />

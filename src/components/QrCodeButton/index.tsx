@@ -12,6 +12,8 @@ import {
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
+import { COLOR } from 'consts'
+
 import {
   checkCameraPermission,
   openPermissionSettings,
@@ -20,7 +22,6 @@ import {
 
 import Text from '../Text'
 import Icon from '../Icon'
-import color from 'styles/color'
 
 import QRScan from './QRScan'
 import { useAlert } from 'hooks/useAlert'
@@ -89,10 +90,10 @@ const QrCodeButton = ({
       <TouchableOpacity onPress={onPress}>
         {children || (
           <View style={styles.container}>
-            <Icon name={'qr-code-2'} color={color.sapphire} />
+            <Icon name={'qr-code-2'} color={COLOR.primary._02} />
             <Text
               style={{
-                color: color.sapphire,
+                color: COLOR.primary._02,
                 fontSize: 10,
                 marginLeft: 5,
               }}
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 11,
     borderWidth: 1,
-    borderColor: color.sapphire,
+    borderColor: COLOR.primary._02,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 10,

@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import { AccAddress } from '@terra-money/terra.js'
 import { StackScreenProps } from '@react-navigation/stack'
 
-import { UTIL } from 'consts'
+import { UTIL, COLOR } from 'consts'
 
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -14,7 +14,6 @@ import SubHeader from 'components/layout/SubHeader'
 import { Button, Text, Icon, QrCodeButton } from 'components'
 
 import RecoverWalletStore from 'stores/RecoverWalletStore'
-import color from 'styles/color'
 import { useAlert } from 'hooks/useAlert'
 import { RecoverWalletStackParams } from 'types'
 
@@ -96,7 +95,7 @@ const Step1 = ({ navigation }: Props): ReactElement => {
                 <Icon
                   name={'content-paste'}
                   size={24}
-                  color={color.sapphire}
+                  color={COLOR.primary._02}
                 />
               </View>
             }
@@ -165,7 +164,7 @@ const Step1 = ({ navigation }: Props): ReactElement => {
                 <Icon
                   name={'qr-code-scanner'}
                   size={24}
-                  color={color.sapphire}
+                  color={COLOR.primary._02}
                 />
               </View>
             </View>
@@ -193,7 +192,7 @@ const Step1 = ({ navigation }: Props): ReactElement => {
               <Icon
                 name={'settings'}
                 size={14}
-                color={color.sapphire}
+                color={COLOR.primary._02}
                 style={{
                   position: 'absolute',
                   marginTop: -12,

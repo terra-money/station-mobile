@@ -6,7 +6,7 @@ import { useAssets, AssetsUI, User, Card, AvailableItem } from 'lib'
 import { Text, Icon } from 'components'
 
 import AssetItem from './AvailableItem'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 
 const AvailableList = ({
   list,
@@ -41,7 +41,7 @@ const EmptyWallet = ({ card }: { card?: Card }): ReactElement => {
         <Icon
           name={'info-outline'}
           size={20}
-          color={color.sapphire}
+          color={COLOR.primary._02}
         />
         <Text style={styles.emptyWalletCardTitle} fontType={'bold'}>
           {card.title}
@@ -145,6 +145,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     letterSpacing: 0,
-    color: color.sapphire,
+    color: COLOR.primary._02,
   },
 })

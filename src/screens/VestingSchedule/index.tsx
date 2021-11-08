@@ -5,12 +5,14 @@ import {
 import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
+
+import { COLOR } from 'consts'
+
 import { RootStackParams } from 'types'
 
 import { navigationHeaderOptions } from 'components/layout/Header'
 import { AssetIcon, Icon, Number, Text } from 'components'
 import Body from 'components/layout/Body'
-import color from 'styles/color'
 
 type Props = StackScreenProps<RootStackParams, 'VestingSchedule'>
 
@@ -25,7 +27,7 @@ const ProgressBar = ({
         style={{
           height: 5,
           width: percent,
-          backgroundColor: color.sapphire,
+          backgroundColor: COLOR.primary._02,
           borderRadius: 20,
         }}
       />
@@ -45,7 +47,7 @@ const VestingSchedule = (props: Props): ReactElement => {
             <AssetIcon name={display.unit} />
             <Text
               style={{
-                color: color.white,
+                color: COLOR.white,
                 fontSize: 16,
                 lineHeight: 24,
                 letterSpacing: 0,
@@ -56,7 +58,7 @@ const VestingSchedule = (props: Props): ReactElement => {
               {display.unit}
             </Text>
           </View>
-          <Number numberFontStyle={{ color: color.white }}>
+          <Number numberFontStyle={{ color: COLOR.white }}>
             {display.value}
           </Number>
         </View>
@@ -71,7 +73,7 @@ const VestingSchedule = (props: Props): ReactElement => {
                         <Icon
                           name={'check'}
                           size={14}
-                          color={color.white}
+                          color={COLOR.white}
                         />
                       </View>
                     ) : (
@@ -126,13 +128,13 @@ const styles = StyleSheet.create({
   },
   scheduleCard: {
     borderRadius: 20,
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
   },
   scheduleCardHeader: {
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     padding: 20,
-    backgroundColor: color.sapphire,
+    backgroundColor: COLOR.primary._02,
   },
   scheduleCardBody: {
     borderBottomRightRadius: 20,
@@ -163,7 +165,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 50,
-    backgroundColor: color.sapphire,
+    backgroundColor: COLOR.primary._02,
     borderColor: '#cdd5ee',
     justifyContent: 'center',
     alignItems: 'center',

@@ -12,7 +12,7 @@ import Clipboard from '@react-native-community/clipboard'
 import Text from './Text'
 import Icon from './Icon'
 
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import useTopNoti from 'hooks/useTopNoti'
 
 export type CopyButtonProps = {
@@ -31,14 +31,14 @@ const CopyButton = (props: CopyButtonProps): ReactElement => {
   switch (theme) {
     case 'sapphire':
       containerStyle.borderColor = 'rgba(255,255,255,.5)'
-      containerStyle.backgroundColor = color.sapphire
-      textStyle.color = color.white
+      containerStyle.backgroundColor = COLOR.primary._02
+      textStyle.color = COLOR.white
       break
     case 'white':
     default:
-      containerStyle.borderColor = color.sapphire
-      containerStyle.backgroundColor = color.white
-      textStyle.color = color.sapphire
+      containerStyle.borderColor = COLOR.primary._02
+      containerStyle.backgroundColor = COLOR.white
+      textStyle.color = COLOR.primary._02
       break
   }
   return (
@@ -62,7 +62,7 @@ const CopyButton = (props: CopyButtonProps): ReactElement => {
           <Icon
             name={'content-paste'}
             color={
-              theme === 'sapphire' ? color.white : color.sapphire
+              theme === 'sapphire' ? COLOR.white : COLOR.primary._02
             }
           />
           <Text

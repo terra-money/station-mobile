@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { StakingPersonal, User } from 'lib'
 
 import { Button, Number, Text } from 'components'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import { useWithdraw } from 'hooks/useWithdraw'
 
 const Rewards = ({
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
     paddingVertical: 20,
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
     borderRadius: 20,
     shadowColor: 'rgba(0, 0, 0, 0.05)',
     shadowOffset: {

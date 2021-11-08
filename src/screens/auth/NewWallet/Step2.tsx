@@ -14,7 +14,7 @@ import {
   NumberStep,
 } from 'components'
 
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import NewWalletStore from 'stores/NewWalletStore'
 import terraWallet from 'nativeModules/terraWallet'
 
@@ -52,9 +52,9 @@ const Step2 = (): ReactElement => {
           </View>
           <WarningBox
             message={
-              <Text style={{ color: color.red, lineHeight: 21 }}>
+              <Text style={{ color: COLOR.red, lineHeight: 21 }}>
                 {`If you lose your seed phrase it's`}
-                <Text style={{ color: color.red }} fontType={'bold'}>
+                <Text style={{ color: COLOR.red }} fontType={'bold'}>
                   {' gone forever. '}
                 </Text>
                 {`Station doesn't store any data.`}

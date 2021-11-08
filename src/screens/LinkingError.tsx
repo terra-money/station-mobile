@@ -16,7 +16,7 @@ import { StackScreenProps } from '@react-navigation/stack'
 
 import { Button, Icon, Text } from 'components'
 import Body from 'components/layout/Body'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import images from 'assets/images'
 import { navigationHeaderOptions } from 'components/layout/Header'
 
@@ -39,7 +39,7 @@ const Details = ({
         <View
           style={{
             borderRadius: 5,
-            backgroundColor: color.red,
+            backgroundColor: COLOR.red,
             paddingHorizontal: 5,
           }}
         >
@@ -54,7 +54,7 @@ const Details = ({
           }}
         >
           <Text
-            style={{ color: color.dodgerBlue, fontSize: 10 }}
+            style={{ color: COLOR.primary._03, fontSize: 10 }}
             fontType="bold"
           >
             {isOpen ? 'Collapse' : 'Expand'}
@@ -62,7 +62,7 @@ const Details = ({
           <Icon
             name={isOpen ? 'expand-less' : 'expand-more'}
             size={14}
-            color={color.dodgerBlue}
+            color={COLOR.primary._03}
           />
         </TouchableOpacity>
       </View>
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   openBtn: {
     borderRadius: 3,
     borderWidth: 1,
-    borderColor: color.dodgerBlue,
+    borderColor: COLOR.primary._03,
     paddingHorizontal: 10,
     paddingVertical: 3,
     marginRight: 5,

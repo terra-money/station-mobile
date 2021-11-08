@@ -4,6 +4,8 @@ import QRCode from 'react-native-qrcode-svg'
 import { StackScreenProps } from '@react-navigation/stack'
 import _ from 'lodash'
 
+import { COLOR } from 'consts'
+
 import { RootStackParams } from 'types/navigation'
 
 import Body from 'components/layout/Body'
@@ -12,7 +14,6 @@ import { navigationHeaderOptions } from 'components/layout/Header'
 import WithAuth from 'components/layout/WithAuth'
 import { Text } from 'components'
 
-import color from 'styles/color'
 import layout from 'styles/layout'
 import { createRecoverWalletSchemeUrl } from 'utils/qrCode'
 import { getEncryptedKey } from 'utils/wallet'
@@ -59,7 +60,7 @@ const Render = ({ user }: { user: User }): ReactElement => {
           {_.some(qrCodeValue) && (
             <QRCode
               value={qrCodeValue}
-              color={color.sapphire}
+              color={COLOR.primary._02}
               size={size}
             />
           )}
@@ -97,6 +98,6 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     letterSpacing: 0,
     textAlign: 'center',
-    color: color.sapphire,
+    color: COLOR.primary._02,
   },
 })

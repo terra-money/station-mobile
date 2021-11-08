@@ -29,7 +29,7 @@ import {
 import { RootStackParams } from 'types/navigation'
 
 import SelectInputForm from './SelectInputForm'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import { useConfirm } from 'hooks/useConfirm'
 
 type Props = StackScreenProps<RootStackParams, 'SwapMultipleCoins'>
@@ -88,7 +88,7 @@ const SwapFrom = ({
                     <View style={styles.simulated}>
                       <Icon
                         name={'arrow-forward'}
-                        color={color.sapphire}
+                        color={COLOR.primary._02}
                         style={{ marginRight: 5, marginTop: 2 }}
                       />
                       <Number numberFontStyle={{ fontSize: 12 }}>
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   totalBox: {
     paddingTop: 10,
     paddingBottom: 30,
-    borderColor: color.sapphire,
+    borderColor: COLOR.primary._02,
     borderWidth: 1,
     borderRadius: 1,
     borderStyle: 'dashed',
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   bottomMask: {
     height: 3,
     width: 9999,
-    backgroundColor: color.sky,
+    backgroundColor: COLOR.sky,
     position: 'absolute',
     bottom: -3,
     left: 0,
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   rightMask: {
     height: 9999,
     width: 3,
-    backgroundColor: color.sky,
+    backgroundColor: COLOR.sky,
     position: 'absolute',
     top: 0,
     right: -3,
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   leftMask: {
     width: 3,
     height: 60,
-    backgroundColor: color.sky,
+    backgroundColor: COLOR.sky,
     position: 'absolute',
     top: 0,
     left: -3,

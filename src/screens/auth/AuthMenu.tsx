@@ -8,7 +8,7 @@ import Body from 'components/layout/Body'
 import { Text, Icon, Button, Dot } from 'components'
 
 import { getWallets } from 'utils/wallet'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import images from 'assets/images'
 import StatusBar from 'components/StatusBar'
 import { navigationHeaderOptions } from 'components/layout/Header'
@@ -60,7 +60,7 @@ const AuthMenu = (): ReactElement => {
               <Icon
                 name={'account-balance-wallet'}
                 size={45}
-                color={color.white}
+                color={COLOR.white}
                 style={{ marginHorizontal: 6 }}
               />
               <Dot style={{ opacity: 0.25, marginHorizontal: 6 }} />
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     lineHeight: 39,
     letterSpacing: 0,
     textAlign: 'center',
-    color: color.white,
+    color: COLOR.white,
   },
   subTitle: {
     marginHorizontal: 20,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     letterSpacing: 0,
     textAlign: 'center',
-    color: color.white,
+    color: COLOR.white,
   },
   imageBox: {
     flexDirection: 'row',
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   orText: {
     marginBottom: -10,
     paddingHorizontal: 10,
-    backgroundColor: color.sapphire,
+    backgroundColor: COLOR.primary._02,
     color: 'white',
   },
 })

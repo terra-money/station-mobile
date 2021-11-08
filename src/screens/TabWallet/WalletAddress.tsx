@@ -8,7 +8,7 @@ import {
 import { RootStackParams } from 'types/navigation'
 import { User } from 'lib'
 import { Text, CopyButton, Icon } from 'components'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 
 const WalletAddress = ({ user }: { user: User }): ReactElement => {
   const { navigate } = useNavigation<
@@ -50,7 +50,7 @@ const WalletAddress = ({ user }: { user: User }): ReactElement => {
               borderColor: 'rgba(255,255,255,.5)',
             }}
           >
-            <Icon name={'content-paste'} color={color.white} />
+            <Icon name={'content-paste'} color={COLOR.white} />
           </View>
         </CopyButton>
       </View>
@@ -61,7 +61,7 @@ const WalletAddress = ({ user }: { user: User }): ReactElement => {
           navigate('Setting')
         }}
       >
-        <Icon name="qr-code-2" color={color.white} />
+        <Icon name="qr-code-2" color={COLOR.white} />
       </TouchableOpacity>
     </View>
   )
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
     borderRadius: 20,
-    backgroundColor: color.sapphire,
+    backgroundColor: COLOR.primary._02,
     shadowColor: 'rgba(0, 0, 0, 0.05)',
     shadowOffset: {
       width: 0,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   qrCode: {
     marginLeft: 10,
     borderColor: 'rgba(255,255,255,.5)',
-    backgroundColor: color.sapphire,
+    backgroundColor: COLOR.primary._02,
     flexDirection: 'row',
     borderRadius: 15,
     borderWidth: 1,

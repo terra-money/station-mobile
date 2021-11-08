@@ -8,7 +8,7 @@ import {
 import { VestingItemUI } from 'lib'
 
 import { Text, Icon, Number, AssetIcon } from 'components'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import { RootStackParams } from 'types'
 
 const VestingItem = ({
@@ -58,7 +58,7 @@ const VestingItem = ({
           <View style={styles.coinMenu}>
             <Icon
               size={16}
-              style={{ color: color.sapphire }}
+              style={{ color: COLOR.primary._02 }}
               name={'chevron-right'}
             />
           </View>
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   coinMenu: {
     width: 14,
     height: 14,
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 10,

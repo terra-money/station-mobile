@@ -9,6 +9,8 @@ import _ from 'lodash'
 import { StackScreenProps } from '@react-navigation/stack'
 import { useNavigation } from '@react-navigation/native'
 
+import { COLOR } from 'consts'
+
 import { RootStackParams } from 'types'
 import {
   useAssets,
@@ -22,7 +24,6 @@ import {
 } from 'lib'
 import { Text, Icon, Row, Button } from 'components'
 
-import color from 'styles/color'
 import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
@@ -75,7 +76,7 @@ const EmptyWallet = ({ card }: { card?: Card }): ReactElement => {
         <Icon
           name={'info-outline'}
           size={20}
-          color={color.sapphire}
+          color={COLOR.primary._02}
         />
         <Text style={styles.emptyWalletCardTitle} fontType={'bold'}>
           {card.title}
@@ -228,7 +229,7 @@ const AvailableAssets = ({
                 <Icon
                   name={'settings'}
                   size={20}
-                  color={color.primary._02}
+                  color={COLOR.primary._02}
                   style={{ padding: 4 }}
                 />
               </TouchableOpacity>
@@ -243,9 +244,9 @@ const AvailableAssets = ({
           size="sm"
           title={
             <Row style={{ alignItems: 'center' }}>
-              <Icon name="add" size={16} color={color.primary._02} />
+              <Icon name="add" size={16} color={COLOR.primary._02} />
               <Text
-                style={{ color: color.primary._02 }}
+                style={{ color: COLOR.primary._02 }}
                 fontType="medium"
               >
                 Add Token
@@ -313,7 +314,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     letterSpacing: 0,
-    color: color.sapphire,
+    color: COLOR.primary._02,
   },
   hideSmallLabel: {
     fontSize: 10,

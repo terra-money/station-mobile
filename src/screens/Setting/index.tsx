@@ -17,7 +17,7 @@ import {
   useConfig,
   useManageAccounts,
 } from 'lib'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import {
   NavigationProp,
   useNavigation,
@@ -175,7 +175,7 @@ const Setting = (): ReactElement => {
       {user ? (
         <View
           style={{
-            backgroundColor: color.sapphire,
+            backgroundColor: COLOR.primary._02,
             alignItems: 'center',
             paddingBottom: 30,
           }}
@@ -186,9 +186,9 @@ const Setting = (): ReactElement => {
           <View style={{ paddingVertical: 10 }}>
             <QRCode
               value={user.address}
-              backgroundColor={color.sapphire}
+              backgroundColor={COLOR.primary._02}
               size={100}
-              color={color.white}
+              color={COLOR.white}
             />
           </View>
           <Text style={styles.userAddress}>{user.address}</Text>
@@ -246,7 +246,7 @@ const Setting = (): ReactElement => {
               <Icon
                 size={24}
                 name="chevron-right"
-                color={color.sapphire_op20}
+                color={COLOR.primary._02_op20}
               />
             </TouchableOpacity>
 
@@ -260,7 +260,7 @@ const Setting = (): ReactElement => {
               <Icon
                 size={24}
                 name="chevron-right"
-                color={color.sapphire_op20}
+                color={COLOR.primary._02_op20}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -273,7 +273,7 @@ const Setting = (): ReactElement => {
               <Icon
                 size={24}
                 name="chevron-right"
-                color={color.sapphire_op20}
+                color={COLOR.primary._02_op20}
               />
             </TouchableOpacity>
           </View>
@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     letterSpacing: 0,
-    color: color.dodgerBlue,
+    color: COLOR.primary._03,
   },
   authItemBox: {
     borderBottomColor: '#edf1f7',

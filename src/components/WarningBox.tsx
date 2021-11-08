@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 
 import Icon from './Icon'
 import Text from './Text'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 
 const WarningBox = ({
   message,
@@ -13,13 +13,13 @@ const WarningBox = ({
   return (
     <View style={styles.container}>
       <View style={{ width: 25, paddingTop: 4 }}>
-        <Icon name={'info'} color={color.red} size={16} />
+        <Icon name={'info'} color={COLOR.red} size={16} />
       </View>
 
       <View style={{ flex: 1 }}>
         {typeof message === 'string' ? (
           <Text
-            style={{ color: color.red, fontSize: 14, lineHeight: 21 }}
+            style={{ color: COLOR.red, fontSize: 14, lineHeight: 21 }}
           >
             {message}
           </Text>

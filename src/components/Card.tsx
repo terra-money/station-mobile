@@ -9,11 +9,12 @@ import _ from 'lodash'
 import { AreaChart, Path } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 
+import { COLOR } from 'consts'
+
 import { API } from 'lib'
 
 import Icon from './Icon'
 import Text from './Text'
-import color from 'styles/color'
 import layout from 'styles/layout'
 
 interface Props extends Partial<API<any>> {
@@ -139,7 +140,7 @@ export default Card
 /* styles */
 const styles = StyleSheet.create({
   text: {
-    color: color.sapphire,
+    color: COLOR.primary._02,
   },
 
   card: {
@@ -212,7 +213,7 @@ const lightStyles = StyleSheet.create({
 const darkStyles = StyleSheet.create({
   text: { color: 'white' },
   card: {
-    backgroundColor: color.sapphire,
+    backgroundColor: COLOR.primary._02,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 20 },
     shadowRadius: 20,

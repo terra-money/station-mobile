@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import Text from '../components/Text'
 import { useApp } from '../App/useApp'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 
 type AlertProps = {
   title?: string
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   buttonGroup: {
     flexDirection: 'row',
-    backgroundColor: color.gray,
+    backgroundColor: COLOR.gray,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },

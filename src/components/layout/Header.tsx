@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import { Icon } from 'components'
 
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import {
   StackHeaderLeftButtonProps,
   StackHeaderTitleProps,
@@ -56,7 +56,7 @@ const HeaderLeft = ({
     >
       <Icon
         name={goBackIconType === 'close' ? 'close' : 'arrow-back-ios'}
-        color={theme === 'sapphire' ? color.white : color.sapphire}
+        color={theme === 'sapphire' ? COLOR.white : COLOR.primary._02}
         size={goBackIconType === 'close' ? 28 : 24}
       />
     </TouchableOpacity>
@@ -77,14 +77,14 @@ export const navigationHeaderOptions = (
   const containerStyle: StyleProp<ViewStyle> = {}
   switch (theme) {
     case 'sapphire':
-      containerStyle.backgroundColor = color.sapphire
+      containerStyle.backgroundColor = COLOR.primary._02
       break
     case 'sky':
-      containerStyle.backgroundColor = color.sky
+      containerStyle.backgroundColor = COLOR.sky
       break
     case 'white':
     default:
-      containerStyle.backgroundColor = color.white
+      containerStyle.backgroundColor = COLOR.white
       break
   }
   return {

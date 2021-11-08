@@ -1,4 +1,3 @@
-import { UTIL } from 'consts'
 import React, { ReactElement } from 'react'
 import {
   Keyboard,
@@ -10,7 +9,7 @@ import {
   ViewStyle,
 } from 'react-native'
 
-import color from 'styles/color'
+import { COLOR, UTIL } from 'consts'
 
 type InputProps = {
   containerStyle?: StyleProp<ViewStyle>
@@ -22,13 +21,13 @@ const Input = (props: InputProps): ReactElement => {
     borderRadius: 8,
     height: '100%',
     backgroundColor:
-      false === rest.editable ? '#ebeff8' : color.white,
+      false === rest.editable ? '#ebeff8' : COLOR.white,
     justifyContent: 'center',
     padding: 0,
     paddingLeft: 15,
     paddingRight: 10,
     fontFamily: 'Gotham-Book',
-    color: color.sapphire,
+    color: COLOR.primary._02,
   }
   return (
     <View

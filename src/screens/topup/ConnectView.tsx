@@ -1,13 +1,16 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { View, StyleSheet, BackHandler } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { StackScreenProps } from '@react-navigation/stack'
+
+import { COLOR } from 'consts'
+
 import { Buffer } from 'buffer'
 import { useAuth } from 'lib'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+
 import { Button, Icon, Text } from 'components'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import color from 'styles/color'
 import { DEBUG_TOPUP } from './TopupUtils'
-import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParams } from 'types'
 import StatusBar from 'components/StatusBar'
 import { useAlert } from 'hooks/useAlert'
@@ -130,13 +133,13 @@ const ConnectView = (props: Props): ReactElement => {
             restoreApp(returnScheme)
           }}
         >
-          <Icon name="close" color={color.sapphire} size={24} />
+          <Icon name="close" color={COLOR.primary._02} size={24} />
         </TouchableOpacity>
       </View>
       <View style={style.contentView}>
         <Icon
           name="account-balance-wallet"
-          color={color.sapphire}
+          color={COLOR.primary._02}
           size={60}
         />
         <Text fontType="bold" style={style.titleText}>

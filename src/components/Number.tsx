@@ -2,8 +2,9 @@ import React, { FC } from 'react'
 import { StyleProp, StyleSheet, TextStyle } from 'react-native'
 import { format, DisplayCoin } from 'lib'
 
+import { COLOR } from 'consts'
+
 import Text from './Text'
-import color from 'styles/color'
 
 interface Props extends Partial<DisplayCoin> {
   children?: string
@@ -51,13 +52,13 @@ const Number: FC<Props> = ({ value, unit, children, ...config }) => {
 const styles = StyleSheet.create({
   number: {
     fontSize: 16,
-    color: color.sapphire,
+    color: COLOR.primary._02,
     textAlign: 'right',
     flexShrink: 1,
   },
   decimal: {
     fontSize: 12,
-    color: color.sapphire,
+    color: COLOR.primary._02,
   },
 })
 export default Number

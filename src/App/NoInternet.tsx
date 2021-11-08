@@ -1,12 +1,12 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { Icon, Text } from 'components'
-import StatusBar from 'components/StatusBar'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StyleSheet } from 'react-native'
 import NetInfo, {
   NetInfoState,
 } from '@react-native-community/netinfo'
-import color from 'styles/color'
+
+import { COLOR } from 'consts'
+import { Icon, Text, StatusBar } from 'components'
 import layout from 'styles/layout'
 
 const NoInternet = (): ReactElement => {
@@ -33,7 +33,7 @@ const NoInternet = (): ReactElement => {
           <StatusBar theme="white" />
           <Icon
             name="signal-wifi-off"
-            color={color.sapphire}
+            color={COLOR.primary._02}
             size={53}
             style={styles.icon}
           />
@@ -57,18 +57,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    backgroundColor: color.sky,
+    backgroundColor: COLOR.sky,
   },
   icon: { marginBottom: 15 },
   title: {
     fontSize: 24,
-    color: color.sapphire,
+    color: COLOR.primary._02,
     marginBottom: 5,
     lineHeight: 36,
   },
   subTitle: {
     fontSize: 16,
-    color: color.sapphire,
+    color: COLOR.primary._02,
     lineHeight: 24,
     textAlign: 'center',
   },

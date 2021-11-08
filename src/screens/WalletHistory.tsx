@@ -15,6 +15,8 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 
+import { COLOR } from 'consts'
+
 import { useMenu, User, useTxs, TxsUI } from 'lib'
 
 import ErrorComponent from 'components/ErrorComponent'
@@ -22,7 +24,6 @@ import HistoryItem from 'components/history/HistoryItem'
 import WithAuth from 'components/layout/WithAuth'
 import { Text, Icon, LoadingIcon } from 'components'
 
-import color from 'styles/color'
 import { RootStackParams } from 'types'
 
 const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
@@ -50,7 +51,11 @@ const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
           </View>
 
           <TouchableOpacity onPress={goBack}>
-            <Icon name={'close'} color={color.sapphire} size={28} />
+            <Icon
+              name={'close'}
+              color={COLOR.primary._02}
+              size={28}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -90,7 +95,7 @@ const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
                 flexShrink: 1,
               }}
             >
-              <Icon name="info" color={color.sapphire} size={40} />
+              <Icon name="info" color={COLOR.primary._02} size={40} />
               <View style={{ paddingLeft: 10, flex: 1 }}>
                 <Text style={{ fontSize: 16 }} fontType={'bold'}>
                   {ui.card.title}

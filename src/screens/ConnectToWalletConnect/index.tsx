@@ -15,6 +15,8 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 
+import { COLOR } from 'consts'
+
 import { RootStackParams } from 'types/navigation'
 
 import Body from 'components/layout/Body'
@@ -22,7 +24,6 @@ import { navigationHeaderOptions } from 'components/layout/Header'
 import WithAuth from 'components/layout/WithAuth'
 import { Button, Icon, LoadingIcon, Text } from 'components'
 
-import color from 'styles/color'
 import { useConfig, User } from 'lib'
 import useWalletConnect from 'hooks/useWalletConnect'
 import images from 'assets/images'
@@ -254,7 +255,7 @@ const HeaderLeft = (): ReactElement => {
       onPress={onPressGoBack}
       style={{ paddingLeft: 20 }}
     >
-      <Icon name={'close'} color={color.sapphire} size={28} />
+      <Icon name={'close'} color={COLOR.primary._02} size={28} />
     </TouchableOpacity>
   )
 }
@@ -272,7 +273,7 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     letterSpacing: 0,
     textAlign: 'center',
-    color: color.sapphire,
+    color: COLOR.primary._02,
   },
   infoTitle: {
     fontSize: 12,

@@ -6,14 +6,15 @@ import {
   LogBox,
   StyleSheet,
 } from 'react-native'
-
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import { COLOR } from 'consts'
+
 import { setSkipOnboarding } from '../utils/storage'
 
 import { Text } from 'components'
 import images from 'assets/images'
-import color from 'styles/color'
 
 LogBox.ignoreLogs([
   // https://reactjs.org/blog/2020/02/26/react-v16.13.0.html#warnings-for-some-updates-during-render
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
     margin: 7,
   },
   SwiperDotActive: {
-    backgroundColor: color.sapphire,
+    backgroundColor: COLOR.primary._02,
     width: 10,
     height: 10,
     borderRadius: 5,
@@ -244,7 +245,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   SwiperButtonSkipText: {
-    color: color.sapphire,
+    color: COLOR.primary._02,
     fontSize: 16,
     lineHeight: 24,
   },
@@ -253,7 +254,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     paddingVertical: 13,
-    backgroundColor: color.sapphire,
+    backgroundColor: COLOR.primary._02,
     alignItems: 'center',
   },
   SwiperButtonStart: {
@@ -262,7 +263,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingHorizontal: 58,
     paddingVertical: 13,
-    backgroundColor: color.sapphire,
+    backgroundColor: COLOR.primary._02,
     alignItems: 'center',
   },
 })

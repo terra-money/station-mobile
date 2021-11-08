@@ -10,7 +10,7 @@ import {
 import _ from 'lodash'
 
 import { useModal } from 'hooks/useModal'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import Text from './Text'
 import layout from 'styles/layout'
 
@@ -116,7 +116,7 @@ const SelectItemList = <T,>({
                     : selectedValue === item.value) && (
                     <View
                       style={{
-                        backgroundColor: color.sapphire,
+                        backgroundColor: COLOR.primary._02,
                         width: 12,
                         height: 12,
                         borderRadius: 100,
@@ -174,7 +174,7 @@ export default Selector
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
     borderRadius: 18,
     paddingVertical: 18,
     maxHeight: 400,

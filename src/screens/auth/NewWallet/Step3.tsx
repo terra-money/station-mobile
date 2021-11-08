@@ -13,13 +13,14 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 
+import { COLOR } from 'consts'
+
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
 
 import { FormLabel, NumberStep, Text, Button } from 'components'
 
-import color from 'styles/color'
 import NewWalletStore from 'stores/NewWalletStore'
 import { createWallet } from 'utils/wallet'
 
@@ -104,7 +105,7 @@ const Step3 = (): ReactElement => {
                     backgroundColor: 'white',
                   },
                   focusInputIndex === 0 && {
-                    borderColor: color.sapphire,
+                    borderColor: COLOR.primary._02,
                   },
                 ]}
               >
@@ -134,7 +135,7 @@ const Step3 = (): ReactElement => {
                     backgroundColor: 'white',
                   },
                   focusInputIndex === 1 && {
-                    borderColor: color.sapphire,
+                    borderColor: COLOR.primary._02,
                   },
                 ]}
               >
@@ -209,6 +210,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   hintText: {
-    color: color.sapphire,
+    color: COLOR.primary._02,
   },
 })

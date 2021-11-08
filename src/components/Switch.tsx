@@ -1,6 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
-import color from 'styles/color'
+
+import { COLOR } from 'consts'
 
 const SWITCH_WIDTH = 52
 const SWITCH_HEIGHT = 32
@@ -32,7 +33,7 @@ const Switch = ({ value }: { value: boolean }): ReactElement => {
       style={[
         styles.container,
         {
-          backgroundColor: value ? color.dodgerBlue : '#eee',
+          backgroundColor: value ? COLOR.primary._03 : '#eee',
         },
       ]}
     >
@@ -41,7 +42,7 @@ const Switch = ({ value }: { value: boolean }): ReactElement => {
           styles.btn,
           {
             marginLeft: posX,
-            borderColor: value ? color.dodgerBlue : '#eee',
+            borderColor: value ? COLOR.primary._03 : '#eee',
           },
         ]}
       />

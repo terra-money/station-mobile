@@ -9,7 +9,7 @@ import _ from 'lodash'
 
 import { Token } from 'lib'
 
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import { Icon, AssetIcon, Row } from 'components'
 import Text from 'components/Text'
 import { truncate } from 'lib/utils/format'
@@ -55,7 +55,7 @@ const TokenManager = ({
                   </Text>
                   <Icon
                     size={12}
-                    color={color.primary._02}
+                    color={COLOR.primary._02}
                     name={'open-in-new'}
                   />
                 </Row>
@@ -73,7 +73,7 @@ const TokenManager = ({
               <Icon
                 name="delete"
                 size={16}
-                color={color.primary._02}
+                color={COLOR.primary._02}
               />
             </View>
           </TouchableOpacity>
@@ -98,7 +98,7 @@ const TokenManager = ({
         <View style={styles.header}>
           <Text fontType="bold">Added tokens</Text>
           <TouchableOpacity onPress={closeModal}>
-            <Icon name="close" color={color.sapphire} size={24} />
+            <Icon name="close" color={COLOR.primary._02} size={24} />
           </TouchableOpacity>
         </View>
         {_.some(tokens) ? (
@@ -122,7 +122,7 @@ const TokenManager = ({
             <Icon
               name="inbox"
               size={56}
-              color={color.primary._02}
+              color={COLOR.primary._02}
               style={{ marginBottom: 8 }}
             />
             <Text fontType="medium">No results found.</Text>
@@ -138,7 +138,7 @@ export default TokenManager
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,
     paddingTop: 25,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     lineHeight: 16.5,
     letterSpacing: 0,
-    color: color.primary._02,
+    color: COLOR.primary._02,
   },
   buttonView: {
     alignItems: 'flex-end',
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   },
   addButtonBox: {
     padding: 6,
-    backgroundColor: color.primary._04,
+    backgroundColor: COLOR.primary._04,
     borderRadius: 100,
   },
 })

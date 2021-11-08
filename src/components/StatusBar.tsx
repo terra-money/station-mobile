@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import { StatusBar as DefaultStatusBar } from 'react-native'
-import color from 'styles/color'
+
+import { COLOR } from 'consts'
 
 const StatusBar = ({
   theme,
@@ -12,7 +13,7 @@ const StatusBar = ({
       {theme === 'sapphire' ? (
         <DefaultStatusBar
           barStyle="light-content"
-          backgroundColor={color.sapphire}
+          backgroundColor={COLOR.primary._02}
           translucent={false}
         />
       ) : (

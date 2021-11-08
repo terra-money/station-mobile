@@ -2,9 +2,10 @@ import React, { ReactElement } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { StackActions, useNavigation } from '@react-navigation/native'
 
+import { COLOR } from 'consts'
+
 import Body from 'components/layout/Body'
 import { Text, Icon, Button } from 'components'
-import color from 'styles/color'
 import { useAuth } from 'lib'
 
 const WalletConnectDisconnected = (): ReactElement => {
@@ -23,7 +24,7 @@ const WalletConnectDisconnected = (): ReactElement => {
   return (
     <Body>
       <View style={styles.body}>
-        <Icon size={60} color={color.sapphire} name={'wifi-off'} />
+        <Icon size={60} color={COLOR.primary._02} name={'wifi-off'} />
         <Text
           style={{ fontSize: 24, marginVertical: 5 }}
           fontType={'bold'}

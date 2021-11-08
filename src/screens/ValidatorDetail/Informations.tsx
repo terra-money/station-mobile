@@ -2,9 +2,10 @@ import React, { ReactElement } from 'react'
 import { View, StyleSheet } from 'react-native'
 import _ from 'lodash'
 
+import { COLOR } from 'consts'
+
 import { ValidatorUI } from 'lib'
 import { Text, ExtLink } from 'components'
-import color from 'styles/color'
 
 const Informations = (v: ValidatorUI): ReactElement => {
   const { accountAddress, operatorAddress } = v
@@ -14,7 +15,7 @@ const Informations = (v: ValidatorUI): ReactElement => {
     <ExtLink
       url={accountAddress.link || ''}
       title={accountAddress.address}
-      textStyle={{ color: color.dodgerBlue }}
+      textStyle={{ color: COLOR.primary._03 }}
     />
   )
 
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomColor: '#edf1f7',
     borderBottomWidth: 1,
-    backgroundColor: color.sky,
+    backgroundColor: COLOR.sky,
   },
   item: {
     marginBottom: 25,

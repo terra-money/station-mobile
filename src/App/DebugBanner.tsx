@@ -1,7 +1,8 @@
 import React from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import color from 'styles/color'
+
+import { COLOR } from 'consts'
 import Text from '../components/Text'
 
 const DebugBanner = ({ title }: { title: string }): JSX.Element => {
@@ -21,7 +22,7 @@ const DebugBanner = ({ title }: { title: string }): JSX.Element => {
       <View
         style={{
           height: 21,
-          backgroundColor: color.dodgerBlue,
+          backgroundColor: COLOR.primary._03,
           alignItems: 'center',
           justifyContent: 'center',
           borderTopLeftRadius: 10,

@@ -2,11 +2,12 @@ import React, { ReactElement, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 
+import { COLOR } from 'consts'
+
 import Icon from 'components/Icon'
 import Body from 'components/layout/Body'
 import { Text } from 'components'
 import Button from 'components/Button'
-import color from 'styles/color'
 import { RecoverWalletStackParams } from 'types'
 import { useAuth } from 'lib'
 import { getIsUseBioAuth, settings } from 'utils/storage'
@@ -48,12 +49,14 @@ const WalletRecovered = ({ route }: Props): ReactElement => {
         <Icon
           name={'account-balance-wallet'}
           size={60}
-          color={color.sapphire}
+          color={COLOR.primary._02}
         />
         <Text style={styles.infoTitle} fontType={'bold'}>
           Wallet recovered!
         </Text>
-        <Text style={{ color: color.sapphire, textAlign: 'center' }}>
+        <Text
+          style={{ color: COLOR.primary._02, textAlign: 'center' }}
+        >
           Welcome back to Terra Station
         </Text>
       </View>
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
     lineHeight: 36,
     letterSpacing: 0,
     textAlign: 'center',
-    color: color.sapphire,
+    color: COLOR.primary._02,
     marginVertical: 5,
   },
 })

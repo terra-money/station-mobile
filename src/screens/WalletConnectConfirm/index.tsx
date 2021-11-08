@@ -38,7 +38,7 @@ import useWalletConnectConfirm, {
   UseWalletConnectConfirmReturn,
 } from 'hooks/useWalletConnectConfirm'
 
-import color from 'styles/color'
+import { COLOR } from 'consts'
 
 import MessageBox from './MessageBox'
 import { useAlert } from 'hooks/useAlert'
@@ -437,7 +437,7 @@ const HeaderLeft = (): ReactElement => {
       onPress={onPressGoBack}
       style={{ paddingLeft: 20 }}
     >
-      <Icon name={'close'} color={color.white} size={28} />
+      <Icon name={'close'} color={COLOR.white} size={28} />
     </TouchableOpacity>
   )
 }

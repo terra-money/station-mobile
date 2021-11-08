@@ -6,24 +6,23 @@ import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native'
-import { fcd, format, useBank } from 'lib'
 import { MnemonicKey } from '@terra-money/terra.js'
 import _ from 'lodash'
 
+import { COLOR } from 'consts'
+
+import { fcd, format, useBank } from 'lib'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import Button from 'components/Button'
-import NumberStep from 'components/NumberStep'
 import Badge from 'components/Badge'
-import { Text } from 'components'
+import { Text, Button, NumberStep } from 'components'
 
 import RecoverWalletStore from 'stores/RecoverWalletStore'
 import {
   recoverWalletWithMnemonicKey,
   generateAddresses,
 } from 'utils/wallet'
-import color from 'styles/color'
 import { RecoverWalletStackParams } from 'types'
 
 const AddressBox = ({
@@ -47,7 +46,7 @@ const AddressBox = ({
   const selectedStyle =
     selectedMk &&
     (selectedMk === mk
-      ? { borderColor: color.sapphire, opacity: 0.9 }
+      ? { borderColor: COLOR.primary._02, opacity: 0.9 }
       : { opacity: 0.5 })
 
   useEffect(() => {

@@ -4,12 +4,13 @@ import _ from 'lodash'
 import WalletConnect from '@walletconnect/client'
 import { useRecoilValue } from 'recoil'
 
+import { COLOR } from 'consts'
+
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import { Button, Icon, Text } from 'components'
 import SubHeader from 'components/layout/SubHeader'
 
-import color from 'styles/color'
 import WalletConnectStore from 'stores/WalletConnectStore'
 import useWalletConnect from 'hooks/useWalletConnect'
 import { useAlert } from 'hooks/useAlert'
@@ -78,7 +79,7 @@ const Render = (): ReactElement => {
                 <Icon
                   name="chevron-right"
                   size={20}
-                  color={color.sapphire}
+                  color={COLOR.primary._02}
                   style={{ paddingLeft: 20 }}
                 />
               </View>
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     lineHeight: 18,
     letterSpacing: 0,
-    color: color.sapphire,
+    color: COLOR.primary._02,
     marginBottom: 8,
   },
   itemSubtitle: {

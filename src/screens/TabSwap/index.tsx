@@ -19,6 +19,8 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 
+import { COLOR } from 'consts'
+
 import { RootStackParams } from 'types'
 import { navigationHeaderOptions } from 'components/layout/TabScreenHeader'
 import Body from 'components/layout/Body'
@@ -45,7 +47,6 @@ import {
   Select,
 } from 'components'
 
-import color from 'styles/color'
 import { useConfirm } from 'hooks/useConfirm'
 import font from 'styles/font'
 
@@ -116,7 +117,7 @@ const SwapTypeSelect = ({
                         <Icon
                           name={'arrow-drop-down'}
                           size={14}
-                          color={color.sapphire}
+                          color={COLOR.primary._02}
                         />
                       </View>
                     )
@@ -193,7 +194,7 @@ const Render = ({
             >
               <Icon
                 name={'info-outline'}
-                color={color.sapphire}
+                color={COLOR.primary._02}
                 size={18}
               />
               <Text
@@ -226,7 +227,7 @@ const Render = ({
                 <Number
                   numberFontStyle={{
                     fontSize: 12,
-                    color: color.dodgerBlue,
+                    color: COLOR.primary._03,
                     textDecorationLine: 'underline',
                   }}
                   fontType="medium"
@@ -240,14 +241,14 @@ const Render = ({
               selectField={fields[0]}
               inputField={fields[1]}
               containerStyle={{
-                borderColor: color.sapphire,
+                borderColor: COLOR.primary._02,
               }}
               selectPlaceHolder={'Select a coin to swap'}
             />
             <View style={{ alignItems: 'center', marginBottom: 10 }}>
               <Icon
                 size={24}
-                color={color.sapphire}
+                color={COLOR.primary._02}
                 name={'swap-vert'}
               />
             </View>
@@ -330,7 +331,7 @@ const Render = ({
                   {!!spread.tooltip && (
                     <Icon
                       name={'info'}
-                      color={color.sapphire}
+                      color={COLOR.primary._02}
                       size={14}
                       style={{ marginLeft: 5 }}
                     />
@@ -378,7 +379,11 @@ const Render = ({
             theme={'white'}
             title={
               <View style={{ flexDirection: 'row' }}>
-                <Icon name="bolt" color={color.sapphire} size={18} />
+                <Icon
+                  name="bolt"
+                  color={COLOR.primary._02}
+                  size={18}
+                />
                 <Text fontType="medium">{label.multipleSwap}</Text>
               </View>
             }

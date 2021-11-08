@@ -9,7 +9,7 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 import { RootStackParams } from 'types'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import { DelegateType } from 'lib/post/useDelegate'
 
 const Actions = ({
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomColor: '#edf1f7',
     borderBottomWidth: 1,
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
   },
   title: {
     fontSize: 14,

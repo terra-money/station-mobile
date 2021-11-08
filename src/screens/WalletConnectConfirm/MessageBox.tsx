@@ -1,11 +1,11 @@
 import React, { ReactElement, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import _ from 'lodash'
+import { Msg } from '@terra-money/terra.js'
+
+import { COLOR } from 'consts'
 
 import { Icon, Text } from 'components'
-
-import { Msg } from '@terra-money/terra.js'
-import color from 'styles/color'
 
 const getDl = (
   object: Record<string, any>
@@ -36,7 +36,7 @@ const MessageContents = ({ msg }: { msg: Msg }): ReactElement => {
         <View
           style={{
             borderRadius: 5,
-            backgroundColor: color.sapphire,
+            backgroundColor: COLOR.primary._02,
             paddingHorizontal: 5,
           }}
         >
@@ -51,7 +51,7 @@ const MessageContents = ({ msg }: { msg: Msg }): ReactElement => {
           }}
         >
           <Text
-            style={{ color: color.dodgerBlue, fontSize: 10 }}
+            style={{ color: COLOR.primary._03, fontSize: 10 }}
             fontType="bold"
           >
             {isOpen ? 'Collapse' : 'Expand'}
@@ -59,7 +59,7 @@ const MessageContents = ({ msg }: { msg: Msg }): ReactElement => {
           <Icon
             name={isOpen ? 'expand-less' : 'expand-more'}
             size={14}
-            color={color.dodgerBlue}
+            color={COLOR.primary._03}
           />
         </TouchableOpacity>
       </View>
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   openBtn: {
     borderRadius: 3,
     borderWidth: 1,
-    borderColor: color.dodgerBlue,
+    borderColor: COLOR.primary._03,
     paddingHorizontal: 10,
     paddingVertical: 3,
     marginRight: 5,

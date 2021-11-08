@@ -8,9 +8,10 @@ import {
 import { MessageComponentProps } from 'react-native-flash-message'
 import _ from 'lodash'
 
+import { COLOR } from 'consts'
+
 import Icon from './Icon'
 import Text from './Text'
-import color from 'styles/color'
 
 const TopNotification = ({
   message,
@@ -25,14 +26,14 @@ const TopNotification = ({
           styles.container,
           type === 'danger' && {
             backgroundColor: '#ffeff0',
-            borderColor: color.red,
+            borderColor: COLOR.red,
           },
         ]}
       >
         <View
           style={[
             styles.titleBox,
-            type === 'danger' && { backgroundColor: color.red },
+            type === 'danger' && { backgroundColor: COLOR.red },
             _.some(description) && {
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
@@ -46,12 +47,12 @@ const TopNotification = ({
                   ? 'error-outline'
                   : 'check-circle-outline'
               }
-              color={color.white}
+              color={COLOR.white}
               size={24}
             />
             <Text
               style={{
-                color: color.white,
+                color: COLOR.white,
                 paddingHorizontal: 5,
                 flex: 1,
               }}
@@ -62,7 +63,7 @@ const TopNotification = ({
           <TouchableOpacity onPress={hideMessage}>
             <Icon
               name="close"
-              color={color.white}
+              color={COLOR.white}
               size={24}
               style={{ opacity: 0.5 }}
             />
@@ -74,7 +75,7 @@ const TopNotification = ({
               style={[
                 styles.descText,
                 type === 'danger' && {
-                  color: color.red,
+                  color: COLOR.red,
                 },
               ]}
               fontType="bold"

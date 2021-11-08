@@ -3,10 +3,11 @@ import { View } from 'react-native'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 
+import { COLOR } from 'consts'
+
 import Body from 'components/layout/Body'
 import { Text, Icon, Button } from 'components'
 import { RootStackParams } from 'types'
-import color from 'styles/color'
 
 type Props = StackScreenProps<RootStackParams, 'Complete'>
 
@@ -32,7 +33,7 @@ const Complete = ({ route }: Props): ReactElement => {
       >
         <Icon
           size={60}
-          color={color.sapphire}
+          color={COLOR.primary._02}
           name={'check-circle-outline'}
         />
         <Text

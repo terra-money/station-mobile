@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
 import _ from 'lodash'
 
+import { COLOR } from 'consts'
+
 import { RootStackParams } from 'types/navigation'
 import { User } from 'lib'
 
@@ -15,7 +17,6 @@ import { Text, CopyButton } from 'components'
 import { createRecoverWalletPayload } from 'utils/qrCode'
 import { getEncryptedKey } from 'utils/wallet'
 import { useAlert } from 'hooks/useAlert'
-import color from 'styles/color'
 
 type Props = StackScreenProps<RootStackParams, 'ExportPrivateKey'>
 
@@ -99,6 +100,6 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     letterSpacing: 0,
     textAlign: 'center',
-    color: color.sapphire,
+    color: COLOR.primary._02,
   },
 })

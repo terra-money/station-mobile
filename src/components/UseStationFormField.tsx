@@ -9,13 +9,12 @@ import {
 import BigNumber from 'bignumber.js'
 import { AccAddress } from '@terra-money/terra.js'
 
-import { UTIL } from 'consts'
+import { UTIL, COLOR } from 'consts'
 
 import { Field, DisplayCoin } from 'lib'
 
 import { RootStackParams } from 'types/navigation'
 
-import color from 'styles/color'
 import { schemeUrl } from 'utils/qrCode'
 import { parseDynamicLinkURL } from 'utils/scheme'
 import usePayload from 'hooks/usePayload'
@@ -49,7 +48,7 @@ const FormButton = ({
       <Number
         numberFontStyle={{
           fontSize: 12,
-          color: color.dodgerBlue,
+          color: COLOR.primary._03,
           textDecorationLine: 'underline',
         }}
         fontType="medium"

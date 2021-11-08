@@ -11,7 +11,7 @@ import { UTIL } from 'consts'
 
 import { format, Option, Options } from 'lib'
 
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import { Input, Icon, Number } from 'components'
 import Text from 'components/Text'
 
@@ -85,7 +85,7 @@ const CoinSelector = ({
         <View style={styles.header}>
           <Text fontType="bold">Select a coin</Text>
           <TouchableOpacity onPress={closeModal}>
-            <Icon name="close" color={color.sapphire} size={24} />
+            <Icon name="close" color={COLOR.primary._02} size={24} />
           </TouchableOpacity>
         </View>
         <View style={styles.searchBox}>
@@ -133,7 +133,7 @@ const CoinSelector = ({
             <Icon
               name="inbox"
               size={56}
-              color={color.primary._02}
+              color={COLOR.primary._02}
               style={{ marginBottom: 8 }}
             />
             <Text fontType="medium">No results found.</Text>
@@ -149,7 +149,7 @@ export default CoinSelector
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,
     paddingTop: 25,

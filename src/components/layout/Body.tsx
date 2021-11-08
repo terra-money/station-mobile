@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback, // It's for keyboard.dismiss. not works with getgure-handler's
   Keyboard,
 } from 'react-native'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 
 export type BodyProps = {
   theme?: 'white' | 'sky' | 'sapphire'
@@ -36,14 +36,14 @@ const Body = (props: BodyProps): ReactElement => {
 
   switch (theme) {
     case 'sapphire':
-      containerStyle.backgroundColor = color.sapphire
+      containerStyle.backgroundColor = COLOR.primary._02
       break
     case 'sky':
-      containerStyle.backgroundColor = color.sky
+      containerStyle.backgroundColor = COLOR.sky
       break
     case 'white':
     default:
-      containerStyle.backgroundColor = color.white
+      containerStyle.backgroundColor = COLOR.white
       break
   }
 

@@ -9,7 +9,7 @@ import {
 import { StakingPersonal, User } from 'lib'
 
 import { Button, Icon, Number, Text } from 'components'
-import color from 'styles/color'
+import { COLOR } from 'consts'
 import {
   NavigationProp,
   useNavigation,
@@ -40,7 +40,7 @@ const NotStaked = (): ReactElement => {
             Staking rewards
           </Text>
           <Icon
-            color={color.sapphire}
+            color={COLOR.primary._02}
             name={'info'}
             size={16}
             style={{ marginLeft: 6 }}
@@ -96,7 +96,7 @@ const PersonalSummary = ({
             </View>
             <Icon
               name={'arrow-forward'}
-              color={color.sapphire}
+              color={COLOR.primary._02}
               size={24}
             />
           </TouchableOpacity>
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     marginBottom: 20,
-    backgroundColor: color.white,
+    backgroundColor: COLOR.white,
     borderRadius: 20,
     shadowColor: 'rgba(0, 0, 0, 0.05)',
     shadowOffset: {

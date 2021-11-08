@@ -2,7 +2,8 @@ import React, { Fragment, ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 
-import color from 'styles/color'
+import { COLOR } from 'consts'
+
 import Text from './Text'
 
 const NumberStep = ({
@@ -25,7 +26,7 @@ const NumberStep = ({
             >
               <Text
                 style={{
-                  color: color.sapphire,
+                  color: COLOR.primary._02,
                   fontVariant: ['tabular-nums'],
                   fontSize: 10,
                   fontWeight: 'bold',
