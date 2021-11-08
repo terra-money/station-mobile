@@ -76,4 +76,5 @@ export type Option = {
   disabled?: boolean
   icon?: string
   balance?: string
+  decimals?: number
 }

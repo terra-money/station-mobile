@@ -96,7 +96,7 @@ export const toInput = (amount: string, decimals = 6): string => {
     new BigNumber(10).pow(decimals)
   )
   return amount
-    ? number.decimalPlaces(6, BigNumber.ROUND_DOWN).toString()
+    ? number.decimalPlaces(decimals, BigNumber.ROUND_DOWN).toString()
     : '0'
 }
 

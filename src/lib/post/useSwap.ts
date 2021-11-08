@@ -112,14 +112,17 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   }))
 
   const cw20TokensList = whitelist
-    ? Object.values(whitelist).map(({ token, symbol, icon }) => ({
-        value: token,
-        children: symbol,
-        balance:
-          cw20TokenBalance.list?.find((x) => x.token === token)
-            ?.balance ?? '0',
-        icon,
-      }))
+    ? Object.values(whitelist).map(
+        ({ token, symbol, icon, decimals }) => ({
+          value: token,
+          children: symbol,
+          balance:
+            cw20TokenBalance.list?.find((x) => x.token === token)
+              ?.balance ?? '0',
+          icon,
+          decimals,
+        })
+      )
     : []
 
   const tokens = [...nativeTokensOptions, ...cw20TokensList]
@@ -549,7 +552,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
           title: t('Post:Swap:Available balance'),
           display: format.display(
             { amount: maxAmount, denom: from },
-            whitelist?.[to]?.decimals,
+            whitelist?.[from]?.decimals,
             undefined,
             whitelist
           ),

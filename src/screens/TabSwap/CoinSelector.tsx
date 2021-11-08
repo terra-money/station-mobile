@@ -64,7 +64,7 @@ const CoinSelector = ({
         <Number
           numberFontStyle={{ fontSize: 14, textAlign: 'left' }}
           decimalFontStyle={{ fontSize: 10.5 }}
-          value={format.amount(item.balance || '0')}
+          value={format.amount(item.balance || '0', item.decimals)}
         />
       </TouchableOpacity>
     )

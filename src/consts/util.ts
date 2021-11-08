@@ -63,11 +63,15 @@ const isEven = (value: number): boolean => value % 2 === 0
 
 const isOdd = (value: number): boolean => !isEven(value)
 
-const microfy = (value: Token): uToken =>
-  toBn(value).multipliedBy(TERRA_DECIMAL).toString(10) as uToken
+const microfy = (
+  value: Token,
+  decimal: number = TERRA_DECIMAL
+): uToken => toBn(value).multipliedBy(decimal).toString(10) as uToken
 
-const demicrofy = (value: uToken): Token =>
-  toBn(value).div(TERRA_DECIMAL).toString(10) as Token
+const demicrofy = (
+  value: uToken,
+  decimal: number = TERRA_DECIMAL
+): Token => toBn(value).div(decimal).toString(10) as Token
 
 const formatAmount = (
   value: uToken,
