@@ -55,10 +55,9 @@ const useParseTxText = (): ((text?: string) => Promise<string>) => {
 
   const replaceCoin = (coin: string): string => {
     const { amount, token } = splitTokenText(coin)
-
     return format.coin(
       { amount, denom: token },
-      whitelist[token]?.decimals,
+      whitelist?.[token]?.decimals,
       undefined,
       whitelist
     )
