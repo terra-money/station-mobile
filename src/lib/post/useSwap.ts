@@ -49,6 +49,7 @@ import useCalcTax from './useCalcTax'
 import { useCalcFee } from './txHelpers'
 import useWhitelist from 'lib/cw20/useWhitelist'
 import { UTIL } from 'consts'
+import BigNumber from 'bignumber.js'
 
 const { findPair, getRouteMessage } = routeswap
 const {
@@ -112,14 +113,17 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   }))
 
   const cw20TokensList = whitelist
-    ? Object.values(whitelist).map(({ token, symbol, icon }) => ({
-        value: token,
-        children: symbol,
-        balance:
-          cw20TokenBalance.list?.find((x) => x.token === token)
-            ?.balance ?? '0',
-        icon,
-      }))
+    ? Object.values(whitelist).map(
+        ({ token, symbol, icon, decimals }) => ({
+          value: token,
+          children: symbol,
+          balance:
+            cw20TokenBalance.list?.find((x) => x.token === token)
+              ?.balance ?? '0',
+          icon,
+          decimals,
+        })
+      )
     : []
 
   const tokens = [...nativeTokensOptions, ...cw20TokensList]
@@ -287,6 +291,8 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   const [tradingFeeTerraswap, setTradingFeeTerraswap] = useState('0')
 
   // simulate: Expected price
+  const fromDecimal = whitelist?.[from]?.decimals ?? 6
+  const toDecimal = whitelist?.[to]?.decimals ?? 6
   const [price, setPrice] = useState('0')
   const expectedPrice = div(amount, simulated)
 
@@ -549,7 +555,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
           title: t('Post:Swap:Available balance'),
           display: format.display(
             { amount: maxAmount, denom: from },
-            whitelist?.[to]?.decimals,
+            whitelist?.[from]?.decimals,
             undefined,
             whitelist
           ),
@@ -557,7 +563,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
             onClick: (): void =>
               setValue(
                 'input',
-                toInput(maxAmount, whitelist?.[to]?.decimals)
+                toInput(maxAmount, whitelist?.[from]?.decimals)
               ),
           },
         },
@@ -569,10 +575,23 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
             ? 'Simulating...'
             : gt(expectedPrice, 1)
             ? `1 ${format.denom(to, whitelist)} = ${format.decimal(
-                expectedPrice
+                new BigNumber(expectedPrice)
+                  .multipliedBy(
+                    fromDecimal === toDecimal
+                      ? 1
+                      : new BigNumber(10).pow(toDecimal - fromDecimal)
+                  )
+                  .toString()
               )} ${format.denom(from, whitelist)}`
             : `1 ${format.denom(from, whitelist)} = ${format.decimal(
-                div(1, expectedPrice)
+                new BigNumber(1)
+                  .dividedBy(expectedPrice)
+                  .multipliedBy(
+                    fromDecimal === toDecimal
+                      ? 1
+                      : new BigNumber(10).pow(fromDecimal - toDecimal)
+                  )
+                  .toString()
               )} ${format.denom(to, whitelist)}`,
         },
     spread:
@@ -676,7 +695,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
         displays: [
           format.display(
             { amount, denom: from },
-            whitelist?.[to]?.decimals,
+            whitelist?.[from]?.decimals,
             undefined,
             whitelist
           ),
