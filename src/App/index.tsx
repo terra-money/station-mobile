@@ -14,7 +14,7 @@ import {
   User,
 } from 'lib'
 
-import { COLOR, COMMON, UTIL } from 'consts'
+import { COLOR, UTIL } from 'consts'
 
 import { Settings } from 'types'
 import { AppProvider } from './useApp'

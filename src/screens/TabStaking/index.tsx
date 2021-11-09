@@ -1,8 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { StackScreenProps } from '@react-navigation/stack'
 
-import { RootStackParams } from 'types'
 import {
   useStaking,
   useAuth,
