@@ -16,11 +16,13 @@ import {
   Action,
 } from '@terra-money/log-finder-ruleset'
 
-interface Response {
+type Response = {
   txs: Tx[]
   limit: number
   next: number
 }
+
+const TXS_MAX_ALLOWED_SIZE = 300 * 1024
 
 export default ({ address }: User): TxsPage => {
   const { t } = useTranslation()
@@ -89,6 +91,46 @@ export default ({ address }: User): TxsPage => {
       const { txhash, chainId, timestamp, raw_log, tx } = txItem
       const { fee, memo } = tx.value
 
+      const makeTxUi = (
+        messages: {
+          tag: string
+          summary: string[]
+          success: boolean
+        }[]
+      ): TxUI => {
+        return {
+          link: getLink({
+            network: chainId,
+            q: 'tx',
+            v: txhash,
+          }),
+          hash: txhash,
+          date: format.date(timestamp, { toLocale: true }),
+          messages,
+          details: [
+            {
+              title: t('Common:Tx:Tx fee'),
+              content: fee.amount
+                ?.map((coin) => format.coin(coin))
+                .join(', '),
+            },
+            { title: t('Common:Tx:Memo'), content: memo },
+          ].filter(({ content }) => !!content),
+        }
+      }
+
+      if (JSON.stringify(txItem)?.length > TXS_MAX_ALLOWED_SIZE) {
+        return makeTxUi([
+          {
+            tag: 'Unknown',
+            summary: [
+              'Message too long, refer to finder for details',
+            ],
+            success: !isTxError(txItem),
+          },
+        ])
+      }
+
       const success = !isTxError(txItem)
       const msgs = getCanonicalMsgs(txItem)
       const successMessage =
@@ -118,39 +160,26 @@ export default ({ address }: User): TxsPage => {
         ? successMessage
         : [{ tag: 'Failed', summary: [raw_log], success }]
 
-      return {
-        link: getLink({
-          network: chainId,
-          q: 'tx',
-          v: txhash,
-        }),
-        hash: txhash,
-        date: format.date(timestamp, { toLocale: true }),
-        messages,
-        details: [
-          {
-            title: t('Common:Tx:Tx fee'),
-            content: fee.amount
-              ?.map((coin) => format.coin(coin))
-              .join(', '),
-          },
-          { title: t('Common:Tx:Memo'), content: memo },
-        ].filter(({ content }) => !!content),
-      }
+      return makeTxUi(messages)
     })
 
+    let subscribe = true
     const ret: TxUI[] = []
     promises
       .reduce(async (prev, next) => {
-        await prev
-        ret.push(await next)
+        subscribe && (await prev)
+        subscribe && ret.push(await next)
       }, Promise.resolve())
       .then(() => {
-        setList((list) => [...list, ...ret])
+        subscribe && setList((list) => [...list, ...ret])
       })
       .finally(() => {
         setParse(false)
       })
+
+    return (): void => {
+      subscribe = false
+    }
   }, [txs])
 
   /* render */
