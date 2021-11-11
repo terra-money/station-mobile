@@ -19,7 +19,6 @@ import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 import useTerraAssets from 'lib/hooks/useTerraAssets'
-import { LAYOUT } from 'consts'
 import { Loading } from 'components'
 
 export enum StakingFilterEnum {
@@ -60,7 +59,7 @@ const Render = ({
       ) : (
         <View
           style={{
-            height: LAYOUT.getWindowHeight() - 100,
+            height: '100%',
             justifyContent: 'center',
           }}
         >
@@ -71,7 +70,7 @@ const Render = ({
   )
 }
 
-const Staking = ({}: Props): ReactElement => {
+const Staking = (): ReactElement => {
   const { user } = useAuth()
   const stakingProps = useStaking(user)
   const { chain } = useConfig()
