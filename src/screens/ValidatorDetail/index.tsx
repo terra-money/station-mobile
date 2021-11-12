@@ -1,12 +1,9 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { View } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
-
-import { LAYOUT } from 'consts'
 
 import { navigationHeaderOptions } from 'components/layout/Header'
 import Body from 'components/layout/Body'
-import { useAuth, User, useValidator } from 'lib'
+import { useAuth, User, useValidator, ValidatorUI } from 'lib'
 
 import { RootStackParams } from '../../types/navigation'
 
@@ -20,41 +17,19 @@ type Props = StackScreenProps<RootStackParams, 'ValidatorDetail'>
 
 const Render = ({
   user,
-  address,
-  setLoadingComplete,
+  ui,
 }: {
   user?: User
-  address: string
-  setLoadingComplete: React.Dispatch<React.SetStateAction<boolean>>
+  ui?: ValidatorUI
 }): ReactElement => {
-  const { ui, loading } = useValidator(address, user)
-  useEffect(() => {
-    if (loading === false) {
-      setLoadingComplete(true)
-    }
-  }, [loading])
-
   return (
     <>
-      {loading ? (
-        <View
-          style={{
-            height: LAYOUT.getWindowHeight(),
-            justifyContent: 'center',
-          }}
-        >
-          <Loading />
-        </View>
-      ) : (
+      {ui && (
         <>
-          {ui && (
-            <>
-              <Top ui={ui} />
-              {user && <Actions ui={ui} user={user} />}
-              <MonikerInfo ui={ui} user={user} />
-              <Informations {...ui} />
-            </>
-          )}
+          <Top ui={ui} />
+          {user && <Actions ui={ui} user={user} />}
+          <MonikerInfo ui={ui} user={user} />
+          <Informations {...ui} />
         </>
       )}
     </>
@@ -68,11 +43,18 @@ const ValidatorDetail = ({
   const { user } = useAuth()
 
   const { address } = route.params
+  const { ui, loading } = useValidator(address, user)
   const [loadingComplete, setLoadingComplete] = useState(false)
   const [refreshingKey, setRefreshingKey] = useState(0)
   const refreshPage = async (): Promise<void> => {
     setRefreshingKey((ori) => ori + 1)
   }
+
+  useEffect(() => {
+    if (loading === false) {
+      setLoadingComplete(true)
+    }
+  }, [loading])
 
   useEffect(() => {
     let unsubscribe
@@ -85,19 +67,25 @@ const ValidatorDetail = ({
   }, [loadingComplete])
 
   return (
-    <Body
-      theme={'sky'}
-      containerStyle={{ paddingHorizontal: 0 }}
-      scrollable
-      onRefresh={refreshPage}
-    >
-      <Render
-        user={user}
-        address={address}
-        key={refreshingKey}
-        setLoadingComplete={setLoadingComplete}
-      />
-    </Body>
+    <>
+      <Body
+        theme={'sky'}
+        containerStyle={{ paddingHorizontal: 0 }}
+        scrollable={loadingComplete}
+        onRefresh={refreshPage}
+      >
+        {loadingComplete ? (
+          <Render user={user} ui={ui} key={refreshingKey} />
+        ) : (
+          <Loading
+            style={{
+              height: '100%',
+              justifyContent: 'center',
+            }}
+          />
+        )}
+      </Body>
+    </>
   )
 }
 

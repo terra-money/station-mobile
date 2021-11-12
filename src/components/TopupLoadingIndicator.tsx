@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react'
-import { View } from 'react-native'
 import { Loading } from 'components'
 
 const TopupLoadingIndicator = (): ReactElement => (
-  <View
+  <Loading
     style={{
       position: 'absolute',
       flex: 1,
@@ -12,9 +11,7 @@ const TopupLoadingIndicator = (): ReactElement => (
       alignContent: 'center',
       justifyContent: 'center',
     }}
-  >
-    <Loading />
-  </View>
+  />
 )
 
 export default TopupLoadingIndicator

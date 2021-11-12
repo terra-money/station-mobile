@@ -57,14 +57,12 @@ const Render = ({
           />
         </View>
       ) : (
-        <View
+        <Loading
           style={{
             height: '100%',
             justifyContent: 'center',
           }}
-        >
-          <Loading />
-        </View>
+        />
       )}
     </>
   )

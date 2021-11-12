@@ -218,9 +218,7 @@ const Render = ({
           </View>
         ) : (
           <View>
-            <View style={{ marginBottom: 30 }}>
-              <Loading />
-            </View>
+            <Loading style={{ marginBottom: 30 }} />
             <Text style={styles.title} fontType="medium">
               Ready to Connect
             </Text>

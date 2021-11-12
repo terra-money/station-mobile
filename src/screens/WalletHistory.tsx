@@ -83,13 +83,7 @@ const RenderList = ({
           </View>
         )}
         ListFooterComponent={
-          <>
-            {ui.more && (
-              <View style={{ height: 40 }}>
-                <Loading />
-              </View>
-            )}
-          </>
+          <>{ui.more && <Loading style={{ height: 40 }} />}</>
         }
         ListEmptyComponent={
           loading ? (

@@ -497,15 +497,13 @@ const Swap = (props: Props): ReactElement => {
                 {...props}
               />
             ) : (
-              <View
+              <Loading
                 style={{
                   height: '100%',
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
-              >
-                <Loading />
-              </View>
+              />
             )}
           </Fragment>
         </Body>

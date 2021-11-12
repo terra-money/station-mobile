@@ -20,6 +20,7 @@ import Preferences, {
 } from 'nativeModules/preferences'
 import { StakingFilterEnum } from './index'
 import { RootStackParams } from 'types'
+import FastImagePlaceholder from 'components/FastImagePlaceholder'
 
 const ValidatorList = ({
   contents,
@@ -103,7 +104,7 @@ const ValidatorList = ({
                 address: item.operatorAddress.address,
               })
             }
-            key={`contents${index}`}
+            key={`validator${index}`}
           >
             <View
               style={{
@@ -153,16 +154,17 @@ const ValidatorList = ({
                     </Text>
                   }
                 </View>
-                <FastImage
+                <FastImagePlaceholder
                   source={
                     item.profile
                       ? {
                           uri: item.profile,
-                          cache: FastImage.cacheControl.immutable,
+                          cache: FastImage.cacheControl.web,
                         }
                       : images.terra
                   }
                   style={styles.profileImage}
+                  placeholder={images.loading_circle}
                 />
                 {validatorList &&
                 _.some(

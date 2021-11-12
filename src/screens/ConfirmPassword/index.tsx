@@ -79,9 +79,7 @@ const Render = ({
         }}
       >
         {_.some(fee.status) ? (
-          <View style={{ marginTop: 20 }}>
-            <Loading size={24} />
-          </View>
+          <Loading style={{ marginTop: 20 }} size={24} />
         ) : (
           <UseStationForm form={form} />
         )}

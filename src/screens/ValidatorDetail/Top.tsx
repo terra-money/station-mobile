@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import { Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 
 import { Text, Icon } from 'components'
@@ -8,6 +8,7 @@ import { ValidatorUI } from 'lib'
 import images from 'assets/images'
 import { COLOR } from 'consts'
 import useTerraAssets from 'lib/hooks/useTerraAssets'
+import FastImagePlaceholder from 'components/FastImagePlaceholder'
 
 const Top = ({ ui }: { ui: ValidatorUI }): ReactElement => {
   const { profile, moniker, status, operatorAddress } = ui
@@ -27,9 +28,10 @@ const Top = ({ ui }: { ui: ValidatorUI }): ReactElement => {
   return (
     <View style={styles.container}>
       <View>
-        <Image
+        <FastImagePlaceholder
           source={profile ? { uri: profile } : images.terra}
           style={styles.profileImage}
+          placeholder={images.loading_circle}
         />
       </View>
       <Text style={styles.moniker} fontType={'bold'}>
