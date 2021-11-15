@@ -125,14 +125,12 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false)
 
-static def renameArtifact()
+static def renameArtifact(project, versionCode)
 {
-    def project = 'station'
-    //def version = defaultConfig.versionName
-    def date = new Date().format("yyyyMMdd")
+    //def date = new Date().format("yyyyMMdd")
     def hash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
 
-    return project + '-' + date + '-' + hash
+    return project + '-' + versionCode + '-' + hash
 }
 
 android {
@@ -150,7 +148,7 @@ android {
         versionCode 10503003
         versionName "1.5.3"
         multiDexEnabled true
-        setProperty('archivesBaseName', renameArtifact())
+        setProperty('archivesBaseName', renameArtifact('station-mobile', versionCode))
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {
