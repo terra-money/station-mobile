@@ -16,11 +16,7 @@ export const useDenomTrace = (
   return useQuery(
     [QueryKeyEnum.denomTrace, hash],
     async () => {
-      const { denom_trace } = ((await lcd.ibcTransfer.denomTrace(
-        hash
-      )) /* TODO: Remove force typing on terra.js fixed */ as unknown) as {
-        denom_trace: DenomTrace
-      }
+      const denom_trace = await lcd.ibcTransfer.denomTrace(hash)
       return denom_trace
     },
     { enabled: UTIL.isIbcDenom(denom) }
@@ -33,9 +29,7 @@ export const getTraceDenom = async (
 ): Promise<string> => {
   try {
     const hash = denom.replace('ibc/', '')
-    const { denom_trace } = ((await lcd.ibcTransfer.denomTrace(
-      hash
-    )) as unknown) as { denom_trace: DenomTrace }
+    const denom_trace = await lcd.ibcTransfer.denomTrace(hash)
 
     return denom_trace.base_denom ?? denom
   } catch (e) {
