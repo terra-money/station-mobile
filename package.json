@@ -35,7 +35,7 @@
     "@sentry/react-native": "^2.2.0",
     "@terra-money/log-finder": "^1.1.6",
     "@terra-money/log-finder-ruleset": "^1.0.1",
-    "@terra-money/terra.js": "^2.1.17",
+    "@terra-money/terra.js": "^2.1.23",
     "@tradle/react-native-http": "^2.0.0",
     "@ungap/global-this": "^0.4.4",
     "@walletconnect/client": "^1.6.5",
