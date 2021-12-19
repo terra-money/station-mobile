@@ -23,7 +23,7 @@ import useInfo from '../lang/useInfo'
 import fcd from '../api/fcd'
 import { format } from '../utils'
 import { toInput, toAmount } from '../utils/format'
-import { lt, gt } from '../utils/math'
+import { lt, gt, times, toNumber } from '../utils/math'
 import { useCalcFee } from './txHelpers'
 import { checkError, parseError } from './txHelpers'
 import { useConfig } from 'lib/contexts/ConfigContext'
@@ -34,6 +34,8 @@ interface SignParams {
   getKey: GetKey
   sign: Sign
 }
+
+const gasAdjustment = 1.75
 
 export default (
   { memo, submitLabels, message, ...rest }: ConfirmProps,
@@ -62,10 +64,8 @@ export default (
   const defaultErrorMessage = t(
     'Common:Error:Oops! Something went wrong'
   )
-  const [
-    simulatedErrorMessage,
-    setSimulatedErrorMessage,
-  ] = useState<string>()
+  const [simulatedErrorMessage, setSimulatedErrorMessage] =
+    useState<string>()
   const [errorMessage, setErrorMessage] = useState<string>()
   const {
     chain: {
@@ -111,20 +111,16 @@ export default (
         setEstimated(undefined)
         setErrorMessage(undefined)
 
-        const gasAdjustment = 1.75
-
         const gasPrices = { [denom]: calcFee!.gasPrice(denom) }
         const lcd = new LCDClient({ chainID, URL, gasPrices })
-        const options = {
-          msgs,
-          feeDenoms: [denom],
-          memo,
-          gasAdjustment,
-        }
+        const options = { msgs, feeDenoms: [denom], memo }
         const unsignedTx = await lcd.tx.create([{ address }], options)
         setUnsignedTx(unsignedTx)
 
-        const gas = String(unsignedTx.auth_info.fee.gas_limit)
+        const gas = times(
+          unsignedTx.auth_info.fee.gas_limit,
+          gasAdjustment
+        )
         const estimatedFee = calcFee!.feeFromGas(gas, denom)
         setGas(gas)
         setInput(toInput(estimatedFee ?? '0'))
@@ -181,21 +177,23 @@ export default (
         setTxHash(data.txhash)
       }
 
-      const gasFee = new Coins({ [fee.denom]: fee.amount })
-      const fees = tax ? gasFee.add(tax) : gasFee
-      unsignedTx.auth_info.fee = new Fee(
+      const gasLimit = times(
         unsignedTx.auth_info.fee.gas_limit,
-        fees
+        gasAdjustment
+      )
+      const gasFee = new Coins({ [fee.denom]: fee.amount })
+      const fees = new Fee(
+        toNumber(gasLimit),
+        tax ? gasFee.add(tax) : gasFee
       )
 
       const { gasPrices } = calcFee!
       const lcd = new LCDClient({ chainID, URL, gasPrices })
       const key = await getKey(name ? { name, password } : undefined)
       const wallet = new Wallet(lcd, key)
-      const {
-        account_number,
-        sequence,
-      } = await wallet.accountNumberAndSequence()
+      const { account_number, sequence } =
+        await wallet.accountNumberAndSequence()
+      unsignedTx.auth_info.fee = fees
       const signed = await key.signTx(unsignedTx, {
         accountNumber: account_number,
         sequence,
