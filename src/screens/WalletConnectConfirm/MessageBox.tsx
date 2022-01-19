@@ -44,7 +44,7 @@ const MessageContents = ({ msg }: { msg: Msg }): ReactElement => {
           }}
         >
           <Text style={styles.executeContract} fontType="bold">
-            ExecuteContact
+            ExecuteContract
           </Text>
         </View>
         <TouchableOpacity
