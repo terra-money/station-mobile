@@ -80,7 +80,7 @@ const useTx = ({
 
     const newTxOptions: CreateTxOptions = { ...txOptions, fee }
 
-    // fee + tax
+    // fee
     const unsignedTx = await lcd.tx.create(
       [{ address: user.address }],
       newTxOptions

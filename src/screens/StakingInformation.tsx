@@ -26,17 +26,9 @@ const StakingInformation = (): ReactElement => {
 
 Staking rewards come from three sources:
 1.	Gas (compute fees)
-2.	Network taxes
-3.	Seignorage rewards`}
+2.	Seignorage rewards`}
         </Text>
       </View>
-      <Button
-        title={'Learn more'}
-        theme={'sapphire'}
-        onPress={(): void => {
-          openURL('https://docs.terra.money/luna.html#what-is-luna')
-        }}
-      />
     </Body>
   )
 }

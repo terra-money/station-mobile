@@ -19,7 +19,6 @@ import {
   isFeeAvailable,
 } from './validateConfirm'
 import { useCalcFee } from './txHelpers'
-import useCalcTax from './useCalcTax'
 import { useDenomTrace } from 'hooks/useDenomTrace'
 import { UTIL } from 'consts'
 
@@ -77,14 +76,11 @@ export default (
   const { to, input, memo } = values
   const amount = toAmount(input, tokens?.[denom]?.decimals)
 
-  /* tax */
   const [submitted, setSubmitted] = useState(false)
-  const shouldTax = UTIL.isNativeTerra(denom) || isIbcDenom
-  const calcTax = useCalcTax(denom)
   const calcFee = useCalcFee()
   const balance = getBalance()
 
-  const calculatedMaxAmount = calcTax.getMax(balance)
+  const calculatedMaxAmount = balance
   const maxAmount =
     bank?.balance.length === 1 && calcFee
       ? max([
@@ -95,7 +91,6 @@ export default (
           0,
         ])
       : calculatedMaxAmount
-  const taxAmount = calcTax.getTax(amount)
 
   const unit = format.denom(isIbcDenom ? ibcDenom : denom, tokens)
 
@@ -178,19 +173,6 @@ export default (
         ],
       },
     ])
-    .concat(
-      shouldTax
-        ? {
-            name: calcTax.label,
-            displays: [
-              format.display({
-                amount: taxAmount,
-                denom: unit,
-              }),
-            ],
-          }
-        : []
-    )
     .concat(memo ? { name: t('Common:Tx:Memo'), text: memo } : [])
 
   const getConfirm = (
@@ -205,14 +187,13 @@ export default (
               transfer: { recipient: to, amount },
             }),
           ],
-    tax: shouldTax ? new Coin(denom, taxAmount) : undefined,
     memo,
     contents,
     feeDenom: { list: getFeeDenomList(bank.balance) },
     validate: (fee: CoinItem): boolean =>
       UTIL.isNativeDenom(denom)
         ? isAvailable(
-            { amount, denom, fee, tax: { amount: taxAmount, denom } },
+            { amount, denom, fee },
             bank.balance
           )
         : isFeeAvailable(fee, bank.balance),

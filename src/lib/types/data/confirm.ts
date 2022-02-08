@@ -1,11 +1,10 @@
-import { Coin, Coins, Key, Msg } from '@terra-money/terra.js'
+import { Key, Msg } from '@terra-money/terra.js'
 import { FormUI, FieldAttrs, Options } from '..'
 import { Card, CoinItem, DisplayCoin } from '..'
 import { PostResult } from './post'
 
 export interface ConfirmProps {
   msgs: Msg[]
-  tax?: Coin | Coins
   memo?: string
   contents: ConfirmContent[]
   feeDenom: { defaultValue?: string; list: string[] }

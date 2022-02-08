@@ -18,16 +18,7 @@ import {
   FormUI,
 } from '../types'
 import { find, format } from '../utils'
-import {
-  gt,
-  gte,
-  lte,
-  times,
-  percent,
-  plus,
-  minus,
-  div,
-} from '../utils'
+import { gt, gte, lte, times, percent, minus, div } from '../utils'
 import { max, floor, isFinite, isInteger } from '../utils'
 import { toInput, toAmount, decimalN } from '../utils/format'
 import { useConfig } from '../contexts/ConfigContext'
@@ -45,7 +36,6 @@ import {
 } from './validateConfirm'
 import { getTerraswapURL, simulateTerraswap } from './terraswap'
 import * as routeswap from './routeswap'
-import useCalcTax from './useCalcTax'
 import { useCalcFee } from './txHelpers'
 import useWhitelist from 'lib/cw20/useWhitelist'
 import { UTIL } from 'consts'
@@ -296,19 +286,10 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   const [price, setPrice] = useState('0')
   const expectedPrice = div(amount, simulated)
 
-  // simulate: Max & Tax
-  const shouldTax = UTIL.isNativeTerra(from) && mode !== 'Market'
-  const calcTax = useCalcTax(from)
+  // simulate: Max
   const calcFee = useCalcFee()
-  const {
-    getMax,
-    getTax,
-    label: taxLabel,
-    loading: loadingTax,
-  } = calcTax
-  const tax = shouldTax ? getTax(amount) : '0'
   const balance = getBalance(from)
-  const calculatedMaxAmount = shouldTax ? getMax(balance) : balance
+  const calculatedMaxAmount = balance
   const maxAmount =
     bank.data?.balance.length === 1 && calcFee
       ? max([
@@ -536,7 +517,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
 
   const validInput = !invalid && from && to && lte(amount, maxAmount)
   const validSimulation = gt(simulated, '0')
-  const calculating = loadingTax || simulating
+  const calculating = simulating
   const disabled =
     !validInput || !validSimulation || calculating || !!errorMessage
 
@@ -684,7 +665,6 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
     whitelist: Whitelist
   ): ConfirmProps => ({
     msgs,
-    tax: shouldTax ? new Coin(from, tax) : undefined,
     contents: [
       {
         name: 'Mode',
@@ -706,16 +686,6 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
         text: slippage + '%',
       },
     ]
-      .concat(
-        shouldTax
-          ? {
-              name: taxLabel,
-              displays: [
-                format.display({ amount: tax, denom: from }),
-              ],
-            }
-          : []
-      )
       .concat({
         name: t('Post:Swap:Receive'),
         displays: [
@@ -731,7 +701,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
     validate: (fee: StationCoin): boolean =>
       UTIL.isNativeDenom(from)
         ? isAvailable(
-            { amount: plus(amount, tax), denom: from, fee },
+            { amount, denom: from, fee },
             bank.balance
           )
         : isFeeAvailable(fee, bank.balance),

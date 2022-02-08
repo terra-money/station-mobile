@@ -1,10 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  Coin,
-  Coins,
-  MsgExecuteContract,
-} from '@terra-money/terra.js'
+import { Coins, MsgExecuteContract } from '@terra-money/terra.js'
 import { BankData, CoinFields } from '../types'
 import {
   PostPage,
@@ -18,7 +14,6 @@ import useBank from '../api/useBank'
 import useForm from '../hooks/useForm'
 import { getFeeDenomList, isFeeAvailable } from './validateConfirm'
 import { useCoinsFields } from './txHooks'
-import useCalcTaxes from './useCalcTaxes'
 
 interface Values {
   address: string
@@ -56,7 +51,6 @@ export default (
   const coinsDenoms = coinsFields.coins
     .map(({ denom }) => denom)
     .filter((denom) => denom !== 'uluna')
-  const { getTax } = useCalcTaxes(coinsDenoms)
 
   const fields: Field[] = [
     {
@@ -91,11 +85,6 @@ export default (
         Coins.fromAmino(coinsFields.coins)
       ),
     ],
-    tax: new Coins(
-      coinsFields.coins.map(
-        ({ amount, denom }) => new Coin(denom, getTax(amount, denom))
-      )
-    ),
     contents: [],
     feeDenom: { list: getFeeDenomList(bank.balance) },
     validate: (fee: TerraCoin): boolean =>
