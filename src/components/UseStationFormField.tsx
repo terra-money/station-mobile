@@ -83,7 +83,7 @@ const FormTextarea = ({ field }: { field: Field }): ReactElement => {
 }
 
 const FormInput = ({ field }: { field: Field }): ReactElement => {
-  const { attrs, setValue, error } = field
+  const { attrs, setValue, error, success } = field
   const { showNoti } = useTopNoti()
   const onChangeText = (text: string): void => {
     let value = text
@@ -106,9 +106,8 @@ const FormInput = ({ field }: { field: Field }): ReactElement => {
   }
 
   const { validSendPayload } = usePayload()
-  const { dispatch } = useNavigation<
-    NavigationProp<RootStackParams>
-  >()
+  const { dispatch } =
+    useNavigation<NavigationProp<RootStackParams>>()
 
   const dispatchToSend = async (payload: string): Promise<void> => {
     const valid = await validSendPayload(payload)
@@ -171,6 +170,7 @@ const FormInput = ({ field }: { field: Field }): ReactElement => {
         secureTextEntry={attrs.type === 'password'}
         keyboardType={attrs.type === 'number' ? 'numeric' : 'default'}
         errorMessage={error}
+        successMessage={success}
         value={attrs.value}
         defaultValue={attrs.defaultValue}
         editable={!attrs.readOnly}

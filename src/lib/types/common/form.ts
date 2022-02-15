@@ -19,6 +19,7 @@ export interface Field<U = any> {
   setValue?: (value: string) => void
 
   error?: string
+  success?: string
   copy?: string
   ui?: U
 

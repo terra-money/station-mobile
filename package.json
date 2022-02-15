@@ -44,6 +44,7 @@
     "browserify-zlib": "~0.1.4",
     "buffer": "^4.9.1",
     "crypto-js": "^3.3.0",
+    "keccak256": "^1.0.6",
     "date-fns": "^2.23.0",
     "dns.js": "^1.0.1",
     "events": "^1.0.0",

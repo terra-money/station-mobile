@@ -15,11 +15,13 @@ import { COLOR } from 'consts'
 
 export type FormInputProps = {
   errorMessage?: string
+  successMessage?: string
   containerStyle?: StyleProp<ViewStyle>
 } & TextInputProps
 
 const FormInput = (props: FormInputProps): ReactElement => {
-  const { errorMessage, containerStyle, ...rest } = props
+  const { errorMessage, containerStyle, successMessage, ...rest } =
+    props
 
   const inputContainerStyle = _.some(errorMessage)
     ? {
@@ -43,6 +45,13 @@ const FormInput = (props: FormInputProps): ReactElement => {
           </Text>
         </View>
       )}
+      {_.some(successMessage) && (
+        <View style={styles.sucessMessageBox}>
+          <Text style={styles.successMessage} fontType={'medium'}>
+            {successMessage}
+          </Text>
+        </View>
+      )}
     </>
   )
 }
@@ -58,5 +67,14 @@ const styles = StyleSheet.create({
     color: COLOR.red,
     fontSize: 10,
     paddingLeft: 5,
+  },
+  sucessMessageBox: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  successMessage: {
+    color: COLOR.green,
+    fontSize: 10,
+    paddingTop: 5,
   },
 })
