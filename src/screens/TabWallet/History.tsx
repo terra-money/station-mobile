@@ -7,7 +7,7 @@ import { RootStackParams } from 'types'
 import { TxsUI, useMenu, User, useTxs } from 'lib'
 
 import HistoryItem from 'components/history/HistoryItem'
-import { Text, ErrorComponent, Button, Loading } from 'components'
+import { Text, Button, Loading } from 'components'
 import {
   NavigationProp,
   useNavigation,
@@ -20,9 +20,8 @@ type Props = StackScreenProps<RootStackParams, 'Wallet'>
 const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
   const { History: title } = useMenu()
   const { list } = ui
-  const { navigate } = useNavigation<
-    NavigationProp<RootStackParams>
-  >()
+  const { navigate } =
+    useNavigation<NavigationProp<RootStackParams>>()
 
   return list ? (
     <View style={styles.container}>
@@ -53,7 +52,7 @@ const RenderList = ({ ui }: { ui: TxsUI }): ReactElement => {
 }
 
 const History = ({ user }: { user: User } & Props): ReactElement => {
-  const { error, ui, loading } = useTxs(user)
+  const { ui, loading } = useTxs(user)
 
   const [walletTabUi, setWalletTabUi] = useRecoilState(
     HistoryStore.walletTabUi
@@ -72,8 +71,6 @@ const History = ({ user }: { user: User } & Props): ReactElement => {
 
   return loading ? (
     <Loading />
-  ) : error ? (
-    <ErrorComponent />
   ) : walletTabUi ? (
     <RenderList ui={walletTabUi} />
   ) : (
