@@ -72,7 +72,7 @@ const History = ({ user }: { user: User } & Props): ReactElement => {
 
   return loading ? (
     <Loading />
-  ) : error ? (
+  ) : error && error.toString() !== 'Error: Request failed with status code 500' ? (
     <ErrorComponent />
   ) : walletTabUi ? (
     <RenderList ui={walletTabUi} />
