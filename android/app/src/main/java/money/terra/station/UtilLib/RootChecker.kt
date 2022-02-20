@@ -18,7 +18,7 @@ class RootChecker(reactContext: ReactApplicationContext?) : ReactContextBaseJava
     fun isDeviceRooted(promise: Promise) {
         try {
             RootBeer(context).let {
-                if (it.isRootedWithBusyBoxCheck) {
+                if (it.isRooted) {
                     promise.resolve(true)
                 }
             }
