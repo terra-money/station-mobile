@@ -72,7 +72,8 @@ const History = ({ user }: { user: User } & Props): ReactElement => {
 
   return loading ? (
     <Loading />
-  ) : error ? (
+  // @ts-expect-error
+  ) : error && !(error.response && error.response.status === 500) ? (
     <ErrorComponent />
   ) : walletTabUi ? (
     <RenderList ui={walletTabUi} />
