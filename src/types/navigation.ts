@@ -10,6 +10,7 @@ export type AuthStackParams = {
   NewWallet: undefined
   RecoverWallet: undefined
   WalletConnectDisconnected: undefined
+  ConnectLedger: undefined
 }
 
 export const AuthStack = createStackNavigator<AuthStackParams>()
@@ -35,6 +36,15 @@ export type RecoverWalletStackParams = {
 }
 
 export const RecoverWalletStack = createStackNavigator<RecoverWalletStackParams>()
+
+/* ConnectLedger */
+export type ConnectLedgerStackParams = {
+  SelectDevice: undefined
+  SelectPath: { device: string }
+  LedgerConnected: { wallet: LocalWallet }
+}
+
+export const ConnectLedgerStack = createStackNavigator<ConnectLedgerStackParams>()
 
 /* Root */
 export type RootStackParams = {
