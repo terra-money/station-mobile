@@ -1,5 +1,6 @@
 interface LocalWallet {
   name: string
   address: string
-  ledger?: boolean
+  ledger: boolean
+  path?: number
 }

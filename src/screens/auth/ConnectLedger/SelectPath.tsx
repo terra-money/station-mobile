@@ -13,6 +13,7 @@ import { Button, FormInput, FormLabel, Error, Loading } from 'components'
 
 import { StackScreenProps } from '@react-navigation/stack'
 import { ConnectLedgerStackParams } from 'types'
+import { addWallet } from 'utils/wallet'
 
 import TransportBLE from '@ledgerhq/react-native-hw-transport-ble'
 import { LedgerKey } from '@terra-money/ledger-terra-js'
@@ -39,6 +40,15 @@ const SelectPath = ({ route }: Props): ReactElement => {
         await TransportBLE.open(route.params.device),
         parseInt(path)
       )
+
+      await addWallet({
+        wallet: {
+          address: wallet.accAddress,
+          name: 'Ledger',
+          ledger: true,
+          path: parseInt(path),
+        },
+      })
 
       navigate('LedgerConnected', {
         wallet: {

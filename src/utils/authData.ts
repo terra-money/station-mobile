@@ -2,13 +2,20 @@ import keystore, { KeystoreEnum } from 'nativeModules/keystore'
 import _ from 'lodash'
 
 export type AuthDataValueType = {
+  ledger?: false
   encryptedKey: string
   address: string
   password: string
 }
 
+export type LedgerDataValueType = {
+  ledger: true
+  address: string
+  path: number
+}
+
 export type AuthDataType =
-  | Record<string, AuthDataValueType>
+  | Record<string, AuthDataValueType | LedgerDataValueType>
   | undefined
 
 export const getAuthData = async (): Promise<AuthDataType> => {
@@ -25,9 +32,9 @@ export const getAuthData = async (): Promise<AuthDataType> => {
 
 export const getAuthDataValue = async (
   walletName: string
-): Promise<AuthDataValueType | undefined> => {
+): Promise<AuthDataValueType | LedgerDataValueType | undefined> => {
   const authData = await getAuthData()
-
+  
   return authData && authData[walletName]
 }
 

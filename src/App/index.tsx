@@ -180,6 +180,7 @@ export default (): ReactElement => {
       setLocal(local)
       if (local.walletName) {
         const wallet = await getWallet(local.walletName)
+        console.log(wallet)
         setUser(wallet)
       }
     }

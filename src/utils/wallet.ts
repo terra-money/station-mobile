@@ -67,7 +67,7 @@ export const recoverWalletWithMnemonicKey = async (
     if (!key) {
       throw new Error('Encryption error occurred')
     }
-    const wallet = { name, address: mk.accAddress }
+    const wallet = { ledger: false, name, address: mk.accAddress }
     await addWallet({ wallet, key, password })
     return { success: true, wallet }
   } catch {
@@ -88,13 +88,17 @@ export const decryptKey = (
 
 export const getWallets = async (): Promise<LocalWallet[]> => {
   const authData = await getAuthData()
-  return _.map(authData, ({ address }, name) => {
-    return { name, address }
+  return _.map(authData, (wallet, name) => {
+    if(wallet?.ledger){
+      return { ...wallet, name }
+    } else {
+      return { ...wallet, name, ledger: false }
+    }
   })
 }
 
 export const getWallet = async (
-  name: string
+  name: string,
 ): Promise<LocalWallet | undefined> => {
   const wallets = await getWallets()
   return wallets.find((wallet) => wallet.name === name)
@@ -104,6 +108,7 @@ export const getEncryptedKey = async (
   name: string
 ): Promise<string> => {
   const authDataValue = await getAuthDataValue(name)
+  if(authDataValue?.ledger) throw new Error("Can't get the raw key from Ledger")
   return authDataValue ? authDataValue.encryptedKey : ''
 }
 
@@ -113,23 +118,36 @@ export const addWallet = async ({
   password,
 }: {
   wallet: LocalWallet
-  key: string
-  password: string
+  key?: string
+  password?: string
 }): Promise<boolean> => {
   const wallets = await getWallets()
 
-  if (wallets.find((w) => w.name === wallet.name))
+  if (wallet.name !== 'Ledger' && wallets.find((w) => w.name === wallet.name))
     throw new Error('Wallet with that name already exists')
-
-  return await upsertAuthData({
-    authData: {
-      [wallet.name]: {
-        address: wallet.address,
-        password,
-        encryptedKey: key,
+  
+  if(wallet.ledger) {
+    return await upsertAuthData({
+      authData: {
+        [wallet.name]: {
+          ledger: true,
+          address: wallet.address,
+          path: wallet.path || 0,
+        },
       },
-    },
-  })
+    })
+  } else {
+    return await upsertAuthData({
+      authData: {
+        [wallet.name]: {
+          ledger: false,
+          address: wallet.address,
+          password: password || '',
+          encryptedKey: key || '',
+        },
+      },
+    })
+  }
 }
 
 export const getDecyrptedKey = async (
@@ -155,9 +173,11 @@ export const changePassword = async (
   ondPassword: string,
   newPassword: string
 ): Promise<boolean> => {
+
   const decryptedKey = await getDecyrptedKey(name, ondPassword)
   const encryptedKey = encrypt(decryptedKey, newPassword)
   const authDataValue = await getAuthDataValue(name)
+  if(authDataValue?.ledger) return false;
   if (authDataValue) {
     upsertAuthData({
       authData: {
