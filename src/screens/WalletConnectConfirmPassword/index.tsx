@@ -26,6 +26,7 @@ import {
 } from '@react-navigation/native'
 import { txParamParser } from 'utils/walletconnect'
 import DeviceSelector from '../../screens/auth/ConnectLedger/DeviceSelector'
+import { useLoading } from '../../hooks/useLoading'
 
 type Props = StackScreenProps<
   RootStackParams,
@@ -49,8 +50,10 @@ const Render = ({
     WalletConnectStore.isListenConfirmRemove
   )
   const [inputPassword, setInputPassword] = useState('')
+  let deviceId = ''
 
   const [errorMessage, setErrorMessage] = useState('')
+  const { showLoading, hideLoading } = useLoading({ navigation })
 
   const { dispatch } =
     useNavigation<NavigationProp<RootStackParams>>()
@@ -64,6 +67,7 @@ const Render = ({
   const onPressAllow = async (): Promise<void> => {
     setErrorMessage('')
     setIsListenConfirmRemove(false)
+    showLoading({ title: user.ledger ? 'Confirm in your Ledger' : undefined, txhash: '' })
     const result = await testPassword({
       name: user.name,
       password: inputPassword,
@@ -73,7 +77,7 @@ const Render = ({
         address: user.address,
         walletName,
         txOptions,
-        password: inputPassword,
+        password: user.ledger ? deviceId : inputPassword,
       })
     } else {
       setErrorMessage('Incorrect password')
@@ -83,6 +87,7 @@ const Render = ({
 
   useEffect(() => {
     if (confirmResult) {
+      hideLoading()
       dispatch(StackActions.popToTop())
       dispatch(
         StackActions.replace('Complete', { result: confirmResult })
@@ -92,7 +97,7 @@ const Render = ({
 
   return (
     <>
-      <SubHeader theme={'sapphire'} title={user.ledger ? 'Password' : 'Ledger'} />
+      <SubHeader theme={'sapphire'} title={user.ledger ? 'Ledger' : 'Password'} />
       <Body
         theme={'sky'}
         containerStyle={{
@@ -102,7 +107,7 @@ const Render = ({
         }}
       >
         {user.ledger ? (
-          <DeviceSelector onSubmit={(id) => { setInputPassword(id); onPressAllow() }}/>
+          <DeviceSelector onSubmit={(id) => { deviceId = id; onPressAllow() }}/>
         ) : (
           <>
             <View>

@@ -21,7 +21,7 @@ const LoadingView = (): ReactElement => {
   const showLoading = useRecoilValue(AppStore.showLoading)
   const txhash = useRecoilValue(AppStore.loadingTxHash)
   const title = useRecoilValue(AppStore.loadingTitle)
-  const [displayTxhash, setDisplayTxhash] = useState(txhash)
+  const [displayTxhash, setDisplayTxhash] = useState<string | undefined>(txhash)
   const start = useMemo(() => new Date(), [txhash])
 
   const [now, setNow] = useState(new Date())
@@ -33,6 +33,8 @@ const LoadingView = (): ReactElement => {
     if (txhash) {
       setDisplayTxhash(txhash)
       interval = setInterval(() => setNow(new Date()), 1000)
+    } else {
+      setDisplayTxhash(undefined)
     }
     return (): void => {
       interval && clearInterval(interval)

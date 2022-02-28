@@ -203,6 +203,11 @@ export const testPassword = async ({
   { isSuccess: true } | { isSuccess: false; errorMessage: string }
 > => {
   const wallet = await getWallet(name)
+  if(wallet?.ledger) {
+    return {
+      isSuccess: true,
+    }
+  }
 
   if (!wallet) {
     return {
