@@ -46,8 +46,6 @@ const LoadingView = (): ReactElement => {
     .map((str) => String(str).padStart(2, '0'))
     .join(':')
 
-  console.log(title)
-
   if (showLoading) {
     return (
       <View style={styles.container}>
