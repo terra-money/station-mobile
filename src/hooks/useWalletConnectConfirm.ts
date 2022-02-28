@@ -85,18 +85,13 @@ const useWalletConnectConfirm = ({
 
   const confirmSign = async ({
     password,
-    address,
-    walletName,
     txOptions,
   }: {
     password: string
-    address: string
-    walletName: string
     txOptions: CreateTxOptions
   }): Promise<void> => {
+
     broadcastSync({
-      address,
-      walletName,
       password,
       txOptions,
     }).catch((error) => {

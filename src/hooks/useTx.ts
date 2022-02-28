@@ -17,6 +17,9 @@ import { useLoading } from './useLoading'
 import { RootStackParams } from 'types'
 import useLCD from './useLCD'
 
+import { LedgerKey } from '@terra-money/ledger-terra-js'
+import TransportBLE from '@ledgerhq/react-native-hw-transport-ble'
+
 const useTx = ({
   user,
   navigation,
@@ -26,9 +29,7 @@ const useTx = ({
 }): {
   broadcastResult?: TxInfo
   broadcastSync: (props: {
-    address: string
-    walletName: string
-    password: string
+    password: string // is the device id for ledger
     txOptions: CreateTxOptions
   }) => Promise<void>
 } => {
@@ -56,9 +57,9 @@ const useTx = ({
     txOptions: CreateTxOptions
   }): Promise<void> => {
     const chainID = chain.current.chainID
-    const key = await getKey({
-      password,
-    })
+    const key = user.ledger 
+      ? await LedgerKey.create(await TransportBLE.open(password), user.path)
+      : await getKey({ password }) 
 
     const wallet = new Wallet(lcd, key)
     const {
@@ -90,7 +91,9 @@ const useTx = ({
       accountNumber: account_number,
       sequence,
       chainID,
-      signMode: SignMode.SIGN_MODE_DIRECT,
+      signMode: user.ledger 
+        ? SignMode.SIGN_MODE_LEGACY_AMINO_JSON
+        : SignMode.SIGN_MODE_DIRECT,
     })
     const result = await lcd.tx.broadcastSync(signed)
     if ('code' in result && Number(result.code) !== 0) {

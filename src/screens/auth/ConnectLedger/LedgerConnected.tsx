@@ -23,7 +23,6 @@ const LedgerConnected = ({ route }: Props): ReactElement => {
 
   const onPressButton = (): void => {
     signIn(wallet)
-    console.log(wallet.address)
     settings.set({ walletName: wallet.name })
   }
 

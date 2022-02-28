@@ -60,7 +60,6 @@ const SelectPath = ({ route }: Props): ReactElement => {
       })
     } catch (e: any) {
       setLoading(false)
-      console.log(e)
       setError(e.toString())
     }
   }

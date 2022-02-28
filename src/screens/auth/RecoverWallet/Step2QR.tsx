@@ -81,6 +81,7 @@ const Step2QR = ({ route }: Props): ReactElement => {
         const wallet = {
           address: qrData.address,
           name,
+          ledger: false,
         }
 
         await addWallet({

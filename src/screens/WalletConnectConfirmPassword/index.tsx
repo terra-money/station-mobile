@@ -25,6 +25,7 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 import { txParamParser } from 'utils/walletconnect'
+import DeviceSelector from '../../screens/auth/ConnectLedger/DeviceSelector'
 
 type Props = StackScreenProps<
   RootStackParams,
@@ -51,9 +52,8 @@ const Render = ({
 
   const [errorMessage, setErrorMessage] = useState('')
 
-  const { dispatch } = useNavigation<
-    NavigationProp<RootStackParams>
-  >()
+  const { dispatch } =
+    useNavigation<NavigationProp<RootStackParams>>()
   const { confirmSign, confirmResult } = useWalletConnectConfirm({
     connector,
     id,
@@ -92,7 +92,7 @@ const Render = ({
 
   return (
     <>
-      <SubHeader theme={'sapphire'} title={'Password'} />
+      <SubHeader theme={'sapphire'} title={user.ledger ? 'Password' : 'Ledger'} />
       <Body
         theme={'sky'}
         containerStyle={{
@@ -101,23 +101,29 @@ const Render = ({
           paddingTop: 20,
         }}
       >
-        <View>
-          <FormLabel text="Confirm with password" />
-          <FormInput
-            errorMessage={errorMessage}
-            value={inputPassword}
-            onChangeText={setInputPassword}
-            secureTextEntry
-          />
-        </View>
+        {user.ledger ? (
+          <DeviceSelector onSubmit={(id) => { setInputPassword(id); onPressAllow() }}/>
+        ) : (
+          <>
+            <View>
+              <FormLabel text="Confirm with password" />
+              <FormInput
+                errorMessage={errorMessage}
+                value={inputPassword}
+                onChangeText={setInputPassword}
+                secureTextEntry
+              />
+            </View>
 
-        <View>
-          <Button
-            theme={'sapphire'}
-            title={'Confirm'}
-            onPress={onPressAllow}
-          />
-        </View>
+            <View>
+              <Button
+                theme={'sapphire'}
+                title={'Confirm'}
+                onPress={onPressAllow}
+              />
+            </View>
+          </>
+        )}
       </Body>
     </>
   )

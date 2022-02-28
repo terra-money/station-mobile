@@ -76,6 +76,5 @@ export const getBioAuthPassword = async ({
   walletName: string
 }): Promise<string> => {
   const authDataValue = await getAuthDataValue(walletName)
-
-  return authDataValue ? authDataValue.password : ''
+  return authDataValue && !authDataValue.ledger  ? authDataValue.password : ''
 }
