@@ -13,7 +13,6 @@ import { SignMode } from '@terra-money/terra.proto/cosmos/tx/signing/v1beta1/sig
 import {
   ConfirmProps,
   ConfirmPage,
-  Sign,
   Field,
   GetKey,
   User,
@@ -32,7 +31,6 @@ interface SignParams {
   user: User
   password?: string
   getKey: GetKey
-  sign: Sign
 }
 
 export default (
@@ -50,7 +48,7 @@ export default (
 
   const { t } = useTranslation()
   const { ERROR } = useInfo()
-  const { name, address } = user
+  const { name, address, ledger } = user
 
   const SUCCESS = {
     title: t('Post:Confirm:Success!'),
@@ -160,6 +158,7 @@ export default (
   const [submitted, setSubmitted] = useState(false)
   const [result, setResult] = useState<PostResult>()
   const [txhash, setTxHash] = useState<string>()
+  let device = ''
 
   const submit = async (): Promise<void> => {
     if (!unsignedTx) return
@@ -189,17 +188,18 @@ export default (
 
       const { gasPrices } = calcFee!
       const lcd = new LCDClient({ chainID, URL, gasPrices })
-      const key = await getKey(name ? { name, password } : undefined)
+      const key = await getKey(name ? { name, password: ledger ? device : password } : undefined)
       const wallet = new Wallet(lcd, key)
       const {
         account_number,
         sequence,
       } = await wallet.accountNumberAndSequence()
+
       const signed = await key.signTx(unsignedTx, {
         accountNumber: account_number,
         sequence,
         chainID,
-        signMode: SignMode.SIGN_MODE_DIRECT,
+        signMode: ledger ? SignMode.SIGN_MODE_LEGACY_AMINO_JSON : SignMode.SIGN_MODE_DIRECT,
       })
       await broadcast(signed)
     } catch (error) {
@@ -321,7 +321,11 @@ export default (
       onSubmit: disabled ? undefined : onSubmit,
       submitting,
     },
-
+    ledger: {
+      onSubmit,
+      setDevice: (d) => { device = d },
+      submitting
+    },
     result: simulatedErrorMessage
       ? { ...ERROR, content: simulatedErrorMessage }
       : errorMessage

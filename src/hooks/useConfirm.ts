@@ -19,8 +19,12 @@ import { RootStackParams } from 'types'
 // @ts-ignore
 import getSigner from 'utils/wallet-helper/signer'
 // @ts-ignore
+import getLedgerSigner from 'utils/wallet-helper/ledgerSigner'
+// @ts-ignore
 import signTx from 'utils/wallet-helper/api/signTx'
 import { getDecyrptedKey } from 'utils/wallet'
+import { LedgerKey } from '@terra-money/ledger-terra-js'
+import TransportBLE from '@ledgerhq/react-native-hw-transport-ble'
 
 export type NavigateToConfirmProps = {
   confirm: ConfirmProps
@@ -65,26 +69,19 @@ export const useConfirm = (): {
     return useStationConfirm(confirm, {
       user,
       password: '',
-      sign: async ({ tx, base, password }) => {
-        const decyrptedKey = await getDecyrptedKey(
-          user.name,
-          password
-        )
-        if (_.isEmpty(decyrptedKey)) {
-          throw new Error('Incorrect password')
-        }
-        const rk = new RawKey(Buffer.from(decyrptedKey, 'hex'))
-        const signer = await getSigner(rk.privateKey, rk.publicKey)
-        const signedTx = await signTx(tx, signer, base)
-        return signedTx
-      },
       getKey: async (params): Promise<Key> => {
-        const { name, password } = params!
-        const decyrptedKey = await getDecyrptedKey(name, password)
-        if (_.isEmpty(decyrptedKey)) {
-          throw new Error('Incorrect password')
+        if(user.ledger) {
+          const { password } = params!
+          const transport = await TransportBLE.open(password) /// select device
+          return await LedgerKey.create(transport, user.path) 
+        } else {
+          const { name, password } = params!
+          const decyrptedKey = await getDecyrptedKey(name, password)
+          if (_.isEmpty(decyrptedKey)) {
+            throw new Error('Incorrect password')
+          }
+          return new RawKey(Buffer.from(decyrptedKey, 'hex'))
         }
-        return new RawKey(Buffer.from(decyrptedKey, 'hex'))
       },
     })
   }

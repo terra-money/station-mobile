@@ -1,5 +1,5 @@
 import React, { useState, ReactElement } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import _ from 'lodash'
 import {
   NavigationProp,
@@ -19,7 +19,7 @@ import { LedgerKey } from '@terra-money/ledger-terra-js'
 
 type Props = StackScreenProps<ConnectLedgerStackParams, 'SelectPath'>
 
-const SelectPath = ({ navigation, route }: Props): ReactElement => {
+const SelectPath = ({ route }: Props): ReactElement => {
   const { navigate } =
     useNavigation<NavigationProp<ConnectLedgerStackParams>>()
 
@@ -45,6 +45,7 @@ const SelectPath = ({ navigation, route }: Props): ReactElement => {
           address: wallet.accAddress,
           name: 'Ledger',
           ledger: true,
+          path: parseInt(path),
         },
       })
     } catch (e: any) {
@@ -76,7 +77,7 @@ const SelectPath = ({ navigation, route }: Props): ReactElement => {
                 />
               </View>
               {error ?
-                <Error content={error} /> :
+                <Error title='Ledger Error' content={error} /> :
                 <></>
               }
             </View>

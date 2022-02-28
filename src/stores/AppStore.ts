@@ -11,7 +11,13 @@ const loadingTxHash = atom<string>({
   default: '',
 })
 
+const loadingTitle = atom<string>({
+  key: StoreKeyEnum.loadingTitle,
+  default: '',
+})
+
 export default {
   showLoading,
   loadingTxHash,
+  loadingTitle,
 }

@@ -228,7 +228,7 @@ const Setting = (): ReactElement => {
         containerStyle={{ paddingHorizontal: 0 }}
       >
         <StatusBar theme="sapphire" />
-        {user && (
+        {user && !user.ledger && (
           <View style={styles.section}>
             {supportBioAuth && (
               <View style={styles.itemBox}>

@@ -13,20 +13,25 @@ export const useLoading = ({
     keyof RootStackParams
   >
 }): {
-  showLoading: ({ txhash }: { txhash?: string }) => void
+  showLoading: ({ txhash, title }: { txhash?: string, title?: string }) => void
   hideLoading: () => Promise<void>
 } => {
   const setShowLoading = useSetRecoilState(AppStore.showLoading)
   const [loadingTxHash, setLoadingTxHash] = useRecoilState(
     AppStore.loadingTxHash
   )
+  const [, setLoadingTitle] = useRecoilState(
+    AppStore.loadingTitle
+  )
 
-  const showLoading = ({ txhash }: { txhash?: string }): void => {
+  const showLoading = ({ txhash, title }: { txhash?: string, title?: string  }): void => {
     setShowLoading(true)
     setLoadingTxHash(txhash || '')
+    setLoadingTitle(title || '')
   }
   const hideLoading = async (): Promise<void> => {
     setLoadingTxHash('')
+    setLoadingTitle('')
     return await new Promise((resolve) => {
       setTimeout(() => {
         setShowLoading(false)

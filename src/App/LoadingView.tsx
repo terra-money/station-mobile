@@ -20,6 +20,7 @@ import { truncate } from 'lib/utils/format'
 const LoadingView = (): ReactElement => {
   const showLoading = useRecoilValue(AppStore.showLoading)
   const txhash = useRecoilValue(AppStore.loadingTxHash)
+  const title = useRecoilValue(AppStore.loadingTitle)
   const [displayTxhash, setDisplayTxhash] = useState(txhash)
   const start = useMemo(() => new Date(), [txhash])
 
@@ -45,6 +46,8 @@ const LoadingView = (): ReactElement => {
     .map((str) => String(str).padStart(2, '0'))
     .join(':')
 
+  console.log(title)
+
   if (showLoading) {
     return (
       <View style={styles.container}>
@@ -53,7 +56,7 @@ const LoadingView = (): ReactElement => {
           style={{ width: 160, height: 160, marginBottom: 5 }}
         />
         <Text style={styles.title} fontType={'bold'}>
-          Broadcasting transaction
+          {title || 'Broadcasting transaction'}
         </Text>
 
         {_.some(displayTxhash) && (

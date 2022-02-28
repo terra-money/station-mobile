@@ -13,6 +13,7 @@ import Complete from '../screens/Complete'
 import VestingSchedule from '../screens/VestingSchedule'
 import Confirm from '../screens/Confirm'
 import ConfirmPassword from '../screens/ConfirmPassword'
+import ConfirmLedger from '../screens/ConfirmLedger'
 import Delegate from '../screens/Delegate'
 
 import SendTxPasswordView from '../screens/topup/SendTxPasswordView'
@@ -100,6 +101,11 @@ const MainNavigator = (): ReactElement => {
         name="ConfirmPassword"
         component={ConfirmPassword}
         options={ConfirmPassword.navigationOptions}
+      />
+      <RootStack.Screen
+        name="ConfirmLedger"
+        component={ConfirmLedger}
+        options={ConfirmLedger.navigationOptions}
       />
       <RootStack.Screen
         name="Delegate"
