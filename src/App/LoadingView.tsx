@@ -95,7 +95,7 @@ const LoadingView = (): ReactElement => {
                         style={styles.txhashText}
                         fontType="medium"
                       >
-                        {truncate(displayTxhash, [6, 6])}
+                        {truncate(displayTxhash || '', [6, 6])}
                       </Text>
                       <Icon
                         size={18}

@@ -1,6 +1,5 @@
 import React, { useState, ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
-import _ from 'lodash'
 import {
   NavigationProp,
   useNavigation,

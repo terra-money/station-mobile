@@ -16,12 +16,6 @@ import {
 import ConfirmStore from 'stores/ConfirmStore'
 import { RootStackParams } from 'types'
 
-// @ts-ignore
-import getSigner from 'utils/wallet-helper/signer'
-// @ts-ignore
-import getLedgerSigner from 'utils/wallet-helper/ledgerSigner'
-// @ts-ignore
-import signTx from 'utils/wallet-helper/api/signTx'
 import { getDecyrptedKey } from 'utils/wallet'
 import { LedgerKey } from '@terra-money/ledger-terra-js'
 import TransportBLE from '@ledgerhq/react-native-hw-transport-ble'

@@ -107,7 +107,7 @@ const Render = ({
         }}
       >
         {user.ledger ? (
-          <DeviceSelector onSubmit={(id) => { deviceId = id; onPressAllow() }}/>
+          <DeviceSelector onSubmit={(id): void => { deviceId = id; onPressAllow() }}/>
         ) : (
           <>
             <View>

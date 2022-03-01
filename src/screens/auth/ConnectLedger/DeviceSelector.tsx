@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { View, ViewStyle } from 'react-native'
-import _ from 'lodash'
 import TransportBLE from '@ledgerhq/react-native-hw-transport-ble'
 
 import { COLOR } from 'consts'
@@ -50,7 +49,7 @@ const DeviceButton = ({
         borderWidth: 1,
         borderColor: '#d2d9f0',
       }}
-      onPress={() => onPress(id)}
+      onPress={():void => onPress(id)}
     />
   )
 }
@@ -72,7 +71,7 @@ const DeviceSelector = ({
   const [devices, setDevices] = useState<DeviceInterface[]>([])
 
   useEffect(() => {
-    let stopScan = () => {}
+    let stopScan = (): void => {}
     const subscription = TransportBLE.observeState({
       next: (e: any) => {
         if (e.available) {
@@ -80,10 +79,10 @@ const DeviceSelector = ({
           setError('')
 
           const scan = TransportBLE.listen({
-            complete: () => {
+            complete: (): void => {
               setScanning(false)
             },
-            next: (e: any) => {
+            next: (e: any): void => {
               if (e.type === 'add') {
                 const device: DeviceInterface = {
                   name: e.descriptor.localName || e.descriptor.name,
@@ -92,26 +91,26 @@ const DeviceSelector = ({
                 setDevices([...devices, device])
               }
             },
-            error: (error: any) => {
+            error: (error: any): void => {
               setScanning(false)
               setError(error)
             },
           })
-          stopScan = () => {
+          stopScan = (): void => {
             scan.unsubscribe()
           }
         } else {
           setError(e.type)
         }
       },
-      complete: () => {},
-      error: (error: any) => {
+      complete: (): void => {},
+      error: (error: any): void => {
         setScanning(false)
         setError(error)
       },
     })
 
-    return () => {
+    return (): void => {
       subscription.unsubscribe()
       stopScan()
     }
