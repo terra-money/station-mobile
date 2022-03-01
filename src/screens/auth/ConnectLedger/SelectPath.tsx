@@ -1,14 +1,20 @@
 import React, { useState, ReactElement } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native'
-
+import { COLOR } from 'consts'
 import Body from 'components/layout/Body'
 import { navigationHeaderOptions } from 'components/layout/Header'
 import SubHeader from 'components/layout/SubHeader'
-import { Button, FormInput, FormLabel, Error, Loading } from 'components'
+import {
+  Button,
+  FormInput,
+  FormLabel,
+  Error,
+  Loading,
+} from 'components'
 
 import { StackScreenProps } from '@react-navigation/stack'
 import { ConnectLedgerStackParams } from 'types'
@@ -84,10 +90,36 @@ const SelectPath = ({ route }: Props): ReactElement => {
                   keyboardType="numeric"
                 />
               </View>
-              {error ?
-                <Error title='Ledger Error' content={error} /> :
+              {path !== '0' ? (
+                <View
+                  style={{
+                    opacity: 0.91,
+                    borderRadius: 8,
+                    backgroundColor: '#ebeff8',
+                    paddingHorizontal: 20,
+                    paddingVertical: 15,
+                    marginBottom: 20,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      lineHeight: 18,
+                      letterSpacing: 0,
+                      color: COLOR.primary._02,
+                    }}
+                  >
+                    The default path is 0
+                  </Text>
+                </View>
+              ) : (
                 <></>
-              }
+              )}
+              {error ? (
+                <Error title="Ledger Error" content={error} />
+              ) : (
+                <></>
+              )}
             </View>
             <Button
               title="Next"
