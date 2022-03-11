@@ -2,12 +2,10 @@ import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 
 import { navigationHeaderOptions } from 'components/layout/Header'
-import { Button, Text } from 'components'
+import { Text } from 'components'
 import Body from 'components/layout/Body'
-import useLinking from 'hooks/useLinking'
 
 const StakingInformation = (): ReactElement => {
-  const { openURL } = useLinking()
 
   return (
     <Body

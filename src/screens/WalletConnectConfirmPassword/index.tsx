@@ -25,6 +25,8 @@ import {
   useNavigation,
 } from '@react-navigation/native'
 import { txParamParser } from 'utils/walletconnect'
+import DeviceSelector from '../../screens/auth/ConnectLedger/DeviceSelector'
+import { useLoading } from '../../hooks/useLoading'
 
 type Props = StackScreenProps<
   RootStackParams,
@@ -48,12 +50,13 @@ const Render = ({
     WalletConnectStore.isListenConfirmRemove
   )
   const [inputPassword, setInputPassword] = useState('')
+  let deviceId = ''
 
   const [errorMessage, setErrorMessage] = useState('')
+  const { showLoading, hideLoading } = useLoading({ navigation })
 
-  const { dispatch } = useNavigation<
-    NavigationProp<RootStackParams>
-  >()
+  const { dispatch } =
+    useNavigation<NavigationProp<RootStackParams>>()
   const { confirmSign, confirmResult } = useWalletConnectConfirm({
     connector,
     id,
@@ -64,6 +67,7 @@ const Render = ({
   const onPressAllow = async (): Promise<void> => {
     setErrorMessage('')
     setIsListenConfirmRemove(false)
+    showLoading({ title: user.ledger ? 'Confirm in your Ledger' : undefined, txhash: '' })
     const result = await testPassword({
       name: user.name,
       password: inputPassword,
@@ -73,7 +77,7 @@ const Render = ({
         address: user.address,
         walletName,
         txOptions,
-        password: inputPassword,
+        password: user.ledger ? deviceId : inputPassword,
       })
     } else {
       setErrorMessage('Incorrect password')
@@ -83,6 +87,7 @@ const Render = ({
 
   useEffect(() => {
     if (confirmResult) {
+      hideLoading()
       dispatch(StackActions.popToTop())
       dispatch(
         StackActions.replace('Complete', { result: confirmResult })
@@ -92,7 +97,7 @@ const Render = ({
 
   return (
     <>
-      <SubHeader theme={'sapphire'} title={'Password'} />
+      <SubHeader theme={'sapphire'} title={user.ledger ? 'Ledger' : 'Password'} />
       <Body
         theme={'sky'}
         containerStyle={{
@@ -101,23 +106,29 @@ const Render = ({
           paddingTop: 20,
         }}
       >
-        <View>
-          <FormLabel text="Confirm with password" />
-          <FormInput
-            errorMessage={errorMessage}
-            value={inputPassword}
-            onChangeText={setInputPassword}
-            secureTextEntry
-          />
-        </View>
+        {user.ledger ? (
+          <DeviceSelector onSubmit={(id): void => { deviceId = id; onPressAllow() }}/>
+        ) : (
+          <>
+            <View>
+              <FormLabel text="Confirm with password" />
+              <FormInput
+                errorMessage={errorMessage}
+                value={inputPassword}
+                onChangeText={setInputPassword}
+                secureTextEntry
+              />
+            </View>
 
-        <View>
-          <Button
-            theme={'sapphire'}
-            title={'Confirm'}
-            onPress={onPressAllow}
-          />
-        </View>
+            <View>
+              <Button
+                theme={'sapphire'}
+                title={'Confirm'}
+                onPress={onPressAllow}
+              />
+            </View>
+          </>
+        )}
       </Body>
     </>
   )

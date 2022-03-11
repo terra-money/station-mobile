@@ -14,7 +14,7 @@ import {
   Field,
 } from '../types'
 import { BankData, Pairs, ConfirmProps } from '../types'
-import { format, gt, minus, sum } from '../utils'
+import { format, gt, sum } from '../utils'
 import { toInput } from '../utils/format'
 import { useConfig } from '../contexts/ConfigContext'
 import { getFeeDenomList, isFeeAvailable } from './validateConfirm'

@@ -24,9 +24,8 @@ const AuthMenu = (): ReactElement => {
   const [initPageComplete, setInitPageComplete] = useState(false)
   const [wallets, setWallets] = useState<LocalWallet[]>()
   const connectAddress = useRecoilValue(TopupStore.connectAddress)
-  const { navigate } = useNavigation<
-    NavigationProp<AuthStackParams>
-  >()
+  const { navigate } =
+    useNavigation<NavigationProp<AuthStackParams>>()
 
   const initPage = async (): Promise<void> => {
     setWallets(await getWallets())
@@ -99,6 +98,16 @@ const AuthMenu = (): ReactElement => {
             <View style={styles.orBox}>
               <Text style={styles.orText}>OR</Text>
             </View>
+
+            <Button
+              theme={'white'}
+              title={'Access with Ledger'}
+              onPress={(): void => {
+                navigate('ConnectLedger')
+              }}
+              containerStyle={{ marginBottom: 10 }}
+            />
+
             <Button
               theme={'transparent'}
               title={'Recover wallet'}

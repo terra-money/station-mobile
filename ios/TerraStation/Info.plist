@@ -67,6 +67,10 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Connect with Ledger</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Connect with Ledger</string>
 	<key>NSCameraUsageDescription</key>
 	<string>QR Scan</string>
 	<key>NSFaceIDUsageDescription</key>

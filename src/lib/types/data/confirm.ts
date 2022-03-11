@@ -38,6 +38,11 @@ export interface ConfirmPage extends Pick<ConfirmProps, 'contents'> {
     message?: string
   }
   form: FormUI
+  ledger: {
+    onSubmit: () => void
+    setDevice: (d: string) => void
+    submitting: boolean,
+  }
   result?: Card
   txhash?: string
 }

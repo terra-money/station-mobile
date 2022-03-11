@@ -166,7 +166,11 @@ const Render = ({
 
   const onPressNextButton = async (): Promise<void> => {
     setPressedNextButton(true)
-    if (isUseBioAuth) {
+    if (user.ledger) {
+      navigate('ConfirmLedger', {
+        feeSelectValue: fee.select.attrs.value || '',
+      })
+    } else if (isUseBioAuth) {
       const isSuccess = await authenticateBiometric()
       if (isSuccess) {
         const password = await getBioAuthPassword({
@@ -304,7 +308,7 @@ const Render = ({
             _.isEmpty(options) ||
             false === initPageComplete
           }
-          title={'Confirm'}
+          title={'Confirm' + (user.ledger ? ' with Ledger' : '')}
           onPress={onPressNextButton}
           containerStyle={{ marginTop: 20, marginBottom: 40 }}
         />

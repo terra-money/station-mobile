@@ -20,7 +20,8 @@ import { truncate } from 'lib/utils/format'
 const LoadingView = (): ReactElement => {
   const showLoading = useRecoilValue(AppStore.showLoading)
   const txhash = useRecoilValue(AppStore.loadingTxHash)
-  const [displayTxhash, setDisplayTxhash] = useState(txhash)
+  const title = useRecoilValue(AppStore.loadingTitle)
+  const [displayTxhash, setDisplayTxhash] = useState<string | undefined>(txhash)
   const start = useMemo(() => new Date(), [txhash])
 
   const [now, setNow] = useState(new Date())
@@ -32,6 +33,8 @@ const LoadingView = (): ReactElement => {
     if (txhash) {
       setDisplayTxhash(txhash)
       interval = setInterval(() => setNow(new Date()), 1000)
+    } else {
+      setDisplayTxhash(undefined)
     }
     return (): void => {
       interval && clearInterval(interval)
@@ -53,7 +56,7 @@ const LoadingView = (): ReactElement => {
           style={{ width: 160, height: 160, marginBottom: 5 }}
         />
         <Text style={styles.title} fontType={'bold'}>
-          Broadcasting transaction
+          {title || 'Broadcasting transaction'}
         </Text>
 
         {_.some(displayTxhash) && (
@@ -92,7 +95,7 @@ const LoadingView = (): ReactElement => {
                         style={styles.txhashText}
                         fontType="medium"
                       >
-                        {truncate(displayTxhash, [6, 6])}
+                        {truncate(displayTxhash || '', [6, 6])}
                       </Text>
                       <Icon
                         size={18}

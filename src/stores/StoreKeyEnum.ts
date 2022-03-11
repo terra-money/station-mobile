@@ -5,6 +5,7 @@ export enum StoreKeyEnum {
   isFromAutoLogout = 'isFromAutoLogout',
   showLoading = 'showLoading',
   loadingTxHash = 'loadingTxHash',
+  loadingTitle = 'loadingTitle',
   newWalletName = 'newWalletName',
   newWalletPassword = 'newWalletPassword',
   newWalletSeed = 'newWalletSeed',

@@ -17,6 +17,7 @@ export {
 export { default as CopyButton } from './CopyButton'
 export { default as QrCodeButton } from './QrCodeButton'
 export { default as BiometricButton } from './BiometricButton'
+export { default as Error } from './Error'
 export { default as ErrorComponent } from './ErrorComponent'
 export { default as Loading } from './Loading'
 export { default as WarningBox } from './WarningBox'
