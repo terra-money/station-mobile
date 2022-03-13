@@ -102,6 +102,7 @@ const Render = ({
     localWalletConnector?.rejectSession()
   }
 
+  // STEVENDEBUG
   const connect = async (uri: string): Promise<void> => {
     const connector = newWalletConnect({ uri })
 
@@ -110,6 +111,8 @@ const Render = ({
     }
     setLocalWalletConnector(connector)
 
+    // STEVENDEBUG
+    // 
     connector.on('session_request', (error, payload) => {
       if (error) {
         throw error
@@ -158,6 +161,7 @@ const Render = ({
     const payload = route.params?.payload
     const uri = route.params?.uri
 
+    // STEVENDEBUG
     if (payload) {
       connect(decodeURIComponent(payload))
     } else if (uri) {

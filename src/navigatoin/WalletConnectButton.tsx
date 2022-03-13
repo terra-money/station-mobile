@@ -54,6 +54,8 @@ const WalletConnectButton = ({
       _.forEach(walletConnectors, (connector) => {
         const handshakeTopic = connector.handshakeTopic
 
+        // STEVENDBEUG
+        // on connect
         connector.on('call_request', async (error, req) => {
           const id = req.id
           const method = req.method

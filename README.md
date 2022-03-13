@@ -1,3 +1,26 @@
+# Notes
+
+Make sure to use nvm to set the node version to 14
+
+```
+nvm use 14
+```
+
+Make sure to set up your local comp's android studio to run react native:
+https://reactnative.dev/docs/environment-setup
+
+## Troubleshooting
+
+If you get a error message with the JAVA_HOME being invalid check where the java sdk is located by `cd` into the folders, typically on macs it is
+
+https://stackoverflow.com/questions/22842743/how-to-set-java-home-environment-variable-on-mac-os-x-10-9
+
+```
+export JAVA_HOME=`/usr/libexec/java_home`
+```
+
+Add the above to the .zshrc or .bash_profile (if you use bash)
+
 # Terra Station Mobile App
 
 ![banner](./terra-station-mobile.png)
