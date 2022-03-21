@@ -40,6 +40,7 @@
     "@terra-money/terra.js": "^3.0.0",
     "@tradle/react-native-http": "^2.0.0",
     "@ungap/global-this": "^0.4.4",
+    "@viro-community/react-viro": "^2.22.0",
     "@walletconnect/client": "^1.6.5",
     "bech32": "^2.0.0",
     "bignumber.js": "^9.0.1",
