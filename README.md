@@ -1,4 +1,8 @@
-# Notes
+# Deployment 
+
+Use this guide for deploying the application: https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases
+
+# Running Locally
 
 Make sure to use nvm to set the node version to 14
 
@@ -8,6 +12,8 @@ nvm use 14
 
 Make sure to set up your local comp's android studio to run react native:
 https://reactnative.dev/docs/environment-setup
+
+Then check below for more information on running locally
 
 ## Troubleshooting
 

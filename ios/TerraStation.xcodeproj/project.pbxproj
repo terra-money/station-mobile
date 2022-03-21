@@ -375,7 +375,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = UYTGWV77XZ;
+						DevelopmentTeam = NZH8ZTYMMZ;
 						LastSwiftMigration = 1150;
 						ProvisioningStyle = Automatic;
 					};
@@ -791,7 +791,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 10503003;
-				DEVELOPMENT_TEAM = UYTGWV77XZ;
+				DEVELOPMENT_TEAM = NZH8ZTYMMZ;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -801,13 +801,13 @@
 				INFOPLIST_FILE = TerraStation/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = money.terra.station.test;
+				PRODUCT_BUNDLE_IDENTIFIER = app.falconwallet.mobile;
 				PRODUCT_NAME = TerraStation;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./TerraStation/TerraWalletLib/TerraStation-Bridging-Header.h";
@@ -827,19 +827,19 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 10503003;
-				DEVELOPMENT_TEAM = UYTGWV77XZ;
+				DEVELOPMENT_TEAM = NZH8ZTYMMZ;
 				EXCLUDED_ARCHS = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = TerraStation/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = money.terra.station.test;
+				PRODUCT_BUNDLE_IDENTIFIER = app.falconwallet.mobile;
 				PRODUCT_NAME = TerraStation;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./TerraStation/TerraWalletLib/TerraStation-Bridging-Header.h";
