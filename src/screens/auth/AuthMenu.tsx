@@ -19,6 +19,7 @@ import { navigationHeaderOptions } from 'components/layout/Header'
 
 import { AuthStackParams } from 'types'
 import TopupStore from 'stores/TopupStore'
+import { requestPermissionBLE } from 'utils/permission'
 
 const AuthMenu = (): ReactElement => {
   const [initPageComplete, setInitPageComplete] = useState(false)
@@ -30,6 +31,16 @@ const AuthMenu = (): ReactElement => {
   const initPage = async (): Promise<void> => {
     setWallets(await getWallets())
     setInitPageComplete(true)
+  }
+
+  const grantingBLE = async (): Promise<void> => {
+    const requestResult = await requestPermissionBLE()
+    if (requestResult === 'granted') {
+      navigate('ConnectLedger')
+      return
+    } else {
+      return
+    }
   }
 
   useEffect(() => {
@@ -103,7 +114,7 @@ const AuthMenu = (): ReactElement => {
               theme={'white'}
               title={'Access with Ledger'}
               onPress={(): void => {
-                navigate('ConnectLedger')
+                grantingBLE()
               }}
               containerStyle={{ marginBottom: 10 }}
             />

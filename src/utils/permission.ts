@@ -20,6 +20,14 @@ export const requestPermission = async (): Promise<PermissionResult> => {
   return request(permissions.CAMERA)
 }
 
+export const requestPermissionBLE = async (): Promise<PermissionResult> => {
+  if (Platform.OS === 'android') {
+    return request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
+  } else {
+    return 'granted'
+  }
+}
+
 export const openPermissionSettings = (): void => {
   openSettings().catch(() => {
     // error handling

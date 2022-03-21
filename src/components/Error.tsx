@@ -32,7 +32,11 @@ const Error = ({title, content} : { title?: string, content?: string }): ReactEl
           lineHeight: 21,
         }}
       >
-        {content || 'You have encountered an error'}
+        {
+          (typeof content === 'object' || !content)  ?
+            'You have encountered an error' :
+            content
+        }
       </Text>
     </View>
   )

@@ -790,7 +790,7 @@
 				CODE_SIGN_ENTITLEMENTS = TerraStation/TerraStation.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10503003;
+				CURRENT_PROJECT_VERSION = 10504000;
 				DEVELOPMENT_TEAM = UYTGWV77XZ;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -801,7 +801,7 @@
 				INFOPLIST_FILE = TerraStation/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.5.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -826,14 +826,14 @@
 				CODE_SIGN_ENTITLEMENTS = TerraStation/TerraStation.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10503003;
+				CURRENT_PROJECT_VERSION = 10504000;
 				DEVELOPMENT_TEAM = UYTGWV77XZ;
 				EXCLUDED_ARCHS = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = TerraStation/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.5.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
