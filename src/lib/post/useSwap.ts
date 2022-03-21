@@ -616,6 +616,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
     slippageField,
   }
 
+  // STEVENDEBUG
   const formUI: FormUI = {
     fields,
     disabled,

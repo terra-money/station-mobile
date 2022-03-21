@@ -205,6 +205,7 @@ export const simulateRoute = async (
     baseURL: chain.lcd,
     params: { query_msg: simulate.msg },
   }
+  // STEVENDEBUG
   const { data } = await axios.get<{ result: { amount: string } }>(
     path,
     config

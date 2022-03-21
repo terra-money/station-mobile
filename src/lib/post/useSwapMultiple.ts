@@ -227,6 +227,7 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
     const params = { amount, from, to, chain: chain.current }
     const { execute } = getRouteMessage(params)
     const { contract, msg, coins } = execute
+    // STEVENDEBUG
     return new MsgExecuteContract(user.address, contract, msg, coins)
   })
 
