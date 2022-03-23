@@ -14,6 +14,7 @@ import Staking from '../screens/TabStaking'
 
 import { RootStack } from 'types/navigation'
 import { Text, Icon } from 'components'
+import { ArkitDemo } from '../screens/TabArkitDemo/index'
 
 const WalletStack = (): ReactElement => (
   <RootStack.Navigator initialRouteName="Wallet">
@@ -31,6 +32,16 @@ const StakingStack = (): ReactElement => (
       name="Staking"
       component={Staking}
       options={Staking.navigationOptions}
+    />
+  </RootStack.Navigator>
+)
+
+const ArkitDemoStack = (): ReactElement => (
+  <RootStack.Navigator initialRouteName="Staking">
+    <RootStack.Screen
+      name="Staking"
+      component={ArkitDemo}
+      options={ArkitDemo.navigationOptions}
     />
   </RootStack.Navigator>
 )
@@ -78,6 +89,12 @@ const tabScreenItemList: {
     component: StakingStack,
     label: 'STAKING',
     iconName: 'layers',
+  },
+  {
+    name: 'ArkitDemoStack',
+    component: ArkitDemoStack,
+    label: 'ARKIT DEMO',
+    iconName: 'adjust',
   },
 ]
 
