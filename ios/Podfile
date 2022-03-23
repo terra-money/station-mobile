@@ -22,6 +22,9 @@ target 'TerraStation' do
     :hermes_enabled => true
   )
 
+  pod 'ViroReact', :path => '../node_modules/@viro-community/react-viro/ios'
+  pod 'ViroKit', :path => '../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/' 
+
   target 'TerraStationTests' do
     inherit! :complete
     # Pods for testing
