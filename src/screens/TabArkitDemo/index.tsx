@@ -23,6 +23,8 @@ import { navigationHeaderOptions } from 'components/layout/Header'
 import bpantherAnim from 'assets/res/blackpanther/object_bpanther_anim.vrx'
 import bpantherBaseColor from 'assets/res/blackpanther/object_bpanther_Base_Color.png'
 import blackPanterJpg from 'assets/res/blackpanther.jpg'
+import moonJpg from 'assets/res/yellow_moon.jpeg'
+import moonTwoJpg from 'assets/res/moon.jpeg'
 
 const HelloWorldSceneAR = (): ReactElement => {
   const [text, setText] = useState('Initializing AR...')
@@ -79,6 +81,43 @@ const HelloWorldSceneAR = (): ReactElement => {
       <ViroAmbientLight color="#ffffff" intensity={200} />
 
       <ViroARImageMarker
+        target={'moon_two'}
+        onAnchorFound={_onAnchorFound}
+        pauseUpdates={state.pauseUpdates}
+      >
+        <ViroNode
+          position={[0, -0.1, 0]}
+          scale={[0, 0, 0]}
+          rotation={[-90, 0, 0]}
+          dragType="FixedToWorld"
+          onDrag={() => {}}
+          animation={{ name: 'scaleModel', run: state.playAnim }}
+        >
+          <Viro3DObject
+            onLoadEnd={_onModelLoad}
+            source={bpantherAnim}
+            resources={[
+              bpantherBaseColor,
+              // require('assets/res/blackpanther/object_bpanther_Base_Color.png'),
+              // require('assets/res/blackpanther/object_bpanther_Metallic.png'),
+              // require('assets/res/blackpanther/object_bpanther_Mixed_AO.png'),
+              // require('assets/res/blackpanther/object_bpanther_Normal_OpenGL.png'),
+              // require('assets/res/blackpanther/object_bpanther_Roughness.png'),
+            ]}
+            position={[0, -1.45, 0]}
+            scale={[0.9, 0.9, 0.9]}
+            animation={{
+              name: state.animationName,
+              run: state.modelAnim,
+              loop: state.loopState,
+              onFinish: _onFinish,
+            }}
+            type="VRX"
+          />
+        </ViroNode>
+      </ViroARImageMarker>
+
+      <ViroARImageMarker
         target={'poster'}
         onAnchorFound={_onAnchorFound}
         pauseUpdates={state.pauseUpdates}
@@ -114,6 +153,9 @@ const HelloWorldSceneAR = (): ReactElement => {
           />
         </ViroNode>
       </ViroARImageMarker>
+
+      
+
 
       <ViroOmniLight
         intensity={300}
@@ -200,6 +242,16 @@ var styles = StyleSheet.create({
 ViroARTrackingTargets.createTargets({
   poster: {
     source: blackPanterJpg,
+    orientation: 'Up',
+    physicalWidth: 0.6096, // real world width in meters
+  },
+  moon: {
+    source: moonJpg,
+    orientation: 'Up',
+    physicalWidth: 0.6096, // real world width in meters
+  },
+  moon_two: {
+    source: moonTwoJpg,
     orientation: 'Up',
     physicalWidth: 0.6096, // real world width in meters
   },
