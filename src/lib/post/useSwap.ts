@@ -9,6 +9,9 @@ import {
   ConfirmProps,
   BankData,
   Whitelist,
+  SwapMode,
+  Mode,
+  DexType,
 } from '../types'
 import {
   User,
@@ -35,13 +38,14 @@ import {
   isFeeAvailable,
 } from './validateConfirm'
 import { getTerraswapURL, simulateTerraswap } from './terraswap'
+import { getAstroportURL, simulateAstroport } from './astroport'
 import * as routeswap from './routeswap'
 import { useCalcFee } from './txHelpers'
 import useWhitelist from 'lib/cw20/useWhitelist'
 import { UTIL } from 'consts'
 import BigNumber from 'bignumber.js'
 
-const { findPair, getRouteMessage } = routeswap
+const { findPairDex, getRouteMessage } = routeswap
 const {
   isRouteAvailable,
   isMarketAvailable,
@@ -53,7 +57,6 @@ const assertLimitOrderContracts: Dictionary = {
   testnet: 'terra1z3sf42ywpuhxdh78rr5vyqxpaxa0dx657x5trs',
 }
 
-type Mode = 'Market' | 'Terraswap' | 'Route'
 interface Values {
   mode?: Mode
   slippage: string
@@ -178,15 +181,35 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
     ? div(slippage, 100)
     : '0.01'
 
-  const pair = findPair({ from, to }, pairs)
+  const pairTerraswap = useMemo(() => {
+      if (pairs) {
+        return findPairDex({ from, to }, pairs, DexType.TERRASWAP)?.address
+      } else {
+        return ''
+      }
+    },
+    [from, to, pairs]
+  )
+
+  const pairAstroport = useMemo(() => {
+      if (pairs) {
+        return findPairDex({ from, to }, pairs, DexType.ASTROPORT)?.address
+      } else {
+        return ''
+      }
+    },
+    [from, to, pairs]
+  )
 
   type PairParams = { from: string; to: string }
+
   const getAvailableModes = useCallback(
     ({ from, to }: PairParams): Mode[] => {
-      if (from && to) {
+      if (from && to && pairs) {
         const available = ([] as Mode[])
-          .concat(isMarketAvailable({ from, to }) ? 'Market' : [])
-          .concat(findPair({ from, to }, pairs) ? 'Terraswap' : [])
+          .concat(isMarketAvailable({ from, to }) ? SwapMode.ONCHAIN : [])
+          .concat(!!findPairDex({ from, to }, pairs, DexType.TERRASWAP) ? SwapMode.TERRASWAP : [])
+          .concat(!!findPairDex({ from, to }, pairs, DexType.ASTROPORT) ? SwapMode.ASTROPORT : [])
 
         return available.length
           ? available
@@ -232,6 +255,9 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
   const [simulationsTerraswap, setSimulationsTerraswap] = useState<
     Simulation[]
   >([])
+  const [simulationsAstroport, setSimulationsAstroport] = useState<
+    Simulation[]
+  >([])
   const [simulationsRoute, setSimulationsRoute] = useState<
     Simulation[]
   >([])
@@ -242,6 +268,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
     ({
       Market: simulationsMarket,
       Terraswap: simulationsTerraswap,
+      Astroport: simulationsAstroport,
       Route: simulationsRoute,
     }[mode])
 
@@ -277,8 +304,9 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
         params.amount === amount
     )?.result ?? '0'
 
-  // simulate: Terraswap
+  // simulate: Terraswap, Astroport
   const [tradingFeeTerraswap, setTradingFeeTerraswap] = useState('0')
+  const [tradingFeeAstroport, setTradingFeeAstroport] = useState('0')
 
   // simulate: Expected price
   const fromDecimal = whitelist?.[from]?.decimals ?? 6
@@ -302,9 +330,17 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
       : calculatedMaxAmount
 
   // simulate
-  const isTerraswap = !!pair
-  const token = isTerraswap ? from : undefined
-  const terraswapParams = { pair, token, offer: { amount, from } }
+  const terraswapParams = useMemo(() => ({
+    pair: pairTerraswap, token: from, offer: { amount, from } }
+  ),
+    [from, amount, pairTerraswap]
+  )
+
+  const astroportParams = useMemo(() => ({
+    pair: pairAstroport, token: from, offer: { amount, from } }
+  ),
+    [from, amount, pairAstroport]
+  )
 
   const routeParams = {
     amount,
@@ -324,8 +360,9 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
 
         let resultMarket = '0'
         let resultTerraswap = '0'
+        let resultAstroport = '0'
 
-        if (availableModes.includes('Market')) {
+        if (availableModes.includes(SwapMode.ONCHAIN)) {
           const { swapped, rate } = await simulateMarket({
             ...values,
             amount,
@@ -351,7 +388,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
           })
         }
 
-        if (availableModes.includes('Terraswap')) {
+        if (availableModes.includes(SwapMode.TERRASWAP)) {
           const result = await simulateTerraswap(
             terraswapParams,
             chain.current,
@@ -379,7 +416,35 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
           }
         }
 
-        if (availableModes.includes('Route')) {
+        if (availableModes.includes(SwapMode.ASTROPORT)) {
+          const result = await simulateAstroport(
+            astroportParams,
+            chain.current,
+            user.address
+          )
+
+          if (result) {
+            resultAstroport = result.return_amount
+
+            setSimulationsAstroport((ori) => {
+              const filtered = ori.filter(
+                (x) =>
+                  x.from !== from ||
+                  x.to !== to ||
+                  x.amount !== amount
+              )
+
+              return [
+                ...filtered,
+                { from, to, amount, result: resultAstroport },
+              ]
+            })
+
+            setTradingFeeAstroport(result.commission_amount)
+          }
+        }
+
+        if (availableModes.includes(SwapMode.ROUTESWAP)) {
           const result = await simulateRoute(routeParams)
           setSimulationsRoute((ori) => {
             const filtered = ori.filter(
@@ -392,15 +457,21 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
         }
 
         // Set mode after simulation
-        const valid = gt(resultMarket, 0) && gt(resultTerraswap, 0)
-        const isBothAvailable = [
-          'Market',
-          'Terraswap',
-        ].every((mode) => availableModes.includes(mode as Mode))
+        const simulateResults:  [Mode, string][] = [
+          [SwapMode.ONCHAIN, resultMarket],
+          [SwapMode.TERRASWAP, resultTerraswap],
+          [SwapMode.ASTROPORT, resultAstroport],
+        ]
 
-        if (valid && isBothAvailable) {
-          const isMarketGreater = gte(resultMarket, resultTerraswap)
-          const mode = isMarketGreater ? 'Market' : 'Terraswap'
+        const valid: [Mode, string][] = simulateResults
+          .filter(([, modeResult]) => modeResult !== '0')
+
+        if (valid.length > 1) {
+          const sortResults: [Mode, string][] = valid.sort(
+            (a, b) => (gte(b[1], a[1]) ? 1 : -1)
+          )
+          const mode = sortResults[0][0]
+
           setValues((values) => ({ ...values, mode }))
         } else if (availableModes.length === 1) {
           setValues((values) => ({
@@ -409,7 +480,8 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
           }))
         }
       } catch (error) {
-        setErrorMessage(error.message)
+        // @ts-ignore
+        setErrorMessage(error?.message)
       }
 
       setSimulating(false)
@@ -603,6 +675,14 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
               ),
               unit: format.denom(to, whitelist),
             },
+            Astroport: {
+              title: 'Trading Fee',
+              value: format.amount(
+                tradingFeeAstroport,
+                whitelist?.[to]?.decimals
+              ),
+              unit: format.denom(to, whitelist),
+            },
             Route: {
               title: 'Route',
               text: [
@@ -638,8 +718,15 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
 
   const swap = new MsgSwap(user.address, new Coin(from, amount), to)
 
-  const terraswap = pair
+  const terraswap = pairTerraswap
     ? getTerraswapURL(terraswapParams, chain.current, user.address, {
+        belief_price: String(decimalN(expectedPrice, 18)),
+        max_spread: slippagePercent,
+      })
+    : undefined
+
+  const astroport = pairAstroport
+    ? getAstroportURL(astroportParams, chain.current, user.address, {
         belief_price: String(decimalN(expectedPrice, 18)),
         max_spread: slippagePercent,
       })
@@ -650,6 +737,7 @@ export default (user: User, actives: string[]): PostPage<SwapUI> => {
     : {
         Market: assertLimitOrder ? [assertLimitOrder, swap] : [swap],
         Terraswap: terraswap?.msgs,
+        Astroport: astroport?.msgs,
         Route: [
           new MsgExecuteContract(
             user.address,

@@ -2,7 +2,7 @@ import { Coin } from '@terra-money/terra.js'
 import axios from 'axios'
 import { UTIL } from 'consts'
 import { Dictionary } from 'ramda'
-import { ChainOptions, Pairs } from '../types'
+import { ChainOptions, Pairs, CW20Pairs, Dex } from '../types'
 import { toBase64, toTokenInfo, ToTokenInfoType } from './terraswap'
 
 const RouteContracts: Dictionary<string> = {
@@ -62,7 +62,7 @@ type ExecuteType =
       coins?: undefined
     }
 
-export const isMarketAvailable = ({
+export const  isMarketAvailable = ({
   from,
   to,
 }: SwapParams): boolean =>
@@ -80,6 +80,23 @@ export const findPair = (
   )?.[0]
 
   return shouldBurnLuna ? undefined : pair
+}
+
+export const findPairDex = (
+  { from, to }: SwapParams,
+  pairs: CW20Pairs,
+  dex: Dex
+) => {
+  const pair = Object.entries(pairs).find(([, item]) =>
+    [from, to].every(
+      (asset) => dex === item.dex && item.assets.includes(asset)
+    )
+  )
+
+  if (!pair) return
+
+  const [address, item] = pair
+  return { address, ...item }
 }
 
 export const createSwap = ({
@@ -141,15 +158,15 @@ export const isRouteAvailable = ({
   from: string
   to: string
   chain: string
-  pairs?: Pairs
+  pairs: CW20Pairs
 }): boolean | '' | undefined => {
   const r0 =
     isMarketAvailable({ from, to: 'uusd' }) ||
-    findPair({ from, to: 'uusd' }, pairs)
+    !!findPairDex({ from, to: 'uusd' }, pairs, 'terraswap')
 
   const r1 =
     isMarketAvailable({ from: 'uusd', to }) ||
-    findPair({ from: 'uusd', to }, pairs)
+    !!findPairDex({ from: 'uusd', to }, pairs, 'terraswap')
 
   const routeContract = !!RouteContracts[chain]
 

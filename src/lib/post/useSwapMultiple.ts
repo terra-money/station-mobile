@@ -13,7 +13,7 @@ import {
   User,
   Field,
 } from '../types'
-import { BankData, Pairs, ConfirmProps } from '../types'
+import { BankData, ConfirmProps, CW20Pairs, DexType } from '../types'
 import { format, gt, sum } from '../utils'
 import { toInput } from '../utils/format'
 import { useConfig } from '../contexts/ConfigContext'
@@ -21,7 +21,7 @@ import { getFeeDenomList, isFeeAvailable } from './validateConfirm'
 import { useActiveDenoms, useForm } from '../index'
 import { simulateMarket } from './useSwap'
 import { getTerraswapURL, simulateTerraswap } from './terraswap'
-import { findPair, getRouteMessage, simulateRoute } from './routeswap'
+import { findPairDex, getRouteMessage, simulateRoute } from './routeswap'
 import { UTIL } from 'consts'
 
 interface Values {
@@ -30,7 +30,7 @@ interface Values {
 
 interface Params {
   bank: BankData
-  pairs: Pairs
+  pairs: CW20Pairs
 }
 
 export default (user: User, { bank, pairs }: Params): PostPage => {
@@ -89,7 +89,7 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
     : '0'
 
   const isTerraswap = (from: string): string | undefined =>
-    findPair({ from, to }, pairs)
+    findPairDex({ from, to }, pairs, DexType.TERRASWAP)?.address
   const balanceDenomsWithoutTo = balanceDenoms.filter(
     (denom) => denom !== to
   )
@@ -111,7 +111,7 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
           const amount = getAmount(from)
           return simulateTerraswap(
             {
-              pair: findPair({ from, to }, pairs),
+              pair: findPairDex({ from, to }, pairs, DexType.TERRASWAP)?.address,
               offer: { amount, from },
             },
             chain.current,
@@ -210,7 +210,7 @@ export default (user: User, { bank, pairs }: Params): PostPage => {
       const amount = getAmount(from)
       const terraswap = getTerraswapURL(
         {
-          pair: findPair({ from, to }, pairs),
+          pair: findPairDex({ from, to }, pairs, DexType.TERRASWAP)?.address,
           offer: { amount, from },
         },
         chain.current,

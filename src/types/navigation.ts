@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import { AccAddress } from '@terra-money/terra.js'
-import { BankData, Card, Pairs, VestingItemUI } from 'lib'
+import {BankData, Card, CW20Pairs, VestingItemUI} from 'lib'
 import { DelegateType } from 'lib/post/useDelegate'
 import { TxParam } from './tx'
 
@@ -87,7 +87,7 @@ export type RootStackParams = {
   VestingSchedule: { item: VestingItemUI; title: string }
   SwapMultipleCoins: {
     bank?: BankData
-    pairs?: Pairs
+    pairs?: CW20Pairs
   }
   Confirm: undefined
   ConfirmPassword: { feeSelectValue: string }

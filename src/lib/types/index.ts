@@ -28,6 +28,7 @@ export * from './pages/market'
 export * from './pages/governance'
 export * from './pages/proposal'
 export * from './pages/contracts'
+export * from './pages/swap'
 
 /* post */
 export * from './post/withdraw'
