@@ -10,10 +10,10 @@ import { LAYOUT } from 'consts'
 
 import Wallet from '../screens/TabWallet'
 import Swap from '../screens/TabSwap'
-import Staking from '../screens/TabStaking'
 
 import { RootStack } from 'types/navigation'
 import { Text, Icon } from 'components'
+import { ArkitDemo } from '../screens/TabArkitDemo/index'
 
 const WalletStack = (): ReactElement => (
   <RootStack.Navigator initialRouteName="Wallet">
@@ -25,12 +25,12 @@ const WalletStack = (): ReactElement => (
   </RootStack.Navigator>
 )
 
-const StakingStack = (): ReactElement => (
+const ArkitDemoStack = (): ReactElement => (
   <RootStack.Navigator initialRouteName="Staking">
     <RootStack.Screen
       name="Staking"
-      component={Staking}
-      options={Staking.navigationOptions}
+      component={ArkitDemo}
+      options={ArkitDemo.navigationOptions}
     />
   </RootStack.Navigator>
 )
@@ -74,10 +74,10 @@ const tabScreenItemList: {
     iconName: 'swap-horiz',
   },
   {
-    name: 'StakingStack',
-    component: StakingStack,
-    label: 'STAKING',
-    iconName: 'layers',
+    name: 'ArkitDemoStack',
+    component: ArkitDemoStack,
+    label: 'ARKIT DEMO',
+    iconName: 'adjust',
   },
 ]
 

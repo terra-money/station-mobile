@@ -72,9 +72,13 @@
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Connect with Ledger</string>
 	<key>NSCameraUsageDescription</key>
-	<string>QR Scan</string>
+	<string>QR Scan, AR Demo</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>For use with arkit and moon animation demo</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>For use with arkit and moon animation demo</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

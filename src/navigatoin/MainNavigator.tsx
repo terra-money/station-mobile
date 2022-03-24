@@ -21,7 +21,6 @@ import SendTxCompleteView from '../screens/topup/SendTxCompleteView'
 import StakingInformation from '../screens/StakingInformation'
 import SwapMultipleCoins from '../screens/SwapMultipleCoins'
 import WalletHistory from '../screens/WalletHistory'
-import StakingPersonal from '../screens/StakingPersonal'
 import ValidatorDetail from '../screens/ValidatorDetail'
 import AutoLogout from '../screens/AutoLogout'
 import Password from '../screens/Password'
@@ -171,11 +170,6 @@ const MainNavigator = (): ReactElement => {
         name="WalletHistory"
         component={WalletHistory}
         options={WalletHistory.navigationOptions}
-      />
-      <RootStack.Screen
-        name="StakingPersonal"
-        component={StakingPersonal}
-        options={StakingPersonal.navigationOptions}
       />
       <RootStack.Screen
         name="ValidatorDetail"
