@@ -19,4 +19,6 @@ export enum StoreKeyEnum {
   continueSignedTx = 'continueSignedTx',
   walletTabUi = 'walletTabUi',
   tokensState = 'tokensState',
+  webviewInstance = 'webviewInstance',
+  webviewLoadEnd = 'webviewLoadEnd',
 }

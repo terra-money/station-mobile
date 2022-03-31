@@ -4,12 +4,36 @@ export interface Config {
   lang: LangConfig
   currency: CurrencyConfig
   chain: ChainConfig
+  theme: ThemeConfig
 }
 
 export interface InitialConfigState {
   lang?: LangKey
   currency?: string
+  theme?: ThemeType
   chain: ChainOptions
+}
+
+/*  theme */
+export type ThemeType =
+  | 'light'
+  | 'dark'
+  | 'blossom'
+  | 'moon'
+  | 'whale'
+  | 'madness'
+
+export interface Theme {
+  textContent: string
+  backgroundColor: string
+  cardColor: string
+  primaryColor: string
+  primaryText: string
+}
+
+export interface ThemeConfig {
+  current: ThemeType
+  set: (key: ThemeType) => void
 }
 
 /* lang */

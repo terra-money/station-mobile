@@ -1,10 +1,12 @@
-import React, { useState, useEffect, ReactElement } from 'react'
-import { LogBox, Platform, View } from 'react-native'
+import React, { useState, useEffect, ReactElement, useCallback } from 'react'
+import { Platform } from 'react-native'
+import { LogBox, View, SafeAreaView, StatusBar, Modal, KeyboardAvoidingView } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import SplashScreen from 'react-native-splash-screen'
-import { RecoilRoot } from 'recoil'
+import { RecoilRoot, useRecoilValue } from 'recoil'
 import RNExitApp from 'react-native-exit-app'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { AccAddress } from '@terra-money/terra.js'
 
 import {
   useAuthState,
@@ -14,7 +16,7 @@ import {
   User,
 } from 'lib'
 
-import { COLOR, UTIL } from 'consts'
+import { UTIL } from 'consts'
 
 import { Settings } from 'types'
 import { AppProvider } from './useApp'
@@ -24,34 +26,36 @@ import AppNavigator from '../navigatoin'
 import useSecurity from 'hooks/useSecurity'
 import useNetworks from 'hooks/useNetworks'
 
-import StatusBar from 'components/StatusBar'
 import preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 import keystore, { KeystoreEnum } from 'nativeModules/keystore'
 
-import { getWallet } from 'utils/wallet'
+import { getWallets } from 'utils/wallet'
 import { getSkipOnboarding, settings } from 'utils/storage'
+import { parseDynamicLinkURL } from 'utils/scheme'
 
-import NoInternet from './NoInternet'
 import DebugBanner from './DebugBanner'
 import OnBoarding from './OnBoarding'
-import AppModal from './AppModal'
-import AlertView, { useAlertViewState } from './AlertView'
-import LoadingView from './LoadingView'
 import GlobalTopNotification from './GlobalTopNotification'
 import UnderMaintenance from './UnderMaintenance'
+
+import { useAlertViewState } from './AlertView'
+import { RN_APIS, WebViewContainer } from './WebViewContainer'
+import QRScan from '../components/QrCodeButton/QRScan'
+import AppStore from 'stores/AppStore'
+import { themes } from 'lib/contexts/useTheme'
 
 LogBox.ignoreLogs(['EventEmitter.removeListener'])
 
 const queryClient = new QueryClient()
 
-const App = ({
-  settings: { lang, chain, currency },
+let App = ({
+  settings: { lang, chain, currency, theme },
   user,
 }: {
   settings: Settings
-  user?: User
+  user?: User[]
 }): ReactElement => {
   /* drawer */
   const alertViewProps = useAlertViewState()
@@ -66,10 +70,12 @@ const App = ({
     lang,
     chain: chainOption,
     currency,
+    theme,
   })
   const { current: currentLang = '' } = config.lang
   const { current: currentChainOptions } = config.chain
   const { name: currentChain = '' } = currentChainOptions
+  const { current: currentTheme } = config.theme
 
   const {
     getSecurityErrorMessage,
@@ -79,9 +85,13 @@ const App = ({
   /* onboarding */
   const [showOnBoarding, setshowOnBoarding] = useState<boolean>(false)
 
+  const webviewInstance = useRecoilValue(AppStore.webviewInstance)
+
   useEffect(() => {
     getSkipOnboarding().then((b) => setshowOnBoarding(!b))
   }, [])
+
+  const [isVisibleModal, setIsVisibleModal] = useState(false)
 
   useEffect(() => {
     if (securityCheckFailed !== undefined) {
@@ -95,10 +105,44 @@ const App = ({
   }, [securityCheckFailed])
 
   /* auth */
-  const auth = useAuthState(user)
+  const auth = useAuthState(undefined)
 
   /* render */
   const ready = !!(currentLang && currentChain)
+
+  const onRead = useCallback(
+    ({ data }: { data: string }): void => {
+
+      // @ts-ignore
+      webviewInstance.current?.postMessage(
+        JSON.stringify({
+          reqId: isVisibleModal,
+          type: RN_APIS.QR_SCAN,
+          data: data,
+        })
+      )
+    },
+    [isVisibleModal]
+  )
+
+  const onlyIfScan = ({ data }: { data: string }): string => {
+    const linkUrl = parseDynamicLinkURL(data)
+    const appSheme =
+      data.includes('terrastation:') &&
+      !!UTIL.getParam({ url: data, key: 'payload' })
+    const readable =
+      // if kind of address
+      AccAddress.validate(data) ||
+      // if dynamic link
+      !!linkUrl ||
+      // if app scheme
+      appSheme
+    return readable ? '' : 'Not a valid QR code.'
+  }
+
+  const defaultViewStyle = {
+    flex: 1
+  }
 
   return (
     <>
@@ -107,37 +151,77 @@ const App = ({
           <ConfigProvider value={config}>
             <AuthProvider value={auth}>
               <SafeAreaProvider>
-                <StatusBar theme="white" />
-
-                {securityCheckFailed && Platform.OS === 'ios' ? (
-                  <View
+                <SafeAreaView
+                  style={{
+                    flex: 0,
+                    backgroundColor:
+                    themes?.[currentTheme]?.backgroundColor,
+                  }}
+                />
+                <KeyboardAvoidingView
+                  behavior={Platform.OS === "ios" ? "padding" : "height"}
+                  style={defaultViewStyle}
+                >
+                  <SafeAreaView
                     style={{
-                      flex: 1,
-                      backgroundColor: COLOR.primary._02,
+                      ...defaultViewStyle,
+                      backgroundColor:
+                      themes?.[currentTheme]?.cardColor,
                     }}
-                  />
-                ) : showOnBoarding ? (
-                  <OnBoarding
-                    closeOnBoarding={(): void =>
-                      setshowOnBoarding(false)
-                    }
-                  />
-                ) : (
-                  <>
-                    <AppNavigator />
-                    <AppModal />
-                    <AlertView alertViewProps={alertViewProps} />
-                    <GlobalTopNotification />
-                    <NoInternet />
-                    <LoadingView />
-                    <UnderMaintenance />
-                    {config.chain.current.name !== 'mainnet' && (
-                      <DebugBanner
-                        title={config.chain.current.name.toUpperCase()}
+                  >
+                    <StatusBar
+                      barStyle={themes?.[currentTheme]?.textContent ?? 'light-content'}
+                      backgroundColor={themes?.[currentTheme]?.backgroundColor}
+                    />
+
+                    {(securityCheckFailed) &&
+                    Platform.OS === 'ios' ? (
+                      <View
+                        style={{
+                          flex: 1,
+                        }}
                       />
+                    ) : showOnBoarding ? (
+                      <OnBoarding
+                        closeOnBoarding={(): void =>
+                          setshowOnBoarding(false)
+                        }
+                      />
+                    ) : (
+                      <>
+                        <View style={defaultViewStyle}>
+                          <WebViewContainer
+                            user={user}
+                            setIsVisibleModal={setIsVisibleModal}
+                          />
+                        </View>
+                        <AppNavigator />
+                        <GlobalTopNotification />
+                        <UnderMaintenance />
+                        {config.chain.current.name !== 'mainnet' && (
+                          <DebugBanner
+                            title={config.chain.current.name.toUpperCase()}
+                          />
+                        )}
+                        <Modal
+                          onRequestClose={(): void => {
+                            setIsVisibleModal(false)
+                          }}
+                          transparent
+                          visible={!!isVisibleModal}
+                        >
+                          <QRScan
+                            onRead={onRead}
+                            onlyIfScan={onlyIfScan}
+                            closeModal={(): void => {
+                              setIsVisibleModal(false)
+                            }}
+                          />
+                        </Modal>
+                      </>
                     )}
-                  </>
-                )}
+                  </SafeAreaView>
+                </KeyboardAvoidingView>
               </SafeAreaProvider>
             </AuthProvider>
           </ConfigProvider>
@@ -162,7 +246,7 @@ const clearKeystoreWhenFirstRun = async (): Promise<void> => {
 
 export default (): ReactElement => {
   const [local, setLocal] = useState<Settings>()
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<User[]>()
   const [initComplete, setInitComplete] = useState(false)
 
   useEffect(() => {
@@ -178,10 +262,8 @@ export default (): ReactElement => {
       await migratePreferences()
       const local = await settings.get()
       setLocal(local)
-      if (local.walletName) {
-        const wallet = await getWallet(local.walletName)
-        setUser(wallet)
-      }
+      const wallets = await getWallets()
+      setUser(wallets)
     }
 
     init().then((): void => {

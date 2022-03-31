@@ -19,7 +19,7 @@ const StatusBar = ({
       ) : (
         <DefaultStatusBar
           barStyle="dark-content"
-          backgroundColor="transparent"
+          backgroundColor="black"
           translucent={false}
         />
       )}
