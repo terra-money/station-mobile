@@ -2,11 +2,13 @@ import React from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { COLOR } from 'consts'
 import Text from '../components/Text'
+import { useConfig } from 'lib'
+import { themes } from 'lib/contexts/useTheme'
 
 const DebugBanner = ({ title }: { title: string }): JSX.Element => {
   const { top: insetTop } = useSafeAreaInsets()
+  const { theme } = useConfig()
 
   return (
     <View
@@ -14,19 +16,19 @@ const DebugBanner = ({ title }: { title: string }): JSX.Element => {
         position: 'absolute',
         width: 100,
         height: 21,
-        top: insetTop > 0 ? insetTop - 5 : 5,
-        right: 0,
+        top: 0,
+        left: 0,
       }}
       pointerEvents={'none'}
     >
       <View
         style={{
           height: 21,
-          backgroundColor: COLOR.primary._03,
+          backgroundColor: themes?.[theme.current]?.primaryColor,
           alignItems: 'center',
           justifyContent: 'center',
-          borderTopLeftRadius: 10,
-          borderBottomLeftRadius: 10,
+          borderTopRightRadius: 10,
+          borderBottomRightRadius: 10,
         }}
       >
         <Text
@@ -36,7 +38,7 @@ const DebugBanner = ({ title }: { title: string }): JSX.Element => {
             lineHeight: 15,
             letterSpacing: 1,
 
-            color: '#fff',
+            color: themes?.[theme.current]?.primaryText,
             textAlign: 'center',
           }}
         >

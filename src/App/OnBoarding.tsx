@@ -28,19 +28,19 @@ const PagerContents = [
     image: images.on_boarding_0,
     title: 'Welcome Aboard',
     description:
-      'Terra Station is your gateway to the Terra ecosystem.',
+      'Terra Station is your gateway\nto the Terra ecosystem.',
   },
   {
     image: images.on_boarding_1,
     title: 'Manage Assets',
     description:
-      'Transact, swap, and stake assets on the Terra blockchain.',
+      'Transact, and stake assets\non the Terra blockchain.',
   },
   {
     image: images.on_boarding_2,
     title: 'Get Rewards',
     description:
-      'Delegate LUNA and earn yield from transactions on the Terra network.',
+      'Delegate LUNA and earn yield from\ntransactions on the Terra network.',
   },
   {
     image: images.on_boarding_4,
@@ -215,17 +215,17 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     alignSelf: 'center',
     flex: 1,
-    maxWidth: '85%',
+    maxWidth: '100%',
   },
   SwiperContentTitle: {
-    fontSize: 24,
+    fontSize: 20,
     lineHeight: 36,
     letterSpacing: -0.3,
     textAlign: 'center',
     marginBottom: 5,
   },
   SwiperContentDesc: {
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 24,
     textAlign: 'center',
   },

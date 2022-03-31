@@ -1,24 +1,19 @@
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import {
   IWalletConnectOptions,
-  IPushServerOptions,
-} from '@walletconnect/types'
+  IPushServerOptions, IWalletConnectSession
+} from "@walletconnect/types";
 import WalletConnect from '@walletconnect/client'
 import _ from 'lodash'
 
-import { UTIL } from 'consts'
-
 import WalletConnectStore from 'stores/WalletConnectStore'
-import Preferences, {
-  PreferencesEnum,
-} from 'nativeModules/preferences'
 
 const useWalletConnect = (): {
   newWalletConnect: (
     connectorOpts: IWalletConnectOptions,
     pushServerOpts?: IPushServerOptions
   ) => WalletConnect
-  recoverWalletConnect: () => Promise<void>
+  recoverWalletConnect: (data: any) => void
   saveWalletConnector: (connector: WalletConnect) => void
   removeWalletConnect: (handshakeTopic: string) => void
   disconnectWalletConnect: (handshakeTopic: string) => void
@@ -49,12 +44,10 @@ const useWalletConnect = (): {
     )
   }
 
-  const recoverWalletConnect = async (): Promise<void> => {
-    const sessionData = await Preferences.getString(
-      PreferencesEnum.walletConnectSession
-    )
-    if (_.some(sessionData)) {
-      const sessions = UTIL.jsonTryParse<any[]>(sessionData)
+  const recoverWalletConnect = (
+    sessions: Record<string, IWalletConnectSession>
+  ): void => {
+    if (_.some(sessions)) {
       const connectors = _.reduce(
         sessions,
         (result, session) => {
@@ -80,27 +73,10 @@ const useWalletConnect = (): {
         [connector.handshakeTopic]: connector,
       }
     })
-
-    const sessions = _.filter(walletConnectors, (c) => c?.connected)
-      .map((x) => x.session)
-      .concat([connector.session])
-
-    Preferences.setString(
-      PreferencesEnum.walletConnectSession,
-      JSON.stringify(sessions)
-    )
   }
 
   const removeWalletConnect = (handshakeTopic: string): void => {
     setWalletConnectors((ori) => _.omit(ori, [handshakeTopic]))
-    const sessionList = _.filter(
-      walletConnectors,
-      (c) => c?.connected && c.handshakeTopic !== handshakeTopic
-    ).map((x) => x.session)
-    Preferences.setString(
-      PreferencesEnum.walletConnectSession,
-      JSON.stringify(sessionList)
-    )
   }
 
   const disconnectWalletConnect = (handshakeTopic: string): void => {

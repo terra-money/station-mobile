@@ -14,13 +14,16 @@ target 'TerraStation' do
   pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID"
 
   pod 'TrezorCrypto'
-  pod 'IOSSecuritySuite'  
+  pod 'IOSSecuritySuite'
 
   config = use_native_modules!
   use_react_native!(
     :path => config["reactNativePath"],
     :hermes_enabled => true
   )
+
+
+
 
   target 'TerraStationTests' do
     inherit! :complete
