@@ -10,7 +10,7 @@ import {
 import _ from 'lodash'
 import { useNavigation } from '@react-navigation/core'
 
-import { COLOR, LAYOUT } from 'consts'
+import { COLOR, LAYOUT, UTIL } from 'consts'
 
 import { Field, Option, Options } from 'lib'
 
@@ -119,6 +119,13 @@ const SelectInputForm = ({
   const error = inputError || selectError
   const isCoinSelected = _.some(selectField.attrs.value)
 
+  const handleOnChange = (value: string) => {
+    if (value.charAt(value.length - 1) === ',') {
+      value = UTIL.lastCommaToDot(value)
+    }
+    inputField.setValue?.(value)
+  }
+
   return (
     <View
       style={{
@@ -148,7 +155,7 @@ const SelectInputForm = ({
             defaultValue={inputField.attrs.defaultValue}
             editable={!disabled && !inputField.attrs.readOnly}
             placeholder={inputField.attrs.placeholder}
-            onChangeText={inputField.setValue}
+            onChangeText={handleOnChange}
             containerStyle={{
               flex: 2,
               borderWidth: 0,

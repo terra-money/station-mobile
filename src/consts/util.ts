@@ -41,6 +41,10 @@ const delComma = (str: string | number): string => {
   return _.toString(str).replace(/,/g, '')
 }
 
+const lastCommaToDot = (str: string | number): string => {
+  return _.toString(str).replace(/,\s*$/, '.')
+}
+
 const extractNumber = (str: string): string => str.replace(/\D+/g, '')
 
 const isNativeTerra = (str: string): boolean =>
@@ -179,6 +183,7 @@ export default {
   jsonTryStringify,
   setComma,
   delComma,
+  lastCommaToDot,
   extractNumber,
   isNativeTerra,
   isNativeDenom,

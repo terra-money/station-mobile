@@ -88,6 +88,9 @@ const FormInput = ({ field }: { field: Field }): ReactElement => {
   const onChangeText = (text: string): void => {
     let value = text
     if (field.attrs.type === 'number') {
+      if (text.charAt(text.length - 1) === ',') {
+        text = UTIL.lastCommaToDot(text)
+      }
       const onlyNumber = UTIL.delComma(text)
       const bn = new BigNumber(onlyNumber).dp(6, BigNumber.ROUND_DOWN)
       if (bn.isNaN()) {
