@@ -5,7 +5,7 @@ import { Alert } from 'react-native'
 
 import { Token, uToken } from 'types'
 
-import currency from './currency'
+import { CURRENCY } from 'consts'
 
 const TERRA_DECIMAL = 1e6
 
@@ -50,7 +50,7 @@ const extractNumber = (str: string): string => str.replace(/\D+/g, '')
 const isNativeTerra = (str: string): boolean =>
   str.startsWith('u') &&
   str.length === 4 &&
-  currency.currencies.includes(str.slice(1).toUpperCase())
+  CURRENCY.currencies.includes(str.slice(1).toUpperCase())
 
 const isNativeDenom = (str: string): boolean =>
   str === 'uluna' || isNativeTerra(str)
