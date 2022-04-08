@@ -205,7 +205,7 @@ const ConfirmForm = ({
     setConfirmDisable(true)
     setIsListenConfirmRemove(false)
 
-    if (isUseBioAuth) {
+    if (isUseBioAuth && !user.ledger) {
       const isSuccess = await authenticateBiometric()
       if (isSuccess) {
         const password = await getBioAuthPassword({
