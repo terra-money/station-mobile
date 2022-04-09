@@ -95,6 +95,10 @@ const useTx = ({
         ? SignMode.SIGN_MODE_LEGACY_AMINO_JSON
         : SignMode.SIGN_MODE_DIRECT,
     })
+
+    // disconnect ledger
+    user.ledger && TransportBLE.disconnect(password)
+    
     const result = await lcd.tx.broadcastSync(signed)
     if ('code' in result && Number(result.code) !== 0) {
       throw new Error(result.raw_log)

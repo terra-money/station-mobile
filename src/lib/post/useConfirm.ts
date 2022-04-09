@@ -188,7 +188,7 @@ export default (
 
       const { gasPrices } = calcFee!
       const lcd = new LCDClient({ chainID, URL, gasPrices })
-      const key = await getKey(name ? { name, password: ledger ? device : password } : undefined)
+      const { key, disconnect } = await getKey(name ? { name, password: ledger ? device : password } : undefined)
       const wallet = new Wallet(lcd, key)
       const {
         account_number,
@@ -201,6 +201,10 @@ export default (
         chainID,
         signMode: ledger ? SignMode.SIGN_MODE_LEGACY_AMINO_JSON : SignMode.SIGN_MODE_DIRECT,
       })
+
+      // disconnect ledger
+      ledger && disconnect && disconnect()
+
       await broadcast(signed)
     } catch (error) {
       const { message } = error as PostError

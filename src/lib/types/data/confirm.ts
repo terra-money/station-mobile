@@ -63,4 +63,4 @@ export type Sign = (params: {
 export type GetKey = (params?: {
   name: string
   password: string
-}) => Promise<Key>
+}) => Promise<{ key: Key, disconnect?: () => void }>

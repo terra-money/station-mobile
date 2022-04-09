@@ -63,6 +63,9 @@ const SelectPath = ({ route }: Props): ReactElement => {
           path: parseInt(path),
         },
       })
+
+      // disconnect ledger
+      TransportBLE.disconnect(route.params.device)
     } catch (e: any) {
       setLoading(false)
       setError(e.toString())
