@@ -49,7 +49,7 @@ const DeviceButton = ({
         borderWidth: 1,
         borderColor: '#d2d9f0',
       }}
-      onPress={():void => onPress(id)}
+      onPress={(): void => onPress(id)}
     />
   )
 }
@@ -61,7 +61,7 @@ interface DeviceInterface {
 
 const DeviceSelector = ({
   onSubmit,
-  style
+  style,
 }: {
   onSubmit: (id: string) => void
   style?: ViewStyle
@@ -88,7 +88,15 @@ const DeviceSelector = ({
                   name: e.descriptor.localName || e.descriptor.name,
                   id: e.descriptor.id,
                 }
+<<<<<<< HEAD
                 setDevices([...devices, device])
+=======
+                
+                !devices.some((d) => d.id === device.id) &&
+                  devices.push(device)
+                
+                setDevices([...devices])
+>>>>>>> 56c1ae6 (check if device is already in the array)
               }
             },
             error: (error: any): void => {
@@ -120,7 +128,12 @@ const DeviceSelector = ({
     <View style={style}>
       <View>
         {devices.map((d) => (
-          <DeviceButton name={d.name} id={d.id} key={d.id} onPress={onSubmit}/>
+          <DeviceButton
+            name={d.name}
+            id={d.id}
+            key={d.id}
+            onPress={onSubmit}
+          />
         ))}
         {isScanning ? <Loading /> : <></>}
       </View>
