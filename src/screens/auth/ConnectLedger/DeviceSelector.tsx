@@ -88,15 +88,11 @@ const DeviceSelector = ({
                   name: e.descriptor.localName || e.descriptor.name,
                   id: e.descriptor.id,
                 }
-<<<<<<< HEAD
-                setDevices([...devices, device])
-=======
-                
+
                 !devices.some((d) => d.id === device.id) &&
-                  devices.push(device)
-                
+                devices.push(device)
+
                 setDevices([...devices])
->>>>>>> 56c1ae6 (check if device is already in the array)
               }
             },
             error: (error: any): void => {

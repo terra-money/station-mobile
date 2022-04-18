@@ -62,46 +62,18 @@ export const useConfirm = (): {
     return useStationConfirm(confirm, {
       user,
       password: '',
-<<<<<<< HEAD
       getKey: async (params): Promise<Key> => {
         if(user.ledger) {
           const { password } = params!
           const transport = await TransportBLE.open(password) /// select device
-          return await LedgerKey.create(transport, user.path) 
-=======
-      sign: async ({ tx, base, password }) => {
-        const decyrptedKey = await getDecyrptedKey(
-          user.name,
-          password
-        )
-        if (_.isEmpty(decyrptedKey)) {
-          throw new Error('Incorrect password')
-        }
-        const rk = new RawKey(Buffer.from(decyrptedKey, 'hex'))
-        const signer = await getSigner(rk.privateKey, rk.publicKey)
-        const signedTx = await signTx(tx, signer, base)
-        return signedTx
-      },
-      getKey: async (
-        params
-      ): Promise<{ key: Key; disconnect?: () => void }> => {
-        if (user.ledger) {
-          const { password } = params!
-          const transport = await TransportBLE.open(password) // select device
-          const key = await LedgerKey.create(transport, user.path)
-          return {
-            key,
-            disconnect: () => TransportBLE.disconnect(password),
-          }
->>>>>>> e208b2f (disconnect after signature)
+          return await LedgerKey.create(transport, user.path)
         } else {
           const { name, password } = params!
           const decyrptedKey = await getDecyrptedKey(name, password)
           if (_.isEmpty(decyrptedKey)) {
             throw new Error('Incorrect password')
           }
-          const key = new RawKey(Buffer.from(decyrptedKey, 'hex'))
-          return { key }
+          return new RawKey(Buffer.from(decyrptedKey, 'hex'))
         }
       },
     })
