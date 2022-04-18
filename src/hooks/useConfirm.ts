@@ -62,18 +62,25 @@ export const useConfirm = (): {
     return useStationConfirm(confirm, {
       user,
       password: '',
-      getKey: async (params): Promise<Key> => {
-        if(user.ledger) {
+      getKey: async (
+        params
+      ): Promise<{ key: Key; disconnect?: () => void }> => {
+        if (user.ledger) {
           const { password } = params!
-          const transport = await TransportBLE.open(password) /// select device
-          return await LedgerKey.create(transport, user.path)
+          const transport = await TransportBLE.open(password) // select device
+          const key = await LedgerKey.create(transport, user.path)
+          return {
+            key,
+            disconnect: () => TransportBLE.disconnect(password),
+          }
         } else {
           const { name, password } = params!
           const decyrptedKey = await getDecyrptedKey(name, password)
           if (_.isEmpty(decyrptedKey)) {
             throw new Error('Incorrect password')
           }
-          return new RawKey(Buffer.from(decyrptedKey, 'hex'))
+          const key = new RawKey(Buffer.from(decyrptedKey, 'hex'))
+          return { key }
         }
       },
     })
