@@ -173,7 +173,14 @@ const Render = ({
 
   return (
     <>
-      <Body theme={'sky'} containerStyle={{ paddingTop: 20 }}>
+      <Body
+        theme={'sky'}
+        scrollable
+        containerStyle={{
+          flexGrow: 1,
+          paddingTop: 20,
+        }}
+      >
         {localPeerMeta ? (
           <View
             style={{
@@ -195,7 +202,13 @@ const Render = ({
               <PeerMetaInfo peerMeta={localPeerMeta} />
             </View>
 
-            <View style={{ flexDirection: 'row', marginBottom: 40 }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: 30,
+                marginBottom: 40,
+              }}
+            >
               <View style={{ flex: 1 }}>
                 <Button
                   title={'Deny'}
