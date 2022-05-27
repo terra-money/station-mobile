@@ -17,12 +17,15 @@ import History from './History'
 import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
+import { useIsClassic } from "lib/contexts/ConfigContext";
 
 type VisibleSmallType = 'show' | 'hide'
 
 type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
 const Wallet = (props: Props): ReactElement => {
+  const isClassic = useIsClassic()
+
   const [loadingComplete, setLoadingComplete] = useState(false)
   const [localHideSmall, setlocalHideSmall] = useState<boolean>()
 
@@ -76,11 +79,15 @@ const Wallet = (props: Props): ReactElement => {
                   }}
                   {...props}
                 />
-                <History
-                  key={refreshingKey}
-                  {...{ user }}
-                  {...props}
-                />
+                {
+                  isClassic && (
+                    <History
+                      key={refreshingKey}
+                      {...{ user }}
+                      {...props}
+                    />
+                  )
+                }
               </Fragment>
             </Body>
           )}

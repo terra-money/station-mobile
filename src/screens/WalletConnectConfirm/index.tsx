@@ -19,7 +19,7 @@ import _ from 'lodash'
 import WalletConnect from '@walletconnect/client'
 import { IClientMeta } from '@walletconnect/types'
 
-import { User, format, useConfig } from 'lib'
+import { User, format, useConfig, useIsClassic } from "lib";
 
 import { Button, Icon, Loading, Text, WarningBox } from 'components'
 import Body from 'components/layout/Body'
@@ -302,6 +302,8 @@ const Render = ({
   user: User
   id: number
 } & Props): ReactElement => {
+  const isClassic = useIsClassic()
+
   const autoCloseTimer = React.useRef<NodeJS.Timeout>()
   const [initComplete, setInitComplete] = useState(false)
   const [
@@ -342,7 +344,7 @@ const Render = ({
   const initPage = async (): Promise<void> => {
     setIsUseBioAuth(await getIsUseBioAuth())
 
-    const txOption = txParamParser(route.params?.params)
+    const txOption = txParamParser(route.params?.params, isClassic)
     setTx(txOption)
 
     autoCloseTimer.current = setTimeout(() => {

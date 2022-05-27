@@ -49,6 +49,7 @@ const useWalletConnectConfirm = ({
   user: User
   navigation: StackNavigationProp<RootStackParams>
 }): UseWalletConnectConfirmReturn => {
+
   const [
     confirmResult,
     setConfirmResult,

@@ -20,7 +20,7 @@ const SelectDevice = (): ReactElement => {
     <>
       <SubHeader theme={'sapphire'} title={'Select device'} />
       <Body theme={'sky'} containerStyle={styles.container}>
-        <DeviceSelector onSubmit={(id: string): void => navigate('SelectPath', { device: id })} />
+        <DeviceSelector onSubmit={(id: string, name: string): void => navigate('SelectPath', { device: id, name })} />
       </Body>
     </>
   )

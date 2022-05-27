@@ -27,14 +27,14 @@ export default (user: User, config?: Config): AssetsPage => {
   const isClassic = useIsClassic()
 
   const bank = useBank(user)
-  const tokenBalances = useTokenBalance(user.address)
+  const tokenBalances = isClassic && useTokenBalance(user.address)
   const [hideSmall, setHideSmall] = useState<boolean>(
     config?.hideSmall !== undefined ? config.hideSmall : false
   )
 
   const load = (): void => {
     bank.execute()
-    tokenBalances.refetch()
+    isClassic && tokenBalances?.refetch()
   }
 
   const render = (
@@ -128,7 +128,6 @@ export default (user: User, config?: Config): AssetsPage => {
 
   const renderV2 = (
     { balance }: BankDataV2,
-    tokenList?: TokenBalance[]
   ): AssetsUI => ({
     card:
       !balance?.length
@@ -175,21 +174,7 @@ export default (user: User, config?: Config): AssetsPage => {
           }),
         send: t('Post:Send:Send'),
       },
-    tokens: {
-      title: 'CW20 Tokens',
-      list:
-        tokenList?.map(
-          ({ token, symbol, icon, balance, decimals }) => {
-            const display = {
-              value: format.amount(balance, decimals),
-              unit: symbol,
-            }
-
-            return { icon, token, display }
-          }
-        ) ?? [],
-      send: t('Post:Send:Send'),
-    },
+    tokens: undefined,
     vesting: undefined,
   })
 
@@ -232,7 +217,8 @@ export default (user: User, config?: Config): AssetsPage => {
     bank,
     { loading: bank.loading || tokenBalances.isLoading },
     bank.data && {
-      ui: isClassic ? render(bank.data, tokenBalances.list) : renderV2(bank.data, tokenBalances.list)
+      ui: isClassic ? render(bank.data, tokenBalances.list) :
+        renderV2(bank.data)
     }
   )
 }

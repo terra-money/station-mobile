@@ -9,6 +9,7 @@ import useForm from '../hooks/useForm'
 import validateForm from './validateForm'
 import { isAvailable, getFeeDenomList } from './validateConfirm'
 import { Coins, MsgDeposit } from '@terra-money/terra.js'
+import { useIsClassic } from "lib/contexts/ConfigContext";
 
 interface Values {
   input: string
@@ -19,6 +20,8 @@ export default (
   user: User,
   { id, title }: { id: string; title: string }
 ): PostPage => {
+  const isClassic = useIsClassic()
+
   const { t } = useTranslation()
   const { data: bank, loading, error } = useBank(user)
   const [submitted, setSubmitted] = useState(false)
@@ -97,7 +100,7 @@ export default (
     ],
     feeDenom: { list: getFeeDenomList(bank.balance) },
     validate: (fee: CoinItem): boolean =>
-      isAvailable({ amount, denom, fee }, bank.balance),
+      isAvailable({ amount, denom, fee }, bank.balance, isClassic),
     submitLabels: [
       t('Post:Governance:Deposit'),
       t('Post:Governance:Depositing...'),

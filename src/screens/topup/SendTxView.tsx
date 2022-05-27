@@ -13,7 +13,7 @@ import _ from 'lodash'
 
 import { COLOR, FONT } from 'consts'
 
-import { useAuth, format, useBank } from 'lib'
+import { useAuth, format, useBank, useIsClassic } from "lib";
 import { Text, Button, Select, Icon, FormInput } from 'components'
 
 import BigNumber from 'bignumber.js'
@@ -57,6 +57,8 @@ interface SchemeArgs {
 }
 
 const SendTxView = (props: Props): ReactElement => {
+  const isClassic = useIsClassic()
+
   const { user } = useAuth()
   const { data: bank } = useBank(user!)
   const { alert } = useAlert()
@@ -170,9 +172,9 @@ const SendTxView = (props: Props): ReactElement => {
 
         let msgs = undefined
         if (isAmino) {
-          msgs = _.map(tx.msgs, (i) => Msg.fromAmino(i))
+          msgs = _.map(tx.msgs, (i) => Msg.fromAmino(i, isClassic))
         } else {
-          msgs = _.map(tx.msgs, (i) => Msg.fromData(i))
+          msgs = _.map(tx.msgs, (i) => Msg.fromData(i, isClassic))
         }
 
         const txBody = new TxBody(msgs, tx.memo, undefined)

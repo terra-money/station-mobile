@@ -48,7 +48,10 @@ type LedgerWallet = {
 /* ConnectLedger */
 export type ConnectLedgerStackParams = {
   SelectDevice: undefined
-  SelectPath: { device: string }
+  SelectPath: {
+    device: string
+    name: string
+  }
   LedgerConnected: { wallet: LedgerWallet }
 }
 

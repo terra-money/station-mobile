@@ -23,6 +23,7 @@ import {
   MsgDelegate,
   MsgUndelegate,
 } from '@terra-money/terra.js'
+import { useIsClassic } from "lib/contexts/ConfigContext";
 
 interface Values {
   from: string
@@ -46,6 +47,8 @@ export default (
   user: User,
   { validatorAddress, type }: Props
 ): PostPage => {
+  const isClassic = useIsClassic()
+
   const isUndelegation = type === DelegateType.U
   const isRedelegation = type === DelegateType.R
 
@@ -212,8 +215,8 @@ export default (
           ),
         ],
         validate: (fee: CoinItem): boolean =>
-          isDelegatable({ amount, denom, fee }, bank.balance) &&
-          isFeeAvailable(fee, bank.balance),
+          isDelegatable({ amount, denom, fee }, bank.balance, isClassic) &&
+          isFeeAvailable(fee, bank.balance, isClassic),
         submitLabels: [
           t('Post:Staking:Delegate'),
           t('Post:Staking:Delegating...'),
@@ -239,7 +242,7 @@ export default (
           ),
         ],
         validate: (fee: CoinItem): boolean =>
-          isFeeAvailable(fee, bank.balance),
+          isFeeAvailable(fee, bank.balance, isClassic),
         submitLabels: [
           t('Post:Staking:Redelegate'),
           t('Post:Staking:Redelegating...'),
@@ -266,7 +269,7 @@ export default (
           ),
         ],
         validate: (fee: CoinItem): boolean =>
-          isFeeAvailable(fee, bank.balance),
+          isFeeAvailable(fee, bank.balance, isClassic),
         submitLabels: [
           t('Post:Staking:Undelegate'),
           t('Post:Staking:Undelegating...'),

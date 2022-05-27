@@ -12,7 +12,7 @@ const DeviceButton = ({
 }: {
   name: string
   id: string
-  onPress: (id: string) => void
+  onPress: (id: string, name: string) => void
 }): ReactElement => {
   return (
     <Button
@@ -49,7 +49,7 @@ const DeviceButton = ({
         borderWidth: 1,
         borderColor: '#d2d9f0',
       }}
-      onPress={(): void => onPress(id)}
+      onPress={(): void => onPress(id, name)}
     />
   )
 }
@@ -63,7 +63,7 @@ const DeviceSelector = ({
   onSubmit,
   style,
 }: {
-  onSubmit: (id: string) => void
+  onSubmit: (id: string, name: string) => void
   style?: ViewStyle
 }): ReactElement => {
   const [isScanning, setScanning] = useState(false)
@@ -90,7 +90,7 @@ const DeviceSelector = ({
                 }
 
                 !devices.some((d) => d.id === device.id) &&
-                devices.push(device)
+                  devices.push(device)
 
                 setDevices([...devices])
               }

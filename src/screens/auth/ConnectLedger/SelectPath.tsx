@@ -46,10 +46,12 @@ const SelectPath = ({ route }: Props): ReactElement => {
         parseInt(path)
       )
 
+      const ledgerName = route.params.name.replaceAll(' ', '') || 'Ledger'
+
       await addWallet({
         wallet: {
           address: wallet.accAddress,
-          name: 'Ledger',
+          name: ledgerName,
           ledger: true,
           path: parseInt(path),
         },
@@ -58,7 +60,7 @@ const SelectPath = ({ route }: Props): ReactElement => {
       navigate('LedgerConnected', {
         wallet: {
           address: wallet.accAddress,
-          name: 'Ledger',
+          name: ledgerName,
           ledger: true,
           path: parseInt(path),
         },

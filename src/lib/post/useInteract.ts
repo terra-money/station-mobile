@@ -14,6 +14,7 @@ import useBank from '../api/useBank'
 import useForm from '../hooks/useForm'
 import { getFeeDenomList, isFeeAvailable } from './validateConfirm'
 import { useCoinsFields } from './txHooks'
+import { useIsClassic } from "lib/contexts/ConfigContext";
 
 interface Values {
   address: string
@@ -45,6 +46,7 @@ export default (
   const initial = { address, json: '' }
   const form = useForm<Values>(initial, validate)
   const { values, invalid, getDefaultProps, getDefaultAttrs } = form
+  const isClassic = useIsClassic()
 
   /* render */
   const coinsFields = useCoinsFields(denoms)
@@ -88,7 +90,7 @@ export default (
     contents: [],
     feeDenom: { list: getFeeDenomList(bank.balance) },
     validate: (fee: TerraCoin): boolean =>
-      isFeeAvailable(fee, bank.balance),
+      isFeeAvailable(fee, bank.balance, isClassic),
     submitLabels: [
       t('Post:Contracts:Interact'),
       t('Post:Contracts:Interacting...'),

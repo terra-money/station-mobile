@@ -4,6 +4,7 @@ import _ from 'lodash'
 
 import { TxParam } from 'types/tx'
 import dev from './dev'
+import { useIsClassic } from "lib/contexts/ConfigContext";
 
 export const createTxOptionsToTxParam = (
   txOptions: CreateTxOptions
@@ -30,7 +31,7 @@ export const createTxOptionsToTxParam = (
   return ret
 }
 
-export const txParamParser = (txParam: TxParam): CreateTxOptions => {
+export const txParamParser = (txParam: TxParam, isClassic: boolean): CreateTxOptions => {
   const parse = UTIL.jsonTryParse<{ type: string }>(txParam.msgs[0])
   const isAmino = (parse && 'type' in parse) || false
 
@@ -42,8 +43,8 @@ export const txParamParser = (txParam: TxParam): CreateTxOptions => {
         const jsonMsg = UTIL.jsonTryParse<any>(msg)
         if (jsonMsg) {
           const convertMsg = isAmino
-            ? Msg.fromAmino(jsonMsg)
-            : Msg.fromData(jsonMsg)
+            ? Msg.fromAmino(jsonMsg, isClassic)
+            : Msg.fromData(jsonMsg, isClassic)
 
           result.push(convertMsg)
         }
