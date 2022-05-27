@@ -28,7 +28,6 @@ export default <T>(
       setLoading(true)
       setError(undefined)
 
-      console.log(`${url}?${query}`);
       const { token: cancelToken } = source
       const { data } = await fcd.get<T>(`${url}?${query}`, {
         cancelToken,
