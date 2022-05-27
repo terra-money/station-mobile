@@ -57,8 +57,6 @@ interface SchemeArgs {
 }
 
 const SendTxView = (props: Props): ReactElement => {
-  const isClassic = useIsClassic()
-
   const { user } = useAuth()
   const { data: bank } = useBank(user!)
   const { alert } = useAlert()
@@ -70,6 +68,8 @@ const SendTxView = (props: Props): ReactElement => {
   const [walletAddress, setWalletAddress] = useState('')
   const [returnScheme, setReturnScheme] = useState('')
   const [endpointAddress, setEndpointAddress] = useState('')
+
+  const isClassic = useIsClassic()
 
   const [unsignedTx, setUnsignedTx] = useRecoilState(
     TopupStore.unsignedTx

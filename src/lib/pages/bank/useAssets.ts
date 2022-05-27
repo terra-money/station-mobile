@@ -24,17 +24,16 @@ interface Config {
 
 export default (user: User, config?: Config): AssetsPage => {
   const { t } = useTranslation()
-  const isClassic = useIsClassic()
-
   const bank = useBank(user)
-  const tokenBalances = isClassic && useTokenBalance(user.address)
+  const isClassic = useIsClassic()
+  const tokenBalances = useTokenBalance(user.address)
   const [hideSmall, setHideSmall] = useState<boolean>(
     config?.hideSmall !== undefined ? config.hideSmall : false
   )
 
   const load = (): void => {
     bank.execute()
-    isClassic && tokenBalances?.refetch()
+    tokenBalances?.refetch()
   }
 
   const render = (

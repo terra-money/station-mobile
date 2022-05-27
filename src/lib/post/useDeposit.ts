@@ -20,12 +20,11 @@ export default (
   user: User,
   { id, title }: { id: string; title: string }
 ): PostPage => {
-  const isClassic = useIsClassic()
-
   const { t } = useTranslation()
   const { data: bank, loading, error } = useBank(user)
   const [submitted, setSubmitted] = useState(false)
   const v = validateForm(t)
+  const isClassic = useIsClassic()
 
   /* max */
   const available = find(`${denom}:available`, bank?.balance) ?? '0'

@@ -1,4 +1,4 @@
-import { CoinItem, Balance, useIsClassic } from "..";
+import { CoinItem, Balance, useIsClassic, BalanceV2 } from "..";
 import { find, plus, lte } from '../utils'
 
 interface Params {
@@ -7,7 +7,7 @@ interface Params {
   fee: CoinItem
 }
 
-type Validate = (params: Params, balance: Balance[], isClassic?: boolean) => boolean
+type Validate = (params: Params, balance: Balance[] | BalanceV2[], isClassic?: boolean) => boolean
 
 export const isAvailable: Validate = (params, balance, isClassic) => {
   const { amount, denom, fee } = params
@@ -33,12 +33,12 @@ export const isDelegatable: Validate = (params, balance, isClassic) => {
 
 export const isFeeAvailable = (
   fee: CoinItem,
-  balance: Balance[],
+  balance: Balance[] | BalanceV2[],
   isClassic?: boolean
 ): boolean => {
   const available = find(`${fee.denom}:${isClassic ? 'available' : 'amount'}`, balance) || '0'
   return lte(fee.amount, available)
 }
 
-export const getFeeDenomList = (balance: Balance[]): string[] =>
+export const getFeeDenomList = (balance: Balance[] | BalanceV2[]): string[] =>
   balance.map(({ denom }) => denom)

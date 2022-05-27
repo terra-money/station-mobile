@@ -24,8 +24,6 @@ type VisibleSmallType = 'show' | 'hide'
 type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
 const Wallet = (props: Props): ReactElement => {
-  const isClassic = useIsClassic()
-
   const [loadingComplete, setLoadingComplete] = useState(false)
   const [localHideSmall, setlocalHideSmall] = useState<boolean>()
 
@@ -34,6 +32,7 @@ const Wallet = (props: Props): ReactElement => {
     await getWalletSettings()
     setRefreshingKey((ori) => ori + 1)
   }
+  const isClassic = useIsClassic()
 
   const getWalletSettings = async (): Promise<void> => {
     const hideSmall = (await Preferences.getString(

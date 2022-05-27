@@ -85,15 +85,16 @@ const StakingTab: TabType = {
 }
 
 const Tabs = (): ReactElement => {
+  const tabBarLabelPosition =
+    LAYOUT.getScreenWideType() === 'wide'
+      ? 'beside-icon'
+      : 'below-icon'
+
   const isClassic = useIsClassic()
   const tabScreenItemList: TabType[] = isClassic
     ? [WalletTab, SwapTab, StakingTab]
     : [WalletTab, StakingTab]
 
-  const tabBarLabelPosition =
-    LAYOUT.getScreenWideType() === 'wide'
-      ? 'beside-icon'
-      : 'below-icon'
   return (
     <Tab.Navigator
       screenOptions={{

@@ -139,8 +139,6 @@ const AvailableAssets = ({
   setlocalHideSmall: (value: boolean) => void
   refreshingKey: number
 } & Props): ReactElement => {
-  const isClassic = useIsClassic()
-
   const { ui, load, setHideSmall } = useAssets(user, {
     hideSmall: localHideSmall,
   })
@@ -150,6 +148,7 @@ const AvailableAssets = ({
   const { addListener, removeListener } = useNavigation()
 
   const chainName = useCurrentChainName()
+  const isClassic = useIsClassic()
 
   // If list length is 0 on hiding small-balance-assets, then show small-balance-assets.
   useEffect(() => {
@@ -225,7 +224,7 @@ const AvailableAssets = ({
           </View>
         )}
 
-        {isClassic && tokens.list.length > 0 && (
+        {tokens?.list?.length > 0 && (
           <View style={styles.section}>
             <Row
               style={{
@@ -253,27 +252,31 @@ const AvailableAssets = ({
             <AvailableList {...tokens} />
           </View>
         )}
-        <Button
-          onPress={(): void => {
-            setIsVisibleModal('add')
-          }}
-          size="sm"
-          title={
-            <Row style={{ alignItems: 'center' }}>
-              <Icon name="add" size={16} color={COLOR.primary._02} />
-              <Text
-                style={{ color: COLOR.primary._02 }}
-                fontType="medium"
-              >
-                Add Token
-              </Text>
-            </Row>
-          }
-          containerStyle={{
-            marginBottom: 30,
-            backgroundColor: '#E8EEFC',
-          }}
-        />
+        {
+          isClassic && (
+            <Button
+              onPress={(): void => {
+                setIsVisibleModal('add')
+              }}
+              size="sm"
+              title={
+                <Row style={{ alignItems: 'center' }}>
+                  <Icon name="add" size={16} color={COLOR.primary._02} />
+                  <Text
+                    style={{ color: COLOR.primary._02 }}
+                    fontType="medium"
+                  >
+                    Add Token
+                  </Text>
+                </Row>
+              }
+              containerStyle={{
+                marginBottom: 30,
+                backgroundColor: '#E8EEFC',
+              }}
+            />
+          )
+        }
         <Modal
           onRequestClose={(): void => {
             setIsVisibleModal(false)

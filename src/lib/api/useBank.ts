@@ -4,8 +4,8 @@ import useFCD from './useFCD'
 import { useIsClassic } from "lib/contexts/ConfigContext";
 
 export default ({ address }: { address: string }): API<BankData | BankDataV2> => {
-  const isClassic = useIsClassic()
   const { data, ...rest } = useFCD<BankData | BankDataV2>({ url: `/v1/bank/${address}`})
+  const isClassic = useIsClassic()
 
   const fixAvailable = (bank: BankData): Balance[] => {
 

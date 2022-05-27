@@ -60,30 +60,14 @@ export default ({ address }: User): TxsPage => {
   const ruleset = createActionRuleSet(currentChain)
   const logMatcher = createLogMatcherForActions(ruleset)
 
-  const getCanonicalMsgs = (tx: Tx): Action[] => {
-    const matchedMsg = getTxCanonicalMsgs(
-      JSON.stringify(tx),
-      logMatcher
-    )
 
-    if (matchedMsg) {
-      const flatted = matchedMsg
-        .map((matchedLog) =>
-          matchedLog.map(({ transformed }) => transformed)
-        )
+  const getCanonicalMsgs = (tx: Tx) => {
+    const matchedMsg = getTxCanonicalMsgs(tx, logMatcher)
+    return matchedMsg
+      ? matchedMsg
+        .map((matchedLog) => matchedLog.map(({ transformed }) => transformed))
         .flat(2)
-
-      const filtered: Action[] = []
-      _.forEach(flatted, (x) => {
-        if (x) {
-          filtered.push(x)
-        }
-      })
-
-      return filtered
-    }
-
-    return []
+      : []
   }
 
   useEffect(() => {

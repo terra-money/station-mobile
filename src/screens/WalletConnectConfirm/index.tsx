@@ -302,14 +302,13 @@ const Render = ({
   user: User
   id: number
 } & Props): ReactElement => {
-  const isClassic = useIsClassic()
-
   const autoCloseTimer = React.useRef<NodeJS.Timeout>()
   const [initComplete, setInitComplete] = useState(false)
   const [
     isListenConfirmRemove,
     setIsListenConfirmRemove,
   ] = useRecoilState(WalletConnectStore.isListenConfirmRemove)
+  const isClassic = useIsClassic()
 
   const [tx, setTx] = useState<CreateTxOptions>()
 

@@ -47,13 +47,12 @@ export default (
   user: User,
   { validatorAddress, type }: Props
 ): PostPage => {
-  const isClassic = useIsClassic()
-
   const isUndelegation = type === DelegateType.U
   const isRedelegation = type === DelegateType.R
 
   const { t } = useTranslation()
   const v = validateForm(t)
+  const isClassic = useIsClassic()
 
   /* ready */
   const { address } = user

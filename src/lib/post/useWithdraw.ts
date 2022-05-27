@@ -6,12 +6,11 @@ import { isFeeAvailable, getFeeDenomList } from './validateConfirm'
 import { useIsClassic } from "lib/contexts/ConfigContext";
 
 export default (user: User, props: WithdrawProps): PostPage => {
-  const isClassic = useIsClassic()
-
   const { amounts, validators } = props
   const { t } = useTranslation()
   const { data: bank, loading, error } = useBank(user)
   const { address: to } = user
+  const isClassic = useIsClassic()
 
   const msgs = validators?.map(
     (addr) => new MsgWithdrawDelegatorReward(to, addr)
