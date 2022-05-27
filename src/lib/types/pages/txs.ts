@@ -1,6 +1,6 @@
 import { API, CoinItem, Card } from '..'
 
-export interface TxsPage extends API<TxsData> {
+export interface TxsPage extends API<TxsData | TxsDataV2> {
   ui?: TxsUI
 }
 
@@ -60,51 +60,60 @@ export interface TxsDataV2 {
 }
 
 export interface TxV2 {
-  body: {
-    messages: {
-      type_url: string,
-      value: string
-    }[]
-    memo: string
-    timeout_height: string
-    extension_options: {
-      type_url: string
-      value: string
-    }[]
-    non_critical_extension_options: {
-      type_url: string
-      value: string
-    }[]
-  }
-  auth_info: {
-    signer_infos: {
-      public_key: {
+  id: number
+  height: number
+  timestamp: string
+  txhash: string
+  chainId: string
+  raw_log: string
+  tx: {
+    '@type': string
+    body: {
+      messages: {
         type_url: string
         value: string
-      }
-      mode_info: {
-        single: {
-          mode: string
-        }
-        multi: {
-          bitarray: {
-            extra_bits_stored: 0
-            elems: string
-          }
-          mode_infos: []
-        }
-      }
-      sequence: string
-    }[]
-    fee: {
-      amount: {
-        denom: string
-        amount: string
       }[]
-      gas_limit: string
-      payer: string
-      granter: string
+      memo: string
+      timeout_height: string
+      extension_options: {
+        type_url: string
+        value: string
+      }[]
+      non_critical_extension_options: {
+        type_url: string
+        value: string
+      }[]
     }
+    auth_info: {
+      signer_infos: {
+        public_key: {
+          type_url: string
+          value: string
+        }
+        mode_info: {
+          single: {
+            mode: string
+          }
+          multi: {
+            bitarray: {
+              extra_bits_stored: 0
+              elems: string
+            }
+            mode_infos: []
+          }
+        }
+        sequence: string
+      }[]
+      fee: {
+        amount: {
+          denom: string
+          amount: string
+        }[]
+        gas_limit: string
+        payer: string
+        granter: string
+      }
+    }
+    signatures: string[]
   }
-  signatures: string[]
 }

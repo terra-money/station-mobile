@@ -78,15 +78,16 @@ const Wallet = (props: Props): ReactElement => {
                   }}
                   {...props}
                 />
-                {
-                  isClassic && (
-                    <History
-                      key={refreshingKey}
-                      {...{ user }}
-                      {...props}
-                    />
-                  )
-                }
+                <History
+                  key={refreshingKey}
+                  {...{ user }}
+                  {...props}
+                />
+                {/*{*/}
+                {/*  isClassic && (*/}
+                {/*    */}
+                {/*  )*/}
+                {/*}*/}
               </Fragment>
             </Body>
           )}

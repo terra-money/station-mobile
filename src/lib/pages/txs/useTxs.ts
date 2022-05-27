@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { isTxError } from '@terra-money/terra.js'
 import _ from 'lodash'
 
-import { TxsPage, User, Tx, TxUI } from '../../types'
+import { TxsPage, User, Tx, TxUI, TxV2 } from "../../types";
 import { format } from '../../utils'
 import useFCD from '../../api/useFCD'
-import { useConfig } from '../../contexts/ConfigContext'
+import { useConfig, useIsClassic } from "../../contexts/ConfigContext";
 import useFinder from '../../hooks/useFinder'
 import useParseTxText from './useParseTxText'
 import {
@@ -30,11 +30,12 @@ export default ({ address }: User): TxsPage => {
   const { chain } = useConfig()
   const { name: currentChain } = chain.current
   const parseTxText = useParseTxText()
+  const isClassic = useIsClassic()
 
   /* api */
   const [list, setList] = useState<TxUI[]>([])
   const [isParse, setParse] = useState<boolean>(false)
-  const [txs, setTxs] = useState<Tx[]>([])
+  const [txs, setTxs] = useState<Tx[] | TxV2[]>([])
   const [next, setNext] = useState<number>()
   const [offset, setOffset] = useState<number>()
   const [done, setDone] = useState(false)
@@ -73,7 +74,7 @@ export default ({ address }: User): TxsPage => {
   useEffect(() => {
     const promises = txs.map(async (txItem) => {
       const { txhash, chainId, timestamp, raw_log, tx } = txItem
-      const { fee, memo } = tx.value
+      const { fee, memo } = isClassic ? tx?.value : { fee: tx?.auth_info?.fee, memo: tx?.body?.memo }
 
       const makeTxUi = (
         messages: {
@@ -117,6 +118,7 @@ export default ({ address }: User): TxsPage => {
 
       const success = !isTxError(txItem)
       const msgs = getCanonicalMsgs(txItem)
+
       const successMessage =
         msgs.length > 0
           ? await Promise.all(
