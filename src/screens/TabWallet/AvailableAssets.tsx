@@ -33,6 +33,7 @@ import VestingItem from './VestingItem'
 import TokenSelector from './TokenSelector'
 import TokenManager from './TokenManager'
 import AssetItem from '../../components/wallet/AssetItem'
+import { useIsClassic } from "lib/contexts/ConfigContext";
 
 type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
@@ -138,6 +139,8 @@ const AvailableAssets = ({
   setlocalHideSmall: (value: boolean) => void
   refreshingKey: number
 } & Props): ReactElement => {
+  const isClassic = useIsClassic()
+
   const { ui, load, setHideSmall } = useAssets(user, {
     hideSmall: localHideSmall,
   })
@@ -222,7 +225,7 @@ const AvailableAssets = ({
           </View>
         )}
 
-        {tokens.list.length > 0 && (
+        {isClassic && tokens.list.length > 0 && (
           <View style={styles.section}>
             <Row
               style={{

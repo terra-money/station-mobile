@@ -21,6 +21,7 @@ import {
 import { useCalcFee } from './txHelpers'
 import { useDenomTrace } from 'hooks/useDenomTrace'
 import { UTIL } from 'consts'
+import { useIsClassic } from "lib/contexts/ConfigContext";
 
 interface Values {
   to: string
@@ -41,11 +42,12 @@ export default (
   const isIbcDenom = UTIL.isIbcDenom(denom)
   const { data: denomTrace } = useDenomTrace(denom)
   const ibcDenom = denomTrace?.base_denom
+  const isClassic = useIsClassic()
 
   /* form */
   const getBalance = (): string =>
     (UTIL.isNativeDenom(denom) || isIbcDenom
-      ? find(`${denom}:available`, bank?.balance)
+      ? find(`${denom}:${isClassic ? 'available' : 'amount'}`, bank?.balance)
       : list?.find(({ token }) => token === denom)?.balance) ?? '0'
 
   const validate = ({
@@ -81,6 +83,7 @@ export default (
   const balance = getBalance()
 
   const calculatedMaxAmount = balance
+
   const maxAmount =
     bank?.balance.length === 1 && calcFee
       ? max([
@@ -194,9 +197,10 @@ export default (
       UTIL.isNativeDenom(denom)
         ? isAvailable(
             { amount, denom, fee },
-            bank.balance
+            bank.balance,
+            isClassic
           )
-        : isFeeAvailable(fee, bank.balance),
+        : isFeeAvailable(fee, bank.balance, isClassic),
     submitLabels: [t('Post:Send:Send'), t('Post:Send:Sending...')],
     message: t('Post:Send:Sent {{coin}} to {{address}}', {
       coin: format.coin(

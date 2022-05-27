@@ -9,6 +9,34 @@ export interface BankData {
   unbondings: Unbonding[]
 }
 
+export interface BankDataV2 {
+  account: Account
+  delegations: Delegation[]
+  unbondings: Unbonding[]
+  balance: BalanceV2[]
+}
+
+export interface Account {
+  account: AccountDetail
+  balances: BalanceV2[]
+}
+
+export interface AccountDetail {
+  '@type': string
+  address: string
+  pub_key: {
+    '@type': string
+    key: string
+  }
+  account_number: string
+  sequence: string
+}
+
+export interface BalanceV2 {
+  denom: string
+  amount: string
+}
+
 export interface Balance {
   denom: string
   available: string

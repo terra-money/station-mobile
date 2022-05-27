@@ -14,6 +14,7 @@ import Staking from '../screens/TabStaking'
 
 import { RootStack } from 'types/navigation'
 import { Text, Icon } from 'components'
+import { useIsClassic } from 'lib/contexts/ConfigContext'
 
 const WalletStack = (): ReactElement => (
   <RootStack.Navigator initialRouteName="Wallet">
@@ -55,33 +56,40 @@ const styles = StyleSheet.create({
 /* routes */
 const Tab = createBottomTabNavigator()
 
-const tabScreenItemList: {
+type TabType = {
   name: string
   component: () => ReactElement
   label: string
   iconName: string
-}[] = [
-  {
-    name: 'WalletStack',
-    component: WalletStack,
-    label: 'WALLET',
-    iconName: 'account-balance-wallet',
-  },
-  {
-    name: 'SwapStack',
-    component: SwapStack,
-    label: 'SWAP',
-    iconName: 'swap-horiz',
-  },
-  {
-    name: 'StakingStack',
-    component: StakingStack,
-    label: 'STAKING',
-    iconName: 'layers',
-  },
-]
+}
+
+const WalletTab: TabType = {
+  name: 'WalletStack',
+  component: WalletStack,
+  label: 'WALLET',
+  iconName: 'account-balance-wallet',
+}
+
+const SwapTab: TabType = {
+  name: 'SwapStack',
+  component: SwapStack,
+  label: 'SWAP',
+  iconName: 'swap-horiz',
+}
+
+const StakingTab: TabType = {
+  name: 'StakingStack',
+  component: StakingStack,
+  label: 'STAKING',
+  iconName: 'layers',
+}
 
 const Tabs = (): ReactElement => {
+  const isClassic = useIsClassic()
+  const tabScreenItemList: TabType[] = isClassic
+    ? [WalletTab, SwapTab, StakingTab]
+    : [WalletTab, StakingTab]
+
   const tabBarLabelPosition =
     LAYOUT.getScreenWideType() === 'wide'
       ? 'beside-icon'

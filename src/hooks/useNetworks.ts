@@ -15,13 +15,14 @@ const defaultNetworks: Record<NetworkEnum, ChainOptions> = {
   },
   testnet: {
     name: NetworkEnum.testnet,
-    chainID: 'bombay-12',
-    lcd: 'https://bombay-lcd.terra.dev',
-    fcd: 'https://bombay-fcd.terra.dev',
-    mantle: 'https://bombay-mantle.terra.dev',
+    chainID: 'pisco-1',
+    lcd: 'https://pisco-lcd.terra.dev',
+    fcd: 'https://pisco-fcd.terra.dev',
+    mantle: 'https://pisco-mantle.terra.dev',
     walletconnectID: 0,
   },
 }
+
 
 const useNetworks = (): {
   networks: Record<NetworkEnum, ChainOptions>

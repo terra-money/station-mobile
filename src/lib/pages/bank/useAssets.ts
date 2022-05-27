@@ -3,17 +3,18 @@ import { useTranslation } from 'react-i18next'
 import {
   AssetsPage,
   AssetsUI,
-  BankData,
+  BankData, BankDataV2,
   DisplayCoin,
   Schedule,
   TokenBalance,
-  User,
-} from '../../types'
+  User
+} from "../../types";
 import { format } from '../../utils'
 import { percent, gte } from '../../utils/math'
 import useBank from '../../api/useBank'
 import useTokenBalance from '../../cw20/useTokenBalance'
 import { UTIL } from 'consts'
+import { useIsClassic } from 'lib/contexts/ConfigContext'
 
 const SMALL = '1000000'
 
@@ -23,6 +24,8 @@ interface Config {
 
 export default (user: User, config?: Config): AssetsPage => {
   const { t } = useTranslation()
+  const isClassic = useIsClassic()
+
   const bank = useBank(user)
   const tokenBalances = useTokenBalance(user.address)
   const [hideSmall, setHideSmall] = useState<boolean>(
@@ -39,21 +42,21 @@ export default (user: User, config?: Config): AssetsPage => {
     tokenList?: TokenBalance[]
   ): AssetsUI => ({
     card:
-      !balance.length && !tokenList?.length && !vesting.length
+      !balance?.length && !tokenList?.length && !vesting?.length
         ? {
             title: t('Page:Bank:Wallet empty'),
             content: t(
               "Page:Bank:This wallet doesn't hold any coins yet"
             ),
           }
-        : !balance.length && !vesting.length && tokenList?.length
+        : !balance?.length && !vesting?.length && tokenList?.length
         ? {
             title: t('Page:Bank:Wallet empty'),
             content:
               'This wallet does not hold any native tokens, so the transaction could not be processed.',
           }
         : undefined,
-    available: !balance.length
+    available: !balance?.length
       ? undefined
       : {
           title: 'Terra Native',
@@ -73,7 +76,7 @@ export default (user: User, config?: Config): AssetsPage => {
           },
           send: t('Post:Send:Send'),
         },
-    ibc: !balance.filter(({ denom }) => UTIL.isIbcDenom(denom)).length
+    ibc: !balance?.filter(({ denom }) => UTIL.isIbcDenom(denom)).length
       ? undefined
       : {
           title: 'IBC Tokens',
@@ -105,7 +108,8 @@ export default (user: User, config?: Config): AssetsPage => {
         ) ?? [],
       send: t('Post:Send:Send'),
     },
-    vesting: !vesting.length
+    vesting: (
+      !vesting?.length
       ? undefined
       : {
           title: t('Page:Bank:Vesting schedule'),
@@ -118,7 +122,75 @@ export default (user: User, config?: Config): AssetsPage => {
               getSchedule(item, denom)
             ),
           })),
+        }
+    ),
+  })
+
+  const renderV2 = (
+    { balance }: BankDataV2,
+    tokenList?: TokenBalance[]
+  ): AssetsUI => ({
+    card:
+      !balance?.length
+        ? {
+          title: t('Page:Bank:Wallet empty'),
+          content: t(
+            "Page:Bank:This wallet doesn't hold any coins yet"
+          ),
+        } : undefined,
+    available: !balance?.length
+      ? undefined
+      : {
+        title: 'Terra Native',
+        list: balance
+          .filter(
+            ({ amount }) => !hideSmall || gte(amount, SMALL)
+          )
+          .filter(({ denom }) => !UTIL.isIbcDenom(denom))
+          .map(({ amount, denom }) => ({
+            denom,
+            display: format.display({ amount, denom }),
+          })),
+        hideSmall: {
+          label: t('Page:Bank:Hide small balances'),
+          checked: hideSmall,
+          toggle: (): void => setHideSmall((v) => !v),
         },
+        send: t('Post:Send:Send'),
+      },
+    ibc: !balance?.filter(({ denom }) => UTIL.isIbcDenom(denom)).length
+      ? undefined
+      : {
+        title: 'IBC Tokens',
+        list: balance
+          ?.filter(({ denom }) => UTIL.isIbcDenom(denom))
+          .map(({ denom, amount }) => {
+            return {
+              denom,
+              display: {
+                value: format.amount(amount),
+                unit: denom,
+              },
+            }
+          }),
+        send: t('Post:Send:Send'),
+      },
+    tokens: {
+      title: 'CW20 Tokens',
+      list:
+        tokenList?.map(
+          ({ token, symbol, icon, balance, decimals }) => {
+            const display = {
+              value: format.amount(balance, decimals),
+              unit: symbol,
+            }
+
+            return { icon, token, display }
+          }
+        ) ?? [],
+      send: t('Post:Send:Send'),
+    },
+    vesting: undefined,
   })
 
   const getSchedule = (
@@ -159,7 +231,9 @@ export default (user: User, config?: Config): AssetsPage => {
     { setHideSmall, load },
     bank,
     { loading: bank.loading || tokenBalances.isLoading },
-    bank.data && { ui: render(bank.data, tokenBalances.list) }
+    bank.data && {
+      ui: isClassic ? render(bank.data, tokenBalances.list) : renderV2(bank.data, tokenBalances.list)
+    }
   )
 }
 

@@ -8,6 +8,7 @@ import { API } from '../types'
 import fcd from './fcd'
 
 const { CancelToken } = axios
+
 export default <T>(
   { url, params }: Config,
   immediate = true
@@ -21,14 +22,18 @@ export default <T>(
   const query = qs.stringify(params)
   const source = CancelToken.source()
   const execute = useCallback(async () => {
+    setData(undefined)
+
     try {
       setLoading(true)
       setError(undefined)
 
+      console.log(`${url}?${query}`);
       const { token: cancelToken } = source
       const { data } = await fcd.get<T>(`${url}?${query}`, {
         cancelToken,
       })
+
       setData(data)
     } catch (error) {
       !axios.isCancel(error) && setError(error)

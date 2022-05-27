@@ -1,16 +1,21 @@
-import { useMemo } from "react"
-import { LCDClient } from "@terra-money/terra.js"
-import { useNetwork } from "data/wallet"
-import { useIsClassic } from "data/query"
+import { useMemo } from 'react'
+import { LCDClient } from '@terra-money/terra.js'
+import { useConfig, useIsClassic } from 'lib/contexts/ConfigContext'
 
-export const useLCDClient = () => {
-  const network = useNetwork()
+const useLCD = () => {
+  const { chain } = useConfig()
   const isClassic = useIsClassic()
 
   const lcdClient = useMemo(
-    () => new LCDClient({ ...network, URL: network.lcd, isClassic }),
-    [network, isClassic]
+    () => new LCDClient({
+        chainID: chain.current.chainID,
+        URL: chain.current.lcd,
+        isClassic,
+      }),
+    [chain, isClassic]
   )
 
   return lcdClient
 }
+
+export default useLCD

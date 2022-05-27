@@ -1,24 +1,40 @@
-import { BankAPI, BankData, Balance } from '../types'
+import { BankData, Balance, API, BankDataV2, BalanceV2 } from "../types";
 import { lt } from '../utils'
 import useFCD from './useFCD'
+import { useIsClassic } from "lib/contexts/ConfigContext";
 
-export default ({ address }: { address: string }): BankAPI => {
-  const { data, ...rest } = useFCD<BankData>({
-    url: `/v1/bank/${address}`,
-  })
+export default ({ address }: { address: string }): API<BankData | BankDataV2> => {
+  const isClassic = useIsClassic()
+  const { data, ...rest } = useFCD<BankData | BankDataV2>({ url: `/v1/bank/${address}`})
 
-  const fixAvailable = (balance: Balance[]): Balance[] =>
-    balance.map(({ available, ...rest }) => ({
+  const fixAvailable = (bank: BankData): Balance[] => {
+
+    return bank?.balance?.map(({ available, ...rest }) => ({
       ...rest,
       available: lt(available, 0) ? '0' : available,
     }))
+  }
 
-  return Object.assign(
+  const fixAvailableV2 = (bank: BankDataV2): BalanceV2[] => {
+    return bank?.account?.balances?.map(({ ...rest }) => ({
+      ...rest,
+    }))
+  }
+
+  return isClassic ? Object.assign(
     {},
     rest,
     data && {
       data: Object.assign({}, data, {
-        balance: fixAvailable(data.balance),
+        balance: fixAvailable(data)
+      }),
+    }
+  ) : Object.assign(
+    {},
+    rest,
+    data && {
+      data: Object.assign({}, data, {
+        balance: fixAvailableV2(data),
       }),
     }
   )

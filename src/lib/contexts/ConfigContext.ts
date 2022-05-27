@@ -19,3 +19,8 @@ export const useCurrentChainName = (): string => {
   const { chain } = useConfig()
   return chain.current.name
 }
+
+export const useIsClassic = (): boolean => {
+  const { chain } = useConfig()
+  return chain.current.chainID === 'columbus-5'
+}
