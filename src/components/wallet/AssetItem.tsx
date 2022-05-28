@@ -13,7 +13,7 @@ import { Coin } from '@terra-money/terra.js'
 import { useQuery } from 'react-query'
 import Tooltip from 'react-native-walkthrough-tooltip'
 
-import { AvailableItem, format, useConfig } from 'lib'
+import { AvailableItem, format, useConfig, useIsClassic } from 'lib'
 
 import { UTIL } from 'consts'
 
@@ -104,11 +104,16 @@ const AssetItem = ({
   const { display } = item
   const isIbcDenom = UTIL.isIbcDenom(item.denom)
   const ibcDenom = useDenomTrace(item.denom)
+  const isClassic = useIsClassic()
+  const ASSET = 'https://assets.terra.money/icon'
 
   const icon =
     item.denom && UTIL.isNativeDenom(item.denom)
-      ? `https://assets.terra.money/icon/60/${item.display.unit}.png`
-      : item.icon
+      ? (
+        (!isClassic && item.display.unit === 'Luna')
+        ? `${ASSET}/svg/LUNA.png`
+        : `${ASSET}/60/${item.display.unit}.png`
+      ) : item.icon
 
   const { data: swapValue = '' } = useQuery(
     [QueryKeyEnum.swapAmount, item, currency.current],
