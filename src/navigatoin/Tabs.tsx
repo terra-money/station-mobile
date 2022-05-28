@@ -93,7 +93,7 @@ const Tabs = (): ReactElement => {
   const isClassic = useIsClassic()
   const tabScreenItemList: TabType[] = isClassic
     ? [WalletTab, SwapTab, StakingTab]
-    : [WalletTab]
+    : [WalletTab, StakingTab]
 
   return (
     <Tab.Navigator

@@ -7,8 +7,8 @@ import {
   User,
   ValidatorUI,
   StakingPersonal,
-  useConfig,
-} from 'lib'
+  useConfig, useIsClassic
+} from "lib";
 
 import { navigationHeaderOptions } from 'components/layout/TabScreenHeader'
 import Body from 'components/layout/Body'
@@ -19,7 +19,7 @@ import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 import useTerraAssets from 'lib/hooks/useTerraAssets'
-import { Loading } from 'components'
+import { Loading, UnderConstruction } from 'components'
 
 export enum StakingFilterEnum {
   commission = 'commission',
@@ -42,7 +42,9 @@ const Render = ({
   personal?: StakingPersonal
   contents?: ValidatorUI[]
 }): ReactElement => {
-  return (
+  const isClassic = useIsClassic()
+
+  return isClassic ? (
     <>
       {contents ? (
         <View>
@@ -65,6 +67,8 @@ const Render = ({
         />
       )}
     </>
+  ) : (
+    <UnderConstruction />
   )
 }
 
