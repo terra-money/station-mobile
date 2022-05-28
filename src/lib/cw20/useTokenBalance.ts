@@ -17,9 +17,13 @@ export interface TokenBalanceQuery {
   refetch: () => void
 }
 
+import useLCD from 'lib/api/useLCD'
+
+
 export default (address: string): TokenBalanceQuery => {
   const { tokens } = useTokens()
   const { chain } = useConfig()
+  const lcd = useLCD()
 
   const { data: list = [], isLoading, refetch } = useQuery(
     [
@@ -30,39 +34,16 @@ export default (address: string): TokenBalanceQuery => {
     ],
     async () => {
       if (_.some(tokens)) {
-        try {
-          const client = new ApolloClient({
-            uri: chain.current.mantle,
-            cache: new InMemoryCache(),
-          })
-
-          const queries = alias(
-            Object.values(tokens).map(({ token }) => ({
-              token,
-              contract: token,
-              msg: { balance: { address } },
-            }))
-          )
-
-          const { data } = await client.query({
-            query: queries,
-            errorPolicy: 'all',
-          })
-
-          return _.reduce<any, TokenBalance[]>(
-            data,
-            (res, curr, key) => {
-              if (curr?.Result) {
-                const balance =
-                  UTIL.jsonTryParse<{ balance: string }>(curr.Result)
-                    ?.balance || '0'
-                res.push({ ...tokens[key], balance })
-              }
-              return res
-            },
-            []
-          )
-        } catch {}
+        const data = []
+        for (const token in tokens) {
+          try {
+            const { balance } = await lcd.wasm.contractQuery<{ balance: Amount }>(token, { balance: { address } })
+            data.push({ ...tokens[token], balance })
+          } catch(e) {
+            data.push({ ...tokens[token], balance: '0' })
+          }
+        }
+        return data
       }
       return []
     }

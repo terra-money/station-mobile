@@ -83,11 +83,6 @@ const Wallet = (props: Props): ReactElement => {
                   {...{ user }}
                   {...props}
                 />
-                {/*{*/}
-                {/*  isClassic && (*/}
-                {/*    */}
-                {/*  )*/}
-                {/*}*/}
               </Fragment>
             </Body>
           )}

@@ -8,7 +8,7 @@ const useLCD = () => {
 
   const lcdClient = useMemo(
     () => new LCDClient({
-        chainID: chain.current.chainID,
+        ...chain.current,
         URL: chain.current.lcd,
         isClassic,
       }),

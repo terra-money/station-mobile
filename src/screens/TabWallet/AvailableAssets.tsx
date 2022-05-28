@@ -252,31 +252,27 @@ const AvailableAssets = ({
             <AvailableList {...tokens} />
           </View>
         )}
-        {
-          isClassic && (
-            <Button
-              onPress={(): void => {
-                setIsVisibleModal('add')
-              }}
-              size="sm"
-              title={
-                <Row style={{ alignItems: 'center' }}>
-                  <Icon name="add" size={16} color={COLOR.primary._02} />
-                  <Text
-                    style={{ color: COLOR.primary._02 }}
-                    fontType="medium"
-                  >
-                    Add Token
-                  </Text>
-                </Row>
-              }
-              containerStyle={{
-                marginBottom: 30,
-                backgroundColor: '#E8EEFC',
-              }}
-            />
-          )
-        }
+        <Button
+          onPress={(): void => {
+            setIsVisibleModal('add')
+          }}
+          size="sm"
+          title={
+            <Row style={{ alignItems: 'center' }}>
+              <Icon name="add" size={16} color={COLOR.primary._02} />
+              <Text
+                style={{ color: COLOR.primary._02 }}
+                fontType="medium"
+              >
+                Add Token
+              </Text>
+            </Row>
+          }
+          containerStyle={{
+            marginBottom: 30,
+            backgroundColor: '#E8EEFC',
+          }}
+        />
         <Modal
           onRequestClose={(): void => {
             setIsVisibleModal(false)

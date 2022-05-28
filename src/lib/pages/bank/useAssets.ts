@@ -127,6 +127,7 @@ export default (user: User, config?: Config): AssetsPage => {
 
   const renderV2 = (
     { balance }: BankDataV2,
+    tokenList?: TokenBalance[]
   ): AssetsUI => ({
     card:
       !balance?.length
@@ -173,7 +174,21 @@ export default (user: User, config?: Config): AssetsPage => {
           }),
         send: t('Post:Send:Send'),
       },
-    tokens: undefined,
+    tokens: {
+      title: 'CW20 Tokens',
+      list:
+        tokenList?.map(
+          ({ token, symbol, icon, balance, decimals }) => {
+            const display = {
+              value: format.amount(balance, decimals),
+              unit: symbol,
+            }
+
+            return { icon, token, display }
+          }
+        ) ?? [],
+      send: t('Post:Send:Send'),
+    },
     vesting: undefined,
   })
 
@@ -217,7 +232,7 @@ export default (user: User, config?: Config): AssetsPage => {
     { loading: bank.loading || tokenBalances.isLoading },
     bank.data && {
       ui: isClassic ? render(bank.data, tokenBalances.list) :
-        renderV2(bank.data)
+        renderV2(bank.data, tokenBalances.list)
     }
   )
 }
