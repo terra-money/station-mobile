@@ -19,7 +19,7 @@ import _ from 'lodash'
 import WalletConnect from '@walletconnect/client'
 import { IClientMeta } from '@walletconnect/types'
 
-import { User, format, useConfig, useIsClassic } from "lib";
+import { User, format, useConfig, useIsClassic } from 'lib'
 
 import { Button, Icon, Loading, Text, WarningBox } from 'components'
 import Body from 'components/layout/Body'
@@ -189,6 +189,7 @@ const ConfirmForm = ({
   >('/msgs/MsgGrantAuthorization.json')
 
   const { confirm } = useAlert()
+  const isClassic = useIsClassic()
 
   const onPressGoBack = (): void => {
     if (canGoBack()) {
@@ -249,7 +250,7 @@ const ConfirmForm = ({
         const grantAllowed =
           allowedMsgGrantAuthorization?.[chain.current.name]
         return _.some(tx.msgs, (msg: Msg) => {
-          const data = msg.toData()
+          const data = msg.toData(isClassic)
 
           if (data['@type'] !== '/cosmos.authz.v1beta1.MsgGrant') {
             return false

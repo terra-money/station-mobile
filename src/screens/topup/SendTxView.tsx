@@ -141,7 +141,7 @@ const SendTxView = (props: Props): ReactElement => {
       }
 
       const { topupGranteeAddress, topupMessageType } = whitelist()
-      const msg = tx.body.messages[0].toData() as any
+      const msg = tx.body.messages[0].toData(isClassic) as any
 
       // type check - whitelist
       const type = msg['@type']
@@ -417,7 +417,7 @@ const SendTxView = (props: Props): ReactElement => {
             <Text
               style={style.debugText}
             >{`unsignedTx: ${JSON.stringify(
-              unsignedTx?.toData()
+              unsignedTx?.toData(isClassic)
             )}`}</Text>
           </ScrollView>
         )}
