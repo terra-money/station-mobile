@@ -1,7 +1,8 @@
-import { BankData, Balance, API, BankDataV2, BalanceV2 } from "../types";
+import { BankData, Balance, API, BankDataV2, BalanceV2 } from '../types'
 import { lt } from '../utils'
 import useFCD from './useFCD'
-import { useIsClassic } from "lib/contexts/ConfigContext";
+import { useIsClassic } from 'lib/contexts/ConfigContext'
+import { parseVestingSchedule } from '../../qureys/vesting'
 
 export default ({ address }: { address: string }): API<BankData | BankDataV2> => {
   const { data, ...rest } = useFCD<BankData | BankDataV2>({ url: `/v1/bank/${address}`})
@@ -35,6 +36,7 @@ export default ({ address }: { address: string }): API<BankData | BankDataV2> =>
     data && {
       data: Object.assign({}, data, {
         balance: fixAvailableV2(data),
+        vesting: parseVestingSchedule(data?.account?.account)
       }),
     }
   )

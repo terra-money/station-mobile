@@ -126,7 +126,7 @@ export default (user: User, config?: Config): AssetsPage => {
   })
 
   const renderV2 = (
-    { balance }: BankDataV2,
+    { balance, vesting }: BankDataV2,
     tokenList?: TokenBalance[]
   ): AssetsUI => ({
     card:
@@ -189,7 +189,22 @@ export default (user: User, config?: Config): AssetsPage => {
         ) ?? [],
       send: t('Post:Send:Send'),
     },
-    vesting: undefined,
+    vesting: (
+      !vesting?.length
+        ? undefined
+        : {
+          title: t('Page:Bank:Vesting schedule'),
+          desc: t(
+            'Page:Bank:This displays your investment with Terra. Vested Luna can be delegated in the meantime.'
+          ),
+          list: vesting.map(({ total, denom, schedules }) => ({
+            display: format.display({ amount: total, denom }),
+            schedule: schedules.map((item) =>
+              getSchedule(item, denom)
+            ),
+          })),
+        }
+    ),
   })
 
   const getSchedule = (
