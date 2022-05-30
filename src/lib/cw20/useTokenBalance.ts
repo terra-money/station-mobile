@@ -1,13 +1,8 @@
 import { useQuery } from 'react-query'
 import _ from 'lodash'
-import { ApolloClient, InMemoryCache } from '@apollo/client'
-
-import { UTIL } from 'consts'
-
 import { TokenBalance, Tokens } from '../types'
 import { QueryKeyEnum } from 'types'
 import { useConfig } from '../contexts/ConfigContext'
-import alias from './alias'
 import useTokens from 'hooks/useTokens'
 
 export interface TokenBalanceQuery {
@@ -18,7 +13,6 @@ export interface TokenBalanceQuery {
 }
 
 import useLCD from 'lib/api/useLCD'
-
 
 export default (address: string): TokenBalanceQuery => {
   const { tokens } = useTokens()

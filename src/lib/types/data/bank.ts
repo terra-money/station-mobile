@@ -1,4 +1,5 @@
 import { API } from '..'
+import { VestingType } from '../../../qureys/vesting'
 
 export type BankAPI = API<BankData>
 
@@ -70,13 +71,14 @@ export interface Vesting {
   denom: string
   total: string
   schedules: Schedule[]
+  type?: VestingType
 }
 
 export interface Schedule {
   amount: string
-  startTime: number
+  startTime?: number
   endTime: number
-  ratio: number
+  ratio?: number
   freedRate?: number
 }
 

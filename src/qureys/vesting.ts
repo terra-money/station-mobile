@@ -42,12 +42,19 @@ export interface ParsedVestingSchedule {
   denom: string
   total: string
   schedules: VestingScheduleItem[]
-  type: "Continuous" | "Delayed" | "Periodic"
+  type: VestingType
+}
+
+export type VestingType = "Continuous" | "Delayed" | "Periodic"
+export enum VestingTypes {
+  Continuous = "Continuous",
+  Delayed = "Delayed",
+  Periodic = "Periodic",
 }
 
 interface VestingScheduleItem {
-  start?: Date
-  end: Date
+  startTime?: Date
+  endTime: Date
   toNow: "past" | "now" | "future"
   amount: string
   ratio?: number
@@ -81,66 +88,85 @@ const getVested = (schedules: VestingScheduleItem[]) =>
 export const parseVestingSchedule = (
   response: ContinuousResponse | DelayedResponse | PeriodicResponse
 ): ParsedVestingSchedule => {
-  if (response["@type"] === VestingAccountTypes.Continuous) {
+  if (response?.["@type"] === VestingAccountTypes.Continuous) {
     const { base_vesting_account, start_time } = response
     const { original_vesting, end_time } = base_vesting_account
 
-    const start = new Date(Number(start_time) * 1000)
-    const end = new Date(Number(end_time) * 1000)
-    const toNow = isFuture(start) ? "future" : isPast(end) ? "past" : "now"
+    const startTime = new Date(Number(start_time) * 1000)
+    const endTime = new Date(Number(end_time) * 1000)
+    const toNow = isFuture(startTime) ? "future" : isPast(endTime) ? "past" : "now"
     const amount = getLunaAmount(original_vesting)
     const total = getLunaAmount(original_vesting)
-    const schedules = [{ start, end, toNow, amount } as const]
 
-    return {
-      type: "Continuous",
-      schedules,
-      amount: { total, vested: getVested(schedules) },
+    let freedRate = 0
+    const now = new Date().getTime()
+    if (startTime.getTime() < now) {
+      const period = endTime.getTime() - startTime.getTime()
+      freedRate = (now - startTime.getTime()) / period
     }
-  } else if (response["@type"] === VestingAccountTypes.Delayed) {
+
+    const schedules = [{ startTime, endTime, toNow, amount, freedRate } as const]
+
+    return [{
+      type: VestingTypes.Continuous,
+      denom: 'uluna',
+      total,
+      schedules,
+    }]
+  } else if (response?.["@type"] === VestingAccountTypes.Delayed) {
     const { base_vesting_account } = response
     const { original_vesting, end_time } = base_vesting_account
+    console.log('parseVestingSchedule', end_time);
 
-    const end = new Date(Number(end_time) * 1000)
-    const toNow = isPast(end) ? "past" : "future"
+    const endTime = new Date(Number(end_time) * 1000)
+    const toNow = isPast(endTime) ? "past" : "future"
     const amount = getLunaAmount(original_vesting)
     const total = getLunaAmount(original_vesting)
-    const schedules = [{ end, toNow, amount } as const]
-
+    const schedules = [{ endTime, toNow, amount } as const]
     return [
       {
+        type: VestingTypes.Delayed,
         denom: 'uluna',
         total,
         schedules,
-        type: "Delayed",
       }
     ]
   }
 
-  const { base_vesting_account, vesting_periods, start_time } = response
-  const { original_vesting } = base_vesting_account
+  if (response?.["@type"] === VestingAccountTypes.Periodic) {
+    const { base_vesting_account, vesting_periods, start_time } = response
+    const { original_vesting } = base_vesting_account
 
-  const total = getLunaAmount(original_vesting)
+    const total = getLunaAmount(original_vesting)
 
-  const schedules = vesting_periods.reduce<VestingScheduleItem[]>(
-    (acc, { length, amount: coins }) => {
-      const startTime = last(acc)?.endTime ?? new Date(Number(start_time) * 1000)
-      const endTime = new Date(startTime.getTime() + Number(length) * 1000)
-      const toNow = isFuture(startTime) ? "future" : isPast(endTime) ? "past" : "now"
-      const amount = getLunaAmount(coins)
-      const ratio = Number(amount) / Number(total)
-      const freedRate = Number(amount) / Number(total)
-      return [...acc, { startTime, endTime, toNow, amount, ratio, freedRate }]
-    },
-    []
-  )
-  return [
-    {
-      denom: 'uluna',
-      total,
-      schedules,
-      type: "Periodic",
-    }
-  ]
+    const schedules = vesting_periods.reduce<VestingScheduleItem[]>(
+      (acc, { length, amount: coins }) => {
+        const startTime = last(acc)?.endTime ?? new Date(Number(start_time) * 1000)
+        const endTime = new Date(startTime.getTime() + Number(length) * 1000)
+        const toNow = isFuture(startTime) ? "future" : isPast(endTime) ? "past" : "now"
+        const amount = getLunaAmount(coins)
+        const ratio = Number(amount) / Number(total)
+
+        let freedRate = 0
+        const now = new Date().getTime()
+        if (startTime.getTime() < now) {
+          const period = endTime.getTime() - startTime.getTime()
+          freedRate = (now - startTime.getTime()) / period
+        }
+
+        return [...acc, { startTime, endTime, toNow, amount, ratio, freedRate }]
+      },
+      []
+    )
+    return [
+      {
+        type: VestingTypes.Periodic,
+        denom: 'uluna',
+        total,
+        schedules,
+      }
+    ]
+  }
+
 }
 

@@ -3,18 +3,20 @@ import { useTranslation } from 'react-i18next'
 import {
   AssetsPage,
   AssetsUI,
-  BankData, BankDataV2,
+  BankData,
+  BankDataV2,
   DisplayCoin,
   Schedule,
   TokenBalance,
-  User
-} from "../../types";
+  User,
+} from '../../types'
 import { format } from '../../utils'
 import { percent, gte } from '../../utils/math'
 import useBank from '../../api/useBank'
 import useTokenBalance from '../../cw20/useTokenBalance'
 import { UTIL } from 'consts'
 import { useIsClassic } from 'lib/contexts/ConfigContext'
+import { VestingType, VestingTypes } from '../../../qureys/vesting'
 
 const SMALL = '1000000'
 
@@ -130,13 +132,20 @@ export default (user: User, config?: Config): AssetsPage => {
     tokenList?: TokenBalance[]
   ): AssetsUI => ({
     card:
-      !balance?.length
+      !balance?.length && !tokenList?.length && !vesting?.length
         ? {
           title: t('Page:Bank:Wallet empty'),
           content: t(
             "Page:Bank:This wallet doesn't hold any coins yet"
           ),
-        } : undefined,
+        }
+        : !balance?.length && !vesting?.length && tokenList?.length
+          ? {
+            title: t('Page:Bank:Wallet empty'),
+            content:
+              'This wallet does not hold any native tokens, so the transaction could not be processed.',
+          }
+          : undefined,
     available: !balance?.length
       ? undefined
       : {
@@ -197,10 +206,10 @@ export default (user: User, config?: Config): AssetsPage => {
           desc: t(
             'Page:Bank:This displays your investment with Terra. Vested Luna can be delegated in the meantime.'
           ),
-          list: vesting.map(({ total, denom, schedules }) => ({
+          list: vesting.map(({ total, denom, schedules, type }) => ({
             display: format.display({ amount: total, denom }),
             schedule: schedules.map((item) =>
-              getSchedule(item, denom)
+              getSchedule(item, denom, type)
             ),
           })),
         }
@@ -209,7 +218,8 @@ export default (user: User, config?: Config): AssetsPage => {
 
   const getSchedule = (
     schedule: Schedule,
-    denom: string
+    denom: string,
+    type?: VestingType
   ): {
     released: boolean
     releasing: boolean
@@ -219,26 +229,46 @@ export default (user: User, config?: Config): AssetsPage => {
     duration: string
     width: string
   } => {
-    const { amount, startTime, endTime, ratio, freedRate } = schedule
-    const now = new Date().getTime()
-    const released = endTime < now
-    const releasing = startTime < now && now < endTime
+    if (type && type === VestingTypes.Delayed) {
+      const { amount, endTime } = schedule
+      const now = new Date().getTime()
+      const released = endTime < now
+      const releasing = now < endTime
 
-    return {
-      released,
-      releasing,
-      percent: percent(ratio),
-      display: format.display({ amount, denom }),
-      status: released
-        ? t('Page:Bank:Released')
-        : releasing
-        ? t('Page:Bank:Releasing')
-        : t('Page:Bank:Release on'),
-      duration: [startTime, endTime]
-        .map((t) => `${toISO(t)}`)
-        .join(' ~ '),
-      width: percent(freedRate, 0),
+      return {
+        released,
+        releasing,
+        percent: '',
+        display: format.display({ amount, denom }),
+        status: released
+          ? t('Page:Bank:Released')
+          : t('Page:Bank:Release on'),
+        duration: `${toISO(endTime)}`,
+        width: percent(0, 0),
+      }
+    } else {
+      const { amount, startTime, endTime, ratio = 0, freedRate = 0 } = schedule
+      const now = new Date().getTime()
+      const released = endTime < now
+      const releasing = startTime < now && now < endTime
+
+      return {
+        released,
+        releasing,
+        percent: percent(ratio),
+        display: format.display({ amount, denom }),
+        status: released
+          ? t('Page:Bank:Released')
+          : releasing
+          ? t('Page:Bank:Releasing')
+          : t('Page:Bank:Release on'),
+        duration: [startTime, endTime]
+          .map((t) => `${toISO(t)}`)
+          .join(' ~ '),
+        width: percent(freedRate, 0),
+      }
     }
+
   }
 
   return Object.assign(
