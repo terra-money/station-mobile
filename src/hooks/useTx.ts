@@ -9,7 +9,7 @@ import {
 import { SignMode } from '@terra-money/terra.proto/cosmos/tx/signing/v1beta1/signing'
 import { StackNavigationProp } from '@react-navigation/stack'
 
-import { useConfig, User } from 'lib'
+import { useConfig, useIsClassic, User } from 'lib'
 import { usePollTxHash } from 'lib/post/useConfirm'
 
 import { getDecyrptedKey } from 'utils/wallet'
@@ -29,7 +29,9 @@ const useTx = ({
 }): {
   broadcastResult?: TxInfo
   broadcastSync: (props: {
-    password: string // is the device id for ledger
+    address: string
+    walletName: string
+    password: string
     txOptions: CreateTxOptions
   }) => Promise<void>
 } => {
@@ -39,6 +41,7 @@ const useTx = ({
   const [txhash, setTxHash] = useState<string>('')
   const [broadcastResult, setBroadcastResult] = useState<TxInfo>()
   const tsInfo = usePollTxHash(txhash)
+  const isClassic = useIsClassic()
 
   const getKey = async ({
     password,
@@ -57,9 +60,9 @@ const useTx = ({
     txOptions: CreateTxOptions
   }): Promise<void> => {
     const chainID = chain.current.chainID
-    const key = user.ledger 
+    const key = user.ledger
       ? await LedgerKey.create(await TransportBLE.open(password), user.path)
-      : await getKey({ password }) 
+      : await getKey({ password })
 
     const wallet = new Wallet(lcd, key)
     const {
@@ -76,7 +79,7 @@ const useTx = ({
             publicKey: wallet.key.publicKey,
           },
         ],
-        { ...txOptions, feeDenoms: ['uusd'] }
+        { ...txOptions, feeDenoms: ['uluna'] }
       ))
 
     const newTxOptions: CreateTxOptions = { ...txOptions, fee }
@@ -87,18 +90,22 @@ const useTx = ({
       newTxOptions
     )
 
-    const signed = await key.signTx(unsignedTx, {
-      accountNumber: account_number,
-      sequence,
-      chainID,
-      signMode: user.ledger 
-        ? SignMode.SIGN_MODE_LEGACY_AMINO_JSON
-        : SignMode.SIGN_MODE_DIRECT,
-    })
+    const signed = await key.signTx(
+      unsignedTx,
+      {
+        accountNumber: account_number,
+        sequence,
+        chainID,
+        signMode: user.ledger
+          ? SignMode.SIGN_MODE_LEGACY_AMINO_JSON
+          : SignMode.SIGN_MODE_DIRECT,
+      },
+      isClassic
+    )
 
     // disconnect ledger
     user.ledger && TransportBLE.disconnect(password)
-    
+
     const result = await lcd.tx.broadcastSync(signed)
     if ('code' in result && Number(result.code) !== 0) {
       throw new Error(result.raw_log)
