@@ -25,7 +25,7 @@ export interface LangConfig {
 export interface Currency {
   key: string
   value: string
-  krwRate: string
+  krwRate?: string
 }
 
 export interface CurrencyConfig {

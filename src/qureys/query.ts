@@ -1,3 +1,5 @@
+import { QueryObserverBaseResult } from 'react-query'
+
 export const LAZY_LIMIT = 999
 
 /* refetch */
@@ -12,11 +14,14 @@ export const Pagination = {
 }
 
 /* helpers */
-export const combineState = (...results: QueryState[]) => ({
+export const combineState = (
+  ...results: QueryObserverBaseResult[]
+) => ({
   isIdle: results.some((result) => result.isIdle),
   isLoading: results.some((result) => result.isLoading),
   isFetching: results.some((result) => result.isFetching),
   isSuccess: results.every((result) => result.isSuccess),
+  refetch: results.every((result) => result.refetch()),
   error: results.find((result) => result.error)?.error,
 })
 
@@ -25,7 +30,7 @@ const mirror = <T>(obj: T, parentKey?: string): T =>
   Object.entries(obj).reduce((acc, [key, value]) => {
     const next = value
       ? mirror(value, key)
-      : [parentKey, key].filter(Boolean).join('.')
+      : [parentKey, key].filter(Boolean).join(".")
 
     return { ...acc, [key]: next }
   }, {} as T)
@@ -57,7 +62,7 @@ export const queryKey = mirror({
   },
   ibc: { denomTrace: '' },
   market: { params: '' },
-  oracle: { activeDenoms: ', exchangeRates: ', params: '' },
+  oracle: { activeDenoms: '', exchangeRates: '', params: '' },
   tendermint: { nodeInfo: '' },
   staking: {
     validators: '',

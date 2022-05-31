@@ -7,6 +7,7 @@ import {
   Validator,
 } from '@terra-money/terra.js'
 import {
+  Coins,
   Delegation,
   UnbondingDelegation,
 } from '@terra-money/terra.js'
@@ -14,12 +15,11 @@ import {
 import { BondStatus } from '@terra-money/terra.proto/cosmos/staking/v1beta1/staking'
 import { has } from 'utils/num'
 import { queryKey, Pagination, RefetchOptions } from './query'
-import useLCDClient from 'hooks/useLCD'
+import useLCDClient from 'lib/api/useLCD'
 import { useAuth } from 'lib/contexts/AuthContext'
 
 export const useValidators = () => {
   const lcd = useLCDClient()
-
   return useQuery(
     [queryKey.staking.validators],
     async () => {
@@ -142,21 +142,27 @@ export const getFindMoniker = (validators: Validator[]) => {
   }
 }
 
-// export const getAvailableStakeActions = (
-//   destination: ValAddress,
-//   delegations: Delegation[]
-// ) => {
-//   return {
-//     [StakeAction.DELEGATE]: true,
-//     [StakeAction.REDELEGATE]:
-//       delegations.filter(
-//         ({ validator_address }) => validator_address !== destination
-//       ).length > 0,
-//     [StakeAction.UNBOND]: !!delegations.filter(
-//       ({ validator_address }) => validator_address === destination
-//     ).length,
-//   }
-// }
+export enum StakeAction {
+  DELEGATE = "delegate",
+  REDELEGATE = "redelegate",
+  UNBOND = "undelegate",
+}
+
+export const getAvailableStakeActions = (
+  destination: ValAddress,
+  delegations: Delegation[]
+) => {
+  return {
+    [StakeAction.DELEGATE]: true,
+    [StakeAction.REDELEGATE]:
+      delegations.filter(
+        ({ validator_address }) => validator_address !== destination
+      ).length > 0,
+    [StakeAction.UNBOND]: !!delegations.filter(
+      ({ validator_address }) => validator_address === destination
+    ).length,
+  }
+}
 
 /* delegation */
 export const calcDelegationsTotal = (delegations: Delegation[]) => {

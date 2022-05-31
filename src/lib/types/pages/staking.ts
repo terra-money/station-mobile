@@ -1,14 +1,19 @@
-import {
-  API,
-  DisplayCoin,
-  Reward,
-  ValidatorData,
-  ValidatorUI,
-} from '..'
+import { Validator, UnbondingDelegation, Delegation, Rewards } from '@terra-money/terra.js'
+import { QueryObserverBaseResult } from 'react-query'
 
-export interface StakingPage extends API<StakingData> {
-  personal?: StakingPersonal
+import {
+  DisplayCoin,
+} from '..'
+import { TerraValidator } from 'types/validator'
+
+export interface StakingPage {
+  personal?: StakingData
   ui?: StakingUI
+  validatorsState?: QueryObserverBaseResult<any>
+  delegationsState?: QueryObserverBaseResult<any>
+  unbondingsState?: QueryObserverBaseResult<any>
+  rewardsState?: QueryObserverBaseResult<any>
+  TerraValidatorsState?: QueryObserverBaseResult<any>
 }
 
 export interface StakingPersonal {
@@ -17,7 +22,7 @@ export interface StakingPersonal {
     amounts: DisplayCoin[]
     validators: string[]
   }
-  available: { title: string; display: DisplayCoin }
+  available?: { title: string; display: DisplayCoin }
   delegated: { title: string; display: DisplayCoin }
   undelegated: {
     title: string
@@ -35,12 +40,12 @@ export interface StakingPersonal {
 }
 
 export interface StakingUI {
-  sorter: {
+  sorter?: {
     current: ValidatorSorter & { asc: boolean }
     set: (sorter: ValidatorSorter, asc: boolean) => void
   }
   headings: ValidatorListHeadings
-  contents: ValidatorUI[]
+  contents: TerraValidator[]
 }
 
 export interface UndelegationsTable {
@@ -102,9 +107,11 @@ export interface StakingData {
   availableLuna?: string
   delegationTotal?: string
   undelegations?: Undelegation[]
-  rewards?: { denoms: Reward[]; total: string }
-  myDelegations?: StakingDelegation[]
-  validators: ValidatorData[]
+  myDelegations?: Delegation[]
+  validators: Validator[]
+  delegations?: Delegation[]
+  unbondings?: UnbondingDelegation[]
+  rewards?: Rewards
 }
 
 export interface StakingDelegation {

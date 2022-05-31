@@ -13,7 +13,7 @@ import _ from 'lodash'
 
 import { COLOR, FONT } from 'consts'
 
-import { useAuth, format, useBank, useIsClassic } from "lib";
+import { useAuth, format, useBank, useIsClassic } from 'lib'
 import { Text, Button, Select, Icon, FormInput } from 'components'
 
 import BigNumber from 'bignumber.js'
@@ -256,7 +256,7 @@ const SendTxView = (props: Props): ReactElement => {
   }, [walletAddress, endpointAddress, returnScheme])
 
   useEffect(() => {
-    const available = bank?.balance.find((b) => b.denom === feeDenom)
+    const available = bank?.balance?.find((b) => b.denom === feeDenom)
       ?.available
 
     available &&

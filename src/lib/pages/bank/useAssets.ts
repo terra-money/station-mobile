@@ -244,7 +244,7 @@ export default (user: User, config?: Config): AssetsPage => {
           ? t('Page:Bank:Released')
           : t('Page:Bank:Release on'),
         duration: `${toISO(endTime)}`,
-        width: percent(0, 0),
+        width: percent(released ? 100 : 0, 0),
       }
     } else {
       const { amount, startTime, endTime, ratio = 0, freedRate = 0 } = schedule

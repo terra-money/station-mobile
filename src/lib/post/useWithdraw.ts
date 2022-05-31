@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { User, WithdrawProps, PostPage } from '../types'
 import useBank from '../api/useBank'
 import { isFeeAvailable, getFeeDenomList } from './validateConfirm'
-import { useIsClassic } from "lib/contexts/ConfigContext";
+import { useIsClassic } from 'lib'
 
 export default (user: User, props: WithdrawProps): PostPage => {
   const { amounts, validators } = props

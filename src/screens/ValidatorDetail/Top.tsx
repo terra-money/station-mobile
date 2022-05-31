@@ -4,38 +4,39 @@ import _ from 'lodash'
 
 import { Text, Icon } from 'components'
 import Badge from 'components/Badge'
-import { ValidatorUI } from 'lib'
 import images from 'assets/images'
 import { COLOR } from 'consts'
 import useTerraAssets from 'lib/hooks/useTerraAssets'
 import FastImagePlaceholder from 'components/FastImagePlaceholder'
+import { TerraValidator } from 'types/validator'
+import { BondStatus } from '@terra-money/terra.proto/cosmos/staking/v1beta1/staking'
+import { bondStatusFromJSON } from '@terra-money/terra.proto/cosmos/staking/v1beta1/staking'
 
-const Top = ({ ui }: { ui: ValidatorUI }): ReactElement => {
-  const { profile, moniker, status, operatorAddress } = ui
+const Top = ({ data }: { data?: TerraValidator }): ReactElement => {
   const [validatorList, setValidatorList] = useState<
     Dictionary<string>
   >({})
 
-  const { data } = useTerraAssets<Dictionary<string>>(
+  const { data: terraAsset } = useTerraAssets<Dictionary<string>>(
     'validators.json'
   )
   useEffect(() => {
-    data && setValidatorList(data)
-  }, [data])
+    terraAsset && setValidatorList(terraAsset)
+  }, [terraAsset])
 
-  const isValidator = _.some(validatorList[operatorAddress.address])
+  const isValidator = _.some(validatorList[data?.operator_address])
 
   return (
     <View style={styles.container}>
       <View>
         <FastImagePlaceholder
-          source={profile ? { uri: profile } : images.terra}
+          source={data?.picture ? { uri: data?.picture } : images.terra}
           style={styles.profileImage}
           placeholder={images.loading_circle}
         />
       </View>
       <Text style={styles.moniker} fontType={'bold'}>
-        {moniker}
+        {data?.description?.moniker}
       </Text>
       <View style={{ flexDirection: 'row' }}>
         {isValidator && (
@@ -44,10 +45,10 @@ const Top = ({ ui }: { ui: ValidatorUI }): ReactElement => {
           </View>
         )}
         <Badge
-          text={status.toUpperCase()}
+          text={bondStatusFromJSON(BondStatus[data?.status]) === BondStatus.BOND_STATUS_BONDED ? 'Active' : 'Inactive'}
           containerStyle={{
             backgroundColor:
-              status === 'active' ? '#1daa8e' : '#fd9a02',
+              bondStatusFromJSON(BondStatus[data?.status]) === BondStatus.BOND_STATUS_BONDED ? '#1daa8e' : '#fd9a02',
           }}
         />
       </View>

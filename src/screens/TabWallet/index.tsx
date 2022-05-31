@@ -17,7 +17,6 @@ import History from './History'
 import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
-import { useIsClassic } from "lib/contexts/ConfigContext";
 
 type VisibleSmallType = 'show' | 'hide'
 
@@ -32,7 +31,6 @@ const Wallet = (props: Props): ReactElement => {
     await getWalletSettings()
     setRefreshingKey((ori) => ori + 1)
   }
-  const isClassic = useIsClassic()
 
   const getWalletSettings = async (): Promise<void> => {
     const hideSmall = (await Preferences.getString(

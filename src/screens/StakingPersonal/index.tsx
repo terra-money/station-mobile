@@ -1,13 +1,12 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useMemo, useState } from 'react'
 import {
   useStaking,
   useAuth,
   User,
-  ValidatorUI,
-  StakingPersonal as StationStakingPersonal,
-  StakingUI,
+  StakingData
 } from 'lib'
 import { StackScreenProps } from '@react-navigation/stack'
+import { Validator } from '@terra-money/terra.js'
 
 import { navigationHeaderOptions } from 'components/layout/Header'
 import Body from 'components/layout/Body'
@@ -18,49 +17,76 @@ import Rewards from './Rewards'
 import Delegated from './Delegated'
 import UnDelegated from './UnDelegated'
 import { Loading, Text } from 'components'
+import { useTerraValidators } from '../../qureys/Terra/TerraAPI'
+import { getIsUnbonded } from 'lib/pages/staking/useStaking'
 
 type Props = StackScreenProps<RootStackParams, 'Staking'>
 
 const Render = ({
   user,
   personal,
-  ui,
 }: {
   user?: User
-  personal: StationStakingPersonal
-  ui?: StakingUI
+  personal: StakingData
 }): ReactElement => {
+  const { validators, rewards, delegations, unbondings } = personal
+  const { data: TerraValidators } = useTerraValidators()
+
+  const activeValidators = useMemo(() => {
+    if (!(validators && TerraValidators)) return null
+
+    return validators
+      .filter(({ status }) => !getIsUnbonded(status))
+      .map((validator) => {
+        const { operator_address } = validator
+
+        const indexOfTerraValidator = TerraValidators.findIndex(
+          (validator) => validator.operator_address === operator_address
+        )
+
+        const TerraValidator = TerraValidators[indexOfTerraValidator]
+
+        return {
+          ...TerraValidator,
+          ...validator,
+        }
+      })
+  }, [TerraValidators, validators])
+
   const findMoniker = ({
-    name,
+    address,
   }: {
-    name: string
-  }): ValidatorUI | undefined =>
-    ui?.contents.find((x) => x.moniker === name)
+    address: string
+  }): Validator | undefined =>
+    activeValidators.find((x) => x.operator_address === address)
 
   return (
     <>
-      {user && <Rewards personal={personal} user={user} />}
-      <Delegated personal={personal} findMoniker={findMoniker} />
-      <UnDelegated personal={personal} findMoniker={findMoniker} />
+      {rewards && user && <Rewards personal={personal} user={user} />}
+      {delegations && <Delegated personal={personal} findMoniker={findMoniker} />}
+      {unbondings && <UnDelegated personal={personal} findMoniker={findMoniker} />}
     </>
   )
 }
 
 const StakingPersonal = ({ navigation }: Props): ReactElement => {
   const { user } = useAuth()
-  const { personal, ui, loading } = useStaking(user)
+  const { personal, delegationsState, unbondingsState, rewardsState } = useStaking()
   const [loadingComplete, setLoadingComplete] = useState(false)
 
   const [refreshingKey, setRefreshingKey] = useState(0)
   const refreshPage = async (): Promise<void> => {
     setRefreshingKey((ori) => ori + 1)
+    delegationsState.refetch()
+    unbondingsState.refetch()
+    rewardsState.refetch()
   }
 
   useEffect(() => {
-    if (loading === false) {
+    if (delegationsState.isLoading === false) {
       setLoadingComplete(true)
     }
-  }, [loading])
+  }, [delegationsState.isLoading])
 
   useEffect(() => {
     let unsubscribe
@@ -84,7 +110,6 @@ const StakingPersonal = ({ navigation }: Props): ReactElement => {
           <Render
             user={user}
             personal={personal}
-            ui={ui}
             key={refreshingKey}
           />
         )

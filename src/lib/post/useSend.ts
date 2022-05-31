@@ -21,7 +21,7 @@ import {
 import { useCalcFee } from './txHelpers'
 import { useDenomTrace } from 'hooks/useDenomTrace'
 import { UTIL } from 'consts'
-import { useIsClassic } from "lib/contexts/ConfigContext";
+import { useIsClassic } from 'lib'
 
 interface Values {
   to: string
@@ -85,7 +85,7 @@ export default (
   const calculatedMaxAmount = balance
 
   const maxAmount =
-    bank?.balance.length === 1 && calcFee
+    bank?.balance?.length === 1 && calcFee
       ? max([
           minus(
             calculatedMaxAmount,

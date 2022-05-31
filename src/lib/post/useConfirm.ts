@@ -25,7 +25,7 @@ import { toInput, toAmount } from '../utils/format'
 import { lt, gt } from '../utils/math'
 import { useCalcFee } from './txHelpers'
 import { checkError, parseError } from './txHelpers'
-import { useConfig } from 'lib/contexts/ConfigContext'
+import { useConfig, useIsClassic } from 'lib'
 
 interface SignParams {
   user: User
@@ -94,6 +94,7 @@ export default (
   const [unsignedTx, setUnsignedTx] = useState<Tx>()
   const [gas, setGas] = useState('0')
   const isGasEstimated = gt(gas, 0)
+  const isClassic = useIsClassic()
 
   useEffect(() => {
     isGasEstimated && setDenom(getFeeDenom(gas))
@@ -200,7 +201,7 @@ export default (
         sequence,
         chainID,
         signMode: ledger ? SignMode.SIGN_MODE_LEGACY_AMINO_JSON : SignMode.SIGN_MODE_DIRECT,
-      })
+      }, isClassic)
 
       // disconnect ledger
       ledger && disconnect && disconnect()

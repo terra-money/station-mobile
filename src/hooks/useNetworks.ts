@@ -1,8 +1,8 @@
-import { useMemo } from "react";
+import { useMemo } from 'react'
 
-import useTerraAssets from "lib/hooks/useTerraAssets";
-import { ChainOptions } from "lib";
-import { NetworkEnum } from "types";
+import useTerraAssets from 'lib/hooks/useTerraAssets'
+import { ChainOptions } from 'lib'
+import { NetworkEnum } from 'types'
 
 const defaultNetworks: Record<NetworkEnum, ChainOptions> = {
   mainnet: {

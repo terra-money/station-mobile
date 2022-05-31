@@ -1,7 +1,7 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import { User, ValidatorUI } from 'lib'
+import { format, gte, useConfig, User, useStaking } from 'lib'
 import { Text, Number, Button } from 'components'
 import { useWithdraw } from 'hooks/useWithdraw'
 import {
@@ -11,46 +11,70 @@ import {
 import { RootStackParams } from 'types'
 import { COLOR } from 'consts'
 import { DelegateType } from 'lib/post/useDelegate'
+import { TerraValidator } from 'types/validator'
+import { useMemoizedCalcValue } from '../../qureys/oracle'
+import { calcRewardsValues } from '../../qureys/distribution'
+import { getAvailableStakeActions, StakeAction, useDelegation } from '../../qureys/staking'
+import { useTranslation } from 'react-i18next'
 
 const Actions = ({
   user,
-  ui,
+  data,
 }: {
   user: User
-  ui: ValidatorUI
+  data?: TerraValidator
 }): ReactElement => {
-  const {
-    delegate,
-    undelegate,
-    redelegate,
-    myDelegations,
-    myRewards,
-    withdraw,
-    operatorAddress,
-  } = ui
+  const { currency } = useConfig()
+  const { t } = useTranslation()
+
+  const { personal } = useStaking()
+  const { rewards, delegations } = personal
+
+  const calcValue = useMemoizedCalcValue()
+
+  const rewardsValues = useMemo(() => {
+    const defaultValues = { address: data?.operator_address, sum: "0", list: [] }
+    if (!rewards) return defaultValues
+    const { byValidator } = calcRewardsValues(rewards, currency.current.key, calcValue)
+    const values = byValidator.find(({ address }) => address === data?.operator_address)
+    return values ?? defaultValues
+  }, [calcValue, currency, data?.operator_address, rewards])
 
   const { runWithdraw } = useWithdraw({
     user,
-    amounts: myRewards.amounts || [],
-    validators: [operatorAddress.address],
+    amounts: rewardsValues?.list.map((item) => (format.display(item))) || [],
+    validators: [data?.operator_address],
   })
+
+  const { data: delegation, ...delegationState } = useDelegation(data?.operator_address)
+  const delegationAmount = delegationState.isSuccess && delegation
+      ? delegation.balance.amount.toString()
+      : "0"
+
+  const delegationValue = calcValue({ amount: delegationAmount, denom: "uluna" })
+  const availableActions = getAvailableStakeActions(data?.operator_address, delegations)
 
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
 
-  return myDelegations.display ? (
+  return delegation ? (
     <View>
       <View style={styles.container}>
         <Text style={styles.title} fontType={'bold'}>
-          {myDelegations.title}
+          {t('Page:Staking:My delegations')}
         </Text>
 
         <View style={{ alignItems: 'flex-start' }}>
           <Number
             numberFontStyle={{ fontSize: 20, textAlign: 'left' }}
             decimalFontStyle={{ fontSize: 15 }}
-            {...myDelegations.display}
+            {
+              ...format.display({
+                amount: delegationValue,
+                denom: 'uluna'
+              })
+            }
           />
         </View>
 
@@ -65,11 +89,11 @@ const Actions = ({
           <View style={{ flex: 1 }}>
             <Button
               theme={'sapphire'}
-              disabled={delegate.disabled}
-              title={delegate.children}
+              disabled={!availableActions[StakeAction.DELEGATE]}
+              title={t('Post:Staking:Delegate')}
               onPress={(): void => {
                 navigate('Delegate', {
-                  validatorAddress: operatorAddress.address,
+                  validatorAddress: data?.operator_address,
                   type: DelegateType.D,
                 })
               }}
@@ -79,11 +103,11 @@ const Actions = ({
           <View style={{ flex: 1, marginHorizontal: 5 }}>
             <Button
               theme={'sapphire'}
-              disabled={redelegate.disabled}
-              title={redelegate.children}
+              disabled={!availableActions[StakeAction.REDELEGATE]}
+              title={'Redelegate'}
               onPress={(): void => {
                 navigate('Delegate', {
-                  validatorAddress: operatorAddress.address,
+                  validatorAddress: data?.operator_address,
                   type: DelegateType.R,
                 })
               }}
@@ -93,11 +117,11 @@ const Actions = ({
           <View style={{ flex: 1 }}>
             <Button
               theme={'dodgerBlue'}
-              disabled={undelegate.disabled}
-              title={undelegate.children}
+              disabled={!availableActions[StakeAction.UNBOND]}
+              title={t('Post:Staking:Undelegate')}
               onPress={(): void => {
                 navigate('Delegate', {
-                  validatorAddress: operatorAddress.address,
+                  validatorAddress: data?.operator_address,
                   type: DelegateType.U,
                 })
               }}
@@ -108,22 +132,27 @@ const Actions = ({
       </View>
       <View style={styles.container}>
         <Text style={styles.title} fontType={'bold'}>
-          {myRewards.title}
+          {t('Page:Staking:My rewards')}
         </Text>
 
         <View style={{ alignItems: 'flex-start' }}>
           <Number
             numberFontStyle={{ fontSize: 20, textAlign: 'left' }}
             decimalFontStyle={{ fontSize: 15 }}
-            {...myRewards.display}
+            {
+              ...format.display({
+                amount: rewardsValues?.sum,
+                denom: 'uluna'
+              })
+            }
           />
         </View>
 
         <View style={styles.buttonBox}>
           <Button
             theme={'sapphire'}
-            disabled={withdraw.disabled}
-            title={withdraw.children}
+            disabled={!(rewardsValues && gte(rewardsValues.sum, 1))}
+            title={t('Post:Staking:Withdraw')}
             onPress={(): void => {
               runWithdraw()
             }}

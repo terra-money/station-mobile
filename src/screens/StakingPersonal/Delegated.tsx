@@ -1,23 +1,32 @@
 import React, { ReactElement } from 'react'
-import { View, StyleSheet, Image } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import _ from 'lodash'
 
-import { StakingPersonal, ValidatorUI } from 'lib'
+import { format, StakingData } from 'lib'
 
 import { Number, Text } from 'components'
 import { COLOR } from 'consts'
 import images from 'assets/images'
+import { calcDelegationsTotal } from '../../qureys/staking'
+import { Validator } from '@terra-money/terra.js'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { RootStackParams } from 'types/navigation'
+import FastImagePlaceholder from '../../components/FastImagePlaceholder'
 
-const Rewards = ({
+const Delegated = ({
   personal,
   findMoniker,
 }: {
-  personal: StakingPersonal
-  findMoniker: ({ name }: { name: string }) => ValidatorUI | undefined
+  personal: StakingData
+  findMoniker: ({ address }: { address: string }) => Validator | undefined
 }): ReactElement => {
-  const { delegated, myDelegations } = personal
+  const { navigate } =
+    useNavigation<NavigationProp<RootStackParams>>()
 
-  return (
+  const { delegations } = personal
+  const delegationTotal = calcDelegationsTotal(delegations)
+
+  return delegations?.length ? (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle} fontType={'medium'}>
@@ -26,7 +35,13 @@ const Rewards = ({
         <Number
           numberFontStyle={{ fontSize: 20, textAlign: 'left' }}
           decimalFontStyle={{ fontSize: 15 }}
-          {...delegated.display}
+          {
+            ...format.display({
+              amount: delegationTotal,
+              denom: 'uluna'
+            })
+          }
+          unit="Luna"
           fontType={'medium'}
         />
       </View>
@@ -38,45 +53,56 @@ const Rewards = ({
           borderTopWidth: 1,
         }}
       >
-        {_.map(myDelegations?.table?.contents, (content, i) => {
-          const moniker = findMoniker({ name: content.name })
+        {_.map(delegations, (item, i) => {
+          const moniker = findMoniker({ address: item?.validator_address })
           return (
-            <View
+            <TouchableOpacity
+              onPress={(): void =>
+                navigate('ValidatorDetail', {
+                  address: item?.validator_address,
+                })
+              }
               key={`delegated.table.contents-${i}`}
-              style={styles.itemBox}
             >
               <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  paddingRight: 20,
-                }}
+                style={styles.itemBox}
               >
-                <Image
-                  source={
-                    moniker?.profile
-                      ? { uri: moniker.profile }
-                      : images.terra
-                  }
-                  style={styles.profileImage}
-                />
-                <Text>{content.name}</Text>
-              </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingRight: 20,
+                  }}
+                >
+                  <FastImagePlaceholder
+                    source={moniker?.picture
+                      ? { uri: moniker.picture }
+                      : images.terra}
+                    style={styles.profileImage}
+                    placeholder={images.loading_circle}
+                  />
+                  <Text>{moniker?.description?.moniker}</Text>
+                </View>
 
-              <Number
-                numberFontStyle={{ fontSize: 14 }}
-                decimalFontStyle={{ fontSize: 10.5 }}
-                {...content.delegated}
-              />
-            </View>
+                <Number
+                  numberFontStyle={{ fontSize: 14 }}
+                  decimalFontStyle={{ fontSize: 10.5 }}
+                  {
+                    ...format.display(item?.balance)
+                  }
+                />
+              </View>
+            </TouchableOpacity>
           )
         })}
       </View>
     </View>
+  ) : (
+    <View></View>
   )
 }
 
-export default Rewards
+export default Delegated
 
 const styles = StyleSheet.create({
   container: {

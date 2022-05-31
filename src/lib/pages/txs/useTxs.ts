@@ -1,19 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { isTxError } from '@terra-money/terra.js'
-import _ from 'lodash'
 
-import { TxsPage, User, Tx, TxUI, TxV2 } from "../../types";
+import { TxsPage, User, Tx, TxUI, TxV2 } from '../../types'
 import { format } from '../../utils'
 import useFCD from '../../api/useFCD'
-import { useConfig, useIsClassic } from "../../contexts/ConfigContext";
+import { useConfig, useIsClassic } from '../../contexts/ConfigContext'
 import useFinder from '../../hooks/useFinder'
 import useParseTxText from './useParseTxText'
 import {
   createActionRuleSet,
   createLogMatcherForActions,
   getTxCanonicalMsgs,
-  Action,
 } from '@terra-money/log-finder-ruleset'
 
 type Response = {

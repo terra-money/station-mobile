@@ -4,7 +4,6 @@ import _ from 'lodash'
 
 import { TxParam } from 'types/tx'
 import dev from './dev'
-import { useIsClassic } from "lib/contexts/ConfigContext";
 
 export const createTxOptionsToTxParam = (
   txOptions: CreateTxOptions

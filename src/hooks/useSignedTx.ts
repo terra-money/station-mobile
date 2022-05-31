@@ -16,6 +16,7 @@ import { getDecyrptedKey } from 'utils/wallet'
 import { getLCDClient } from '../screens/topup/TopupUtils'
 import { useLoading } from './useLoading'
 import { RootStackParams } from 'types'
+import { useIsClassic } from 'lib'
 
 type TopupCreateSignedResult =
   | {
@@ -53,6 +54,7 @@ const useSignedTx = (
   const { chain } = useConfig()
   const { dispatch } = useNavigation()
   const { showLoading, hideLoading } = useLoading({ navigation })
+  const isClassic = useIsClassic()
 
   const unsignedTx = useRecoilValue(TopupStore.unsignedTx)
 
@@ -80,12 +82,14 @@ const useSignedTx = (
         account_number,
         sequence,
       } = await wallet.accountNumberAndSequence()
+
       const signedTx = await key.signTx(unsignedTx, {
         accountNumber: account_number,
         sequence,
         chainID: chain.current.chainID,
         signMode: SignMode.SIGN_MODE_DIRECT,
-      })
+      }, isClassic)
+
       return { success: true, signedTx }
     } catch (e: any) {
       return {

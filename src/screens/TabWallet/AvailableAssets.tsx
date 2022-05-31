@@ -33,7 +33,6 @@ import VestingItem from './VestingItem'
 import TokenSelector from './TokenSelector'
 import TokenManager from './TokenManager'
 import AssetItem from '../../components/wallet/AssetItem'
-import { useIsClassic } from "lib/contexts/ConfigContext";
 
 type Props = StackScreenProps<RootStackParams, 'Wallet'>
 
@@ -148,7 +147,6 @@ const AvailableAssets = ({
   const { addListener, removeListener } = useNavigation()
 
   const chainName = useCurrentChainName()
-  const isClassic = useIsClassic()
 
   // If list length is 0 on hiding small-balance-assets, then show small-balance-assets.
   useEffect(() => {

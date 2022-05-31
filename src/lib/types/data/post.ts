@@ -2,7 +2,7 @@ import { AxiosError } from 'axios'
 import { FormUI, Card, ConfirmProps } from '..'
 
 export interface PostPage<UI = any> {
-  error?: Error
+  error?: Error | null
   loading?: boolean
   submitted: boolean
   form?: FormUI

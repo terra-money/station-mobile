@@ -1,79 +1,115 @@
 import React, { ReactElement } from 'react'
-import { View, StyleSheet, Image } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import _ from 'lodash'
 
-import { StakingPersonal, ValidatorUI } from 'lib'
+import { format, StakingData } from 'lib'
 
 import { Number, Text } from 'components'
 import { COLOR } from 'consts'
 import images from 'assets/images'
+import { Validator } from '@terra-money/terra.js'
+import { calcUnbondingsTotal, flattenUnbondings } from '../../qureys/staking'
+import FastImagePlaceholder from '../../components/FastImagePlaceholder'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { RootStackParams } from 'types/navigation'
 
 const Rewards = ({
   personal,
   findMoniker,
 }: {
-  personal: StakingPersonal
-  findMoniker: ({ name }: { name: string }) => ValidatorUI | undefined
+  personal: StakingData
+  findMoniker: ({ address }: { address: string }) => Validator | undefined
 }): ReactElement => {
-  const { undelegated } = personal
+  const { navigate } =
+    useNavigation<NavigationProp<RootStackParams>>()
 
-  return (
+  const { unbondings } = personal
+  const undelegationTotal = calcUnbondingsTotal(unbondings)
+  const unbondingList = flattenUnbondings(unbondings)
+
+  return unbondingList?.length ? (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle} fontType={'medium'}>
           {'Undelegated'}
         </Text>
-        <Number
-          numberFontStyle={{ fontSize: 20, textAlign: 'left' }}
-          decimalFontStyle={{ fontSize: 15 }}
-          {...undelegated.display}
-          fontType={'medium'}
-        />
+        {
+          (undelegationTotal && undelegationTotal !== 'NaN') && (
+            <Number
+              numberFontStyle={{ fontSize: 20, textAlign: 'left' }}
+              decimalFontStyle={{ fontSize: 15 }}
+              {
+                ...format.display({
+                  amount: undelegationTotal,
+                  denom: 'uluna'
+                })
+              }
+              unit="Luna"
+              fontType={'medium'}
+            />
+          )
+        }
       </View>
       <View style={{ marginBottom: 10 }}>
-        {_.map(undelegated.table?.contents, (content, i) => {
-          const moniker = findMoniker({ name: content.name })
+        {unbondingList?.length && _.map(unbondingList, (item, i) => {
+          const moniker = findMoniker({ address: item?.validator_address })
           return (
-            <View
+            <TouchableOpacity
+              onPress={(): void =>
+                navigate('ValidatorDetail', {
+                  address: item?.validator_address,
+                })
+              }
               key={`undelegated.table.contents-${i}`}
-              style={styles.itemBox}
             >
               <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  maxWidth: '50%',
-                }}
+                style={styles.itemBox}
               >
-                <Image
-                  source={
-                    moniker?.profile
-                      ? { uri: moniker.profile }
-                      : images.terra
-                  }
-                  style={styles.profileImage}
-                />
-                <Text>{content.name}</Text>
-              </View>
-              <View style={{ alignItems: 'flex-end', flex: 1 }}>
-                <Number
-                  numberFontStyle={{ fontSize: 14 }}
-                  decimalFontStyle={{ fontSize: 10.5 }}
-                  {...content.display}
-                />
-                <Text
-                  style={{ fontSize: 10.5, marginTop: 5 }}
-                  fontType="medium"
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    maxWidth: '50%',
+                  }}
                 >
-                  Release time
-                </Text>
-                <Text style={{ fontSize: 10.5 }}>{content.date}</Text>
+                  <FastImagePlaceholder
+                    source={moniker?.picture
+                      ? { uri: moniker.picture }
+                      : images.terra}
+                    style={styles.profileImage}
+                    placeholder={images.loading_circle}
+                  />
+                  <Text>{moniker?.description?.moniker}</Text>
+                </View>
+                <View style={{ alignItems: 'flex-end', flex: 1 }}>
+                  <Number
+                    numberFontStyle={{ fontSize: 14 }}
+                    decimalFontStyle={{ fontSize: 10.5 }}
+                    {
+                      ...format.display({
+                        amount: item?.initial_balance.toString(),
+                        denom: 'uluna'
+                      })
+                    }
+                  />
+                  <Text
+                    style={{ fontSize: 10.5, marginTop: 5 }}
+                    fontType="medium"
+                  >
+                    Release time
+                  </Text>
+                  <Text style={{ fontSize: 10.5 }}>
+                    {format.date(item?.completion_time)}
+                  </Text>
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
           )
         })}
       </View>
     </View>
+  ) : (
+    <View></View>
   )
 }
 

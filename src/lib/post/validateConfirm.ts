@@ -1,4 +1,4 @@
-import { CoinItem, Balance, useIsClassic, BalanceV2 } from "..";
+import { CoinItem, Balance, BalanceV2 } from '..'
 import { find, plus, lte } from '../utils'
 
 interface Params {
@@ -16,7 +16,7 @@ export const isAvailable: Validate = (params, balance, isClassic) => {
 
   return fee.denom === denom
     ? lte(plus(total, fee.amount), available)
-    : lte(total, available) && isFeeAvailable(fee, balance)
+    : lte(total, available) && isFeeAvailable(fee, balance, isClassic)
 }
 
 export const isDelegatable: Validate = (params, balance, isClassic) => {
@@ -24,11 +24,11 @@ export const isDelegatable: Validate = (params, balance, isClassic) => {
   const available =
     (denom && find(`${denom}:${isClassic ? 'available' : 'amount'}`, balance)) ?? '0'
   const delegatable =
-    (denom && find(`${denom}:delegatable`, balance)) ?? '0'
+    (denom && find(`${denom}:${isClassic ? 'delegatable' : 'amount'}`, balance)) ?? '0'
   return denom === fee.denom
     ? lte(plus(amount, fee.amount), delegatable) &&
         lte(fee.amount, available)
-    : lte(amount, delegatable) && isFeeAvailable(params, balance)
+    : lte(amount, delegatable) && isFeeAvailable(params, balance, isClassic)
 }
 
 export const isFeeAvailable = (
@@ -41,4 +41,4 @@ export const isFeeAvailable = (
 }
 
 export const getFeeDenomList = (balance: Balance[] | BalanceV2[]): string[] =>
-  balance.map(({ denom }) => denom)
+  balance?.map(({ denom }) => denom)

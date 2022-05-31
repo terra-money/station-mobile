@@ -116,7 +116,6 @@ export const parseVestingSchedule = (
   } else if (response?.["@type"] === VestingAccountTypes.Delayed) {
     const { base_vesting_account } = response
     const { original_vesting, end_time } = base_vesting_account
-    console.log('parseVestingSchedule', end_time);
 
     const endTime = new Date(Number(end_time) * 1000)
     const toNow = isPast(endTime) ? "past" : "future"

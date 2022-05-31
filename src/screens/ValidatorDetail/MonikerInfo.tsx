@@ -1,58 +1,62 @@
 import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
-import _ from 'lodash'
 import { DelegateType } from 'lib/post/useDelegate'
 
 import { Text, Number, Button } from 'components'
-import { User, ValidatorUI } from 'lib'
+import { format, useIsClassic, User } from 'lib'
 import { COLOR } from 'consts'
 import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native'
 import { RootStackParams } from 'types'
+import { TerraValidator } from 'types/validator'
+import { useTranslation } from 'react-i18next'
+import { readPercent } from '@terra.kitchen/utils'
+import { useDelegation } from '../../qureys/staking'
+import { calcSelfDelegation } from '../../qureys/Terra/TerraAPI'
 
 const Top = ({
-  ui,
+  data,
   user,
 }: {
-  ui: ValidatorUI
+  data?: TerraValidator
   user?: User
 }): ReactElement => {
-  const {
-    details,
-    uptime,
-    votingPower,
-    selfDelegation,
-    commission,
-    delegate,
-    redelegate,
-    myDelegations,
-    operatorAddress,
-  } = ui
-
+  const { t } = useTranslation()
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
+  const isClassic = useIsClassic()
+
+  const { data: delegation, ...delegationState } = useDelegation(data?.operator_address)
+  const delegationAmount = delegationState?.isSuccess && delegation
+    ? delegation?.balance?.amount.toString()
+    : "0"
+
   return (
     <View style={styles.container}>
       <View>
-        {_.some(details) && (
-          <View style={{ paddingBottom: 15 }}>
-            <Text style={styles.details}>{details}</Text>
-          </View>
-        )}
-
+        <View style={{ paddingBottom: 15 }}>
+          <Text style={styles.details}>
+            {data?.description?.details}
+          </Text>
+        </View>
         <View style={styles.section}>
           <View style={styles.infoItem}>
             <Text style={styles.infoItemTitle} fontType={'bold'}>
-              {votingPower.title}
+              {t('Page:Staking:Voting power')}
             </Text>
             <Text style={styles.infoItemValue} fontType={'medium'}>
-              {votingPower.percent}
+              {readPercent(data?.voting_power_rate)}
             </Text>
             <Number
-              {...votingPower.display}
+              {
+                ...format.display({
+                  amount: data?.delegator_shares,
+                  denom: 'uluna'
+                })
+              }
               numberFontStyle={{
                 fontSize: 12,
                 lineHeight: 18,
@@ -60,16 +64,20 @@ const Top = ({
               }}
             />
           </View>
-
           <View style={styles.infoItem}>
             <Text style={styles.infoItemTitle} fontType={'bold'}>
-              {selfDelegation.title}
+              {t('Page:Staking:Self-delegation')}
             </Text>
             <Text style={styles.infoItemValue} fontType={'medium'}>
-              {selfDelegation.percent}
+              {readPercent(calcSelfDelegation(data))}
             </Text>
             <Number
-              {...selfDelegation.display}
+              {
+                ...format.display({
+                  amount: data?.self,
+                  denom: 'uluna'
+                })
+              }
               numberFontStyle={{
                 fontSize: 12,
                 lineHeight: 18,
@@ -81,24 +89,29 @@ const Top = ({
         <View style={styles.section}>
           <View style={styles.infoItem}>
             <Text style={styles.infoItemTitle} fontType={'bold'}>
-              {commission.title}
+              {t('Page:Staking:Commission')}
             </Text>
             <Text style={styles.infoItemValue} fontType={'medium'}>
-              {commission.percent}
+              {readPercent(data?.commission?.commission_rates?.rate)}
             </Text>
           </View>
-
           <View style={styles.infoItem}>
-            <Text style={styles.infoItemTitle} fontType={'bold'}>
-              {uptime.title}
-            </Text>
-            <Text style={styles.infoItemValue} fontType={'medium'}>
-              {uptime.percent}
-            </Text>
+            {
+              isClassic && (
+                <>
+                  <Text style={styles.infoItemTitle} fontType={'bold'}>
+                    {t('Page:Staking:Uptime')}
+                  </Text>
+                  <Text style={styles.infoItemValue} fontType={'medium'}>
+                    {readPercent(data?.time_weighted_uptime)}
+                  </Text>
+                </>
+              )
+            }
           </View>
         </View>
         {user &&
-          (myDelegations.display ? (
+          (delegationAmount !== '0' ? (
             <View />
           ) : (
             <View style={styles.section}>
@@ -107,11 +120,11 @@ const Top = ({
               >
                 <Button
                   theme={'sapphire'}
-                  disabled={delegate.disabled}
-                  title={delegate.children}
+                  disabled={data?.jailed}
+                  title={t('Post:Staking:Delegate')}
                   onPress={(): void => {
                     navigate('Delegate', {
-                      validatorAddress: operatorAddress.address,
+                      validatorAddress: data?.operator_address,
                       type: DelegateType.D,
                     })
                   }}
@@ -120,11 +133,11 @@ const Top = ({
                 <View style={{ width: 10 }} />
                 <Button
                   theme={'sapphire'}
-                  disabled={redelegate.disabled}
-                  title={redelegate.children}
+                  disabled={data?.jailed}
+                  title={'Redelegate'}
                   onPress={(): void => {
                     navigate('Delegate', {
-                      validatorAddress: operatorAddress.address,
+                      validatorAddress: data?.operator_address,
                       type: DelegateType.R,
                     })
                   }}

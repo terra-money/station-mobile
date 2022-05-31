@@ -1,88 +1,88 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement } from 'react'
 import { View, StyleSheet } from 'react-native'
 import _ from 'lodash'
 
-import { format, StakingPersonal, User } from 'lib'
+import { format, StakingData, useConfig, User } from 'lib'
 
 import { Button, Number, Text } from 'components'
-import { COLOR } from 'consts'
+import { COLOR, UTIL } from 'consts'
 import { useWithdraw } from 'hooks/useWithdraw'
-import useLCD from 'hooks/useLCD'
-import { getTraceDenom } from 'hooks/useDenomTrace'
+import { useDenomTrace } from 'hooks/useDenomTrace'
+import { calcRewardsValues } from '../../qureys/distribution'
+import { useMemoizedCalcValue } from '../../qureys/oracle'
+import { useTranslation } from 'react-i18next'
 
-type RewardContents = { unit: string; value: string }
+const Denom = ({
+ denom,
+}: {
+  denom?: string
+}): ReactElement => {
+  const isIbcDenom = UTIL.isIbcDenom(denom)
+  const ibcDenom = useDenomTrace(denom)
+
+  return (
+    isIbcDenom ? format.denom(ibcDenom.data?.base_denom) : format.denom(denom)
+  )
+}
 
 const Rewards = ({
   personal,
   user,
 }: {
-  personal: StakingPersonal
+  personal: StakingData
   user: User
 }): ReactElement => {
-  const lcd = useLCD()
-  const { rewards, withdrawAll } = personal
+  const { currency } = useConfig()
+  const { t } = useTranslation()
+  const { rewards, delegations } = personal
 
-  // Parse IBC Token
-  const [rewardContents, setRewardsContents] = useState<
-    RewardContents[]
-  >([])
-  useEffect(() => {
-    const promises = _.map(rewards.table?.contents, async (item) => {
-      return {
-        unit: item.unit.includes('ibc/')
-          ? format.denom(await getTraceDenom(lcd, item.unit))
-          : item.unit,
-        value: item.value,
-      }
-    })
+  const calcValue = useMemoizedCalcValue('uluna')
 
-    const ret: RewardContents[] = []
-    promises
-      .reduce(async (prev, next) => {
-        await prev
-        ret.push(await next)
-      }, Promise.resolve())
-      .then(() => {
-        setRewardsContents(ret)
-      })
+  const rewardsValues = calcRewardsValues(rewards, currency?.current?.key, calcValue)
 
-    return (): void => {
-      setRewardsContents([])
-    }
-  }, [rewards])
+  const rewardLuna = rewardsValues?.total?.list.find(({ denom }) => denom === "uluna")?.amount ?? "0"
 
   const { runWithdraw } = useWithdraw({
     user,
-    amounts: withdrawAll.amounts,
-    validators: withdrawAll.validators,
+    amounts: rewardsValues?.total?.list.map((item) => (format.display(item))),
+    validators: delegations?.map(({ validator_address }) => validator_address) ?? [],
   })
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle} fontType={'medium'}>
-          {rewards.title}
+          {t('Page:Staking:Rewards')}
         </Text>
         <Number
           numberFontStyle={{ fontSize: 20, textAlign: 'left' }}
           decimalFontStyle={{ fontSize: 15 }}
-          {...rewards.display}
+          {
+            ...format.display({
+              amount: rewardLuna,
+              denom: 'uluna'
+            })
+          }
+          unit="Luna"
           estimated
           fontType={'medium'}
         />
       </View>
       <View style={{ marginBottom: 8 }}>
-        {_.map(rewardContents, (content, i) => {
+        {_.map(rewardsValues?.total?.list, ({ denom, amount }, i) => {
           return (
             <View
               key={`rewards.table.contents-${i}`}
               style={styles.itemBox}
             >
-              <Text style={{ paddingRight: 20 }}>{content.unit}</Text>
+              <Text style={{ paddingRight: 20 }}>
+                <Denom denom={denom} />
+              </Text>
               <Number
                 numberFontStyle={{ fontSize: 14 }}
                 decimalFontStyle={{ fontSize: 10.5 }}
               >
-                {content.value}
+                {format.amount(amount)}
               </Number>
             </View>
           )
@@ -90,8 +90,8 @@ const Rewards = ({
       </View>
       <View style={{ paddingHorizontal: 20 }}>
         <Button
-          title={withdrawAll.attrs.children}
-          disabled={withdrawAll.attrs.disabled}
+          title={t('Page:Staking:Withdraw all rewards')}
+          disabled={!rewardsValues?.total.sum || rewardsValues?.total.sum === 'NaN'}
           theme={'gray'}
           onPress={(): void => {
             runWithdraw()

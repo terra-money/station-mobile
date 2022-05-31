@@ -3,10 +3,9 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Image,
 } from 'react-native'
 
-import { StakingPersonal, User } from 'lib'
+import { format, StakingData, StakingPersonal, useAuth, useConfig } from 'lib'
 
 import { Button, Icon, Number, Text } from 'components'
 import { COLOR } from 'consts'
@@ -16,7 +15,10 @@ import {
 } from '@react-navigation/native'
 import { RootStackParams } from 'types'
 import { useWithdraw } from 'hooks/useWithdraw'
-import images from 'assets/images'
+import { calcDelegationsTotal, calcUnbondingsTotal } from '../../qureys/staking'
+import { calcRewardsValues } from '../../qureys/distribution'
+import { useTranslation } from 'react-i18next'
+import { useMemoizedCalcValue } from '../../qureys/oracle'
 
 const NotStaked = (): ReactElement => {
   const { navigate } = useNavigation<
@@ -57,31 +59,39 @@ const NotStaked = (): ReactElement => {
 }
 
 const PersonalSummary = ({
-  user,
   personal,
 }: {
-  user: User
-  personal: StakingPersonal
+  personal: StakingData
 }): ReactElement => {
   const {
-    delegated,
-    undelegated,
+    delegations,
+    unbondings,
     rewards,
-    myDelegations,
-    myRewards,
-    withdrawAll,
   } = personal
+  const { user } = useAuth()
   const { navigate } = useNavigation<
     NavigationProp<RootStackParams>
   >()
+  const { t } = useTranslation()
+  const { currency } = useConfig()
+
+  const calcValue = useMemoizedCalcValue('uluna')
+
+  const delegationTotal = calcDelegationsTotal(delegations)
+  const unbondingsTotal = calcUnbondingsTotal(unbondings)
+
+  const { total } = calcRewardsValues(rewards, currency.current.key, calcValue)
+  const rewardLuna = total?.list?.find(({ denom }) => denom === "uluna")?.amount ?? "0"
+
   const { runWithdraw } = useWithdraw({
     user,
-    amounts: withdrawAll.amounts,
-    validators: withdrawAll.validators,
+    amounts: total?.list?.map((item) => (format.display(item))),
+    validators: delegations?.map(({ validator_address }) => validator_address) ?? [],
   })
+
   return (
     <View style={styles.container}>
-      {myDelegations || myRewards ? (
+      {(delegationTotal !== '0' || rewardLuna !== '0' || unbondingsTotal !== 'NaN') ? (
         <>
           <TouchableOpacity
             onPress={(): void => {
@@ -101,20 +111,26 @@ const PersonalSummary = ({
             />
           </TouchableOpacity>
           <View style={{ marginBottom: 10 }}>
-            {rewards && (
+            {rewardLuna && (
               <View style={styles.itemBox}>
                 <Text style={{ paddingRight: 20 }}>
-                  {rewards.title}
+                  {t('Page:Staking:Rewards')}
                 </Text>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
                   decimalFontStyle={{ fontSize: 10.5 }}
-                  {...rewards.display}
+                  {
+                    ...format.display({
+                      amount: rewardLuna,
+                      denom: 'uluna'
+                    })
+                  }
+                  unit="Luna"
                   estimated
                 />
               </View>
             )}
-            {delegated && (
+            {delegationTotal && (
               <View style={styles.itemBox}>
                 <Text style={{ paddingRight: 20 }}>
                   {'Delegated'}
@@ -122,36 +138,40 @@ const PersonalSummary = ({
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
                   decimalFontStyle={{ fontSize: 10.5 }}
-                  {...delegated.display}
+                  {
+                    ...format.display({
+                      amount: delegationTotal,
+                      denom: 'uluna'
+                    })
+                  }
+                  unit="Luna"
                 />
               </View>
             )}
-            {undelegated && undelegated.table && (
+            { (unbondingsTotal && unbondingsTotal !== 'NaN') && (
               <View style={styles.itemBox}>
-                <View style={styles.undelegated}>
-                  <Text>{'Undelegated'}</Text>
-                  <Image
-                    source={images.loading_circle}
-                    style={{
-                      width: 18,
-                      height: 18,
-                      marginLeft: 3,
-                    }}
-                  />
-                </View>
+                <Text style={{ paddingRight: 20 }}>
+                  {'Undelegated'}
+                </Text>
                 <Number
                   numberFontStyle={{ fontSize: 14 }}
                   decimalFontStyle={{ fontSize: 10.5 }}
-                  {...undelegated.display}
+                  {
+                    ...format.display({
+                      amount: unbondingsTotal,
+                      denom: 'uluna'
+                    })
+                  }
+                  unit="Luna"
                 />
               </View>
             )}
           </View>
 
           <Button
-            title={withdrawAll.attrs.children}
+            title={t('Page:Staking:Withdraw all rewards')}
+            disabled={!total.sum || total.sum === 'NaN'}
             theme={'gray'}
-            disabled={withdrawAll.attrs.disabled}
             onPress={(): void => {
               runWithdraw()
             }}

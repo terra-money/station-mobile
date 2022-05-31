@@ -14,6 +14,7 @@ import UseStationForm from 'components/UseStationForm'
 import Button from 'components/Button'
 
 import { useConfirm } from 'hooks/useConfirm'
+import { useDelegations, useValidators } from '../../qureys/staking'
 
 type Props = StackScreenProps<RootStackParams, 'Delegate'>
 
@@ -27,8 +28,15 @@ const Render = ({
   type: DelegateType
 }): ReactElement => {
   const { navigateToConfirm } = useConfirm()
+
+  const { data: validators } = useValidators()
+  const { data: delegations, ...delegationsState } = useDelegations()
+
   const { loading, form, confirm } = useStationDelegate(user, {
     validatorAddress,
+    validators,
+    delegations,
+    delegationsState,
     type,
   })
 

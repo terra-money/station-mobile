@@ -1,12 +1,13 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useCallback } from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native'
-import { ValidatorUI } from 'lib'
+import { useIsClassic } from 'lib'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
 import FastImage from 'react-native-fast-image'
+import { readPercent } from '@terra.kitchen/utils'
 
 import _ from 'lodash'
 
@@ -21,6 +22,7 @@ import Preferences, {
 import { StakingFilterEnum } from './index'
 import { RootStackParams } from 'types'
 import FastImagePlaceholder from 'components/FastImagePlaceholder'
+import { TerraValidator } from 'types/validator'
 
 const ValidatorList = ({
   contents,
@@ -28,22 +30,49 @@ const ValidatorList = ({
   currentFilter,
   setCurrentFilter,
 }: {
-  contents: ValidatorUI[]
+  contents: TerraValidator[]
   validatorList?: Dictionary<string>
   currentFilter: StakingFilterEnum
   setCurrentFilter: (value: StakingFilterEnum) => void
 }): ReactElement => {
-  const { navigate } = useNavigation<
-    NavigationProp<RootStackParams>
-  >()
+  const { navigate } =
+    useNavigation<NavigationProp<RootStackParams>>()
+  const isClassic = useIsClassic()
 
   const validatorTitle = 'Validators'
 
-  const validatorFilter = [
-    { value: StakingFilterEnum.commission, label: 'Commission' },
-    { value: StakingFilterEnum.votingPower, label: 'Voting Power' },
-    { value: StakingFilterEnum.uptime, label: 'Uptime' },
-  ]
+  const validatorFilter = isClassic
+    ? [
+        { value: StakingFilterEnum.commission, label: 'Commission' },
+        {
+          value: StakingFilterEnum.votingPower,
+          label: 'Voting Power',
+        },
+        { value: StakingFilterEnum.uptime, label: 'Uptime' },
+      ]
+    : [
+        { value: StakingFilterEnum.commission, label: 'Commission' },
+        {
+          value: StakingFilterEnum.votingPower,
+          label: 'Voting Power',
+        },
+      ]
+
+  const hasValues = useCallback(
+    (item: TerraValidator) => {
+      const checkList = isClassic ? [
+        'time_weighted_uptime',
+        'commission',
+        'voting_power_rate'
+      ] : [
+        'commission',
+        'voting_power_rate'
+      ]
+
+      return checkList.every((c) => (item.hasOwnProperty(c) && item[c] !== undefined))
+    },
+    [isClassic, contents]
+  )
 
   return (
     <Card
@@ -95,13 +124,14 @@ const ValidatorList = ({
           }}
         />
       </View>
-      {_.map(
+      {!_.isEmpty(contents) &&
+        _.map(
         contents,
         (item, index): ReactElement => (
           <TouchableOpacity
             onPress={(): void =>
               navigate('ValidatorDetail', {
-                address: item.operatorAddress.address,
+                address: item?.operator_address,
               })
             }
             key={`validator${index}`}
@@ -156,9 +186,9 @@ const ValidatorList = ({
                 </View>
                 <FastImagePlaceholder
                   source={
-                    item.profile
+                    item?.picture
                       ? {
-                          uri: item.profile,
+                          uri: item?.picture,
                           cache: FastImage.cacheControl.web,
                         }
                       : images.terra
@@ -168,7 +198,7 @@ const ValidatorList = ({
                 />
                 {validatorList &&
                 _.some(
-                  validatorList[item.operatorAddress.address]
+                  validatorList[item?.operator_address]
                 ) ? (
                   <View
                     style={{
@@ -183,7 +213,7 @@ const ValidatorList = ({
                       fontType={'medium'}
                       numberOfLines={1}
                     >
-                      {item.moniker}
+                      {item?.description?.moniker}
                     </Text>
                     <EntypoIcon
                       style={{
@@ -207,19 +237,22 @@ const ValidatorList = ({
                     fontType={'medium'}
                     numberOfLines={1}
                   >
-                    {item.moniker}
+                    {item?.description?.moniker}
                   </Text>
                 )}
-
-                <Text style={styles.textPercent}>
-                  {currentFilter === StakingFilterEnum.uptime
-                    ? item.uptime.percent
-                    : currentFilter === StakingFilterEnum.commission
-                    ? item.commission.percent
-                    : currentFilter === StakingFilterEnum.votingPower
-                    ? item.votingPower.percent
-                    : ''}
-                </Text>
+                {
+                  hasValues(item) && (
+                    <Text style={styles.textPercent}>
+                      {(currentFilter === StakingFilterEnum.uptime
+                        ? readPercent(item?.time_weighted_uptime)
+                        : currentFilter === StakingFilterEnum.commission
+                        ? readPercent(item?.commission?.commission_rates?.rate)
+                        : currentFilter === StakingFilterEnum.votingPower
+                        ? readPercent(item?.voting_power_rate)
+                        : '') || ''}
+                    </Text>
+                  )
+                }
               </View>
             </View>
           </TouchableOpacity>

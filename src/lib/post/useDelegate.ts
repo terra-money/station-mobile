@@ -3,15 +3,11 @@ import { useTranslation } from 'react-i18next'
 import {
   PostPage,
   ConfirmProps,
-  StakingData,
   BankData,
-  ValidatorData,
-  StakingDelegation,
 } from '../types'
 import { CoinItem, User, Field, FieldElement } from '../types'
 import { format } from '../utils'
 import { toAmount, toInput } from '../utils/format'
-import useFCD from '../api/useFCD'
 import useBank from '../api/useBank'
 import useForm from '../hooks/useForm'
 import validateForm from './validateForm'
@@ -19,11 +15,16 @@ import { isDelegatable, isFeeAvailable } from './validateConfirm'
 import { getFeeDenomList } from './validateConfirm'
 import {
   Coin,
+  Validator,
+  Delegation,
   MsgBeginRedelegate,
   MsgDelegate,
   MsgUndelegate,
+  AccAddress,
 } from '@terra-money/terra.js'
-import { useIsClassic } from "lib/contexts/ConfigContext";
+import { QueryObserverBaseResult } from 'react-query'
+import { useIsClassic } from 'lib'
+import { getFindMoniker } from '../../qureys/staking'
 
 interface Values {
   from: string
@@ -32,6 +33,9 @@ interface Values {
 
 interface Props {
   validatorAddress: string
+  validators: Validator[]
+  delegations: Delegation[]
+  delegationsState: QueryObserverBaseResult<Delegation, Error>
   type: DelegateType
 }
 
@@ -45,7 +49,7 @@ const denom = 'uluna'
 
 export default (
   user: User,
-  { validatorAddress, type }: Props
+  { validatorAddress, validators, delegations, delegationsState, type }: Props
 ): PostPage => {
   const isUndelegation = type === DelegateType.U
   const isRedelegation = type === DelegateType.R
@@ -56,36 +60,26 @@ export default (
 
   /* ready */
   const { address } = user
-  const url = `/v1/staking/${address}`
   const { data: bank, loading, error } = useBank(user)
-  const { data: staking, ...stakingResponse } = useFCD<StakingData>({
-    url,
-  })
-  const {
-    loading: stakingLoading,
-    error: stakingError,
-  } = stakingResponse
-  const sources = staking?.myDelegations?.filter(
-    (d) => d.validatorAddress !== validatorAddress
+  const findMoniker = getFindMoniker(validators)
+
+  const delegationsOptions = delegations.filter(
+    ({ validator_address }) =>
+      type !== DelegateType.R || validator_address !== validatorAddress
   )
-
-  const findDelegationFromSources = (
-    address: string
-  ): StakingDelegation | undefined =>
-    staking?.myDelegations?.find(
-      (d) => d.validatorAddress === address
+  const findDelegation = (address: AccAddress) =>
+    delegationsOptions.find(
+      ({ validator_address }) => validator_address === address
     )
-
-  const findDelegationFromValidators = (
-    address: string
-  ): ValidatorData | undefined =>
-    staking?.validators?.find((d) => d.operatorAddress === address)
 
   /* max */
   const getMax = (address: string): CoinItem => {
-    const amount =
-      findDelegationFromSources(address)?.amountDelegated ??
-      staking?.availableLuna
+    const amount = findDelegation(address)?.balance?.amount
+      ?? (
+        isClassic ?
+          bank?.balance?.find(a => a.denom === 'uluna')?.available :
+          bank?.balance?.find(a => a.denom === 'uluna')?.amount
+      )
 
     return { amount: amount ?? '0', denom }
   }
@@ -126,14 +120,13 @@ export default (
   const { input, from } = values
   const amount = toAmount(input)
 
-  const moniker = findDelegationFromValidators(validatorAddress)
-    ?.description.moniker
+  const moniker = findMoniker(validatorAddress)
 
   /* render */
   const unit = format.denom(denom)
-  const hasSources = !!sources?.length
+  const hasSources = !!delegationsOptions?.length
   const sourceLength = hasSources
-    ? sources!.length
+    ? delegationsOptions!.length
     : t('Page:Bank:My wallet')
 
   const fromField = {
@@ -154,9 +147,9 @@ export default (
             children: 'Choose a validator',
             disabled: true,
           },
-          ...sources!.map(({ validatorName, validatorAddress }) => ({
-            value: validatorAddress,
-            children: validatorName,
+          ...delegationsOptions!.map(({ validator_address }) => ({
+            value: validator_address,
+            children: findMoniker(validator_address),
           })),
         ],
   }
@@ -298,8 +291,8 @@ export default (
   }
 
   return {
-    error: error || stakingError,
-    loading: loading || stakingLoading,
+    error: error || delegationsState?.error,
+    loading: loading || delegationsState?.isLoading,
     submitted,
     form: formUI,
     confirm: bank && getConfirm(bank),

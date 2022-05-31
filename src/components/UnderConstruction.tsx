@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
-import { View, Animated, StyleSheet, Easing } from "react-native";
-import Maintenance from "assets/svg/Maintenance";
-import { COLOR } from "consts";
-import { Text } from "./index";
+import { View, Animated, StyleSheet, Easing } from 'react-native'
+import Maintenance from 'assets/svg/Maintenance'
+import { COLOR } from 'consts'
+import { Text } from './index'
 
 const UnderConstruction = (): ReactElement => {
   const spinValue = new Animated.Value(0)

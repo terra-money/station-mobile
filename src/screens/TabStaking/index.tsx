@@ -5,10 +5,10 @@ import {
   useStaking,
   useAuth,
   User,
-  ValidatorUI,
   StakingPersonal,
-  useConfig, useIsClassic
-} from "lib";
+  useConfig,
+  useIsClassic,
+} from 'lib'
 
 import { navigationHeaderOptions } from 'components/layout/TabScreenHeader'
 import Body from 'components/layout/Body'
@@ -19,7 +19,8 @@ import Preferences, {
   PreferencesEnum,
 } from 'nativeModules/preferences'
 import useTerraAssets from 'lib/hooks/useTerraAssets'
-import { Loading, UnderConstruction } from 'components'
+import { Loading } from 'components'
+import { TerraValidator } from 'types/validator'
 
 export enum StakingFilterEnum {
   commission = 'commission',
@@ -34,19 +35,19 @@ const Render = ({
   user,
   personal,
   contents,
+  lodingComplete,
 }: {
+  lodingComplete: boolean
   currentFilter: StakingFilterEnum
   setCurrentFilter: (value: StakingFilterEnum) => void
   validatorList?: Dictionary<string>
   user?: User
   personal?: StakingPersonal
-  contents?: ValidatorUI[]
+  contents?: TerraValidator[]
 }): ReactElement => {
-  const isClassic = useIsClassic()
-
-  return isClassic ? (
+  return (
     <>
-      {contents ? (
+      {lodingComplete ? (
         <View>
           {personal && user && (
             <PersonalSummary personal={personal} user={user} />
@@ -67,30 +68,43 @@ const Render = ({
         />
       )}
     </>
-  ) : (
-    <UnderConstruction />
   )
 }
 
 const Staking = (): ReactElement => {
   const { user } = useAuth()
-  const stakingProps = useStaking(user)
+  const {
+    ui, personal, TerraValidatorsState, validatorsState, delegationsState, unbondingsState, rewardsState
+  } = useStaking()
   const { chain } = useConfig()
   const [refreshingKey, setRefreshingKey] = useState(0)
+  const [loadingComplete, setLoadingComplete] = useState(false)
+
   const refreshPage = async (): Promise<void> => {
     setRefreshingKey((ori) => ori + 1)
-    stakingProps.execute()
+    validatorsState?.refetch()
+    TerraValidatorsState?.refetch()
+    delegationsState?.refetch()
+    unbondingsState?.refetch()
+    rewardsState?.refetch()
   }
-  const bodyProps = stakingProps.ui ? { scrollable: true } : {}
+  const bodyProps = ui ? { scrollable: true } : {}
+  const isClassic = useIsClassic()
 
   useEffect(() => {
     refreshPage()
   }, [chain.current])
 
+  useEffect(() => {
+    if (validatorsState.isLoading === false && TerraValidatorsState.isLoading === false) {
+      setLoadingComplete(true)
+    }
+  }, [validatorsState.isLoading, TerraValidatorsState.isLoading])
+
   const [
     currentFilter,
     setCurrentFilter,
-  ] = useState<StakingFilterEnum>(StakingFilterEnum.uptime)
+  ] = useState<StakingFilterEnum>(isClassic ? StakingFilterEnum.uptime : StakingFilterEnum.votingPower)
 
   const { data: validatorList } = useTerraAssets<Dictionary<string>>(
     'validators.json'
@@ -104,16 +118,19 @@ const Staking = (): ReactElement => {
     )
   }, [])
 
-  const [reverseContents, setReverseContents] = useState(false)
+  const [reverseContents, setReverseContents] = useState(true)
 
-  const sortContents = (a: ValidatorUI, b: ValidatorUI): number => {
+  const sortContents = (
+    a: TerraValidator,
+    b: TerraValidator
+  ): number => {
     const [_a, _b] =
       currentFilter === StakingFilterEnum.uptime
-        ? [a.uptime.percent, b.uptime.percent]
+        ? [a?.time_weighted_uptime, b?.time_weighted_uptime]
         : currentFilter === StakingFilterEnum.commission
-        ? [a.commission.percent, b.commission.percent]
+        ? [a?.commission?.commission_rates?.rate, b?.commission?.commission_rates?.rate]
         : currentFilter === StakingFilterEnum.votingPower
-        ? [a.votingPower.percent, b.votingPower.percent]
+        ? [a?.voting_power_rate, b?.voting_power_rate]
         : ['', '']
 
     const r1 =
@@ -122,13 +139,13 @@ const Staking = (): ReactElement => {
 
     const r2 =
       (reverseContents ? 1 : -1) *
-      (parseFloat(b.votingPower.percent) -
-        parseFloat(a.votingPower.percent))
+      (parseFloat(b?.voting_power_rate) -
+        parseFloat(a?.voting_power_rate))
     if (r2 !== 0) return r2
 
-    return b.moniker < a.moniker
+    return b?.description?.moniker < a?.description?.moniker
       ? (reverseContents ? 1 : -1) * 1
-      : b.moniker > a.moniker
+      : b?.description?.moniker > a?.description?.moniker
       ? (reverseContents ? 1 : -1) * -1
       : 0
   }
@@ -140,13 +157,14 @@ const Staking = (): ReactElement => {
   return (
     <Body theme={'sky'} {...bodyProps} onRefresh={refreshPage}>
       <Render
+        lodingComplete={loadingComplete}
         currentFilter={currentFilter}
         setCurrentFilter={setCurrentFilter}
         validatorList={validatorList}
         user={user}
         key={refreshingKey}
-        personal={stakingProps.personal}
-        contents={stakingProps.ui?.contents.sort(sortContents)}
+        personal={personal}
+        contents={ui?.contents.sort(sortContents)}
       />
     </Body>
   )

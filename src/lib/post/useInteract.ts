@@ -14,7 +14,7 @@ import useBank from '../api/useBank'
 import useForm from '../hooks/useForm'
 import { getFeeDenomList, isFeeAvailable } from './validateConfirm'
 import { useCoinsFields } from './txHooks'
-import { useIsClassic } from "lib/contexts/ConfigContext";
+import { useIsClassic } from 'lib'
 
 interface Values {
   address: string

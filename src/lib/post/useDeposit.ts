@@ -9,7 +9,7 @@ import useForm from '../hooks/useForm'
 import validateForm from './validateForm'
 import { isAvailable, getFeeDenomList } from './validateConfirm'
 import { Coins, MsgDeposit } from '@terra-money/terra.js'
-import { useIsClassic } from "lib/contexts/ConfigContext";
+import { useIsClassic } from 'lib'
 
 interface Values {
   input: string

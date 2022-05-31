@@ -1,3 +1,5 @@
+import { Validator } from '@terra-money/terra.js'
+
 import {
   API,
   DisplayCoin,
@@ -8,7 +10,7 @@ import {
 } from '..'
 import { PaginationTablePage, PaginationTableUI } from '../common/ui'
 
-export interface ValidatorPage extends API<ValidatorData> {
+export interface ValidatorPage extends API<Validator> {
   delegations: string
   ui?: ValidatorUI
 }
@@ -143,21 +145,49 @@ export interface DelegatorContent {
 
 /* data */
 export interface ValidatorData {
-  accountAddress: string
-  operatorAddress: string
-  description: Description
-  votingPower: VotingPower
-  selfDelegation: VotingPower
-  commissionInfo: CommissionInfo
-  stakingReturn: string
-  upTime: number
+  // accountAddress: string
+  // operatorAddress: string
+  // description: Description
+  // votingPower: VotingPower
+  // selfDelegation: VotingPower
+  // commissionInfo: CommissionInfo
+  // stakingReturn: string
+  // upTime: number
+  // status: string
+  // rewardsPool: Rewards
+  // isNewValidator: boolean
+  // myUndelegation?: MyUndelegation[]
+  // myDelegatable: string
+  // myDelegation?: string
+  // myRewards?: Rewards
+
+  operator_address: string,
+  consensus_pubkey: {
+    '@type': string
+    key: string
+  }
+  jailed: boolean
   status: string
-  rewardsPool: Rewards
-  isNewValidator: boolean
-  myUndelegation?: MyUndelegation[]
-  myDelegatable: string
-  myDelegation?: string
-  myRewards?: Rewards
+  tokens: string
+  delegator_shares: string
+  description: {
+    moniker: string
+    identity: string
+    website: string
+    security_contact: string
+    details: string
+  }
+  unbonding_height: string
+  unbonding_time: string
+  commission: {
+    commission_rates: {
+      rate: string
+      max_rate: string
+      max_change_rate: string
+    }
+    update_time: string
+  }
+  min_self_delegation: string
 }
 
 export interface Description {
