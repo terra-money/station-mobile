@@ -77,7 +77,7 @@ export const useDelegations = () => {
         has(balance.amount.toString())
       )
     },
-    { ...RefetchOptions.DEFAULT }
+    { ...RefetchOptions.INFINITY }
   )
 }
 
@@ -99,7 +99,7 @@ export const useDelegation = (validatorAddress: ValAddress) => {
         return
       }
     },
-    { ...RefetchOptions.DEFAULT }
+    { ...RefetchOptions.INFINITY }
   )
 }
 
@@ -115,7 +115,7 @@ export const useUnbondings = () => {
       const [unbondings] = await lcd.staking.unbondingDelegations(user?.address)
       return unbondings
     },
-    { ...RefetchOptions.DEFAULT }
+    { ...RefetchOptions.INFINITY }
   )
 }
 

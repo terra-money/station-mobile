@@ -19,7 +19,7 @@ export const useRewards = () => {
       if (!user?.address) return { total: new Coins(), rewards: {} }
       return await lcd.distribution.rewards(user?.address)
     },
-    { ...RefetchOptions.DEFAULT }
+    { ...RefetchOptions.INFINITY }
   )
 }
 
