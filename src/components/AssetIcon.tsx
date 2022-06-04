@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react'
 import { Image } from 'react-native'
+import { SvgUri } from 'react-native-svg'
 import Terra from 'assets/svg/Terra'
 import { useIsClassic } from 'lib/contexts/ConfigContext'
 
@@ -26,13 +27,21 @@ const AssetIcon = (props: AssetIconProps): ReactElement => {
   return (
     <>
       {src ? (
-        <Image
-          source={{ uri: src }}
-          style={{
-            width: size,
-            height: size,
-          }}
-        />
+        src.includes('.svg') ? (
+          <SvgUri
+            uri={src}
+            width={size}
+            height={size}
+          />
+        ) : (
+          <Image
+            source={{ uri: src }}
+            style={{
+              width: size,
+              height: size,
+            }}
+          />
+        )
       ) : (
         <Terra width={size} height={size} />
       )}

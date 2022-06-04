@@ -17,6 +17,7 @@ import useTokenBalance from '../../cw20/useTokenBalance'
 import { UTIL } from 'consts'
 import { useIsClassic } from 'lib/contexts/ConfigContext'
 import { VestingType, VestingTypes } from '../../../qureys/vesting'
+import useIBCWhitelist from 'lib/hooks/useIBCWhitelist'
 
 const SMALL = '1000000'
 
@@ -29,6 +30,7 @@ export default (user: User, config?: Config): AssetsPage => {
   const bank = useBank(user)
   const isClassic = useIsClassic()
   const tokenBalances = useTokenBalance(user.address)
+  const ibcWhiteList = useIBCWhitelist()
   const [hideSmall, setHideSmall] = useState<boolean>(
     config?.hideSmall !== undefined ? config.hideSmall : false
   )
@@ -129,7 +131,8 @@ export default (user: User, config?: Config): AssetsPage => {
 
   const renderV2 = (
     { balance, vesting }: BankDataV2,
-    tokenList?: TokenBalance[]
+    tokenList?: TokenBalance[],
+    ibcList: IBCWhitelist
   ): AssetsUI => ({
     card:
       !balance?.length && !tokenList?.length && !vesting?.length
@@ -173,11 +176,14 @@ export default (user: User, config?: Config): AssetsPage => {
         list: balance
           ?.filter(({ denom }) => UTIL.isIbcDenom(denom))
           .map(({ denom, amount }) => {
+            const hash = denom.replace('ibc/', '')
+            const thisIBC = ibcList?.[hash]
             return {
               denom,
+              icon: thisIBC?.icon,
               display: {
-                value: format.amount(amount),
-                unit: denom,
+                value: format.amount(amount, thisIBC?.decimals),
+                unit: thisIBC?.symbol || denom,
               },
             }
           }),
@@ -268,7 +274,6 @@ export default (user: User, config?: Config): AssetsPage => {
         width: percent(freedRate, 0),
       }
     }
-
   }
 
   return Object.assign(
@@ -277,7 +282,7 @@ export default (user: User, config?: Config): AssetsPage => {
     { loading: bank.loading || tokenBalances.isLoading },
     bank.data && {
       ui: isClassic ? render(bank.data, tokenBalances.list) :
-        renderV2(bank.data, tokenBalances.list)
+        renderV2(bank.data, tokenBalances.list, ibcWhiteList.whitelist)
     }
   )
 }

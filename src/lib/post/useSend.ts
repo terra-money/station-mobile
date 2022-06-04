@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import _ from 'lodash'
 import { MsgExecuteContract, MsgSend } from '@terra-money/terra.js'
@@ -22,6 +22,7 @@ import { useCalcFee } from './txHelpers'
 import { useDenomTrace } from 'hooks/useDenomTrace'
 import { UTIL } from 'consts'
 import { useIsClassic } from 'lib'
+import useIBCWhitelist from 'lib/hooks/useIBCWhitelist'
 
 interface Values {
   to: string
@@ -43,12 +44,19 @@ export default (
   const { data: denomTrace } = useDenomTrace(denom)
   const ibcDenom = denomTrace?.base_denom
   const isClassic = useIsClassic()
+  const ibcWhiteList = useIBCWhitelist()
+  const thisIBC = ibcWhiteList?.whitelist?.[denom.replace('ibc/', '')]
 
   /* form */
   const getBalance = (): string =>
     (UTIL.isNativeDenom(denom) || isIbcDenom
       ? find(`${denom}:${isClassic ? 'available' : 'amount'}`, bank?.balance)
       : list?.find(({ token }) => token === denom)?.balance) ?? '0'
+
+  const thisDecimals = useMemo(
+    () => isIbcDenom ? thisIBC?.decimals : tokens?.[denom]?.decimals,
+    [thisIBC, tokens?.[denom], isIbcDenom]
+  )
 
   const validate = ({
     input,
@@ -62,8 +70,8 @@ export default (
     to: v.address(to),
     input: v.input(
       input,
-      { max: toInput(getBalance(), tokens?.[denom]?.decimals) },
-      tokens?.[denom]?.decimals
+      { max: toInput(getBalance(), thisDecimals) },
+      thisDecimals
     ),
     memo:
       v.length(memo, { max: 256, label: t('Common:Tx:Memo') }) ||
@@ -76,7 +84,7 @@ export default (
   const { values, setValue, invalid } = form
   const { getDefaultProps, getDefaultAttrs } = form
   const { to, input, memo } = values
-  const amount = toAmount(input, tokens?.[denom]?.decimals)
+  const amount = toAmount(input, thisDecimals)
 
   const [submitted, setSubmitted] = useState(false)
   const calcFee = useCalcFee()
@@ -95,7 +103,7 @@ export default (
         ])
       : calculatedMaxAmount
 
-  const unit = format.denom(isIbcDenom ? ibcDenom : denom, tokens)
+  const unit = format.denom(isIbcDenom ? (thisIBC?.symbol || ibcDenom) : denom, tokens)
 
   /* render */
   const fields: Field[] = [
@@ -115,13 +123,13 @@ export default (
         label: t('Common:Account:Available'),
         display: format.display(
           { amount: maxAmount, denom },
-          tokens?.[denom]?.decimals
+          thisDecimals
         ),
         attrs: {
           onClick: (): void =>
             setValue(
               'input',
-              toInput(maxAmount, tokens?.[denom]?.decimals)
+              toInput(maxAmount, thisDecimals)
             ),
         },
       },

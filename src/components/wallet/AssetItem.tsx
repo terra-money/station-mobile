@@ -25,11 +25,11 @@ import images from 'assets/images'
 import { useDenomTrace } from 'hooks/useDenomTrace'
 
 const IBCUnit = ({
-  base_denom,
+  symbol,
   path,
   hash,
 }: {
-  base_denom?: string
+  symbol?: string
   path?: string
   hash?: string
 }): ReactElement => {
@@ -74,7 +74,7 @@ const IBCUnit = ({
           }}
         >
           <Text style={styles.unit} fontType={'bold'}>
-            {format.denom(base_denom)}
+            {format.denom(symbol)}
           </Text>
 
           <Icon
@@ -145,7 +145,7 @@ const AssetItem = ({
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={styles.iconBox}>
-            {isIbcDenom ? (
+            {(isIbcDenom && !icon) ? (
               <Image
                 source={images.IBC}
                 style={{ width: 18, height: 18 }}
@@ -156,7 +156,7 @@ const AssetItem = ({
           </View>
           {isIbcDenom ? (
             <IBCUnit
-              base_denom={ibcDenom.data?.base_denom}
+              symbol={item.display?.unit}
               path={ibcDenom.data?.path}
               hash={item.denom?.replace('ibc/', '')}
             />
