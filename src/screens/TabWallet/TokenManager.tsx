@@ -16,6 +16,7 @@ import { truncate } from 'lib/utils/format'
 import useFinder from 'lib/hooks/useFinder'
 import useLinking from 'hooks/useLinking'
 import useTokens from 'hooks/useTokens'
+import useWhitelist from 'lib/cw20/useWhitelist'
 
 const TokenManager = ({
   closeModal,
@@ -26,21 +27,24 @@ const TokenManager = ({
   const { openURL } = useLinking()
 
   const { tokens, removeToken } = useTokens()
+  const { whitelist } = useWhitelist()
 
   const renderItem = useCallback(
     (item: Token, index: number): ReactElement => {
+      if (!whitelist?.hasOwnProperty(item.token)) return
+
       const url = getLink({
         q: 'address',
-        v: item.token,
+        v: item?.token,
       })
 
       return (
         <Row key={`items-${index}`} style={styles.item}>
           <Row style={{ alignItems: 'center' }}>
-            <AssetIcon uri={item.icon} />
+            <AssetIcon uri={item?.icon} />
             <View style={{ paddingLeft: 10 }}>
               <Text style={styles.label} fontType={'bold'}>
-                {item.symbol}
+                {item?.symbol || item?.name}
               </Text>
               <TouchableOpacity
                 onPress={(): void => {
@@ -49,8 +53,8 @@ const TokenManager = ({
               >
                 <Row style={{ alignItems: 'center' }}>
                   <Text style={styles.address_decimal}>
-                    {`${truncate(item.token, [6, 6])} (decimals: ${
-                      item.decimals || 6
+                    {`${truncate(item?.token, [6, 6])} (decimals: ${
+                      item?.decimals || 6
                     })`}
                   </Text>
                   <Icon
@@ -65,7 +69,7 @@ const TokenManager = ({
 
           <TouchableOpacity
             onPress={(): void => {
-              removeToken(item.token)
+              removeToken(item?.token)
             }}
             style={styles.buttonView}
           >
@@ -80,7 +84,7 @@ const TokenManager = ({
         </Row>
       )
     },
-    [tokens]
+    [tokens, whitelist]
   )
 
   return (

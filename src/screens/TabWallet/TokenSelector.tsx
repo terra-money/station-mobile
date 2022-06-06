@@ -48,10 +48,10 @@ const TokenSelector = ({
           whitelist,
           ({ symbol, token }) =>
             symbol
-              .toLowerCase()
+              ?.toLowerCase()
               .includes(searchInput.toLowerCase()) ||
             (AccAddress.validate(searchInput) &&
-              token.includes(searchInput))
+              token?.includes(searchInput))
         )
 
         if (fromWhiteList.length > 0) {
@@ -86,15 +86,15 @@ const TokenSelector = ({
         v: item.token,
       })
 
-      const added = !!tokens[item.token]
+      const added = !!tokens[item?.token]
 
       return (
         <Row key={`items-${index}`} style={styles.item}>
           <Row style={{ alignItems: 'center' }}>
-            <AssetIcon uri={item.icon} />
+            <AssetIcon uri={item?.icon} />
             <View style={{ paddingLeft: 10 }}>
               <Text style={styles.label} fontType={'bold'}>
-                {item.symbol}
+                {item?.symbol || item?.name}
               </Text>
               <TouchableOpacity
                 onPress={(): void => {
@@ -103,8 +103,8 @@ const TokenSelector = ({
               >
                 <Row style={{ alignItems: 'center' }}>
                   <Text style={styles.address_decimal}>
-                    {`${truncate(item.token, [6, 6])} (decimals: ${
-                      item.decimals || 6
+                    {`${truncate(item?.token, [6, 6])} (decimals: ${
+                      item?.decimals || 6
                     })`}
                   </Text>
                   <Icon

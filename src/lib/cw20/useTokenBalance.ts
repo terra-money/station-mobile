@@ -4,6 +4,8 @@ import { TokenBalance, Tokens } from '../types'
 import { QueryKeyEnum } from 'types'
 import { useConfig } from '../contexts/ConfigContext'
 import useTokens from 'hooks/useTokens'
+import useLCD from 'lib/api/useLCD'
+import useWhitelist from 'lib/cw20/useWhitelist'
 
 export interface TokenBalanceQuery {
   isLoading: boolean
@@ -12,10 +14,9 @@ export interface TokenBalanceQuery {
   refetch: () => void
 }
 
-import useLCD from 'lib/api/useLCD'
-
 export default (address: string): TokenBalanceQuery => {
-  const { tokens } = useTokens()
+  const { whitelist } = useWhitelist()
+  const { tokens, removeToken } = useTokens()
   const { chain } = useConfig()
   const lcd = useLCD()
 
@@ -25,16 +26,21 @@ export default (address: string): TokenBalanceQuery => {
       address,
       chain.current.mantle,
       tokens,
+      whitelist,
     ],
     async () => {
       if (_.some(tokens)) {
         const data = []
         for (const token in tokens) {
           try {
-            const { balance } = await lcd.wasm.contractQuery<{ balance: Amount }>(token, { balance: { address } })
-            data.push({ ...tokens[token], balance })
-          } catch(e) {
-            data.push({ ...tokens[token], balance: '0' })
+            if (whitelist?.hasOwnProperty(token)) {
+              const { balance } = await lcd.wasm.contractQuery<{ balance: Amount }>(token, { balance: { address } })
+              data.push({ ...tokens[token], balance })
+            }
+          } catch {
+            if (!whitelist?.hasOwnProperty(token)) {
+              removeToken(token)
+            }
           }
         }
         return data

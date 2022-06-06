@@ -70,7 +70,8 @@ export interface ScheduleUI {
 
 /* cw20 */
 export interface Token {
-  symbol: string
+  symbol?: string
+  name?: string
   icon?: string
   token: string
   decimals?: number

@@ -193,10 +193,10 @@ export default (user: User, config?: Config): AssetsPage => {
       title: 'CW20 Tokens',
       list:
         tokenList?.map(
-          ({ token, symbol, icon, balance, decimals }) => {
+          ({ token, symbol, icon, balance, decimals, ...rest }) => {
             const display = {
               value: format.amount(balance, decimals),
-              unit: symbol,
+              unit: symbol || rest?.name,
             }
 
             return { icon, token, display }

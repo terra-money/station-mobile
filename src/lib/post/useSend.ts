@@ -180,7 +180,7 @@ export default (
               }
             : UTIL.isNativeDenom(denom)
             ? format.display({ amount, denom })
-            : { value: input, unit: tokens?.[denom].symbol ?? '' },
+            : { value: input, unit: tokens?.[denom]?.symbol ?? '' },
         ],
       },
     ])
