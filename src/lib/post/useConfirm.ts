@@ -19,13 +19,13 @@ import {
 } from '../types'
 import { PostResult, PostError } from '../types'
 import useInfo from '../lang/useInfo'
-import fcd from '../api/fcd'
 import { format } from '../utils'
 import { toInput, toAmount } from '../utils/format'
 import { lt, gt } from '../utils/math'
 import { useCalcFee } from './txHelpers'
 import { checkError, parseError } from './txHelpers'
 import { useConfig, useIsClassic } from 'lib'
+import useLCDClient from 'lib/api/useLCD'
 
 interface SignParams {
   user: User
@@ -347,21 +347,22 @@ export default (
 }
 
 /* hooks */
-export const usePollTxHash = (txhash: string): TxInfo => {
+export const usePollTxHash = (txhash: string): undefined | TxInfo => {
   const [refetchInterval, setRefetchInterval] = useState<
     number | false
   >(false)
+  const lcd = useLCDClient()
+
   const { data } = useQuery(
     txhash,
-    () => fcd.get(`/v1/tx/${txhash}`),
+    () => lcd.tx.txInfo(txhash),
     {
       refetchInterval,
       enabled: !!txhash,
     }
   )
 
-  const result = data?.data
-  const height = result && result.height
+  const height = data && data.height
 
   useEffect(() => {
     if (height) {
@@ -371,5 +372,5 @@ export const usePollTxHash = (txhash: string): TxInfo => {
     }
   }, [height])
 
-  return result
+  return data
 }
