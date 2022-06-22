@@ -77,8 +77,9 @@ export default (
       const amount = calcFee ? calcFee.feeFromGas(gas, denom) : gas
       return validate({ amount, denom })
     })
-
-    return defaultValue ?? available[0]
+    return defaultValue ?? (
+      isClassic ? available[0] : available?.some((a) => a === 'uluna') ? 'uluna' : available[0]
+    )
   }
 
   const [input, setInput] = useState<string>(toInput('1'))
