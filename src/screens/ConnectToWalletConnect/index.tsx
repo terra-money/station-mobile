@@ -73,6 +73,7 @@ const Render = ({
   route,
 }: { user: User } & Props): ReactElement => {
   const autoCloseTimer = React.useRef<NodeJS.Timeout>()
+  const connectionTimeout = React.useRef<NodeJS.Timeout>()
   // before connected
   const [
     localWalletConnector,
@@ -104,13 +105,26 @@ const Render = ({
 
   const connect = async (uri: string): Promise<void> => {
     const connector = newWalletConnect({ uri })
+    console.log(connector)
 
     if (!connector.connected) {
       await connector.createSession()
     }
     setLocalWalletConnector(connector)
 
+    connectionTimeout.current = setTimeout(() => {
+      showNoti({
+        duration: 7000,
+        message: 'Error: Session timeout',
+        description: 'This is probably due to the site you are trying to connect to, which is not using a valid SSL certificate',
+        type: 'danger'
+      })
+      goBackOrHome()
+    }, 10_000)
+
     connector.on('session_request', (error, payload) => {
+      connectionTimeout.current && clearTimeout(connectionTimeout.current)
+
       if (error) {
         throw error
       }
@@ -168,6 +182,7 @@ const Render = ({
 
     return (): void => {
       autoCloseTimer.current && clearTimeout(autoCloseTimer.current)
+      connectionTimeout.current && clearTimeout(connectionTimeout.current)
     }
   }, [])
 
