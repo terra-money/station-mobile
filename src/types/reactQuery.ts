@@ -7,4 +7,5 @@ export enum QueryKeyEnum {
   swapAmount = 'swapAmount',
   gasPrices = 'gasPrices',
   denomTrace = 'denomTrace',
+  tns = 'tns',
 }

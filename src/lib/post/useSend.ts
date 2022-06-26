@@ -8,7 +8,7 @@ import { PostPage, CoinItem, User, Field } from '../types'
 import { ConfirmContent, ConfirmProps } from '../types'
 import { format, find } from '../utils'
 import { gt, max, minus } from '../utils/math'
-import { toAmount, toInput } from '../utils/format'
+import { toAmount, toInput, truncate } from '../utils/format'
 import { TokenBalanceQuery } from '../cw20/useTokenBalance'
 import useBank from '../api/useBank'
 import useForm from '../hooks/useForm'
@@ -21,6 +21,7 @@ import {
 import { useCalcFee } from './txHelpers'
 import { useDenomTrace } from 'hooks/useDenomTrace'
 import { UTIL } from 'consts'
+import { useTnsAddress } from 'lib/external/tns'
 
 interface Values {
   to: string
@@ -56,25 +57,31 @@ export default (
     to: string
     input: string
     memo: string
-  } => ({
-    to: v.address(to),
-    input: v.input(
-      input,
-      { max: toInput(getBalance(), tokens?.[denom]?.decimals) },
-      tokens?.[denom]?.decimals
-    ),
-    memo:
-      v.length(memo, { max: 256, label: t('Common:Tx:Memo') }) ||
-      v.includes(memo, '<') ||
-      v.includes(memo, '>'),
-  })
+  } => {
+    const { data: resolvedAddress } = useTnsAddress(to)
+    return {
+      to: v.address(resolvedAddress || to),
+      input: v.input(
+        input,
+        { max: toInput(getBalance(), tokens?.[denom]?.decimals) },
+        tokens?.[denom]?.decimals
+      ),
+      memo:
+        v.length(memo, { max: 256, label: t('Common:Tx:Memo') }) ||
+        v.includes(memo, '<') ||
+        v.includes(memo, '>'),
+    }
+  }
 
   const initial = { to: '', input: '', memo: '' }
   const form = useForm<Values>(initial, validate)
   const { values, setValue, invalid } = form
   const { getDefaultProps, getDefaultAttrs } = form
   const { to, input, memo } = values
+  const { data: resolvedAddress } = useTnsAddress(to)
   const amount = toAmount(input, tokens?.[denom]?.decimals)
+
+  const recipient = resolvedAddress || to
 
   const [submitted, setSubmitted] = useState(false)
   const calcFee = useCalcFee()
@@ -104,6 +111,7 @@ export default (
         placeholder: `Terra address`,
         autoFocus: true,
       },
+      success: resolvedAddress && truncate(resolvedAddress, [10, 10]),
     },
     {
       ...getDefaultProps('input'),
@@ -157,7 +165,7 @@ export default (
     .concat([
       {
         name: t('Post:Send:Send to'),
-        text: to,
+        text: recipient,
       },
       {
         name: t('Common:Tx:Amount'),
@@ -181,10 +189,14 @@ export default (
   ): ConfirmProps => ({
     msgs:
       UTIL.isNativeDenom(denom) || UTIL.isIbcDenom(denom)
-        ? [new MsgSend(user.address, to, [new Coin(denom, amount)])]
+        ? [
+            new MsgSend(user.address, recipient, [
+              new Coin(denom, amount),
+            ]),
+          ]
         : [
             new MsgExecuteContract(user.address, denom, {
-              transfer: { recipient: to, amount },
+              transfer: { recipient: recipient, amount },
             }),
           ],
     memo,
@@ -192,10 +204,7 @@ export default (
     feeDenom: { list: getFeeDenomList(bank.balance) },
     validate: (fee: CoinItem): boolean =>
       UTIL.isNativeDenom(denom)
-        ? isAvailable(
-            { amount, denom, fee },
-            bank.balance
-          )
+        ? isAvailable({ amount, denom, fee }, bank.balance)
         : isFeeAvailable(fee, bank.balance),
     submitLabels: [t('Post:Send:Send'), t('Post:Send:Sending...')],
     message: t('Post:Send:Sent {{coin}} to {{address}}', {
@@ -205,7 +214,7 @@ export default (
         undefined,
         whitelist
       ),
-      address: to,
+      address: recipient,
     }),
     warning: [
       t(

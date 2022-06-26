@@ -2,6 +2,7 @@ const white = '#ffffff'
 const sky = '#f9faff'
 const gray = '#edf1f7'
 const red = '#ff5561'
+const green = '#1daa8e'
 const disabled = 'rgb(235, 239, 248)'
 const qrBackground = 'rgba(12, 54, 148, 0.5)'
 
@@ -19,6 +20,7 @@ export default {
   primary,
   gray,
   red,
+  green,
   disabled,
   qrBackground,
 }
