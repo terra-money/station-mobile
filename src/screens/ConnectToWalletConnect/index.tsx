@@ -105,8 +105,6 @@ const Render = ({
 
   const connect = async (uri: string): Promise<void> => {
     const connector = newWalletConnect({ uri })
-    console.log(connector)
-
     if (!connector.connected) {
       await connector.createSession()
     }
