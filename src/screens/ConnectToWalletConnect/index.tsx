@@ -118,7 +118,7 @@ const Render = ({
         type: 'danger'
       })
       goBackOrHome()
-    }, 10_000)
+    }, 10000)
 
     connector.on('session_request', (error, payload) => {
       connectionTimeout.current && clearTimeout(connectionTimeout.current)
