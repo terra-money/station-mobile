@@ -93,9 +93,7 @@ export const WebViewContainer = ({
   const [, setScanning] = useState(false)
   const [, setError] = useState('')
   const [ledgers, setLedgers] = useState<DeviceInterface[]>([])
-  const [ledgerReqId, setLedgerReqId] = useState<DeviceInterface[]>(
-    []
-  )
+  const [ledgerReqId, setLedgerReqId] = useState<string>('')
 
   let exitAppTimeout: NodeJS.Timeout | null = null
   let isExit = false
@@ -607,7 +605,10 @@ export const WebViewContainer = ({
                   name: e.descriptor.localName || e.descriptor.name,
                   id: e.descriptor.id,
                 }
-                setLedgers([...ledgers, device])
+
+                !ledgers.some((d) => d.id === device.id) &&
+                ledgers.push(device)
+                setLedgers([...ledgers])
               }
             },
             error: (error: any): void => {
@@ -700,6 +701,7 @@ export const WebViewContainer = ({
       }}
       allowsBackForwardNavigationGestures
       autoManageStatusBarEnabled={false}
+      startInLoadingState={true}
       scrollEnabled={false}
       contentInsetAdjustmentBehavior="scrollableAxes"
       onMessage={async (message) => {
