@@ -22,15 +22,15 @@ import TransportBLE from '@ledgerhq/react-native-hw-transport-ble'
 import { LedgerKey } from '@terra-money/ledger-terra-js'
 import {
   LCDClient,
-  Wallet,
   CreateTxOptions,
   Fee,
   Msg,
+  SignatureV2
 } from '@terra-money/terra.js'
 import { settings } from 'utils/storage'
-import { SignMode } from '@terra-money/terra.proto/cosmos/tx/signing/v1beta1/signing'
 import { useConfig, useIsClassic } from 'lib'
 import useNetworks from 'hooks/useNetworks'
+import { checkCameraPermission, requestPermission, requestPermissionBLE} from "utils/permission"
 
 export const RN_APIS = {
   APP_VERSION: 'APP_VERSION',
@@ -135,20 +135,20 @@ export const WebViewContainer = ({
     }
   }
 
-  const parseTx = (request: PrimitiveTxRequest): TxRequest['tx'] => {
+  const parseTx = (request: PrimitiveTxRequest, isClassic: boolean): TxRequest['tx'] => {
     const { msgs, fee, memo } = request
-    const isProto = '@type' in JSON.parse(msgs[0])
+    const isProto = "@type" in JSON.parse(msgs[0])
     return isProto
       ? {
-          msgs: msgs.map((msg) => Msg.fromData(JSON.parse(msg), isClassic)),
-          fee: fee ? Fee.fromData(JSON.parse(fee)) : undefined,
-          memo,
-        }
+        msgs: msgs.map((msg) => Msg.fromData(JSON.parse(msg), isClassic)),
+        fee: fee ? Fee.fromData(JSON.parse(fee)) : undefined,
+        memo,
+      }
       : {
-          msgs: msgs.map((msg) => Msg.fromAmino(JSON.parse(msg), isClassic)),
-          fee: fee ? Fee.fromAmino(JSON.parse(fee)) : undefined,
-          memo,
-        }
+        msgs: msgs.map((msg) => Msg.fromAmino(JSON.parse(msg), isClassic)),
+        fee: fee ? Fee.fromAmino(JSON.parse(fee)) : undefined,
+        memo,
+      }
   }
 
   const getCircularReplacer = () => {
@@ -323,31 +323,73 @@ export const WebViewContainer = ({
 
           case RN_APIS.AUTH_BIO: {
             const isSuccess = await authenticateBiometric()
-            // @ts-ignore
-            webviewInstance.current?.postMessage(
-              JSON.stringify({
-                reqId,
-                type,
-                data: isSuccess,
-              })
-            )
+            if (isSuccess) {
+              // @ts-ignore
+              webviewInstance.current?.postMessage(
+                JSON.stringify({
+                  reqId,
+                  type,
+                  data: isSuccess,
+                })
+              )
+            } else {
+              // @ts-ignore
+              webviewInstance.current?.postMessage(
+                JSON.stringify({
+                  reqId,
+                  type,
+                  data: 'Error: Bio authentication not authorized, Check your app permissions.',
+                })
+              )
+            }
+
             break
           }
 
           case RN_APIS.QR_SCAN: {
-            setIsVisibleModal(reqId)
+            const requestResult = await requestPermission()
+            if (requestResult === 'granted') {
+              const permission = await checkCameraPermission()
+              if (permission === 'granted') {
+                setIsVisibleModal(reqId)
+                return
+              }
+            } else {
+              // @ts-ignore
+              webviewInstance.current?.postMessage(
+                JSON.stringify({
+                  reqId,
+                  type,
+                  data: 'Error: Camera not authorized, Check your app permissions.',
+                })
+              )
+            }
             break
           }
 
           case RN_APIS.GET_LEDGER_LIST: {
-            setLedgerReqId(reqId)
-            searchLedger()
+            const requestResult = await requestPermissionBLE()
+            if (requestResult === 'granted') {
+              setLedgerReqId(reqId)
+              searchLedger()
+              return
+            } else {
+              // @ts-ignore
+              webviewInstance.current?.postMessage(
+                JSON.stringify({
+                  reqId,
+                  type,
+                  data: 'Error: Bluetooth not authorized, Check your app permissions.',
+                })
+              )
+            }
             break
           }
 
           case RN_APIS.GET_LEDGER_KEY: {
+            const ledgerId = await TransportBLE.open(data.id)
+            const disconnectLedger = () => TransportBLE.disconnect(data.id)
             try {
-              const ledgerId = await TransportBLE.open(data.id)
               const key = await LedgerKey.create(
                 ledgerId,
                 parseInt(data.path)
@@ -370,7 +412,8 @@ export const WebViewContainer = ({
               }
 
               const lcd = new LCDClient(data?.lcdConfigs)
-              const wallet = new Wallet(lcd, key)
+              const wallet = lcd.wallet(key)
+
               const { account_number, sequence } =
                 await wallet.accountNumberAndSequence()
 
@@ -380,17 +423,21 @@ export const WebViewContainer = ({
                     address: data.address,
                   },
                 ],
-                parseTx(data.txOptions)
+                parseTx(data.txOptions, isClassic)
               )
 
               const options = {
                 chainID: data?.lcdConfigs.chainID,
                 accountNumber: account_number,
                 sequence,
-                signMode: SignMode.SIGN_MODE_LEGACY_AMINO_JSON,
+                signMode: SignatureV2.SignMode.SIGN_MODE_LEGACY_AMINO_JSON
               }
 
-              const signed = await key.signTx(unsignedTx, options, isClassic)
+              const signed = await key.signTx(
+                unsignedTx,
+                options,
+                isClassic
+              )
               const result = await lcd.tx.broadcastSync(signed)
 
               const json = JSON.stringify(
@@ -414,6 +461,8 @@ export const WebViewContainer = ({
                   data: error?.toString(),
                 })
               )
+            } finally {
+              disconnectLedger()
             }
             break
           }

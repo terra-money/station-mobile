@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 50,
     borderRadius: 25,
-    paddingVertical: 13,
+    paddingVertical: 15,
     backgroundColor: 'rgba(32, 67, 181, 0.2)',
     alignItems: 'center',
   },
