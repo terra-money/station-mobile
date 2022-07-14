@@ -89,7 +89,7 @@ export const WebViewContainer = ({
   const [localWalletConnector, setLocalWalletConnector] =
     useState<WalletConnect | null>(null)
 
-  const [canGoBack, SetCanGoBack] = useState(false)
+  const [canGoBack, setCanGoBack] = useState(false)
   const [, setScanning] = useState(false)
   const [, setError] = useState('')
   const [ledgers, setLedgers] = useState<DeviceInterface[]>([])
@@ -585,8 +585,8 @@ export const WebViewContainer = ({
     }
   }
 
-  const onBackPress = () => {
-    if (webviewInstance && webviewInstance.current && canGoBack) {
+  const onBackPress = useCallback(() => {
+    if (webviewInstance.current && canGoBack) {
       // @ts-ignore
       webviewInstance.current?.goBack()
       return true
@@ -612,7 +612,7 @@ export const WebViewContainer = ({
         return true
       }
     }
-  }
+  }, [webviewInstance.current, canGoBack])
 
   const handleAppStateChange = useCallback(
     async (nextAppState: string): Promise<void> => {
@@ -726,7 +726,7 @@ export const WebViewContainer = ({
         onBackPress
       )
     }
-  }, [canGoBack, onBackPress])
+  }, [onBackPress])
 
   useEffect(() => {
     AppState.addEventListener('change', handleAppStateChange)
@@ -753,12 +753,11 @@ export const WebViewContainer = ({
       startInLoadingState={true}
       scrollEnabled={false}
       contentInsetAdjustmentBehavior="scrollableAxes"
+      onLoadProgress={(event) =>
+        setCanGoBack(event.nativeEvent.canGoBack)
+      }
       onMessage={async (message) => {
         const { nativeEvent } = message
-        if (nativeEvent.data === 'navigationStateChange') {
-          SetCanGoBack(nativeEvent.canGoBack)
-          return
-        }
         const req = nativeEvent.data && JSON.parse(nativeEvent.data)
         await WebViewListener(req)
       }}
