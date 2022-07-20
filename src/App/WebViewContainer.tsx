@@ -30,7 +30,8 @@ import {
 import { settings } from 'utils/storage'
 import { useConfig, useIsClassic } from 'lib'
 import useNetworks from 'hooks/useNetworks'
-import { checkCameraPermission, requestPermission, requestPermissionBLE} from "utils/permission"
+import { checkCameraPermission, requestPermission, requestPermissionBLE} from 'utils/permission'
+import { UTIL } from 'consts'
 
 export const RN_APIS = {
   APP_VERSION: 'APP_VERSION',
@@ -701,6 +702,29 @@ export const WebViewContainer = ({
     if (_.some(walletConnectors)) {
       _.forEach(walletConnectors, (connector) => {
         const handshakeTopic = connector.handshakeTopic
+
+        connector.on('call_request', async (error, req) => {
+          const id = req.id
+          const method = req.method
+          const params = req.params[0]
+          if (method === 'post') {
+            // @ts-ignore
+            webviewInstance.current?.postMessage(
+              JSON.stringify({
+                reqId: '',
+                type: RN_APIS.DEEPLINK,
+                data: {
+                  action: 'wallet_confirm',
+                  payload: UTIL.toBase64(UTIL.jsonTryStringify({
+                    id,
+                    params,
+                    handshakeTopic,
+                  }))
+                },
+              })
+            )
+          }
+        })
 
         connector.on('disconnect', () => {
           removeWalletConnect(handshakeTopic)
