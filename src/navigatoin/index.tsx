@@ -19,6 +19,7 @@ import { RN_APIS } from '../App/WebViewContainer'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import AutoLogoutStore from 'stores/AutoLogoutStore'
 import AppStore from 'stores/AppStore'
+import { schemeUrl } from 'utils/qrCode'
 import useLinking from 'hooks/useLinking'
 
 const TerraTheme = {
@@ -43,7 +44,9 @@ const Navigator = (): ReactElement => {
     if (linkingUrl) {
       const url = UTIL.tryNewURL(linkingUrl || '')
 
-      const action = url?.searchParams.get('action')
+      const action = schemeUrl.send.test(linkingUrl)
+        ? 'send'
+        : url?.searchParams.get('action')
       const payload = url?.searchParams.get('payload')
 
       if (payload) {
