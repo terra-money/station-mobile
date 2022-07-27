@@ -27,10 +27,16 @@ const webviewLoadEnd = atom<boolean>({
   default: false,
 })
 
+const webviewComponentLoaded = atom<boolean>({
+  key: StoreKeyEnum.webviewComponentLoaded,
+  default: false,
+})
+
 export default {
   showLoading,
   loadingTxHash,
   loadingTitle,
   webviewInstance,
   webviewLoadEnd,
+  webviewComponentLoaded,
 }

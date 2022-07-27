@@ -17,4 +17,5 @@ export default {
   oops_face: require('../../assets/oops_face.png'),
   queued: require('../../assets/queued.png'),
   IBC: require('../../assets/IBC.png'),
+  terraStation: require('../../assets/terraStation.png'),
 }

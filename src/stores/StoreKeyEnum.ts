@@ -21,4 +21,5 @@ export enum StoreKeyEnum {
   tokensState = 'tokensState',
   webviewInstance = 'webviewInstance',
   webviewLoadEnd = 'webviewLoadEnd',
+  webviewComponentLoaded = 'webviewComponentLoaded',
 }

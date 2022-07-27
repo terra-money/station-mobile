@@ -1,13 +1,11 @@
 import React from 'react'
 import { View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import Text from '../components/Text'
 import { useConfig } from 'lib'
 import { themes } from 'lib/contexts/useTheme'
 
 const DebugBanner = ({ title }: { title: string }): JSX.Element => {
-  const { top: insetTop } = useSafeAreaInsets()
   const { theme } = useConfig()
 
   return (
@@ -37,7 +35,6 @@ const DebugBanner = ({ title }: { title: string }): JSX.Element => {
             fontSize: 10,
             lineHeight: 15,
             letterSpacing: 1,
-
             color: themes?.[theme.current]?.primaryText,
             textAlign: 'center',
           }}

@@ -60,6 +60,7 @@ let App = ({
   /* drawer */
   const alertViewProps = useAlertViewState()
   const { networks } = useNetworks()
+  const webviewComponentLoaded = useRecoilValue(AppStore.webviewComponentLoaded)
 
   const chainOption =
     (chain ? networks[chain.name] : networks.mainnet) ||
@@ -154,8 +155,9 @@ let App = ({
                 <SafeAreaView
                   style={{
                     flex: 0,
-                    backgroundColor:
-                    themes?.[currentTheme]?.backgroundColor,
+                    backgroundColor: showOnBoarding
+                      ? '#fff' : !webviewComponentLoaded
+                        ? '#1f42b4' : themes?.[currentTheme]?.backgroundColor,
                   }}
                 />
                 <KeyboardAvoidingView
@@ -165,8 +167,9 @@ let App = ({
                   <SafeAreaView
                     style={{
                       ...defaultViewStyle,
-                      backgroundColor:
-                      themes?.[currentTheme]?.cardColor,
+                      backgroundColor: showOnBoarding
+                        ? '#fff' : !webviewComponentLoaded
+                          ? '#1f42b4' : themes?.[currentTheme]?.backgroundColor,
                     }}
                   >
                     <StatusBar
@@ -198,7 +201,7 @@ let App = ({
                         <AppNavigator />
                         <GlobalTopNotification />
                         <UnderMaintenance />
-                        {config.chain.current.name !== 'mainnet' && (
+                        {webviewComponentLoaded && config.chain.current.name !== 'mainnet' && (
                           <DebugBanner
                             title={config.chain.current.name.toUpperCase()}
                           />

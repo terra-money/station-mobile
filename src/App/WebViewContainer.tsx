@@ -5,10 +5,12 @@ import React, {
   useState,
 } from 'react'
 import _ from 'lodash'
-import { AppState, BackHandler, ToastAndroid, Linking } from 'react-native'
+import { AppState, BackHandler, ToastAndroid, Linking, View, Image, StyleSheet, Platform } from 'react-native'
 import { WebView } from 'react-native-webview'
 import { getVersion } from 'react-native-device-info'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
 import WalletConnect from '@walletconnect/client'
 import {
   authenticateBiometric,
@@ -32,6 +34,7 @@ import { useConfig, useIsClassic } from 'lib'
 import useNetworks from 'hooks/useNetworks'
 import { checkCameraPermission, requestPermission, requestPermissionBLE} from 'utils/permission'
 import { UTIL } from 'consts'
+import images from 'assets/images'
 
 export const RN_APIS = {
   APP_VERSION: 'APP_VERSION',
@@ -72,6 +75,7 @@ export const WebViewContainer = ({
   const { chain, theme } = useConfig()
   const { networks } = useNetworks()
   const isClassic = useIsClassic()
+  const { top: insetTop, bottom: insetBottom } = useSafeAreaInsets()
 
   const {
     newWalletConnect,
@@ -86,6 +90,7 @@ export const WebViewContainer = ({
     WalletConnectStore.walletConnectors
   )
   const setWebviewLoadEnd = useSetRecoilState(AppStore.webviewLoadEnd)
+  const setWebviewComponentLoaded = useSetRecoilState(AppStore.webviewComponentLoaded)
 
   const [localWalletConnector, setLocalWalletConnector] =
     useState<WalletConnect | null>(null)
@@ -774,12 +779,28 @@ export const WebViewContainer = ({
       }}
       allowsBackForwardNavigationGestures
       autoManageStatusBarEnabled={false}
+      renderLoading={() => (
+        <View style={styles.splashContainer}>
+          <Image
+            source={images.terraStation}
+            style={{
+              resizeMode: 'contain',
+              alignSelf: 'center',
+              marginTop: insetBottom - insetTop,
+              width: Platform.OS === 'ios' ? 240 : '48%',
+            }}
+          />
+        </View>
+      )}
       startInLoadingState={true}
       scrollEnabled={false}
       contentInsetAdjustmentBehavior="scrollableAxes"
       onLoadProgress={(event) =>
         setCanGoBack(event.nativeEvent.canGoBack)
       }
+      onLoadEnd={() => {
+        setWebviewComponentLoaded(true)
+      }}
       onMessage={async (message) => {
         const { nativeEvent } = message
         const req = nativeEvent.data && JSON.parse(nativeEvent.data)
@@ -805,3 +826,13 @@ export const WebViewContainer = ({
     />
   )
 }
+
+const styles = StyleSheet.create({
+  splashContainer: {
+    height: '100%',
+    width: '100%',
+    backgroundColor: '#1f42b4',
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+})
