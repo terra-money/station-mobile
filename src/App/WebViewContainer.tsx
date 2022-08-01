@@ -27,7 +27,8 @@ import {
   CreateTxOptions,
   Fee,
   Msg,
-  SignatureV2
+  SignatureV2,
+  SignDoc,
 } from '@terra-money/terra.js'
 import { settings } from 'utils/storage'
 import { useConfig, useIsClassic } from 'lib'
@@ -55,6 +56,7 @@ export const RN_APIS = {
   REJECT_TX: 'REJECT_TX',
   GET_LEDGER_LIST: 'GET_LEDGER_LIST',
   GET_LEDGER_KEY: 'GET_LEDGER_KEY',
+  GET_LEDGER_DOC: 'GET_LEDGER_DOC',
 }
 
 interface DeviceInterface {
@@ -456,6 +458,57 @@ export const WebViewContainer = ({
                   reqId,
                   type,
                   data: json,
+                })
+              )
+            } catch (error) {
+              // @ts-ignore
+              webviewInstance.current?.postMessage(
+                JSON.stringify({
+                  reqId,
+                  type,
+                  data: error?.toString(),
+                })
+              )
+            } finally {
+              disconnectLedger()
+            }
+            break
+          }
+
+          case RN_APIS.GET_LEDGER_DOC: {
+            const ledgerId = await TransportBLE.open(data.id)
+            const disconnectLedger = () => TransportBLE.disconnect(data.id)
+            try {
+              const key = await LedgerKey.create(
+                ledgerId,
+                parseInt(data.path)
+              )
+
+              const lcd = new LCDClient(data?.lcdConfigs)
+              const accountInfo = await lcd.auth.accountInfo(data.address)
+              const decoded = lcd.tx.decode(data.signTx)
+
+              const doc = new SignDoc(
+                data?.lcdConfigs.chainID,
+                accountInfo.getAccountNumber(),
+                accountInfo.getSequenceNumber(),
+                decoded.auth_info,
+                decoded.body
+              )
+
+              const signature = await key.createSignatureAmino(
+                doc,
+                isClassic
+              )
+              const string = JSON.stringify(signature.toData())
+              const base64sign = Buffer.from(string).toString("base64")
+
+              // @ts-ignore
+              webviewInstance.current?.postMessage(
+                JSON.stringify({
+                  reqId,
+                  type,
+                  data: base64sign,
                 })
               )
             } catch (error) {
