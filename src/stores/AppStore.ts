@@ -1,5 +1,5 @@
 import { atom } from 'recoil'
-import { createRef, RefObject, ReactElement } from 'react'
+import { createRef, RefObject } from 'react'
 import { StoreKeyEnum } from './StoreKeyEnum'
 
 const showLoading = atom<boolean>({
@@ -17,7 +17,7 @@ const loadingTitle = atom<string>({
   default: '',
 })
 
-const webviewInstance = atom<RefObject<ReactElement>>({
+const webviewInstance = atom<RefObject<ReactNativeWebView>>({
   key: StoreKeyEnum.webviewInstance,
   default: createRef(),
 })

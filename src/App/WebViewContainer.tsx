@@ -117,7 +117,7 @@ export const WebViewContainer = ({
 
   interface TxRequest extends DefaultRequest {
     tx: CreateTxOptions
-    requestType: 'sign' | 'post'
+    requestType: 'signBytes' | 'post'
   }
 
   interface PrimitiveDefaultRequest {
@@ -162,7 +162,7 @@ export const WebViewContainer = ({
   const getCircularReplacer = () => {
     const seen = new WeakSet()
 
-    return (key: any, value: object | null) => {
+    return (key: any, value: Record<string, unknown> | null) => {
       if (typeof value === 'object' && value !== null) {
         if (seen.has(value)) {
           return
@@ -186,9 +186,9 @@ export const WebViewContainer = ({
 
         switch (type) {
           case RN_APIS.APP_VERSION: {
-            // @ts-ignore
+            // type: APP_VERSION
+            // data: string
             const version = await requestAppVersion()
-            // @ts-ignore
             webviewInstance.current?.postMessage(
               JSON.stringify({
                 reqId,
@@ -199,11 +199,10 @@ export const WebViewContainer = ({
             break
           }
           case RN_APIS.SET_THEME: {
-            // @ts-ignore
+            // type: SET_THEME
+            // data: boolean
             theme.set(data)
             settings.set({ theme: data })
-
-            // @ts-ignore
             webviewInstance.current?.postMessage(
               JSON.stringify({
                 reqId,
@@ -214,12 +213,13 @@ export const WebViewContainer = ({
             break
           }
           case RN_APIS.SET_NETWORK: {
+            // type: SET_NETWORK
+            // data: boolean
             // @ts-ignore
             const nextChain = networks?.[data]
             settings.set({ chain: nextChain })
             chain.set(nextChain)
 
-            // @ts-ignore
             webviewInstance.current?.postMessage(
               JSON.stringify({
                 reqId,
@@ -231,8 +231,9 @@ export const WebViewContainer = ({
           }
 
           case RN_APIS.RECOVER_SESSIONS: {
+            // type: RECOVER_SESSIONS
+            // data: boolean
             recoverWalletConnect(data)
-            // @ts-ignore
             webviewInstance.current?.postMessage(
               JSON.stringify({
                 reqId,
@@ -244,12 +245,13 @@ export const WebViewContainer = ({
           }
 
           case RN_APIS.DISCONNECT_SESSIONS: {
+            // type: DISCONNECT_SESSIONS
+            // data: boolean
             if (data) {
               disconnectWalletConnect(data)
             } else {
               disconnectAllWalletConnect()
             }
-            // @ts-ignore
             webviewInstance.current?.postMessage(
               JSON.stringify({
                 reqId,
@@ -280,7 +282,6 @@ export const WebViewContainer = ({
             })
 
             if (!localWalletConnector?.session.peerMeta) {
-              // @ts-ignore
               webviewInstance.current?.postMessage(
                 JSON.stringify({
                   reqId,
@@ -291,7 +292,8 @@ export const WebViewContainer = ({
               return
             }
 
-            // @ts-ignore
+            // type: CONNECT_WALLET
+            // data: session
             webviewInstance.current?.postMessage(
               JSON.stringify({
                 reqId,
@@ -304,7 +306,6 @@ export const WebViewContainer = ({
 
           case RN_APIS.MIGRATE_KEYSTORE: {
             setWebviewLoadEnd(true)
-            // @ts-ignore
             webviewInstance.current?.postMessage(
               JSON.stringify({
                 reqId: req.reqId,
@@ -316,9 +317,7 @@ export const WebViewContainer = ({
           }
 
           case RN_APIS.CHECK_BIO: {
-            const isSuccess =
-              await isSupportedBiometricAuthentication()
-            // @ts-ignore
+            const isSuccess = await isSupportedBiometricAuthentication()
             webviewInstance.current?.postMessage(
               JSON.stringify({
                 reqId,
@@ -332,7 +331,6 @@ export const WebViewContainer = ({
           case RN_APIS.AUTH_BIO: {
             const isSuccess = await authenticateBiometric()
             if (isSuccess) {
-              // @ts-ignore
               webviewInstance.current?.postMessage(
                 JSON.stringify({
                   reqId,
@@ -341,7 +339,6 @@ export const WebViewContainer = ({
                 })
               )
             } else {
-              // @ts-ignore
               webviewInstance.current?.postMessage(
                 JSON.stringify({
                   reqId,
@@ -363,7 +360,6 @@ export const WebViewContainer = ({
                 return
               }
             } else {
-              // @ts-ignore
               webviewInstance.current?.postMessage(
                 JSON.stringify({
                   reqId,
@@ -382,7 +378,6 @@ export const WebViewContainer = ({
               searchLedger()
               return
             } else {
-              // @ts-ignore
               webviewInstance.current?.postMessage(
                 JSON.stringify({
                   reqId,
@@ -408,7 +403,6 @@ export const WebViewContainer = ({
                   key,
                   getCircularReplacer()
                 )
-                // @ts-ignore
                 webviewInstance.current?.postMessage(
                   JSON.stringify({
                     reqId,
@@ -452,7 +446,6 @@ export const WebViewContainer = ({
                 result,
                 getCircularReplacer()
               )
-              // @ts-ignore
               webviewInstance.current?.postMessage(
                 JSON.stringify({
                   reqId,
@@ -461,7 +454,6 @@ export const WebViewContainer = ({
                 })
               )
             } catch (error) {
-              // @ts-ignore
               webviewInstance.current?.postMessage(
                 JSON.stringify({
                   reqId,
@@ -503,7 +495,6 @@ export const WebViewContainer = ({
               const string = JSON.stringify(signature.toData())
               const base64sign = Buffer.from(string).toString("base64")
 
-              // @ts-ignore
               webviewInstance.current?.postMessage(
                 JSON.stringify({
                   reqId,
@@ -512,7 +503,6 @@ export const WebViewContainer = ({
                 })
               )
             } catch (error) {
-              // @ts-ignore
               webviewInstance.current?.postMessage(
                 JSON.stringify({
                   reqId,
@@ -534,7 +524,6 @@ export const WebViewContainer = ({
               result: data?.result,
             })
 
-            // @ts-ignore
             webviewInstance.current?.postMessage(
               JSON.stringify({
                 reqId,
@@ -555,7 +544,6 @@ export const WebViewContainer = ({
               },
             })
 
-            // @ts-ignore
             webviewInstance.current?.postMessage(
               JSON.stringify({
                 reqId,
@@ -610,7 +598,6 @@ export const WebViewContainer = ({
       connector.on('session_request', (error, payload) => {
         if (error) {
           setLocalWalletConnector(null)
-          // @ts-ignore
           webviewInstance.current?.postMessage(
             JSON.stringify({
               reqId,
@@ -623,7 +610,6 @@ export const WebViewContainer = ({
 
         const { peerMeta } = payload.params[0]
 
-        // @ts-ignore
         webviewInstance.current?.postMessage(
           JSON.stringify({
             reqId,
@@ -633,7 +619,6 @@ export const WebViewContainer = ({
         )
       })
     } catch (error) {
-      // @ts-ignore
       webviewInstance.current?.postMessage(
         JSON.stringify({
           reqId,
@@ -646,7 +631,6 @@ export const WebViewContainer = ({
 
   const onBackPress = useCallback(() => {
     if (webviewInstance.current && canGoBack) {
-      // @ts-ignore
       webviewInstance.current?.goBack()
       return true
     } else {
@@ -745,7 +729,6 @@ export const WebViewContainer = ({
 
   useEffect(() => {
     if (ledgers) {
-      // @ts-ignore
       webviewInstance.current?.postMessage(
         JSON.stringify({
           reqId: ledgerReqId,
@@ -765,8 +748,8 @@ export const WebViewContainer = ({
           const id = req.id
           const method = req.method
           const params = req.params[0]
-          if (method === 'post') {
-            // @ts-ignore
+          
+          if (method === 'post' || method === 'signBytes') {
             webviewInstance.current?.postMessage(
               JSON.stringify({
                 reqId: '',
@@ -777,6 +760,7 @@ export const WebViewContainer = ({
                     id,
                     params,
                     handshakeTopic,
+                    method
                   }))
                 },
               })
@@ -787,7 +771,6 @@ export const WebViewContainer = ({
         connector.on('disconnect', () => {
           removeWalletConnect(handshakeTopic)
 
-          // @ts-ignore
           webviewInstance.current?.postMessage(
             JSON.stringify({
               reqId: '',

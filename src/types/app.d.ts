@@ -13,3 +13,8 @@ interface AlertView {
   close: () => void
   content: ReactNode
 }
+
+interface ReactNativeWebView {
+  postMessage: (msg: string) => void
+  goBack: () => void
+}

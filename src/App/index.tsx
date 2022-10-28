@@ -113,8 +113,6 @@ let App = ({
 
   const onRead = useCallback(
     ({ data }: { data: string }): void => {
-
-      // @ts-ignore
       webviewInstance.current?.postMessage(
         JSON.stringify({
           reqId: isVisibleModal,
