@@ -853,7 +853,7 @@ export const WebViewContainer = ({
               window.ReactNativeWebView.postMessage('navigationStateChange');
               return res;
             }
-          }å
+          }
           history.pushState = wrap(history.pushState);
           history.replaceState = wrap(history.replaceState);
           window.addEventListener('popstate', function() {
