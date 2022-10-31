@@ -859,6 +859,9 @@ export const WebViewContainer = ({
         const req = nativeEvent.data && JSON.parse(nativeEvent.data)
         await WebViewListener(req)
       }}
+      onContentProcessDidTerminate={(): void =>
+        (webviewInstance?.current as unknown as WebView)?.reload()
+      }
       injectedJavaScript={`
         (function() {
           function wrap(fn) {
