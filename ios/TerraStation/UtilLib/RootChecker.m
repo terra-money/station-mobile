@@ -26,11 +26,9 @@ RCT_EXPORT_MODULE();
 
 - (NSArray *)pathsToCheck
 {
-  return @[
+  NSArray *paths = @[
     @"/Applications/Cydia.app",
     @"/Library/MobileSubstrate/MobileSubstrate.dylib",
-    @"/bin/bash",
-    @"/usr/sbin/sshd",
     @"/etc/apt",
     @"/private/var/lib/apt",
     @"/usr/sbin/frida-server",
@@ -49,19 +47,30 @@ RCT_EXPORT_MODULE();
     @"/Library/MobileSubstrate/DynamicLibraries/Veency.plist",
     @"/System/Library/LaunchDaemons/com.ikey.bbot.plist",
     @"/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist",
-    @"/bin/sh",
-    @"/etc/ssh/sshd_config",
     @"/private/var/lib/cydia",
     @"/private/var/mobile/Library/SBSettings/Themes",
     @"/private/var/stash",
     @"/private/var/tmp/cydia.log",
-    @"/usr/bin/sshd",
-    @"/usr/libexec/sftp-server",
-    @"/usr/libexec/ssh-keysign",
     @"/var/cache/apt",
     @"/var/lib/apt",
     @"/var/lib/cydia",
   ];
+  
+  if (@available(iOS 14.0, *)) {
+    if([NSProcessInfo processInfo].isiOSAppOnMac == TRUE) {
+      return paths;
+    }
+  }
+  
+  return [paths arrayByAddingObjectsFromArray: @[
+    @"/bin/bash",
+    @"/usr/sbin/sshd",
+    @"/bin/sh",
+    @"/etc/ssh/sshd_config",
+    @"/usr/bin/sshd",
+    @"/usr/libexec/ssh-keysign",
+    @"/usr/libexec/sftp-server",
+  ]];
 }
 
 - (NSArray *)schemesToCheck
@@ -124,6 +133,7 @@ RCT_EXPORT_METHOD(isDeviceRooted:(RCTPromiseResolveBlock) resolve
 #if TARGET_OS_SIMULATOR
   return resolve(@NO);
 #endif
+  
   BOOL check = [self checkPaths] || [self checkSchemes] || [self canViolateSandbox] || [self checkIOSSecuritySuite];
   return resolve(check ? @YES : @NO);
 }

@@ -14,7 +14,8 @@ target 'TerraStation' do
   pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID"
 
   pod 'TrezorCrypto'
-  pod 'IOSSecuritySuite'
+  #pod 'IOSSecuritySuite'
+  pod 'IOSSecuritySuite', :git => 'https://github.com/bokuhe/IOSSecuritySuite.git', :branch => 'feat/ios-app-on-mac'
 
   config = use_native_modules!
   use_react_native!(
