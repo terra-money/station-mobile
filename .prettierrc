@@ -1,4 +1,6 @@
 {
+  "arrowParens": "avoid",
+  "bracketSameLine": true,
   "singleQuote": true,
   "semi": false,
   "useTabs": false,

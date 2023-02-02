@@ -6,4 +6,5 @@ project(':react-native-randombytes').projectDir = new File(rootProject.projectDi
 apply from: '../node_modules/react-native-unimodules/gradle.groovy'; includeUnimodulesProjects()
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app', ':terra-wallet-java'
+includeBuild('../node_modules/react-native-gradle-plugin')
 
