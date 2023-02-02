@@ -1,4 +1,4 @@
-import { getDateYMD } from '../../src/utils/date'
+import { getDateYMD } from '../../src/legacy/utils/date'
 
 describe('date', () => {
   test('getDateYMD 1', async () => {

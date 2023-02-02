@@ -2,25 +2,21 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
-    "lib": ["dom", "esnext"],
     "moduleResolution": "node",
     "noEmit": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "strict": true,
     "noUnusedLocals": true,
-    "baseUrl": "./src",
+    "noUnusedParameters": true /* Report errors on unused parameters. */,
+    "noImplicitAny": true /* Raise error on expressions and declarations with an implied 'any' type. */,
+    "strictNullChecks": true /* Enable strict null checks. */,
+    "baseUrl": ".",
     "paths": {
-      "components": ["./components"],
-      "consts": ["./consts"],
-      "types/*": ["./types/*"],
-      "styles/*": ["./styles/*"],
-      "utils/*": ["./utils/*"],
-      "assets/*": ["./assets/*"],
-      "hooks/*": ["./hooks/*"],
-      "stores/*": ["./stores/*"],
-      "nativeModules/*": ["./nativeModules/*"],
-      "lib/*": ["./lib/*"]
+      "@core/*": ["src/core/*"],
+      "@features/*": ["src/features/*"],
+      "@playground/*": ["src/playground/*"],
     }
-  }
+  },
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"]
 }

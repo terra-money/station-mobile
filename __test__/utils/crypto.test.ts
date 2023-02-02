@@ -1,4 +1,4 @@
-import { decrypt, encrypt } from '../../src/utils/crypto'
+import { decrypt, encrypt } from '../../src/legacy/utils/crypto'
 
 describe('crypto', () => {
   test('decrypt, encrypt 1', () => {
